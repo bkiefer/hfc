@@ -1,5 +1,7 @@
 package de.dfki.lt.hfc.types;
 
+import de.dfki.lt.hfc.TupleStore;
+
 /**
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
@@ -96,6 +98,16 @@ public final class XsdString extends XsdAnySimpleType {
 	public String toName() {
 		return this.value.replaceAll("[ <>]", "_");
 	}
+  
+  /**
+   * returns the value (the Java string; note: language tag _not_ used) for a
+   * given XsdString object which is refered to by its internal TupleStore ID
+   * (a positive int)
+   */
+  public static Object getValue(int id, TupleStore ts) {
+    final XsdString xs = (XsdString)(ts.getJavaObject(id));
+    return xs.value;
+  }
 	
 	/*
 	public static void main(String[] args) {

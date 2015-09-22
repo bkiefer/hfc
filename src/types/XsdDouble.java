@@ -73,7 +73,7 @@ public final class XsdDouble extends XsdAnySimpleType {
    * is refered to by its internal TupleStore ID (a positive int)
    */
   public static Object getValue(int id, TupleStore ts) {
-    XsdDouble xd = (XsdDouble)(ts.getJavaObject(id));
+    final XsdDouble xd = (XsdDouble)(ts.getJavaObject(id));
     return new Double(xd.value);
   }
   

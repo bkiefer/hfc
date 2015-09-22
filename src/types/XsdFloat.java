@@ -73,7 +73,7 @@ public final class XsdFloat extends XsdAnySimpleType {
    * is refered to by its internal TupleStore ID (a positive int)
    */
   public static Object getValue(int id, TupleStore ts) {
-    XsdFloat xf = (XsdFloat)(ts.getJavaObject(id));
+    final XsdFloat xf = (XsdFloat)(ts.getJavaObject(id));
     return new Float(xf.value);
   }
   
