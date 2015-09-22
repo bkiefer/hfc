@@ -1,0 +1,54 @@
+<http://www.lt-world.org/ltw.owl#obj_67120> <http://www.lt-world.org/ltw.owl#belongsToCountry> <http://www.lt-world.org/ltw.owl#lt-world_Individual_464>
+
+### the syntax of this test file differs from N-Triples syntax in that
+### lines do NOT end in the full stop char '.'
+
+<huk> <rdf:type> <Person>
+<huk> <worksFor> <dfki>
+
+# duplicate tuple -- should NOT be added to tuple store
+<huk> <rdf:type> <Person>
+
+# a comment
+### indeed !
+
+# a quintuple -- check for TupleStore.MAX_NO_OF_ARGS
+<js> <ceoOf> <dc> <start1> <end1>
+
+# a class in predicate position, expressing a unary predicate: Person(mfk)
+<mfk> <Person>
+
+# misspelled tuple
+<tigger> <owner> joe_the_plumber
+
+# blank nodes
+<huk> <name> _:foo42
+_:foo42 <firstName> _:foo43
+_:foo42 <lastName> _:foo44
+
+# ' ', '.', and '\"' inside a string
+<dfki> <hasName> "DFKI Gmbh"
+<dfki> <hasName> "DFKI Gmbh aka. \"German Research Center for AI\""
+
+# XSD data types -- same string without/with short/full type info
+<huk> <hasName> "Hans-Ulrich Krieger"^^<xsd:string>
+<huk> <dateOfBirth> "1960-08-14"^^<xsd:date>
+<huk> <hasAge> "47"^^<xsd:int>
+<huk> <hasName> "Hans-Ulrich Krieger"
+<huk> <hasName> "Hans-Ulrich Krieger"^^<http://www.w3.org/2001/XMLSchema#string>
+
+
+# XSD language tag
+<huk> <hasPosition> "Forscher"@de
+<huk> <hasPosition> "researcher"@en
+
+# wrong args in first and second position
+# 1st arg: URI or blank node
+# 2nd arg: URI
+# 3rd-Nth arg: everything possible, i.e., URI, blank nodes, and XSD atoms
+
+"huk" <hasName> "Uli Krieger"
+<huk> _:hasName "Uli Krieger"
+<huk> "hasName" "Uli Krieger"
+
+<foo> <bar> <baz>

@@ -1,0 +1,3 @@
+JAVA=/usr/bin/java
+$JAVA -server -cp .:./lib/* -Xms1024m -Xmx4096m de/dfki/lt/hfc/server/HfcServer 1408 resources/namespaces/ resources/tuples/ resources/rules/ > tmp/HFC$$.log 2>&1 &
+echo "$!" >> ./tmp/HFC$$.pid

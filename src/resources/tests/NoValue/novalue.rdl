@@ -1,0 +1,14 @@
+#
+# N-Triple test file for functional operator PrintTrue
+#
+# 3 new tuples generated
+#
+# @author Hans-Ulrich Krieger
+#
+
+$test1
+?s <test:hasName> ?o
+->
+?s <test:checked>
+@test
+NoValue * *

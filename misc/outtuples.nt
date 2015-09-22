@@ -1,0 +1,15 @@
+<mfk> <Person> 
+<http://www.lt-world.org/ltw.owl#obj_67120> <http://www.lt-world.org/ltw.owl#belongsToCountry> <http://www.lt-world.org/ltw.owl#lt-world_Individual_464> 
+<huk> <rdf:type> <Person> 
+<huk> <worksFor> <dfki> 
+<huk> <name> _:foo42 
+<huk> <hasName> "Hans-Ulrich Krieger"^^<http://www.w3.org/2001/XMLSchema#string> 
+<huk> <dateOfBirth> "1960-08-14"^^<http://www.w3.org/2001/XMLSchema#date> 
+<huk> <hasAge> "47"^^<http://www.w3.org/2001/XMLSchema#int> 
+<huk> <hasPosition> "Forscher"@de 
+<huk> <hasPosition> "researcher"@en 
+<dfki> <hasName> "DFKI Gmbh"^^<http://www.w3.org/2001/XMLSchema#string> 
+<dfki> <hasName> "DFKI Gmbh aka. \"German Research Center for AI\""^^<http://www.w3.org/2001/XMLSchema#string> 
+_:foo42 <firstName> _:foo43 
+_:foo42 <lastName> _:foo44 
+<foo> <bar> <baz> 

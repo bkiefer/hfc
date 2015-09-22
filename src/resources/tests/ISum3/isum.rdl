@@ -1,0 +1,22 @@
+#
+# N-Triple test file for functional operator ISum
+#
+# will NO LONGER terminate because companies related to ?s and ?t
+# are assigned more and more values associated with numberOfEmployees
+#
+# @author Hans-Ulrich Krieger
+#
+
+$test
+?s <rdf:type> <test:Company>
+?t <rdf:type> <test:Company>
+?s <test:numberOfEmployees> ?u
+?t <test:numberOfEmployees> ?v
+->
+?s <test:numberOfEmployees> ?w
+?t <test:numberOfEmployees> ?w
+@test
+?s != ?t
+PrintTrue ?s ?u ?t ?v
+@action
+?w = ISum ?u ?v

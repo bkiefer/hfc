@@ -1,0 +1,84 @@
+
+# some comment
+
+#
+# more comments
+#
+
+# a rule for encoding OWL transitive properties in RDL
+
+$OWL_Transitive_Property
+?p <rdf:type> <owl:TransitiveProperty>
+?x ?p ?y
+?y ?p ?z
+->
+?x ?p ?z
+@test
+?xx != ?y
+?y!=?z
+isZero(?y)
+?x != ?z
+?x != <foo:bar>
+@action
+?x = add(?y, ?z)
+
+$OWL_Equivalent_Class
+?c1 <owl:equivalentClass> ?c2
+->
+?c2 <owl:equivalentClass> ?c1
+@action
+
+
+# don't care rule
+$dontCareRule
+?s ?_dc ?o
+->
+?s <newprop> ?o
+
+
+# a rule missing the rule name
+
+?p1 <owl:equivalentProperty> ?p2
+->
+?p2 <owl:equivalentProperty> ?p1
+
+# an empty antecedent with/without a rule name
+$fooRule
+->
+<hasPart> <rdf:type> <owl:TransitiveProperty>
+
+->
+<hasPart> <rdf:type> <owl:TransitiveProperty>
+
+
+# an empty consequent with/without a rule name
+$fooRule
+<hasPart> <rdf:type> <owl:TransitiveProperty>
+->
+
+<hasPart> <rdf:type> <owl:TransitiveProperty>
+->
+
+
+# two antecedents
+$foobarbaz
+<hasPart> <rdf:type> <owl:TransitiveProperty>
+->
+<partOf> <rdf:type> <owl:TransitiveProperty>
+->
+<a> <b> <c>
+<d> <e> <f>
+
+# rule with RHS-only variables
+
+$timeIsArbitraryDense
+?i1 <rdf:type> <time:Interval>
+?i1 <time:begins> ?b1
+?i1 <time:ends> ?e1
+->
+?i2 <rdf:type> <time:Interval>
+?i2 <time:begins> ?b2
+?i2 <time:ends> ?e2
+?b1 <time:before> ?b2
+?e2 <time:before> ?e1
+

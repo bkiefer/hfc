@@ -1,0 +1,12 @@
+#
+# 
+#
+# @author Hans-Ulrich Krieger
+#
+
+
+$test
+?a <test:hasName> ?b
+?s <rdf:type> ?t
+->
+?a <test:test> ?t

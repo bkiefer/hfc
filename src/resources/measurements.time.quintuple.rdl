@@ -1,0 +1,344 @@
+#
+# this is a modification of the the file
+#   default.time.quintuple.rdl
+# that even adds two further temporal arguments to TBox triple statements;
+# this is due to the fact that we have even added temporal args to TBox
+# axioms in our synthetic data in order to ease the creation of this data,
+# thus the rules needs to be adapted
+# note that TBox triple statements in the RHS of a rule are ALWAYS assigned
+# a temporal extent of  "-1"^^<xsd:int> "-1"^^<xsd:int> in order to identify
+# similar TBox axiom instantiations on the RHS
+#
+
+
+# add temporal args to RHS clause
+$rdf1_rdfs4a_4b+time
+?_s ?p ?_o ?_start ?_end
+->
+?p <rdf:type> <rdf:Property> "-1"^^<xsd:int> "-1"^^<xsd:int>
+
+
+# triple version NO longer needed: commented out
+#$rdf1_rdfs4a_4b
+#?_s ?p ?_o
+#->
+#?p <rdf:type> <rdf:Property>
+
+
+# second LHS clause has been adapted
+$rdfs2+time
+?s ?p ?_o ?start ?end
+?p <rdfs:domain> ?dom ?start2 ?end2
+->
+?s <rdf:type> ?dom ?start ?end
+@test
+?p != <rdf:type>
+
+
+# second and third LHS clause extended
+$rdfs3+time
+?_s ?p ?o ?start ?end
+?p <rdf:type> <owl:ObjectProperty> ?start2 ?end2
+?p <rdfs:range> ?rng ?start3 ?end3
+->
+?o <rdf:type> ?rng ?start ?end
+
+
+# first & second LHS clause and first RHS clause extended
+$rdfs5
+?p <rdfs:subPropertyOf> ?q ?start1 ?end1
+?q <rdfs:subPropertyOf> ?r ?start2 ?end2
+->
+?p <rdfs:subPropertyOf> ?r  "-1"^^<xsd:int> "-1"^^<xsd:int>
+@test
+?p != ?q
+?p != ?r
+?q != ?r
+
+
+# extend first LHS and RHS clause
+$rdfs6
+?p <rdf:type> <rdf:Property> ?start ?end
+->
+?p <rdfs:subPropertyOf> ?p  "-1"^^<xsd:int> "-1"^^<xsd:int>
+
+
+# extend second LHS clause
+$rdfs7+time
+?s ?p ?o ?start ?end
+?p <rdfs:subPropertyOf> ?q ?start2 ?end2
+->
+?s ?q ?o ?start ?end
+@test
+?p != ?q
+
+
+# extend first LHS and RHS clause
+$rdfs8_10
+?c <rdf:type> <owl:Class> ?start ?end
+->
+?c <rdfs:subClassOf> ?c  "-1"^^<xsd:int> "-1"^^<xsd:int>
+
+
+# extend second LHS clause
+$rdfs9+time
+?i <rdf:type> ?c ?start ?end
+?c <rdfs:subClassOf> ?d ?start2 ?end2
+->
+?i <rdf:type> ?d ?start ?end
+@test
+?c != ?d
+
+
+# first & second LHS clause and first RHS clause extended
+$rdfs11
+?c <rdfs:subClassOf> ?d ?start1 ?end1
+?d <rdfs:subClassOf> ?e ?start2 ?end2
+->
+?c <rdfs:subClassOf> ?e  "-1"^^<xsd:int> "-1"^^<xsd:int>
+@test
+?c != ?d
+?c != ?e
+?d != ?e
+
+
+# NOTE: $rdfs12 omitted -- deals with rdfs:member
+# will not fire for our OWL ontologies
+
+
+# NOTE: $rdfs13 omitted -- deals with rdfs:Literal
+# will not fire for our OWL ontologies
+
+
+# extend second LHS clause
+$owl_invOf+time
+?s ?p ?o ?start ?end
+?p <owl:inverseOf> ?q ?start2 ?end2
+->
+?o ?q ?s ?start ?end
+
+
+# extend first LHS and RHS clause
+$owl_invOfBySymProp
+?p <rdf:type> <owl:SymmetricProperty> ?start ?end
+->
+?p <owl:inverseOf> ?p "-1"^^<xsd:int> "-1"^^<xsd:int>
+
+
+# extend first LHS and RHS clause
+$owl_SymPropByInverse
+?p <owl:inverseOf> ?p ?start ?end
+->
+?p <rdf:type> <owl:SymmetricProperty> "-1"^^<xsd:int> "-1"^^<xsd:int>
+
+
+# extend first LHS clause
+$owl_SymmetricProperty+time
+?p <rdf:type> <owl:SymmetricProperty> ?start2 ?end2
+?s ?p ?o ?start ?end
+->
+?o ?p ?s ?start ?end
+
+
+# extend first LHS clause
+$owl_TransProp+time
+?p <rdf:type> <owl:TransitiveProperty> ?start0 ?end0
+?x ?p ?y ?start1 ?end1
+?y ?p ?z ?start2 ?end2
+->
+?x ?p ?z ?start ?end
+@test
+?x != ?y
+?y != ?z
+IIntersectionNotEmpty ?start1 ?end1 ?start2 ?end2
+@action
+?start = IMax2 ?start1 ?start2
+?end = IMin2 ?end1 ?end2
+
+
+# extend first & second LHS and first RHS clause
+$owl_FunctPropObject
+?p <rdf:type> <owl:FunctionalProperty> ?start3 ?end3
+?p <rdf:type> <owl:ObjectProperty> ?start4 ?end4
+?x ?p ?y ?start1 ?end1
+?x ?p ?z ?start2 ?end2
+->
+?y <owl:sameAs> ?z "-1"^^<xsd:int> "-1"^^<xsd:int>
+@test
+?y != ?z
+?p != <rdf:type>
+IIntersectionNotEmpty ?start1 ?end1 ?start2 ?end2
+
+
+# extend first & second LHS clause
+$owl_FunctPropDatatype
+?p <rdf:type> <owl:FunctionalProperty> ?start3 ?end3
+?p <rdf:type> <owl:DatatypeProperty> ?start4 ?end4
+?x ?p ?y ?start1 ?end1
+?x ?p ?z ?start2 ?end2
+->
+?x <rdf:type> <owl:Nothing> ?start ?end
+@test
+?y != ?z
+?p != <rdf:type>
+IIntersectionNotEmpty ?start1 ?end1 ?start2 ?end2
+@action
+?start = IMax2 ?start1 ?start2
+?end = IMin2 ?end1 ?end2
+
+
+# extend first LHS and RHS clause
+$owl_InvFunctProp
+?p <rdf:type> <owl:InverseFunctionalProperty> ?start ?end
+?y ?p ?x ?start1 ?end1
+?z ?p ?x ?start2 ?end2
+->
+?y <owl:sameAs> ?z "-1"^^<xsd:int> "-1"^^<xsd:int>
+@test
+?y != ?z
+?p != <rdf:type>
+IIntersectionNotEmpty ?start1 ?end1 ?start2 ?end2
+
+
+# extend first LHS clause
+$owl_sameAsCopySubj
+?x <owl:sameAs> ?y ?start2 ?end2
+?x ?p ?z ?start ?end
+->
+?y ?p ?z ?start ?end
+@test
+?x != ?y
+?p != <owl:sameAs>
+
+
+#  extend first LHS clause
+$owl_equivalentPropertyCopyPred
+?p <owl:equivalentProperty> ?q ?start2 ?end2
+?x ?p ?y ?start ?end
+->
+?x ?q ?y ?start ?end
+@test
+?p != ?q
+
+
+#  extend first LHS clause
+$owl_sameAsCopyObj
+?x <owl:sameAs> ?y ?start2 ?end2
+?z ?p ?x ?start ?end
+->
+?z ?p ?y ?start ?end
+@test
+?x != ?y
+?p != <owl:sameAs>
+
+
+# extend first & second LHS and first RHS clause
+$owl_EquivClassBySubClass
+?x <rdfs:subClassOf> ?y ?start1 ?end1
+?y <rdfs:subClassOf> ?x ?start2 ?end2
+->
+?x <owl:equivalentClass> ?y "-1"^^<xsd:int> "-1"^^<xsd:int>
+@test
+?x != ?y
+
+
+# extend first & second LHS and first RHS clause
+$owl_EquivPropBySubProp
+?p <rdfs:subPropertyOf> ?q ?start1 ?end1
+?q <rdfs:subPropertyOf> ?p ?start2 ?end2
+->
+?p <owl:equivalentProperty> ?q "-1"^^<xsd:int> "-1"^^<xsd:int>
+@test
+?p != ?q
+
+
+# extend first and third LHS clause
+$owl_typeByAllVal
+?x <owl:onProperty> ?p ?start3 ?end3
+?u <rdf:type> ?x ?start1 ?end1
+?x <owl:allValuesFrom> ?y ?start4 ?end4
+?u ?p ?v ?start2 ?end2
+->
+?v <rdf:type> ?y ?start ?end
+@test
+IIntersectionNotEmpty ?start1 ?end1 ?start2 ?end2
+@action
+?start = IMax2 ?start1 ?start2
+?end = IMin2 ?end1 ?end2
+
+
+# extend first and second LHS clause
+$owl_typeByHasVal
+?r <owl:onProperty> ?p ?start1 ?end1
+?r <owl:hasValue> ?v ?start2 ?end2
+?i ?p ?v ?start ?end
+->
+?i <rdf:type> ?r ?start ?end
+
+
+# extend first and second LHS clause
+$owl_AttrByHasVal
+?x <owl:hasValue> ?y ?start1 ?end1
+?x <owl:onProperty> ?p ?start2 ?end2
+?u <rdf:type> ?x ?start ?end
+->
+?u ?p ?y ?start ?end
+
+
+# extend second and third LHS clause
+$owl_typeBySomeVal
+?q <rdf:type> ?c ?start1 ?end1
+?r <owl:onProperty> ?p ?start3 ?end3
+?r <owl:someValuesFrom> ?c ?start4 ?end4
+?i ?p ?q ?start2 ?end2
+->
+?i <rdf:type> ?r ?start ?end
+@test
+IIntersectionNotEmpty ?start1 ?end1 ?start2 ?end2
+@action
+?start = IMax2 ?start1 ?start2
+?end = IMin2 ?end1 ?end2
+
+
+# extend all LHS and RHS clauses
+$owl_subClassByInters1
+?c <owl:intersectionOf> ?x ?start1 ?end1
+?x <rdf:first> ?y ?start2 ?end2
+->
+?c <rdfs:subClassOf> ?x "-1"^^<xsd:int> "-1"^^<xsd:int>
+?c <rdfs:subClassOf> ?y "-1"^^<xsd:int> "-1"^^<xsd:int>
+
+
+# extend all LHS and RHS clauses
+$owl_subClassByInters2
+?x <rdf:rest> ?y ?start1 ?end1
+?c <owl:intersectionOf> ?x ?start2 ?end2
+->
+?x <owl:intersectionOf> ?y "-1"^^<xsd:int> "-1"^^<xsd:int>
+@test
+?y != <rdf:nil>
+
+
+# extend first, second, and third LHS clause
+$owl_typeByIntersect_1
+?b <rdf:first> ?c ?start1 ?end1
+?b <rdf:rest> <rdf:nil> ?start2 ?end2
+?z <owl:intersectionOf> ?b ?start3 ?end3
+?i <rdf:type> ?c ?start ?end
+->
+?i <rdf:type> ?b ?start ?end
+
+
+# extend first and fourth LHS clause
+$owl_typeByIntersect_2
+?b <rdf:first> ?c ?start3 ?end3
+?i <rdf:type> ?c ?start1 ?end1
+?i <rdf:type> ?b ?start2 ?end2
+?n <owl:intersectionOf> ?b ?start4 ?end4
+->
+?i <rdf:type> ?n ?start ?end
+@test
+IIntersectionNotEmpty ?start1 ?end1 ?start2 ?end2
+@action
+?start = IMax2 ?start1 ?start2
+?end = IMin2 ?end1 ?end2

@@ -1,0 +1,19 @@
+#
+# 
+#
+# @author Hans-Ulrich Krieger
+#
+
+# I do hand over two projections PI_{s, p, o) and PI_{p, c}
+# of the LHS binding table to CardinalityNotEqual, since
+# usually PI_{p, o} is very small, but more importantly, we
+# have that |PI_{s, p, o}| << |PI_{s, p, o, c}| !!
+$CHECK_CARDINALITY
+?p <rdf:type> <owl:DatatypeProperty>
+?r <owl:onProperty> ?p
+?r <owl:cardinality> ?c
+?s ?p ?o
+->
+?s <rdf:type> <owl:Nothing>
+@test
+CardinalityNotEqual ??(s p o) ??(p c)

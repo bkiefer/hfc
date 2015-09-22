@@ -1,0 +1,14 @@
+#
+# N-Triple test file for functional operator GetCurrentTime
+#
+# 3 new tuples generated
+#
+# @author Hans-Ulrich Krieger
+#
+
+$test
+?s <test:hasName> ?o
+->
+?s <test:time> ?t
+@action
+?t = GetCurrentTime

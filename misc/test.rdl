@@ -1,0 +1,15 @@
+$FOO
+?s ?p ?o
+->
+?s <rdf:type> <foo>
+@test
+?p != <rdf:type>
+
+
+$BAR
+?s ?p ?o
+->
+?s <rdf:type> <bar>
+@test
+?p != <rdfs:subClassOf>
+

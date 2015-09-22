@@ -1,0 +1,21 @@
+#
+# N-Triple test file for functional operator ISum
+#
+# 6 new tuples generated, 6 rule applications
+# will terminate because the blank nodes are NOT classified as companies
+#
+# @author Hans-Ulrich Krieger
+#
+
+$test
+?s <rdf:type> <test:Company>
+?t <rdf:type> <test:Company>
+?s <test:numberOfEmployees> ?u
+?t <test:numberOfEmployees> ?v
+->
+?bn <test:numberOfEmployees> ?w
+@test
+?s != ?t
+PrintTrue ?s ?u ?t ?v
+@action
+?w = ISum ?u ?v

@@ -1,0 +1,46 @@
+#
+# does not make sense to assign the type Nothing to ?s or ?o, resp.,
+# since they are not "responsible" that domain/range restriction is
+# violated;
+# instead, it does make sense to have a further argument, say "belief"
+# or "truthValue", ranging from 0 to 1, and assign the value 0 to
+# ?s ?p ?o as a _whole_:
+#
+#   ...
+#   ?s ?p ?o ?_b
+#   ->
+#   ?s ?p ?o "0"^^<xsd:int>
+#   ...
+#
+# an alternative strategy is to introduce a new blank node of type
+# Nothing that "embodies" the invalidity of ?s ?p ?o  (see below)
+#
+# @author Hans-Ulrich Krieger
+#
+
+$domainRestrictionViolated
+?p <rdfs:domain> ?d
+?s ?p ?o
+?s <rdf:type> ?t
+->
+?bn <rdf:type> <owl:Nothing>
+?bn <rdf:subject> ?s
+?bn <rdf:predicate> ?p
+?bn <rdf:object> ?o
+?bn <hfc:reason> "$domainRestrictionViolated"^^<xsd:string>
+@test
+IsNotSubtypeOf ?t ?d
+
+$rangeRestrictionViolated
+?p <rdfs:range> ?r
+?s ?p ?o
+?o <rdf:type> ?t
+->
+?bn <rdf:type> <owl:Nothing>
+?bn <rdf:subject> ?s
+?bn <rdf:predicate> ?p
+?bn <rdf:object> ?o
+?bn <hfc:reason> "$rangeRestrictionViolated"^^<xsd:string>
+@test
+IsNotSubtypeOf ?t ?r
+

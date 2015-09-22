@@ -1,0 +1,7 @@
+<a> <rdf:type> "asdas"
+<a> <rdf:type> "rergerg"^^<xsd:string>
+<a> <rdf:type> "rergerg"^^<http://www.w3.org/2001/XMLSchema#string>
+<a> <rdf:type> "car"@en
+<a> <rdf:type> "Auto"@de
+<a> <rdf:type> "42"^^<xsd:int>
+

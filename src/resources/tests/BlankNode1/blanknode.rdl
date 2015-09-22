@@ -1,0 +1,12 @@
+#
+# N-Triple test file for functional operator Concatenate
+#
+# 3 different values for ?s (even though 7 tuples match): 3 new tuples generated
+#
+# @author Hans-Ulrich Krieger
+#
+
+$test
+?s <test:hasName> ?o
+->
+?s <test:new> ?bn

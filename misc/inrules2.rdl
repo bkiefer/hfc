@@ -1,0 +1,45 @@
+
+
+## only some rules to test sharing of local query tables for LHS clauses across rules
+
+$rule1
+?p <rdf:type> <owl:TransitiveProperty>
+?x ?p ?y
+?y ?p ?z
+->
+?x ?p ?z
+
+$rule2
+?c1 <owl:equivalentClass> ?c2
+->
+?c2 <owl:equivalentClass> ?c1
+
+$rule3
+?c1 <owl:equivalentClass> ?c2
+?c2 <owl:equivalentClass> ?c3
+->
+?c1 <owl:equivalentClass> ?c3
+
+$rule4
+?p <rdf:type> <owl:SymmetricProperty>
+?x ?p ?y
+->
+?y ?p ?x
+
+$rule5
+<a> <b> <c>
+?x <d> <e>
+->
+<f> <g> ?x
+
+$rule6
+<a> <b> <c>
+?y <d> <e>
+->
+<m> <n> ?y
+
+$rule7
+?x ?p ?x
+?y <owl:equivalentClass> ?y
+->
+?x ?p ?y

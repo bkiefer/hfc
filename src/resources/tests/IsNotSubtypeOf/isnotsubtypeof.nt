@@ -1,0 +1,48 @@
+#
+# N-Triple test file for functional operator IsNotSubtypeOf
+#
+# @author Hans-Ulrich Krieger
+#
+
+<owl:Thing> <rdf:type> <owl:Class>
+<owl:Nothing> <rdf:type> <owl:Class>
+<owl:Nothing> <rdfs:subClassOf> <owl:Thing>
+<owl:Thing> <owl:disjointWith> <owl:Nothing>
+
+<xsd:int> <rdf:type> <rdfs:Datatype>
+<xsd:string> <rdf:type> <rdfs:Datatype>
+
+<test:Company> <rdfs:subClassOf> <owl:Thing>
+<test:ResearchInstitute> <rdfs:subClassOf> <test:Company>
+<test:Car> <rdfs:subClassOf> <owl:Thing>
+
+# nothing is said whether Institution is `compatible' with Company 
+<test:Institution> <rdfs:subClassOf> <owl:Thing>
+
+# however Company and Car are incompatible
+<test:Car> <owl:disjointWith> <test:Company>
+<test:Company> <owl:disjointWith> <test:Car>
+
+<test:dfki> <rdf:type> <test:ResearchInstitute>
+<test:sri> <rdf:type> <test:ResearchInstitute>
+
+<test:livinge>  <rdf:type> <test:Company>
+
+<test:uno> <type> <test:Institution>
+
+<test:db> <rdf:type> <test:Company>
+<test:a180> <rdf:type> <test:Car>
+
+<test:isAffiliatedWith> <rdfs:domain> <test:Company>
+<test:isAffiliatedWith> <rdfs:range> <test:Company>
+
+<test:dfki> <test:isAffiliatedWith> <test:sri>
+<test:sri> <test:isAffiliatedWith> <test:dfki>
+<test:dfki> <test:isAffiliatedWith> <test:livinge>
+<test:livinge> <test:isAffiliatedWith> <test:dfki>
+
+<test:dfki> <test:isAffiliatedWith> <test:uno>
+<test:uno> <test:isAffiliatedWith> <test:dfki>
+
+<test:db> <test:isAffiliatedWith> <test:a180>
+<test:a180> <test:isAffiliatedWith> <test:db>

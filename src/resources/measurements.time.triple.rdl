@@ -1,0 +1,687 @@
+#
+# drop the type tests for DomainPlusTime in the antecedent in order to
+# have a chance that closure terminates
+#
+# @author Hans-Ulrich Krieger
+# @version Mon May 30 13:54:45 CEST 2011
+#
+
+
+# 
+$rdf1_rdfs4a_4b+notime+time
+?_s ?p ?_o
+->
+?p <rdf:type> ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> <rdf:Property>
+?new <nary:starts> "-1"^^<xsd:int>
+?new <nary:ends> "-1"^^<xsd:int>
+@action
+?new = MakeBlankNode <rdf:Property> "-1"^^<xsd:int> "-1"^^<xsd:int>
+
+
+# 
+$rdfs2+time
+?s ?p ?blank
+#?blank <rdf:type> <nary:RangePlusTime>
+?blank <nary:starts> ?start
+?blank <nary:ends> ?end
+?p <rdfs:domain> ?blank2
+#?blank2 <rdf:type> <nary:RangePlusTime>
+?blank2 <nary:value> ?dom
+->
+?s <rdf:type> ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> ?dom
+?new <nary:starts> ?start
+?new <nary:ends> ?end
+@test
+?p != <rdf:type>
+@action
+?new = MakeBlankNode ?dom ?start ?end
+
+
+# 
+$rdfs3+time
+?_s ?p ?blank
+#?blank <rdf:type> <nary:RangePlusTime>
+?p <rdf:type> ?blank2
+#?blank2 <rdf:type> <nary:RangePlusTime>
+?blank2 <nary:value> <owl:ObjectProperty>
+?blank <nary:value> ?o
+?blank <nary:starts> ?start
+?blank <nary:ends> ?end
+?p <rdfs:range> ?blank3
+#?blank3 <rdf:type> <nary:RangePlusTime>
+?blank3 <nary:value> ?rng
+->
+?o <rdf:type> ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> ?rng
+?new <nary:starts> ?start
+?new <nary:ends> ?end
+@action
+?new = MakeBlankNode ?rng ?start ?end
+
+
+# 
+$rdfs5
+?p <rdfs:subPropertyOf> ?blank
+#?blank <rdf:type> <nary:RangePlusTime>
+?blank <nary:value> ?q
+?q <rdfs:subPropertyOf> ?blank2
+#?blank2 <rdf:type> <nary:RangePlusTime>
+?blank2 <nary:value> ?r
+->
+?p <rdfs:subPropertyOf> ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> ?r
+?new <nary:starts> "-1"^^<xsd:int>
+?new <nary:ends> "-1"^^<xsd:int>
+@test
+?p != ?q
+?p != ?r
+?q != ?r
+@action
+?new = MakeBlankNode ?r "-1"^^<xsd:int> "-1"^^<xsd:int>
+
+
+# 
+$rdfs6
+?p <rdf:type> ?blank
+#?blank <rdf:type> <nary:RangePlusTime>
+?blank <nary:value> <rdf:Property>
+->
+?p <rdfs:subPropertyOf> ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> ?p
+?new <nary:starts> "-1"^^<xsd:int>
+?new <nary:ends> "-1"^^<xsd:int>
+@action
+?new = MakeBlankNode ?p "-1"^^<xsd:int> "-1"^^<xsd:int>
+
+
+# 
+$rdfs7+time
+?s ?p ?blank
+#?blank <rdf:type> <nary:RangePlusTime>
+?blank <nary:value> ?o
+?blank <nary:starts> ?start
+?blank <nary:ends> ?end
+?p <rdfs:subPropertyOf> ?blank2
+#?blank2 <rdf:type> <nary:RangePlusTime>
+?blank2 <nary:value> ?q
+->
+?s ?q ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> ?o
+?new <nary:starts> ?start
+?new <nary:ends> ?end
+@test
+?p != ?q
+@action
+?new = MakeBlankNode ?o ?start ?end
+
+
+# 
+$rdfs8_10
+?c <rdf:type> ?blank
+#?blank <rdf:type> <nary:RangePlusTime>
+?blank <nary:value> <owl:Class>
+->
+?c <rdfs:subClassOf> ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> ?c
+?new <nary:starts> "-1"^^<xsd:int>
+?new <nary:ends> "-1"^^<xsd:int>
+@action
+?new = MakeBlankNode ?c "-1"^^<xsd:int> "-1"^^<xsd:int>
+
+
+#
+$rdfs9+time
+?i <rdf:type> ?blank
+#?blank <rdf:type> <nary:RangePlusTime>
+?blank <nary:value> ?c
+?blank <nary:starts> ?start
+?blank <nary:ends> ?end
+?c <rdfs:subClassOf> ?blank2
+#?blank2 <rdf:type> <nary:RangePlusTime>
+?blank2 <nary:value> ?d
+->
+?i <rdf:type> ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> ?d
+?new <nary:starts> ?start
+?new <nary:ends> ?end
+@test
+?c != ?d
+@action
+?new = MakeBlankNode ?d ?start ?end
+
+
+# 
+$rdfs11
+?c <rdfs:subClassOf> ?blank
+#?blank <rdf:type> <nary:RangePlusTime>
+?blank <nary:value> ?d
+?d <rdfs:subClassOf> ?blank2
+#?blank2 <rdf:type> <nary:RangePlusTime>
+?blank2 <nary:value> ?e
+->
+?c <rdfs:subClassOf> ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> ?e
+?new <nary:starts> "-1"^^<xsd:int>
+?new <nary:ends> "-1"^^<xsd:int>
+@test
+?c != ?d
+?c != ?e
+?d != ?e
+@action
+?new = MakeBlankNode ?e "-1"^^<xsd:int> "-1"^^<xsd:int>
+
+
+# NOTE: $rdfs12 omitted -- deals with rdfs:member
+# will not fire for our OWL ontologies
+
+
+# NOTE: $rdfs13 omitted -- deals with rdfs:Literal
+# will not fire for our OWL ontologies
+
+
+#
+$owl_invOf+time
+?s ?p ?blank
+#?blank <rdf:type> <nary:RangePlusTime>
+?blank <nary:value> ?o
+?blank <nary:starts> ?start
+?blank <nary:ends> ?end
+?p <owl:inverseOf> ?blank2
+#?blank2 <rdf:type> <nary:RangePlusTime>
+?blank2 <nary:value> ?q
+->
+?o ?q ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> ?s
+?new <nary:starts> ?start
+?new <nary:ends> ?end
+@action
+?new = MakeBlankNode ?s ?start ?end
+
+
+# 
+$owl_invOfBySymProp
+?p <rdf:type> ?blank
+#?blank <rdf:type> <nary:RangePlusTime>
+?blank <nary:value> <owl:SymmetricProperty>
+->
+?p <owl:inverseOf> ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> ?p
+?new <nary:starts> "-1"^^<xsd:int>
+?new <nary:ends> "-1"^^<xsd:int>
+@action
+?new = MakeBlankNode ?p "-1"^^<xsd:int> "-1"^^<xsd:int>
+
+
+# 
+$owl_SymPropByInverse
+?p <owl:inverseOf> ?blank
+#?blank <rdf:type> <nary:RangePlusTime>
+?blank <nary:value> ?p
+->
+?p <rdf:type> ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> <owl:SymmetricProperty>
+?new <nary:starts> "-1"^^<xsd:int>
+?new <nary:ends> "-1"^^<xsd:int>
+@action
+?new = MakeBlankNode <owl:SymmetricProperty> "-1"^^<xsd:int> "-1"^^<xsd:int>
+
+
+#
+$owl_SymmetricProperty+time
+?p <rdf:type> ?blank2
+#?blank2 <rdf:type> <nary:RangePlusTime>
+?blank2 <nary:value> <owl:SymmetricProperty>
+?s ?p ?blank
+#?blank <rdf:type> <nary:RangePlusTime>
+?blank <nary:value> ?o
+?blank <nary:starts> ?start
+?blank <nary:ends> ?end
+->
+?o ?p ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> ?s
+?new <nary:starts> ?start
+?new <nary:ends> ?end
+@action
+?new = MakeBlankNode ?s ?start ?end
+
+
+# 
+$owl_TransProp+time
+?p <rdf:type> ?blank
+#?blank <rdf:type> <nary:RangePlusTime>
+?blank <nary:value> <owl:TransitiveProperty>
+?x ?p ?blank1
+#?blank1 <rdf:type> <nary:RangePlusTime>
+?blank1 <nary:value> ?y
+?blank1 <nary:starts> ?start1
+?blank1 <nary:ends> ?end1
+?y ?p ?blank2
+#?blank2 <rdf:type> <nary:RangePlusTime>
+?blank2 <nary:value> ?z
+?blank2 <nary:starts> ?start2
+?blank2 <nary:ends> ?end2
+->
+?x ?p ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> ?z
+?new <nary:starts> ?start
+?new <nary:ends> ?end
+@test
+?x != ?y
+?y != ?z
+IIntersectionNotEmpty ?start1 ?end1 ?start2 ?end2
+@action
+?start = IMax2 ?start1 ?start2
+?end = IMin2 ?end1 ?end2
+?new = MakeBlankNode ?z ?start1 ?end1 ?start2 ?end2
+
+
+#
+$owl_FunctPropObject
+?p <rdf:type> ?blank
+#?blank <rdf:type> <nary:RangePlusTime>
+?blank <nary:value> <owl:FunctionalProperty>
+?p <rdf:type> ?blank0
+#?blank0 <rdf:type> <nary:RangePlusTime>
+?blank0 <nary:value> <owl:ObjectProperty>
+?x ?p ?blank1
+#?blank1 <rdf:type> <nary:RangePlusTime>
+?blank1 <nary:value> ?y
+?blank1 <nary:starts> ?start1
+?blank1 <nary:ends> ?end1
+?x ?p ?blank2
+#?blank2 <rdf:type> <nary:RangePlusTime>
+?blank2 <nary:value> ?z
+?blank2 <nary:starts> ?start2
+?blank2 <nary:ends> ?end2
+->
+?y <owl:sameAs> ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> ?z
+?new <nary:starts> "-1"^^<xsd:int>
+?new <nary:ends> "-1"^^<xsd:int>
+@test
+?y != ?z
+?p != <rdf:type>
+IIntersectionNotEmpty ?start1 ?end1 ?start2 ?end2
+@action
+?new = MakeBlankNode ?z "-1"^^<xsd:int> "-1"^^<xsd:int>
+
+
+# 
+$owl_FunctPropDatatype
+?p <rdf:type> ?blank
+#?blank <rdf:type> <nary:RangePlusTime>
+?blank <nary:value> <owl:FunctionalProperty>
+?p <rdf:type> ?blank0
+#?blank0 <rdf:type> <nary:RangePlusTime>
+?blank0 <nary:value> <owl:DatatypeProperty>
+?x ?p ?blank1
+#?blank1 <rdf:type> <nary:RangePlusTime>
+?blank1 <nary:value> ?y
+?blank1 <nary:starts> ?start1
+?blank1 <nary:ends> ?end1
+?x ?p ?blank2
+#?blank2 <rdf:type> <nary:RangePlusTime>
+?blank2 <nary:value> ?z
+?blank2 <nary:starts> ?start2
+?blank2 <nary:ends> ?end2
+->
+?x <rdf:type> ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> <owl:Nothing>
+?new <nary:starts> ?start
+?new <nary:ends> ?end
+@test
+?y != ?z
+?p != <rdf:type>
+IIntersectionNotEmpty ?start1 ?end1 ?start2 ?end2
+@action
+?start = IMax2 ?start1 ?start2
+?end = IMin2 ?end1 ?end2
+?new = MakeBlankNode <owl:Nothing> ?start1 ?end1 ?start2 ?end2
+
+
+#
+$owl_InvFunctProp
+?p <rdf:type> ?blank
+#?blank <rdf:type> <nary:RangePlusTime>
+?blank <nary:value> <owl:InverseFunctionalProperty>
+?y ?p ?blank1
+#?blank1 <rdf:type> <nary:RangePlusTime>
+?blank1 <nary:value> ?x
+?blank1 <nary:starts> ?start1
+?blank1 <nary:ends> ?end1
+?z ?p ?blank2
+#?blank2 <rdf:type> <nary:RangePlusTime>
+?blank2 <nary:value> ?x
+?blank2 <nary:starts> ?start2
+?blank2 <nary:ends> ?end2
+->
+?y <owl:sameAs> ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> ?z
+?new <nary:starts> "-1"^^<xsd:int>
+?new <nary:ends> "-1"^^<xsd:int>
+@test
+?y != ?z
+?p != <rdf:type>
+IIntersectionNotEmpty ?start1 ?end1 ?start2 ?end2
+@action
+?new = MakeBlankNode ?z "-1"^^<xsd:int> "-1"^^<xsd:int>
+
+
+# 
+$owl_sameAsCopySubj
+?x <owl:sameAs> ?blank2
+#?blank2 <rdf:type> <nary:RangePlusTime>
+?blank2 <nary:value> ?y
+?x ?p ?blank
+#?blank <rdf:type> <nary:RangePlusTime>
+->
+?y ?p ?blank
+@test
+?x != ?y
+?p != <owl:sameAs>
+
+
+# 
+$owl_equivalentPropertyCopyPred
+?p <owl:equivalentProperty> ?blank2
+#?blank2 <rdf:type> <nary:RangePlusTime>
+?blank2 <nary:value> ?q
+?x ?p ?blank
+#?blank <rdf:type> <nary:RangePlusTime>
+->
+?x ?q ?blank
+@test
+?p != ?q
+
+
+# 
+$owl_sameAsCopyObj
+?x <owl:sameAs> ?blank2
+#?blank2 <rdf:type> <nary:RangePlusTime>
+?blank2 <nary:value> ?y
+?z ?p ?blank
+#?blank <rdf:type> <nary:RangePlusTime>
+?blank <nary:value> ?x
+?blank <nary:starts> ?start
+?blank <nary:ends> ?end
+->
+?z ?p ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> ?y
+?new <nary:starts> ?start
+?new <nary:ends> ?end
+@test
+?x != ?y
+?p != <owl:sameAs>
+@action
+?new = MakeBlankNode ?y ?start ?end
+
+
+# 
+$owl_EquivClassBySubClass
+?x <rdfs:subClassOf> ?blank
+#?blank <rdf:type> <nary:RangePlusTime>
+?blank <nary:value> ?y
+?y <rdfs:subClassOf> ?blank2
+#?blank2 <rdf:type> <nary:RangePlusTime>
+?blank2 <nary:value> ?x
+->
+?x <owl:equivalentClass> ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> ?y
+?new <nary:starts> "-1"^^<xsd:int>
+?new <nary:ends> "-1"^^<xsd:int>
+@test
+?x != ?y
+@action
+?new = MakeBlankNode ?y  "-1"^^<xsd:int> "-1"^^<xsd:int>
+
+
+# 
+$owl_EquivPropBySubProp
+?p <rdfs:subPropertyOf> ?blank
+#?blank <rdf:type> <nary:RangePlusTime>
+?blank <nary:value> ?q
+?q <rdfs:subPropertyOf> ?blank2
+#?blank2 <rdf:type> <nary:RangePlusTime>
+?blank2 <nary:value> ?p
+->
+?p <owl:equivalentProperty> ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> ?q
+?new <nary:starts> "-1"^^<xsd:int>
+?new <nary:ends> "-1"^^<xsd:int>
+@test
+?p != ?q
+@action
+?new = MakeBlankNode ?q  "-1"^^<xsd:int> "-1"^^<xsd:int>
+
+
+# 
+$owl_typeByAllVal
+?x <owl:onProperty> ?blank
+#?blank <rdf:type> <nary:RangePlusTime>
+?blank <nary:value> ?p
+?u <rdf:type> ?blank1
+#?blank1 <rdf:type> <nary:RangePlusTime>
+?blank1 <nary:value> ?x
+?blank1 <nary:starts> ?start1
+?blank1 <nary:ends> ?end1
+?x <owl:allValuesFrom> ?blank0
+#?blank0 <rdf:type> <nary:RangePlusTime>
+?blank0 <nary:value> ?y
+?u ?p ?blank2
+#?blank2 <rdf:type> <nary:RangePlusTime>
+?blank2 <nary:value> ?v
+?blank2 <nary:starts> ?start2
+?blank2 <nary:ends> ?end2
+->
+?v <rdf:type> ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> ?y
+?new <nary:starts> ?start
+?new <nary:ends> ?end
+@test
+IIntersectionNotEmpty ?start1 ?end1 ?start2 ?end2
+@action
+?start = IMax2 ?start1 ?start2
+?end = IMin2 ?end1 ?end2
+?new = MakeBlankNode ?y ?start1 ?end1 ?start2 ?end2
+
+
+#
+$owl_typeByHasVal
+?r <owl:onProperty> ?blank1
+#?blank1 <rdf:type> <nary:RangePlusTime>
+?blank1 <nary:value> ?p
+?r <owl:hasValue> ?blank2
+#?blank2 <rdf:type> <nary:RangePlusTime>
+?blank2 <nary:value> ?v
+?i ?p ?blank
+#?blank <rdf:type> <nary:RangePlusTime>
+?blank <nary:value> ?v
+?blank <nary:starts> ?start
+?blank <nary:ends> ?end
+->
+?i <rdf:type> ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> ?r
+?new <nary:starts> ?start
+?new <nary:ends> ?end
+@action
+?new = MakeBlankNode ?r ?start ?end
+
+
+#
+$owl_AttrByHasVal
+?x <owl:hasValue> ?blank1
+#?blank1 <rdf:type> <nary:RangePlusTime>
+?blank1 <nary:value> ?y
+?x <owl:onProperty> ?blank2
+#?blank2 <rdf:type> <nary:RangePlusTime>
+?blank2 <nary:value> ?p
+?u <rdf:type> ?blank
+#?blank <rdf:type> <nary:RangePlusTime>
+?blank <nary:value> ?x
+?blank <nary:starts> ?start
+?blank <nary:ends> ?end
+->
+?u ?p ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> ?y
+?new <nary:starts> ?start
+?new <nary:ends> ?end
+@action
+?new = MakeBlankNode ?y ?start ?end
+
+
+# 
+$owl_typeBySomeVal
+?q <rdf:type> ?blank1
+#?blank1 <rdf:type> <nary:RangePlusTime>
+?blank1 <nary:value> ?c
+?blank1 <nary:starts> ?start1
+?blank1 <nary:ends> ?end1
+?r <owl:onProperty> ?blank3
+#?blank3 <rdf:type> <nary:RangePlusTime>
+?blank3 <nary:value> ?p
+?r <owl:someValuesFrom> ?blank4
+#?blank4 <rdf:type> <nary:RangePlusTime>
+?blank4 <nary:value> ?c
+?i ?p ?blank2
+#?blank2 <rdf:type> <nary:RangePlusTime>
+?blank2 <nary:value> ?q
+?blank2 <nary:starts> ?start2
+?blank2 <nary:ends> ?end2
+->
+?i <rdf:type> ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> ?r
+?new <nary:starts> ?start
+?new <nary:ends> ?end
+@test
+IIntersectionNotEmpty ?start1 ?end1 ?start2 ?end2
+@action
+?start = IMax2 ?start1 ?start2
+?end = IMin2 ?end1 ?end2
+?new = MakeBlankNode ?r ?start1 ?end1 ?start2 ?end2
+
+
+# 
+$owl_subClassByInters1
+?c <owl:intersectionOf> ?blank
+#?blank <rdf:type> <nary:RangePlusTime>
+?blank <nary:value> ?x
+?x <rdf:first> ?blank2
+#?blank2 <rdf:type> <nary:RangePlusTime>
+?blank2 <nary:value> ?y
+->
+?c <rdfs:subClassOf> ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> ?x
+?new <nary:starts> "-1"^^<xsd:int>
+?new <nary:ends> "-1"^^<xsd:int>
+?c <rdfs:subClassOf> ?new2
+?new2 <rdf:type> <nary:RangePlusTime>
+?new2 <nary:value> ?y
+?new2 <nary:starts> "-1"^^<xsd:int>
+?new2 <nary:ends> "-1"^^<xsd:int>
+@action
+?new = MakeBlankNode ?x "-1"^^<xsd:int> "-1"^^<xsd:int>
+?new2 = MakeBlankNode ?y "-1"^^<xsd:int> "-1"^^<xsd:int>
+
+
+# 
+$owl_subClassByInters2
+?x <rdf:rest> ?blank
+#?blank <rdf:type> <nary:RangePlusTime>
+?blank <nary:value> ?y
+?c <owl:intersectionOf> ?blank2
+#?blank2 <rdf:type> <nary:RangePlusTime>
+?blank2 <nary:value> ?x
+->
+?x <owl:intersectionOf> ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> ?y
+?new <nary:starts> "-1"^^<xsd:int>
+?new <nary:ends> "-1"^^<xsd:int>
+@test
+?y != <rdf:nil>
+@action
+?new = MakeBlankNode ?y "-1"^^<xsd:int> "-1"^^<xsd:int>
+
+
+#
+$owl_typeByIntersect_1
+?b <rdf:first> ?blank1
+#?blank1 <rdf:type> <nary:RangePlusTime>
+?blank1 <nary:value> ?c
+?b <rdf:rest> ?blank2
+#?blank2 <rdf:type> <nary:RangePlusTime>
+?blank2 <nary:value> <rdf:nil>
+?z <owl:intersectionOf> ?blank3
+#?blank3 <rdf:type> <nary:RangePlusTime>
+?blank3 <nary:value> ?b
+?i <rdf:type> ?blank
+?blank <nary:value> ?c
+?blank <nary:starts> ?start
+?blank <nary:ends> ?end
+->
+?i <rdf:type> ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> ?b
+?new <nary:starts> ?start
+?new <nary:ends> ?end
+@action
+?new = MakeBlankNode ?b ?start ?end
+
+
+# 
+$owl_typeByIntersect_2
+?b <rdf:first> ?blank3
+#?blank3 <rdf:type> <nary:RangePlusTime>
+?blank3 <nary:value> ?c
+?i <rdf:type> ?blank1
+#?blank1 <rdf:type> <nary:RangePlusTime>
+?blank1 <nary:value> ?c
+?blank1 <nary:starts> ?start1
+?blank1 <nary:ends> ?end1
+?i <rdf:type> ?blank2
+#?blank2 <rdf:type> <nary:RangePlusTime>
+?blank2 <nary:value> ?b
+?blank2 <nary:starts> ?start2
+?blank2 <nary:ends> ?end2
+?n <owl:intersectionOf> ?blank4
+#?blank4 <rdf:type> <nary:RangePlusTime>
+?blank4 <nary:value> ?b
+->
+?i <rdf:type> ?new
+?new <rdf:type> <nary:RangePlusTime>
+?new <nary:value> ?n
+?new <nary:starts> ?start
+?new <nary:ends> ?end
+@test
+IIntersectionNotEmpty ?start1 ?end1 ?start2 ?end2
+@action
+?start = IMax2 ?start1 ?start2
+?end = IMin2 ?end1 ?end2
+?new = MakeBlankNode ?n ?start1 ?end1 ?start2 ?end2

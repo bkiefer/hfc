@@ -1,0 +1,16 @@
+#
+# N-Triple test file for functional operator Concatenate
+#
+# 21 new tuples generated
+#
+# @author Hans-Ulrich Krieger
+#
+
+
+$concatenate
+?s <test:hasName> ?o1
+?s <test:hasName> ?o2
+->
+?s <test:hasDoubleName> ?o
+@action
+?o = Concatenate ?o1 ?o2
