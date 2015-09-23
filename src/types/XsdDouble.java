@@ -69,8 +69,8 @@ public final class XsdDouble extends XsdAnySimpleType {
 	}
 	
   /**
-   * returns the value (a double number) for a given XsdDouble object which
-   * is refered to by its internal TupleStore ID (a positive int)
+   * returns the value (a double covered in a Double container) for a given XsdDouble
+   * object which is refered to by its internal TupleStore ID (a positive int)
    */
   public static Object getValue(int id, TupleStore ts) {
     final XsdDouble xd = (XsdDouble)(ts.getJavaObject(id));

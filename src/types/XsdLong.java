@@ -71,8 +71,8 @@ public final class XsdLong extends XsdAnySimpleType {
 	}
   
   /**
-   * returns the value (a long int) for a given XsdLong object which is
-   * refered to by its internal TupleStore ID (a positive int)
+   * returns the value (a long int covered in a Long container) for a given XsdLong
+   * object which is refered to by its internal TupleStore ID (a positive int)
    */
   public static Object getValue(int id, TupleStore ts) {
     final XsdLong xl = (XsdLong)(ts.getJavaObject(id));

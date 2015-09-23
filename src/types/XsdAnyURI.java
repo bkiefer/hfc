@@ -1,5 +1,9 @@
 package de.dfki.lt.hfc.types;
 
+import de.dfki.lt.hfc.TupleStore;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 /**
  * NOTE: XsdAnyURI should be used to represent <xsd:anyURI> values;
  *       this must be distinguished from class Uri in HFC, the latter
@@ -9,7 +13,7 @@ package de.dfki.lt.hfc.types;
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Wed Sep 14 13:42:00 CEST 2011
+ * @version Wed Sep 23 10:14:27 CEST 2015
  */
 public final class XsdAnyURI extends XsdAnySimpleType {
 	
@@ -64,4 +68,13 @@ public final class XsdAnyURI extends XsdAnySimpleType {
 		return this.value;
 	}
 	
+  /**
+   * returns a Java URI object for a given XsdAnyURI object which is
+   * refered to by its internal TupleStore ID (a positive int)
+   */
+  public static Object getValue(int id, TupleStore ts) throws URISyntaxException {
+    final XsdAnyURI xu = (XsdAnyURI)(ts.getJavaObject(id));
+    return new URI(xu.value);
+  }
+  
 }

@@ -68,8 +68,8 @@ public final class XsdInt extends XsdAnySimpleType {
 	}
   
   /**
-   * returns the value (an int) for a given XsdInt object which is
-   * refered to by its internal TupleStore ID (a positive int)
+   * returns the value (an int covered in an Integer container) for a given XsdInt
+   * object which is refered to by its internal TupleStore ID (a positive int)
    */
   public static Object getValue(int id, TupleStore ts) {
     final XsdInt xi = (XsdInt)(ts.getJavaObject(id));
