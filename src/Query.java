@@ -8,7 +8,7 @@ import gnu.trove.*;
  * 
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Thu Jun 30 16:39:15 CEST 2011
+ * @version Thu Sep 24 15:22:56 CEST 2015
  */
 public class Query {
 	
@@ -46,7 +46,7 @@ public class Query {
 	 *
 	 *   <query>     ::= <select> <where> [<filter>] [<aggregate>] | ASK <groundtuple>
 	 *   <select>    ::= {"SELECT" | "SELECTALL"} ["DISTINCT"] {"*" | <var>^+}
-	 *   <var>       ::= "?"<nwchar>^+
+	 *   <var>       ::= "?"{a-zA-Z0-9}^+ | "?_"
 	 *   <nwchar>    ::= any NON-whitespace character
 	 *   <where>     ::= "WHERE" <tuple> {"&" <tuple>}^*
 	 *   <tuple>     ::= <literal>^+
@@ -58,20 +58,30 @@ public class Query {
 	 *   <char>      ::= any character, incl. whitespaces, numbers, even '\"'
 	 *   <langtag>   ::= "de" | "en" | ...
 	 *   <xsdtype>   ::= "<xsd:int>" | "<xsd:long>" | "<xsd:float>" | "<xsd:double>" | "<xsd:dateTime>" |
-	 *                   "<xsd:string>" | "<xsd:boolean>" | "<xsd:date>" | "<xsd:gYear>" | "<xsd:gMonthDay>"
+	 *                   "<xsd:string>" | "<xsd:boolean>" | "<xsd:date>" | "<xsd:gYear>" | "<xsd:gMonthDay>" |
+   *                   "<xsd:gDay>" | "<xsd:gMonth>" | "<xsd:gYearMonth>" | "<xsd:duration>" | "<xsd:anyURI>" | ...
 	 *   <filter>    ::= "FILTER" <constr> {"&" <constr>}^*
 	 *   <constr>    ::= <ineq> | <predcall>
-	 *   <ineq>      ::= <var> "!=" <token>
-	 *   <predcall>  ::= <predicate> <token>^*
+	 *   <ineq>      ::= <var> "!=" <literal>
+	 *   <predcall>  ::= <predicate> <literal>^*
 	 *   <predicate> ::= <nwchar>^+  (e.g., Less, LessEqual)
 	 *   <aggregate> ::= "AGGREGATE" <funcall> {"&" <funcall>}^*
-	 *   <funcall>   ::= <var>^+ "=" <function> <token>^*
+	 *   <funcall>   ::= <var>^+ "=" <function> <literal>^*
 	 *   <function>  ::= <nwchar>^+  (e.g., Count, CountDistinct, Average, Min, Max, Sum, Identity)
 	 *
-	 * note: the reserved keywords ASK, SELECT, SELECTALL, DISTINCT, WHERE, FILTER, and AGGREGATE need
+	 * NOTE: the reserved keywords ASK, SELECT, SELECTALL, DISTINCT, WHERE, FILTER, and AGGREGATE need
 	 *       _not_ be written uppercase
-	 * note: it is required that neither filter predicates nor aggregate functions have the same name
+   *
+	 * NOTE: it is required that neither filter predicates nor aggregate functions have the same name
 	 *       as the above reserved keywords
+   *
+   * NOTE: _don't-care_ variables should be marked _explicitly_ by using exactly the identifier "?_";
+   *       this is especially important when using "*" in a SELECT;
+   *       example:
+   *         SELECT DISTINCT * WHERE ?s <rdf:type> ?_
+   *         SELECT * WHERE ?s <rdf:type> ?o ?_ ?_
+   *       when restricting the object position without projecting it, we explicitly write down theselcted vars:
+   *         SELECT ?s WHERE ?s <rdf:type> ?o ?_ ?_ FILTER ?o != <foo-class>
 	 *
 	 * @return null iff a constant in the query is not known to the tuple store (represents an empty table)
 	 * @return a (possibly empty) binding table, otherwise
@@ -82,7 +92,7 @@ public class Query {
 		this.expandProxy = false;
 		// remove unnecessary whitespaces
 		query = query.trim();
-		// use set to get rid of duplicates
+    // use set to get rid of duplicates
 		HashSet<String> projectedVars = new HashSet<String>();
 		// parse SELECT section
 		boolean makeDistinct = parseSelect(new StringTokenizer(query), projectedVars);
@@ -104,7 +114,7 @@ public class Query {
 			HashSet<String> pv = new HashSet<String>(projectedVars);
 			pv.removeAll(foundVars);
 			if (! pv.isEmpty())
-				throw new QueryParseException("SELECT contains variables not found in WHERE");
+				throw new QueryParseException("SELECT contains variables not found in WHERE: " + pv);
 		}
 		// parse optional FILTER section
 		ArrayList<ArrayList<String>> filterClauses = null;
@@ -156,7 +166,7 @@ public class Query {
 		}
 		// process the clauses to obtain the corresponding parameters to queryIndex()
 		ArrayList<Table> tables = new ArrayList<Table>();
-		prepareQueryIndex(patterns, nameToId, tables);
+		prepareQueryIndex(patterns, tables, nameToId.get("?_"));
 		// call queryIndex for each pattern/table combination in order to construct binding tables
 		// and perform successive joins on the return values
 		BindingTable bt = queryAndJoin(patterns, tables);
@@ -181,7 +191,7 @@ public class Query {
 		if (this.expandProxy) {
 			bt.expandBindingTable();
 		}
-		return bt;
+    return bt;
 	}
 	
 	/**
@@ -471,7 +481,7 @@ public class Query {
 	}
 
 	/**
-	 * maps surface AGGREGATE form to internal representation, stored in aggregates
+	 * maps surface AGGREGATE form to internal representation, stored in aggregates;
 	 * aggregate list is of the following form:
 	 *   <var1> ... <varN> = <aggregate> <token1> ... <tokenM>,
 	 * where
@@ -554,8 +564,8 @@ public class Query {
 	 * equal positions, and the name-to-position mapping
 	 */
 	private void prepareQueryIndex(ArrayList<int[]> patterns,
-																 HashMap<String, Integer> nameToId,
-																 ArrayList<Table> tables) {
+																 ArrayList<Table> tables,
+                                 Integer dcid) {
 		Table table;
 		int[] clause;
 		int elem;
@@ -573,18 +583,19 @@ public class Query {
 			for (int j = 0; j < clause.length; j++) {
 				elem = clause[j];
 				if (RuleStore.isVariable(elem)) {
-					pvars.add(elem);
-					if (! nameToPos.containsKey(elem))
-						nameToPos.put(elem, new ArrayList<Integer>());
-					nameToPos.get(elem).add(j);
+          // make sure that elem does _not_ refer to the generic don't-care var "?_"
+          if ((dcid == null) || (elem != dcid)) {
+            pvars.add(elem);
+            if (! nameToPos.containsKey(elem))
+              nameToPos.put(elem, new ArrayList<Integer>());
+            nameToPos.get(elem).add(j);
+          }
 				}
 			}
-			// QUESTION: should we regard every position as relevant for "SELECT DISTINCT * WHERE ... " ??
-			//
 			// given nameToPos, determine relpos and eqpos; note: pos is always sorted
 			for (ArrayList<Integer> pos : nameToPos.values()) {
 				// always take the first element from pos for the relevant positions
-				relpos.add(pos.get(0));
+        relpos.add(pos.get(0));
 				// if length of pos > 1, pos needs to be added to eqpos
 				if (pos.size() > 1)
 					eqpos.add(pos);
@@ -627,6 +638,15 @@ public class Query {
 																			HashSet<String> foundVars,
 																			HashMap<String, Integer> nameToId,
 																			boolean makeDistinct) {
+    // look for the generic don't-care variable marker "?_"
+    if (projectedVars.contains("*") && foundVars.contains("?_")) {
+      // do _not_ destructively modify original foundVars set and keep outer projectedVars container
+      projectedVars.remove("*");
+      for (String elem : foundVars)
+        if (! elem.equals("?_"))
+          projectedVars.add(elem);
+    }
+    // now distinguish between "*" and list of vars in SELECT
 		if (projectedVars.contains("*")) {
 			if (makeDistinct)
 				// nothing to do for the positive case, since bt's table is already of type THashSet
