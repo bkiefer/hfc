@@ -8,7 +8,7 @@ import java.util.*;
  * to achieve this, I use the Arrays.sort() method together with instances
  * of this ClauseComparator class;
  *
- * the heuristic realizes a cost function that takes into account the nature
+ * the heuristic realizes a cost function that takes into account the structure
  * of tuple elements, i.e., whether they are variables or constants;
  * regarding variables, we distinguish between proper variables P (bad!) and
  * don't care variables DC (good!);

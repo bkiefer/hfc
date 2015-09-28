@@ -669,7 +669,7 @@ public final class RuleStore {
 		rule.blankNodeVariables = rhsVars;
 		// make sure that rule.rhsVariables does NOT contain any (RHS) blank node variables
 		rule.rhsVariables.removeAll(rule.blankNodeVariables);
-		// proper variables are those which are neither don't cares nor blanks
+		// proper variables are those which are neither don't care nor blank node variables
 		rule.properVariables.removeAll(rule.dontCareVariables);
 		rule.properVariables.removeAll(rule.blankNodeVariables);
 		return true;
@@ -1116,13 +1116,16 @@ public final class RuleStore {
 	 *   <?s, a, ?t, b> or <?s, a, ?u, b>;
 	 * however, <?s, a, ?s, b> should be treated differently, since
 	 * this pattern enforces identity at first and third position;
+   *
 	 * if a pattern variable is furthermore a don't care variable,
 	 * the corresponding pattern should not be identified with
-	 * structural identical patterns not containing don't cares!
+	 * structural identical patterns not containing don't cares!!!
+   *
 	 * across different rules, we will share the same local binding
 	 * and delta table, even though the Table container are different;
 	 * equivalence is represented by encoding a sequence of constants
 	 * and variable encodings
+   *
 	 * @see de.dfki.lt.hfc.Table
 	 */
 	private void createLocalTables(Rule rule) {
@@ -1144,7 +1147,7 @@ public final class RuleStore {
 					// is the variable a don't care variable
 					if (rule.dontCareVariables.contains(clause[i])) {
 						dontCareVariables.add(clause[i]);
-						key[i] = 0;  // dontCares = 0
+						key[i] = 0;  // dont-cares = 0
 						// do NOT record don't cares (as we do for atoms)
 						continue;
 					}

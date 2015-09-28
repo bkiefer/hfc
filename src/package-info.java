@@ -69,27 +69,11 @@ package de.dfki.lt.hfc;
  */
 
 
-/**
- * Version Roadmap QDL (curent version: 2.3)
- * =========================================
- *
- * v1.0 conjunctive querying -- done (SELECT + WHERE)
- * v2.0 conjunctive in-eq constraints -- added (FILTER)
- * v2.1 conjunctive predicates -- added (FILTER)
- * v2.2 static aggregation -- added (AGGREGATE)
- * v2.3 dynamic aggregation -- added
- * v3.0 Boolean tests -- to do (FILTER)
- * v4.0 Boolean querying -- to do (WHERE)
- */
-
 
 /**
- * EBNF QDL v2.4
- * =============
- *
- *   <query>     ::= <select> <where> [<filter>] [<aggregate>] | ASK <gtuple>
+ *   <query>     ::= <select> <where> [<filter>] [<aggregate>] | ASK <groundtuple>
  *   <select>    ::= {"SELECT" | "SELECTALL"} ["DISTINCT"] {"*" | <var>^+}
- *   <var>       ::= "?"<nwchar>^+
+ *   <var>       ::= "?"{a-zA-Z0-9}^+ | "?_"
  *   <nwchar>    ::= any NON-whitespace character
  *   <where>     ::= "WHERE" <tuple> {"&" <tuple>}^*
  *   <tuple>     ::= <literal>^+
@@ -101,29 +85,19 @@ package de.dfki.lt.hfc;
  *   <char>      ::= any character, incl. whitespaces, numbers, even '\"'
  *   <langtag>   ::= "de" | "en" | ...
  *   <xsdtype>   ::= "<xsd:int>" | "<xsd:long>" | "<xsd:float>" | "<xsd:double>" | "<xsd:dateTime>" |
- *                   "<xsd:string>" | "<xsd:boolean>" | "<xsd:date>" | "<xsd:gYear>" | "<xsd:gMonthDay>"
+ *                   "<xsd:string>" | "<xsd:boolean>" | "<xsd:date>" | "<xsd:gYear>" | "<xsd:gMonthDay>" |
+ *                   "<xsd:gDay>" | "<xsd:gMonth>" | "<xsd:gYearMonth>" | "<xsd:duration>" | "<xsd:anyURI>" | ...
  *   <filter>    ::= "FILTER" <constr> {"&" <constr>}^*
  *   <constr>    ::= <ineq> | <predcall>
- *   <ineq>      ::= <var> "!=" <token>
- *   <predcall>  ::= <predicate> <token>^*
- *   <predicate> ::= <nwchar>^+  (e.g., Less, LessEqual)
+ *   <ineq>      ::= <var> "!=" <literal>
+ *   <predcall>  ::= <predicate> <literal>^*
+ *   <predicate> ::= <nwchar>^+
  *   <aggregate> ::= "AGGREGATE" <funcall> {"&" <funcall>}^*
- *   <funcall>   ::= <var>^+ "=" <function> <token>^*
- *   <function>  ::= <nwchar>^+  (e.g., Count, CountDistinct, Average, Min, Max, Sum, Identity)
+ *   <funcall>   ::= <var>^+ "=" <function> <literal>^*
+ *   <function>  ::= <nwchar>^+
  *
  * note: the reserved keywords ASK, SELECT, SELECTALL, DISTINCT, WHERE, FILTER, and AGGREGATE need
  *       _not_ be written uppercase
  * note: it is required that neither filter predicates nor aggregate functions have the same name
  *       as the above reserved keywords
- */
-
-
-/**
- * QDL Example
- * ===========
- *
- * SELECT ?o1 ?o2
- * WHERE ?s1 <value> ?o1 & ?s2 <value> ?o2
- * FILTER ?s1 != ?s2 & ILess ?o1 ?o2
- * AGGREGATE ?minmax = Min ?o1 & ?minmax = Max ?o2
  */

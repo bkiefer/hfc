@@ -50,7 +50,7 @@
 #
 #
 # @author Hans-Ulrich Krieger
-# @version Tue Aug 18 16:12:11 CEST 2015
+# @version Fri Sep 25 09:38:43 CEST 2015
 #
 
 
@@ -361,7 +361,7 @@ $owl_subClassByInters1
 
 $owl_subClassByInters2
 ?x <rdf:rest> ?y
-?c <owl:intersectionOf> ?x
+?_c <owl:intersectionOf> ?x
 ->
 ?x <owl:intersectionOf> ?y
 @test
@@ -371,7 +371,7 @@ $owl_subClassByInters2
 $owl_typeByIntersect_1
 ?b <rdf:first> ?c
 ?b <rdf:rest> <rdf:nil>
-?z <owl:intersectionOf> ?b
+?_z <owl:intersectionOf> ?b
 ?i <rdf:type> ?c ?start ?end
 ->
 ?i <rdf:type> ?b ?start ?end

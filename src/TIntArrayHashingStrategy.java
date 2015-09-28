@@ -39,7 +39,7 @@ public final class TIntArrayHashingStrategy implements TObjectHashingStrategy<in
 	}
 		
 	/**
-	 * I borrowed this code from Sun's string implementation for hashCode();
+	 * I borrowed this code from the String class of Sun's implementation for hashCode();
 	 * the hash code of tuple t of length n is computed as
 	 *   t[0]*31^(n-1) + t[1]*31^(n-2) + ... + t[n-1]
 	 * using integer ring arithmetic;

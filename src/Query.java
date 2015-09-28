@@ -64,10 +64,10 @@ public class Query {
 	 *   <constr>    ::= <ineq> | <predcall>
 	 *   <ineq>      ::= <var> "!=" <literal>
 	 *   <predcall>  ::= <predicate> <literal>^*
-	 *   <predicate> ::= <nwchar>^+  (e.g., Less, LessEqual)
+	 *   <predicate> ::= <nwchar>^+
 	 *   <aggregate> ::= "AGGREGATE" <funcall> {"&" <funcall>}^*
 	 *   <funcall>   ::= <var>^+ "=" <function> <literal>^*
-	 *   <function>  ::= <nwchar>^+  (e.g., Count, CountDistinct, Average, Min, Max, Sum, Identity)
+	 *   <function>  ::= <nwchar>^+
 	 *
 	 * NOTE: the reserved keywords ASK, SELECT, SELECTALL, DISTINCT, WHERE, FILTER, and AGGREGATE need
 	 *       _not_ be written uppercase

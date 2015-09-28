@@ -27,7 +27,7 @@ public final class ForwardChainer {
 	/**
 	 * HFC version number string
 	 */
-	public static final String VERSION = "6.1.0";
+	public static final String VERSION = "6.0.10";
 	
 	/**
 	 * HFC info string
@@ -594,7 +594,7 @@ public final class ForwardChainer {
 	 * recursively takes the union of the continuation of complexProduct() for both delta and old
 	 * of each cluster;
 	 * at least one of the tables must be new and of course not empty (as is the case for old
-	 * information) -- this is called "semi-naive evaluation" in logic programming
+	 * information) -- this strategy is called "semi-naive evaluation" in logic programming
 	 */
 	private BindingTable complexProduct(Cluster[] clusters,
 																			int index,
