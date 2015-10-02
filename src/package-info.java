@@ -3,13 +3,13 @@ package de.dfki.lt.hfc;
 /**
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Tue Sep 15 15:17:29 CEST 2015
+ * @version Fri Oct  2 16:56:19 CEST 2015
  */
 
 
 /**
- * Version Roadmap HFC (curent version: 6.0.8)
- * ===========================================
+ * Version Roadmap HFC (curent version: 6.0.11)
+ * ============================================
  *
  * v0.0 implement building blocks
  * v0.1 tuple store implementation

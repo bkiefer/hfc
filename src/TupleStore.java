@@ -3,6 +3,7 @@ package de.dfki.lt.hfc;
 import java.io.*;
 import java.util.*;
 import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
 import gnu.trove.*;
 import de.dfki.lt.hfc.types.*;
 
@@ -44,7 +45,7 @@ import de.dfki.lt.hfc.types.*;
  * 
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Mon Sep  1 12:22:46 CEST 2014
+ * @version Wed Sep 30 15:44:31 CEST 2015
  */
 public final class TupleStore {
 	
@@ -220,7 +221,7 @@ public final class TupleStore {
 	protected ArrayList<String> idToObject;
 	
 	/**
-	 * a mapping used by functional constraints to speed up processing
+	 * a mapping used by tests & actions to speed up processing
 	 */
 	protected ArrayList<AnyType> idToJavaObject;
 	
@@ -305,7 +306,7 @@ public final class TupleStore {
 	 * specify mappings here that stay constant for efficiency reasons, independent of
 	 * whether these URIs are seen first at different places in a file that is read in;
 	 * currently, the following mappings are predefined for the following URIs (URI : id):
-	 *   NULL : 0, commented out at the moment, since it might interfere with Calc.restrict()
+	 *   NULL : 0  (not used at the moment)
 	 *   rdfs:subClassOf : 1
 	 *   owl:sameAs : 2
 	 *   owl:equivalentClass : 3
@@ -364,13 +365,15 @@ public final class TupleStore {
 	}
 	
 	/**
-	 * choose a proper noOfAtoms/noOfTuples in order not to arrive at copying the
-	 * elements into a larger structure; keep in mind that other services (e.g.,
-	 * rule application) can drastically increase the number of tuples
+	 * choose a proper noOfAtoms/noOfTuples in order not to arrive at copying (at all or
+   * too early) the elements into a larger structure; keep in mind that other services
+   * (e.g., rule application) can drastically increase the number of tuples;
+   * note: assigns an empty Namespace object to this.namespace
 	 */
 	public TupleStore(int noOfAtoms, int noOfTuples) {
 		init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
 				 this.minNoOfArgs, this.maxNoOfArgs, noOfAtoms, noOfTuples);
+    this.namespace = new Namespace();
 	}
 	
 	/**
@@ -587,9 +590,9 @@ public final class TupleStore {
 	
 	/**
 	 * obj is either a URI or an XSD literal, encoded as a string;
-	 * in case obj has not been seen before, the method assigns a new id (an int) to
-	 * obj, establishes a bidirectional mapping between obj and id, and returns the
-	 * new id;  otherwise, the already existing id for obj is returned
+	 * in case obj has _not_ been seen before, the method assigns a new id (an int) to obj,
+	 * establishes a bidirectional mapping between obj and id, and returns the new id;
+   * otherwise, the already existing id for obj is returned
 	 */
 	public int putObject(String obj) {
 		if (this.objectToId.containsKey(obj)) {
@@ -658,140 +661,56 @@ public final class TupleStore {
 	 * object on _demand_ when calling makeJavaObject();
 	 * the idea is that external functional operators will proceed faster
 	 * when directly working on the Java objects instead on working on the
-	 * external string representation which needs to be manipulated;
-	 * Java classes have been defined for the following kinds of literals:
-	 *   URI            -> de.dfki.lt.hfc.types.Uri
-	 *   blank node     -> de.dfki.lt.hfc.types.BlankNode
-	 *   xsd:int        -> de.dfki.lt.hfc.types.XsdInt
-	 *   xsd:long       -> de.dfki.lt.hfc.types.XsdLong
-	 *   xsd:float      -> de.dfki.lt.hfc.types.XsdFloat
-	 *   xsd:double     -> de.dfki.lt.hfc.types.XsdDouble
-	 *   xsd:string     -> de.dfki.lt.hfc.types.XsdString
-	 *   xsd:boolean    -> de.dfki.lt.hfc.types.XsdBoolean
-	 *   xsd:dateTime   -> de.dfki.lt.hfc.types.XsdDateTime
-	 *   xsd:date       -> de.dfki.lt.hfc.types.XsdDate
-	 *   xsd:gYear      -> de.dfki.lt.hfc.types.XsdGYear
-	 *   xsd:gYearMonth -> de.dfki.lt.hfc.types.XsdGYearMonth
-	 *   xsd:gMonth     -> de.dfki.lt.hfc.types.XsdGMonth
-	 *   xsd:gMonthDay  -> de.dfki.lt.hfc.types.XsdGMonthDay
-	 *   xsd:gDay       -> de.dfki.lt.hfc.types.XsdGDay
-	 *   xsd:duration   -> de.dfki.lt.hfc.types.XsdDuration
-	 *   xsd:uDateTime  -> de.dfki.lt.hfc.types.XsdUDateTime
-	 *   xsd:monetary   -> de.dfki.lt.hfc.types.XsdMonetary
-	 *   xsd:anyURI     -> de.dfki.lt.hfc.types.XsdAnyURI
-	 *
-	 * NOTE: if further (XSD) types are added, this method needs to be adjusted
-	 *       as well as the Namespace class
-	 * NOTE: in case we we have found an unknown literal type, null is returned
-	 *       and a message is printed out to the console
+	 * external string representation which needs to be parsed/manipulated
+   *
+   * NOTE: the predefined (XSD) types need to be specified in a namespace
+   *       file and need to be headed by the '&type2class' directive;
+   *       defining a new (XSD) type is done by specifying a short-name
+   *       URI followed by a Java class which acts as a representative
+   *       for this type in HFC; e.g.,
+   *         xsd:duration  XsdDuration
+	 * NOTE: in case we we have found an unknown literal type, _null_ is
+   *       returned and a message is printed out to the console
 	 *
 	 * @see getJavaObject()
 	 */
 	private AnyType makeJavaObject(int id) {
 		// note: I assume that there IS a mapping between id and literal
-		String literal = this.idToObject.get(id);
-		if (TupleStore.isUri(literal))
+		final String literal = this.idToObject.get(id);
+    if (TupleStore.isUri(literal)) {
 			this.idToJavaObject.set(id, new Uri(literal));
-		else if (TupleStore.isBlankNode(literal))
+    }
+    else if (TupleStore.isBlankNode(literal)) {
 			this.idToJavaObject.set(id, new BlankNode(literal));
-		else {
-			int idx = literal.lastIndexOf('^');
-			String type;
-			if (idx == -1) {
-				// note: parseAtom() completes a bare string by adding "^^<xsd:string>",
-				//       but if the string has a language tag, nothing is appended, thus
-				//       '^' is missing (as is required by the specification)
-				this.idToJavaObject.set(id, new XsdString(literal));
-			}
-			//*********************************************
-			//            can we DISPATCH better?        //
-			// YES, String to subclasses_of_Xsd mapping, //
-			//      plus execute method in each subclass //
-			//             NOT implemented yet!          //
-			//*********************************************
-			else {
-				type = literal.substring(idx + 1);
-				// now check for the different (XSD types)
-				if (Namespace.shortIsDefault) {
-					if (type.equals(Namespace.XSD_STRING_SHORT))
-						this.idToJavaObject.set(id, new XsdString(literal));
-					else if (type.equals(Namespace.XSD_INT_SHORT))
-						this.idToJavaObject.set(id, new XsdInt(literal));
-					else if (type.equals(Namespace.XSD_LONG_SHORT))
-						this.idToJavaObject.set(id, new XsdLong(literal));
-					else if (type.equals(Namespace.XSD_FLOAT_SHORT))
-						this.idToJavaObject.set(id, new XsdFloat(literal));
-					else if (type.equals(Namespace.XSD_DOUBLE_SHORT))
-						this.idToJavaObject.set(id, new XsdDouble(literal));
-					else if (type.equals(Namespace.XSD_DATETIME_SHORT))
-						this.idToJavaObject.set(id, new XsdDateTime(literal));
-					else if (type.equals(Namespace.XSD_DATE_SHORT))
-						this.idToJavaObject.set(id, new XsdDate(literal));
-					else if (type.equals(Namespace.XSD_UDATETIME_SHORT))
-						this.idToJavaObject.set(id, new XsdUDateTime(literal));
-					else if (type.equals(Namespace.XSD_GYEAR_SHORT))
-						this.idToJavaObject.set(id, new XsdGYear(literal));
-					else if (type.equals(Namespace.XSD_GYEARMONTH_SHORT))
-						this.idToJavaObject.set(id, new XsdGYearMonth(literal));
-					else if (type.equals(Namespace.XSD_GMONTH_SHORT))
-						this.idToJavaObject.set(id, new XsdGMonth(literal));
-					else if (type.equals(Namespace.XSD_GMONTHDAY_SHORT))
-						this.idToJavaObject.set(id, new XsdGMonthDay(literal));
-					else if (type.equals(Namespace.XSD_GDAY_SHORT))
-						this.idToJavaObject.set(id, new XsdGDay(literal));
-					else if (type.equals(Namespace.XSD_DURATION_SHORT))
-						this.idToJavaObject.set(id, new XsdDuration(literal));
-					else if (type.equals(Namespace.XSD_BOOLEAN_SHORT))
-						this.idToJavaObject.set(id, new XsdBoolean(literal));
-					else if (type.equals(Namespace.XSD_MONETARY_SHORT))
-						this.idToJavaObject.set(id, new XsdMonetary(literal));
-					else if (type.equals(Namespace.XSD_ANYURI_SHORT))
-						this.idToJavaObject.set(id, new XsdAnyURI(literal));
-					else
-						sayItLoud("unknown atomic type: " + type);
-				}
-				else {
-					if (type.equals(Namespace.XSD_STRING_LONG))
-						this.idToJavaObject.set(id, new XsdString(literal));
-					else if (type.equals(Namespace.XSD_INT_LONG))
-						this.idToJavaObject.set(id, new XsdInt(literal));
-					else if (type.equals(Namespace.XSD_LONG_LONG))
-						this.idToJavaObject.set(id, new XsdLong(literal));
-					else if (type.equals(Namespace.XSD_FLOAT_LONG))
-						this.idToJavaObject.set(id, new XsdFloat(literal));
-					else if (type.equals(Namespace.XSD_DOUBLE_LONG))
-						this.idToJavaObject.set(id, new XsdDouble(literal));
-					else if (type.equals(Namespace.XSD_DATETIME_LONG))
-						this.idToJavaObject.set(id, new XsdDateTime(literal));
-					else if (type.equals(Namespace.XSD_DATE_LONG))
-						this.idToJavaObject.set(id, new XsdDate(literal));
-					else if (type.equals(Namespace.XSD_UDATETIME_LONG))
-						this.idToJavaObject.set(id, new XsdUDateTime(literal));
-					else if (type.equals(Namespace.XSD_GYEAR_LONG))
-						this.idToJavaObject.set(id, new XsdGYear(literal));
-					else if (type.equals(Namespace.XSD_GYEARMONTH_LONG))
-						this.idToJavaObject.set(id, new XsdGYearMonth(literal));
-					else if (type.equals(Namespace.XSD_GMONTH_LONG))
-						this.idToJavaObject.set(id, new XsdGMonth(literal));
-					else if (type.equals(Namespace.XSD_GMONTHDAY_LONG))
-						this.idToJavaObject.set(id, new XsdGMonthDay(literal));
-					else if (type.equals(Namespace.XSD_GDAY_LONG))
-						this.idToJavaObject.set(id, new XsdGDay(literal));
-					else if (type.equals(Namespace.XSD_DURATION_LONG))
-						this.idToJavaObject.set(id, new XsdDuration(literal));
-					else if (type.equals(Namespace.XSD_BOOLEAN_LONG))
-						this.idToJavaObject.set(id, new XsdBoolean(literal));
-					else if (type.equals(Namespace.XSD_MONETARY_LONG))
-						this.idToJavaObject.set(id, new XsdMonetary(literal));
-					else if (type.equals(Namespace.XSD_ANYURI_LONG))
-						this.idToJavaObject.set(id, new XsdAnyURI(literal));
-					else
-						sayItLoud("unknown atomic type: " + type);
-				}
-			}
-		}
-		return this.idToJavaObject.get(id);
-	}
+    }
+    else {
+      int idx = literal.lastIndexOf('^');
+      if (idx == -1) {
+        // note: parseAtom() completes a bare string by adding "^^<xsd:string>",
+        //       but if the string has a language tag, nothing is appended, thus
+        //       '^' is missing (as is required by the specification)
+        this.idToJavaObject.set(id, new XsdString(literal));
+      }
+      // now do the `clever' dispatch through mapping the type names to Java
+      // class constructors:  @see de.dfki.lt.hfc.Namespace.readNamespaces()
+      else {
+        final String type = literal.substring(idx + 1);
+        final Constructor<XsdAnySimpleType> constructor = this.namespace.typeToConstructor.get(type);
+        if (constructor == null)
+          sayItLoud("unknown atomic type: " + type);
+        else {
+          try{
+            this.idToJavaObject.set(id, constructor.newInstance(literal));
+          }
+          catch (Exception e) {
+            sayItLoud("not able to generate instance for (XSD) type " + type);
+            return null;
+          }
+        }
+      }
+    }
+    return this.idToJavaObject.get(id);
+  }
 
 	/**
 	 * this synchronized method can be called by functional operators in order
@@ -1293,12 +1212,12 @@ public final class TupleStore {
 			int noOfLines;
       while ((line = br.readLine()) != null) {
 				noOfLines = Integer.parseInt(line.substring(line.indexOf(' ') + 1));
-				if (line.startsWith("@objectToId"))
+				if (line.startsWith("&object2id"))
 					readObjectToId(br, noOfLines);
-				else if (line.startsWith("@idToObject"))
+				else if (line.startsWith("&id2object"))
 					// also assigns null values for idToJavaObject
 					readIdToObject(br, noOfLines);
-				else if (line.startsWith("@allTuples"))
+				else if (line.startsWith("&tuples"))
 					readAllTuples(br, noOfLines);
 				else {
 					System.err.println("\nwrong section name: " + line);
@@ -1530,18 +1449,18 @@ public final class TupleStore {
 			PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(filename),
 																															TupleStore.OUTPUT_CHARACTER_ENCODING));
 			// dump objectToId (null -> 0 given by constructor is overwritten by exactly the same mapping) 
-			pw.println("@objectToId " + this.objectToId.size());
+			pw.println("&object2id " + this.objectToId.size());
 			for (Map.Entry<String, Integer> entry : this.objectToId.entrySet())
 				pw.println(entry.getKey() + " " + entry.getValue());
 			// dump idToObject
-			pw.println("@idToObject " + (this.idToObject.size() - 1));
+			pw.println("&id2object " + (this.idToObject.size() - 1));
 			// start with 1, since TupleStore constructor assigns a special meaning to index 0
 			for (int i = 1; i < this.idToObject.size(); i++)
 				// no need to write i (ascending order!)
 				pw.println(this.idToObject.get(i));
 			// do _not_ dump idToJavaObject: null values are assigned (lazy!) when tuple store is read in
 			// dump allTuples
-			pw.println("@allTuples " + this.allTuples.size());
+			pw.println("&tuples " + this.allTuples.size());
 			for (int[] tuple : this.allTuples) {
 				pw.print(tuple.length + " ");
 				for (int i = 0; i < tuple.length; i++)

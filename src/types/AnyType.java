@@ -1,10 +1,20 @@
 package de.dfki.lt.hfc.types;
 
 /**
- * note that we enforce the toString() method has access to
+ * this (abstract) class is the superclass for the _internal_
+ * representationof URIs, blank nodes, and XSD types (and their
+ * "relatives") in HFC;
+ * note: the abstract subclass XsdAnySimpleType is the superclass
+ * of all concrete XSD types
+ * @see de.dfki.lt.hfc.types.XsdAnySimpleType
+ *
+ * note that we enforce the toString() method to have access to
  * the namespace object of the tuple store, i.e., access to
  * shortIsDefault and the relevant short and long namespace
  * constants
+ *
+ * NOTE: all (custom) types should be put in package de.dfki.lt.hfc.types
+ * @see de.dfki.lt.hfc.Namespace.TYPE_PATH
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
