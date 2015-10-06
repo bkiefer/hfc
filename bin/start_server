@@ -1,3 +1,0 @@
-JAVA=/lt/pkg/jdk1.6.0_06/bin/java
-$JAVA -server -cp .:./lib/* -Xms800m -Xmx1200m de/dfki/lt/hfc/server/HfcServer 1408 resources/default.ns resources/default.rdl resources/default.nt resources/company.nt > tmp/HFC$$.log 2>&1 &
-echo "$!" >> ./tmp/HFC$$.pid

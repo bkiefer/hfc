@@ -367,7 +367,7 @@ public final class Calc {
 	
 	/**
 	 * performs the Cartesian product of the tables stored under tt1 and tt2
-	 * and returns a new binding table;
+	 * and returns a _new_ binding table;
 	 * assumes that tt1 and tt2 do not have variables in common;
 	 * otherwise the null value is returned as a sign that tt1 and tt2 are NOT
 	 * independent;
@@ -417,18 +417,13 @@ public final class Calc {
 		return bt;
 	}
 	
-	/**
-	 *
-	 */
+	/*
+  // slightly slower than mergeSort(); nevertheless, thanks Bernie!=
 	protected static void qsort(int[][] ia, TupleComparator tc) {
 		Calc.quickSort(ia, 0, ia.length, tc);
 	}
-	
-	/**
-	 * slightly slower than mergeSort();
-	 * nevertheless, thanks Bernie!
-	 */
-	private static void	quickSort(int[][] table, int low, int high, TupleComparator columnOrder) {
+
+  private static void	quickSort(int[][] table, int low, int high, TupleComparator columnOrder) {
 		if (high - low <= 2) {
 			if (high - low <= 1)
 				return;
@@ -457,9 +452,10 @@ public final class Calc {
 			quickSort(table, storeIndex + 1, high, columnOrder);
 		}
 	}
+   */
 
 	/**
-	 * Tuning parameter: list size at or below which insertion sort will be
+	 * tuning parameter: list size at or below which insertion sort will be
 	 * used in preference to mergesort or quicksort.
 	 */
 	private static final int INSERTIONSORT_THRESHOLD = 7;

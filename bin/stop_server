@@ -1,8 +1,0 @@
-for f in ./tmp/HFC[0-9]*.pid ; do
-    if test -f $f ; then
-        for pid in `cat $f` ; do
-            kill -s HUP "$pid"
-        done
-        rm $f # ${f$%%.pid}.log
-    fi
-done

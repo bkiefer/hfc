@@ -4,7 +4,7 @@ import java.util.*;
 import gnu.trove.*;
 
 /**
- * a wrapper class, hiding a table (a set of int arrays) and several mappings
+ * a wrapper class, hiding a table (a set of int arrays) and several _mappings_
  * 
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5

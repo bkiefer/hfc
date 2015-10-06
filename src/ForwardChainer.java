@@ -433,7 +433,7 @@ public final class ForwardChainer {
 	 * does the recursive job for executeGlobalMatch();
 	 * recursively takes the union of the continuation of complexJoin() for both delta and old at
 	 * a specific index for a given cluster;
-	 * at least one of the tables must be new and of course not empty (as is the case for old
+	 * at least one of the tables must be _new_ and of course not empty (as is the case for old
 	 * information)
 	 */
 	private BindingTable complexJoin(Table[] locbind,

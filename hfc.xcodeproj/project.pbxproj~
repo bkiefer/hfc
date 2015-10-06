@@ -37,7 +37,7 @@
 			buildConfigurationList = 0A8B99E60B8F5847003CD01B /* Build configuration list for PBXLegacyTarget "hfc" */;
 			buildPhases = (
 			);
-			buildToolPath = /usr/local/bin/ant;
+			buildToolPath = /usr/bin/ant;
 			dependencies = (
 			);
 			name = hfc;

@@ -22,10 +22,31 @@ import de.dfki.lt.hfc.types.XsdAnySimpleType;
  *   xsd  http://www.w3.org/2001/XMLSchema
  *   owl  http://www.w3.org/2002/07/owl#
  *
+ * NEW
+ * since HFC v6.0.11, namespace files also support dynamic (XSD) type to
+ * internal HFC Java class mappings
+ *
+ * for short-to-long mappings, use &short2long directive (new);
+ * for type-to-class mappings, use &type2class directive (new);
+ * @see default.ns (default namespace file for all rule sets)
+ *
+ * example
+ *   &short2long
+ *   rdf  http://www.w3.org/1999/02/22-rdf-syntax-ns#
+ *   rdfs http://www.w3.org/2000/01/rdf-schema#
+ *   xsd  http://www.w3.org/2001/XMLSchema
+ *   owl  http://www.w3.org/2002/07/owl#
+ *
+ *   &type2class
+ *   xsd:int  XsdInt
+ *   xsd:long  XsdLong
+ *   xsd:float  XsdFloat
+ *   xsd:double  XsdDouble
+ *   xsd:string  XsdString
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Fri Oct  2 14:07:17 CEST 2015
+ * @version Mon Oct  5 09:45:59 CEST 2015
  */
 public final class Namespace {
 	

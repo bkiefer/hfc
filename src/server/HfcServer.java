@@ -44,9 +44,9 @@ public class HfcServer {
 	/**
 	 * called by the main method and is given EXACTLY four arguments:
 	 *   + port number
-	 *   + namespace directory
-	 *   + tuple directory
-	 *   + rule directory
+	 *   + path to namespace directory
+	 *   + path to tuple directory
+	 *   + path to rule directory
 	 *
 	 * NOTE: subdirectories, i.e., recursive embeddings of files are NOT allowed
 	 *
