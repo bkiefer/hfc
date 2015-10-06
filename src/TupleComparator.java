@@ -83,10 +83,12 @@ public final class TupleComparator implements Comparator<int[]> {
 		}
 		return 0;
 	}
-
+  
+  /*
 	public void setWhich(int wh0, int wh1) {
 		which0 = wh0;
 		which1 = wh1;
 	}
+   */
 
 }

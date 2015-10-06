@@ -931,14 +931,16 @@ public final class Calc {
 		pos = 0;
 		for (int[] tuple : tt1.table)
 			tl1[pos++] = tuple;
-		Calc.msort(tl1, tc);
+    //Calc.msort(tl1, tc);
+    Arrays.parallelSort(tl1, tc);
 		
 		tc.setWhich(1, 1);
 		int[][] tl2 = new int[tt2.table.size()][];
 		pos = 0;
 		for (int[] tuple : tt2.table)
 			tl2[pos++] = tuple;
-		Calc.msort(tl2, tc);
+    //Calc.msort(tl2, tc);
+    Arrays.parallelSort(tl2, tc);
 		
 		// traverse them in order and remove the non-fitting triples
 		
