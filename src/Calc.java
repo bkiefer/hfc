@@ -869,7 +869,11 @@ public final class Calc {
 		return (result == null ? tt1 : result);
 	}
 	
-	/*
+  // use this version of join() together with the outcommented code from
+  // class TupleComparator to apply Arrays.parallelSort(), but make sure
+  // that there are enough free processor cores available (instead of
+  // parallelizing rules too much)
+  /*
 	public static BindingTable join(BindingTable tt1, BindingTable tt2) {
 		
 		BindingTable result = null;
@@ -1025,6 +1029,6 @@ public final class Calc {
 		}
 		return (result == null ? tt1 : result);
 	}
-	 */
+  */
 	
 }
