@@ -1,9 +1,0 @@
-?s <rdf:type> ?o
-->
-?s <rdf:type> <foo>
-
-
-
-?s <rdf:type> ?o
-->
-?s <rdf:type> <bar>
