@@ -1,10 +1,10 @@
-package de.dfki.lt.hfc.tests;
+package de.dfki.lt.hfc;
 
 import java.util.ArrayList;
 import de.dfki.lt.hfc.*;
 import de.dfki.lt.hfc.types.XsdInt;
 
-public class TriplesWithoutTimeToQuintuplesWithTime {
+public class MaterializedTriplesToQuintuples {
 	
 	private static final int MAX_INT = 1000;
 	
@@ -12,10 +12,10 @@ public class TriplesWithoutTimeToQuintuplesWithTime {
 	
 	private static final int NO_OF_TUPLES = 500000;
 	
-	private static final String IN_FILE = "/Users/krieger/Desktop/Java/HFC/hfc/resources/ltworld.jena.nt";
+	private static final String IN_FILE = "/Users/krieger/Desktop/Java/HFC/hfc/resources/ltworld.jena.materialized.nt";
 	
-	private static final String OUT_FILE = "/Users/krieger/Desktop/Java/HFC/hfc/resources/quintuples.time.ltworld.nt";
-	
+	private static final String OUT_FILE = "/Users/krieger/Desktop/Java/HFC/hfc/resources/approach1.ltworld.nt";
+
 	
 	private static int makeRandom(int max) {
 		return (int)(Math.round(Math.random() * max));
@@ -32,15 +32,15 @@ public class TriplesWithoutTimeToQuintuplesWithTime {
 																					 5,      // maxNoOfArgs
 																					 NO_OF_ATOMS,
 																					 NO_OF_TUPLES,
-																					 "/Users/krieger/Desktop/Java/HFC/hfc/resources/default.nt",
+																					 IN_FILE,
 																					 "/Users/krieger/Desktop/Java/HFC/hfc/resources/default.rdl",
 																					 "/Users/krieger/Desktop/Java/HFC/hfc/resources/default.ns");
-		fc.uploadTuples(IN_FILE);
+
 		TupleStore ts = fc.tupleStore;
 		int start, end;
 		int[] tuple;
 		ArrayList<int[]> newTuples = new ArrayList<int[]>(NO_OF_TUPLES);
-		
+
 		for (int[] triple : ts.getAllTuples()) {
 			tuple = new int[5];
 			tuple[0] = triple[0];
