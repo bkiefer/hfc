@@ -3,8 +3,9 @@ package de.dfki.lt.hfc.types;
 import de.dfki.lt.hfc.TupleStore;
 
 /**
- * note: currently XsdLong is *not* a superclass of XsdInt as
- * the XSD type tree indicates
+ * note: currently XsdLong is *not* a superclass of (derived from) XsdInt,
+ * as the XSD type tree indicates!
+ * @see http://www.w3.org/TR/xmlschema11-2/
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5

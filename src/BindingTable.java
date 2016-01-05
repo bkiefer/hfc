@@ -2,13 +2,14 @@ package de.dfki.lt.hfc;
 
 import java.util.*;
 import gnu.trove.*;
+import de.dfki.lt.hfc.types.*;
 
 /**
  * a wrapper class, hiding a table (a set of int arrays) and several _mappings_
  * 
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Fri Sep 18 11:40:36 CEST 2015
+ * @version Thu Oct 29 15:26:15 CET 2015
  */
 public class BindingTable {
 	
@@ -378,5 +379,123 @@ public class BindingTable {
 			newTuples.add(newTuple);
 		}
 	}
+  
+  /**
+   * as the constructors of the inner class are private, I do provide two methods
+   * which return a BindingTableIterator object;
+   * this implementation will keep the sequence of elements in a tuple for the
+   * next(), nextAsString(), nextAsXsdType(), and nextAsObject() methods
+   */
+  public BindingTableIterator iterator() {
+    return this.new BindingTableIterator();
+  }
+  
+  /**
+   * this implementation of iterator() might reorder the sequence of elements in a
+   * tuple, depending on the sequence of variable names, given by parameter vars;
+   * in case vars.length < tuple.length, the nextXXX() method also implement a kind
+   * of table projection, however, _without_ removing potential duplicate elements!
+   */
+  public BindingTableIterator iterator(String ... vars) throws BindingTableIteratorException {
+    // check whether vars refers to _legal_ variables, i.e., check whether each
+    // variable from vars refers to one of the columns from the binding table
+    // and keep the sequence of variables from vars in the tuple that is returned
+    final Collection<String> allVars = this.nameToExternalName.values();
+    for (String var : vars)
+      if (! allVars.contains(var))
+        throw new BindingTableIteratorException("wrongly-specified vars: there is no table column named " + var);
+    return this.new BindingTableIterator(vars);
+  }
+  
+  /**
+   * an implementation of TupleIterator for BindingTable objects
+   */
+  class BindingTableIterator implements TupleIterator {
+    
+    /**
+     * make the tuple store from BindingTable directly accessable in this local class
+     */
+    private TupleStore tupleStore = BindingTable.this.tupleStore;
+    
+    /**
+     * the number of tuples of the binding table
+     */
+    private int size = BindingTable.this.table.size();
+    
+    /**
+     * if null, next(), nextAsXsdType(), nextAsString(), and nextAsObject() keep the
+     * original sequence of the elements of the individual tuples;
+     * otherwise, the elements of the returned tuples are reordered according to the
+     * sequence given by vars
+     */
+    private String[] vars;
+    
+    /**
+     * is called by iterator()
+     */
+    private BindingTableIterator() {
+      super();
+      this.vars = null;
+    }
+    
+    /**
+     * is called by iterator(String ... vars) and the sequence of vars are recorded
+     */
+    private BindingTableIterator(String[] vars) {
+      super();
+      this.vars = vars;
+    }
+
+    /**
+     *
+     */
+    public int hasSize() {
+      return this.size;
+    }
+    
+    /**
+     *
+     */
+    public boolean hasNext() {
+      return true;
+    }
+    
+    /**
+     *
+     */
+    public int[] next() {
+      return null;
+    }
+    
+    /**
+     *
+     */
+    public AnyType[] nextAsXsdType() {
+      return null;
+    }
+    
+    /**
+     *
+     */
+    public String[] nextAsString() {
+      return null;
+    }
+    
+    /**
+     *
+     */
+    public Object[] nextAsObject() {
+      return null;
+    }
+    
+  }
+  
+  
+  
+  
+  
+  
+  
+  
 
 }

@@ -4,11 +4,30 @@ import java.io.*;
 import java.util.*;
 import gnu.trove.*;
 
+
+// TO DO --- IMPLEMENTATION NOTE
+//
+// in order to implement SPARQL's
+//   ORDER BY
+// option in HFC's QDL, the standard BindingTable implementation will not work, as the
+// BindingTable.table implementation is of type Set<int[]> and the output of a query,
+// such as
+//   SELECT ?da
+//   WHERE ?da <rdf:type> <dafn:DialogueAct> &
+//   ?da <dafn:sender> <hst:i_myself> &
+//   ?da <dafn:time> ?time
+//   ORDER BY DESC(?time)
+// no longer has access to ?time in the SELECT;
+// solution: make sure that BindingTable.table is a SortedSet before TROVE's projection
+//           takes place -- not sure whether this will work
+
+
+
 /**
- * 
+ *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Thu Sep 24 15:22:56 CEST 2015
+ * @version Tue Jan  5 10:49:58 CET 2016
  */
 public class Query {
 	
@@ -83,7 +102,6 @@ public class Query {
    *       when restricting the object position without projecting it, we explicitly write down theselcted vars:
    *         SELECT ?s WHERE ?s <rdf:type> ?o ?_ ?_ FILTER ?o != <foo-class>
 	 *
-	 * @return null iff a constant in the query is not known to the tuple store (represents an empty table)
 	 * @return a (possibly empty) binding table, otherwise
 	 * @throws a query parse exception iff query is syntactically incorrect
 	 */
@@ -141,11 +159,13 @@ public class Query {
 		HashMap<String, Integer> nameToId = new HashMap<String, Integer>();
 		HashMap<Integer, String> idToName = new HashMap<Integer, String>();
 		ArrayList<int[]> patterns = new ArrayList<int[]>();
-		// we return the null value in case a constant in the WHERE clause is not known to the tuple
-		// store; given null, we can distinguish this case from an empty binding table, arising from
-		// a query with known constants
-		if (internalizeWhere(whereClauses, patterns, nameToId, idToName) == null)
-			return null;
+		// we might return the null value in case a constant in the WHERE clause is not known to the
+    // tuple store; given null, we can distinguish this case from an empty binding table, arising
+    // from a query with known constants;
+    //if (internalizeWhere(whereClauses, patterns, nameToId, idToName) == null)
+    //	return null;
+    // note that we _no_ longer make this distinction for easier external API use !
+    internalizeWhere(whereClauses, patterns, nameToId, idToName);
 		// now that mappings have been established, internalize FILTER conditions;
 		// note: all filter vars are definitely contained in found vars at this point
 		ArrayList<Integer> varvarIneqs = null;

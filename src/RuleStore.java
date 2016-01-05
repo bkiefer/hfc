@@ -21,7 +21,7 @@ import gnu.trove.*;
  * a rule starts with a rule name (single line) and ends with an _empty_ line;
  * comments are lines starting with the '#' character; comments are NOT allowed
  * _inside_ a rule definition;
- * a priority equals 0 switches off the rule
+ * a priority equals 0 (or even a negative int) switches off the rule
  *
  * this rule extension of N-Triples is called RDL for
  *   Rule (or Rewrite) Description Language

@@ -9,7 +9,7 @@ owl  http://www.w3.org/2002/07/owl#
 
 # short namespace type URIs to HFC classes: use &type2class directive
 # note: all (custom) type classes should be put in package
-#         de.dfki.lt.hfc.types
+#       de.dfki.lt.hfc.types
 
 &type2class
 xsd:boolean  XsdBoolean
