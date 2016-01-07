@@ -36,7 +36,7 @@ import de.dfki.lt.hfc.types.XsdLong;
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Wed Jan  6 09:43:35 CET 2016
+ * @version Thu Jan  7 17:41:55 CET 2016
  */
 public final class LGetLatest extends AggregationalOperator {
   
