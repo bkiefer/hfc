@@ -5,7 +5,7 @@ import de.dfki.lt.hfc.types.XsdLong;
 
 /**
  * checks whether the first argument is greater than the second argument;
- * arguments are assumed to be xsd:longs;
+ * arguments are assumed to be of type xsd:long;
  * @return FunctionalOperator.TRUE or FunctionalOperator.FALSE
  *
  * @see FunctionalOperator
