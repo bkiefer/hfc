@@ -1,4 +1,4 @@
-package de.dfki.lt.hfc.tests;
+package de.dfki.lt.hfc;
 
 import static de.dfki.lt.hfc.AddSameAs.getResource;
 
