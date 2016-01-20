@@ -1,10 +1,9 @@
 package de.dfki.lt.hfc;
 
-import de.dfki.lt.hfc.*;
+import static de.dfki.lt.hfc.TestUtils.*;
+import static org.junit.Assert.assertEquals;
 
-import static de.dfki.lt.hfc.AddSameAs.getResource;
-
-import static org.junit.Assert.*;
+import java.io.File;
 
 import org.junit.Test;
 
@@ -19,14 +18,16 @@ public class MaterializedTriplesToFile {
 		fc.uploadTuples(getResource("ltworld.jena.nt"));
 		fc.computeClosure();
 		int tuples = fc.tupleStore.allTuples.size();
-		fc.tupleStore.writeTuples(getResource("ltworld.jena.materialized.nt"));
+		String tmpFile = getTempFile("ltworld.jena.materialized.nt");
+		fc.tupleStore.writeTuples(tmpFile);
 		fc.shutdownNoExit();
     ForwardChainer fc2 = new ForwardChainer(100000, 500000,
-        getResource("ltworld.jena.materialized.nt"),
+        tmpFile,
         getResource("default.rdl"),
         getResource("default.ns"));
     assertEquals(tuples, fc2.tupleStore.allTuples.size());
     fc2.shutdownNoExit();
+    System.exit(0);
 	}
 
 }

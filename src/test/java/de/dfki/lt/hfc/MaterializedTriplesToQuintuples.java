@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import de.dfki.lt.hfc.*;
 import de.dfki.lt.hfc.types.XsdInt;
 
-import static de.dfki.lt.hfc.AddSameAs.getResource;
+import static de.dfki.lt.hfc.TestUtils.getResource;
 
 import static org.junit.Assert.*;
 
