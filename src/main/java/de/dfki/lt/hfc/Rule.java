@@ -20,9 +20,8 @@ import gnu.trove.*;
 public class Rule {
 
 	/**
-	 * a smaller value indicates that a rule is more important than rules with
-	 * larger values;
-	 * priorities will gain importannce during the parallel execution of rules
+	 * the _smaller_ the priority value is, the more important a rule is;
+	 * priorities might gain importannce during the parallel execution of rules
 	 * to speed up processing;
 	 * default value in case no priority is specified: Integer.MAX_VALUE
 	 *

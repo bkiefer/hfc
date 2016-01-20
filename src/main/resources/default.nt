@@ -1,9 +1,16 @@
 #
-# the below axiomatic triples can be found in ter Horst's
-# papers and are a straightforward extension of work done
-# by Pat Hayes for RDF Schema;
-# I have omitted the RDF-specific triples, since they do
-# not have an effect on the soundness of the entailed triples;
+# the below axiomatic triples can be found in ter Horst papers
+#   Herman J. ter Horst (2004). Extending the RDFS Entailment Lemma. Proceedings ISWC.
+#   Herman J. ter Horst (2005). Combining RDF and Part of OWL with Rules: Semantics,
+#     Decidability, Complexity. Proceedings ISWC.
+#   Herman J. ter Horst (2005). Completeness, decidability and complexity of entailment
+#     for RDF Schema and a semantic extension involving the OWL vocabulary. Journal of
+#     Web Semantics
+# and are a straightforward extension of work done by Pat Hayes for RDF Schema in
+#   Patrick Hayes (2004). RDF Semantics. W3C.
+#
+# I have omitted the RDF-specific triples, since they do not have an effect on the
+# soundness of the entailed triples;
 # I have also added a few extensions to the set of axioms
 #
 # @author Hans-Ulrich Krieger

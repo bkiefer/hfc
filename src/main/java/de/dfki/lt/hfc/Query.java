@@ -4,11 +4,30 @@ import java.io.*;
 import java.util.*;
 import gnu.trove.*;
 
+
+// TO DO --- IMPLEMENTATION NOTE
+//
+// in order to implement SPARQL's
+//   ORDER BY
+// option in HFC's QDL, the standard BindingTable implementation will not work, as the
+// BindingTable.table implementation is of type Set<int[]> and the output of a query,
+// such as
+//   SELECT ?da
+//   WHERE ?da <rdf:type> <dafn:DialogueAct> &
+//   ?da <dafn:sender> <hst:i_myself> &
+//   ?da <dafn:time> ?time
+//   ORDER BY DESC(?time)
+// no longer has access to ?time in the SELECT;
+// solution: make sure that BindingTable.table is a SortedSet before TROVE's projection
+//           takes place -- not sure whether this will work
+
+
+
 /**
- * 
+ *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Thu Sep 24 15:22:56 CEST 2015
+ * @version Tue Jan  5 11:45:27 CET 2016
  */
 public class Query {
 	
@@ -19,6 +38,12 @@ public class Query {
 	 * (expandProxy = false) or SELECTALL (expandProxy = true) is used
 	 */
 	private boolean expandProxy = false;
+  
+  /**
+   * a constant that controls whether a warning is printed in case "unexpected" things
+   * happen; similar variables exists in class TupleStore, RuleStore, and ForwardChainer
+   */
+  private boolean verbose = true;
 	
 	/**
 	 * in order to query, we need a tuple store
@@ -83,7 +108,6 @@ public class Query {
    *       when restricting the object position without projecting it, we explicitly write down theselcted vars:
    *         SELECT ?s WHERE ?s <rdf:type> ?o ?_ ?_ FILTER ?o != <foo-class>
 	 *
-	 * @return null iff a constant in the query is not known to the tuple store (represents an empty table)
 	 * @return a (possibly empty) binding table, otherwise
 	 * @throws a query parse exception iff query is syntactically incorrect
 	 */
@@ -141,12 +165,14 @@ public class Query {
 		HashMap<String, Integer> nameToId = new HashMap<String, Integer>();
 		HashMap<Integer, String> idToName = new HashMap<Integer, String>();
 		ArrayList<int[]> patterns = new ArrayList<int[]>();
-		// we return the null value in case a constant in the WHERE clause is not known to the tuple
-		// store; given null, we can distinguish this case from an empty binding table, arising from
-		// a query with known constants
-		if (internalizeWhere(whereClauses, patterns, nameToId, idToName) == null)
-			return null;
-		// now that mappings have been established, internalize FILTER conditions;
+		// we might return the null value in case a constant in the WHERE clause is not known to the
+    // tuple store; given null, we can distinguish this case from an empty binding table, arising
+    // from a query with known constants;
+    //if (internalizeWhere(whereClauses, patterns, nameToId, idToName) == null)
+    //	return null;
+    // note that we _no_ longer make this distinction for easier external API use !
+    internalizeWhere(whereClauses, patterns, nameToId, idToName);
+    // now that mappings have been established, internalize FILTER conditions;
 		// note: all filter vars are definitely contained in found vars at this point
 		ArrayList<Integer> varvarIneqs = null;
 		ArrayList<Integer> varconstIneqs = null;
@@ -387,10 +413,14 @@ public class Query {
 						if (this.tupleStore.equivalenceClassReduction)
 							clause[i] = this.tupleStore.getProxy(clause[i]);
 					}
-					else
+          else {
 						// not known: return null to indicate this special empty table;
 						// other options: (i) throw a special exception  or (ii) an empty binding table
+            // we _now_ opt for the empty binding table in method query()
+            if (verbose)
+              System.out.println("  unknown constant in WHERE clause: " + elem + "\n");
 						return null;
+          }
 				}
 			}
 		}
@@ -448,8 +478,15 @@ public class Query {
 								id = this.tupleStore.getProxy(id);
 							args.add(id);
 						}
-						else
-							throw new QueryParseException("  unknown constant in predicate: " + next);
+            else {
+              // constant _not_ known to tuple store: we no longer will throw an exception:
+              //throw new QueryParseException("  unknown constant in predicate: " + next);
+              if (verbose)
+                System.out.println("  unknown constant in FILTER predicate: " + next + "\n");
+              this.tupleStore.putObject(next);
+              id = this.tupleStore.objectToId.get(next);
+              args.add(id);
+            }
 					}
 				}
 				predicate = new Predicate(first, op, args);
@@ -473,8 +510,15 @@ public class Query {
 							id = this.tupleStore.getProxy(id);
 						varconstIneqs.add(id);
 					}
-					else
-						throw new QueryParseException("  unknown constant in in-eq constraint: " + next);
+          else {
+            // constant _not_ known to tuple store: we no longer will throw an exception:
+            //throw new QueryParseException("  unknown constant in in-eq constraint: " + next);
+            if (verbose)
+              System.out.println("  unknown constant in FILTER in-eq constraint: " + next + "\n");
+            this.tupleStore.putObject(next);
+            id = this.tupleStore.objectToId.get(next);
+            varconstIneqs.add(id);
+          }
 				}
 			}
 		}
@@ -550,8 +594,15 @@ public class Query {
 							id = this.tupleStore.getProxy(id);
 						args[i - eqpos - 2] = id;
 					}
-					else
-						throw new QueryParseException("  unknown constant in in-eq constraint: " + elem);
+          else {
+            // constant _not_ known to tuple store: we no longer will throw an exception:
+            //throw new QueryParseException("  unknown constant in aggregate: " + elem);
+            if (verbose)
+              System.out.println("  unknown constant in AGGREGATE function: " + elem + "\n");
+            this.tupleStore.putObject(elem);
+            id = this.tupleStore.objectToId.get(elem);
+            args[i - eqpos - 2] = id;
+          }
 				}
 			}
 			aggregates.add(new Aggregate(name, vars, args));
