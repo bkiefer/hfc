@@ -29,7 +29,8 @@ public class TestTupleStore {
 		assertNotNull(tupleconstructor4);
 		//constructor TupleStore(boolean verbose, boolean rdfCheck, boolean eqReduction, int minNoOfArgs, int maxNoOfArgs,
 		//int noOfAtoms, int noOfTuples, Namespace namespace, String tupleFile) is tested
-		TupleStore tupleconstructor5 = new TupleStore(true, true, true, 2, 5, 4, 2, namespace, "D:/DFKI/hfc/src/main/resources/default.nt");
+    TupleStore tupleconstructor5 = new TupleStore(true, true, true, 2, 5, 4, 2, namespace,
+        "D:/DFKI/hfc/src/main/resources/default.nt");
 	    assertNotNull(tupleconstructor5);
 	    //constructor TupleStore(Namespace namespace) is tested
 	    TupleStore tupleconstructor6 = new TupleStore(namespace);
@@ -37,7 +38,7 @@ public class TestTupleStore {
 	    //constructor TupleStore(Namespace namespace, String tupleFile) is tested
 	    TupleStore tupleconstructor7 = new TupleStore(namespace, "D:/DFKI/hfc/src/main/resources/default.nt");
 	    assertNotNull(tupleconstructor7);
-	}   
+	}
 	@Test
 	public void initializeUriMappings(){
 		Namespace.shortIsDefault = false;
@@ -120,10 +121,10 @@ public class TestTupleStore {
 		TupleStore objecToTestRdfFalse = new TupleStore(true, false, true, 2, 5, 4, 2, namespace, "D:/DFKI/hfc/src/main/resources/default.nt");
 		assertTrue(objecToTestRdfFalse.isValidTuple(stringTuple, 3));
 		//TODO test for case TupleStore.isAtom(stringTuple.get(0)
-		
+
 		//TODO test for case !TupleStore.isUri(stringTuple.get(1)))
 	}
-	@Test 
+	@Test
 	public void testisAtom(){
 		TupleStore objecttotest = new TupleStore(2, 7);
 		assertFalse(objecttotest.isAtom(0));
@@ -152,14 +153,14 @@ public class TestTupleStore {
 	public void testisConstant1(){
 		TupleStore objecttotest = new TupleStore(2, 7);
 		assertFalse(objecttotest.isConstant("hi"));
-		
+
 	}
 	@Test
 	public void testisConstant2(){
 		TupleStore objecttotest = new TupleStore(2, 7);
 		assertFalse(objecttotest.isConstant(0));
 		assertTrue(objecttotest.isConstant(1));
-		
+
 	}
 	@Test
 	public void testinternalizeTuple1(){
@@ -169,7 +170,7 @@ public class TestTupleStore {
 		stringTuple.add("world");
 		//System.out.println("MESSAGE " + objectfortest.internalizeTuple(stringTuple));
 		//assertNotNull(objectfortest.internalizeTuple(stringTuple));
-		assertEquals(objectfortest.internalizeTuple(stringTuple).length, stringTuple.size());	
+		assertEquals(objectfortest.internalizeTuple(stringTuple).length, stringTuple.size());
 	}
 	@Test
 	public void testinternalizeTuple2(){
@@ -216,12 +217,12 @@ public class TestTupleStore {
 		//test for case if (result == null)
 		assertTrue(objectfortest.getTuples(1, "hello").isEmpty());
 		//TODO test for case if (result!=null)
-		
-		
+
+
 	}
 	@Test
 	public void testgetAllTuples(){
-		//test for case when there are no tuples 
+		//test for case when there are no tuples
 		TupleStore objectfortest = new TupleStore(1, 4);
 		assertTrue(objectfortest.getAllTuples().isEmpty());
 		//test for case when there are tuples
@@ -236,7 +237,7 @@ public class TestTupleStore {
 		//test for case when there are no tuples
 		assertFalse(objectfortest.removeTuple(tuple));
 		//TODO test for case when there are some tuples
-		
+
 		//int[] tuple1 = new int[2];
 		//tuple[0] = 1;
 		//tuple[1] = 2;
@@ -300,7 +301,7 @@ public class TestTupleStore {
 		tuple[0] = 2;
 		assertEquals(objectfortest.toExpandedString(tuple), "<http://www.w3.org/2002/07/owl#sameAs> .");
 	}
-	
+
 	@Test
 	public void testask1(){
 		TupleStore objectfortest = new TupleStore(1,2);
@@ -346,6 +347,6 @@ public class TestTupleStore {
 		//TODO check these assertions
 		assertFalse(objectfortest == objectfortest.copyTupleStore(namespace));
 		assertTrue(objectfortest!=objectfortest.copyTupleStore(namespace));
-		
+
 	}
 }

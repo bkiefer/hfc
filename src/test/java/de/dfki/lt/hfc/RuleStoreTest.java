@@ -1,0 +1,99 @@
+package de.dfki.lt.hfc;
+
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+
+import org.junit.Test;
+
+public class RuleStoreTest {
+
+	@Test
+	public void testRuleStore() {
+		//test constructor that takes Namespace namespace, TupleStore tupleStore
+		Namespace namespace = new Namespace("D:/DFKI/hfc/src/main/resources/default.ns");
+		TupleStore tupleStore = new TupleStore(1, 2);
+		RuleStore rs1 = new RuleStore(namespace, tupleStore);
+		assertNotNull(rs1);
+	}
+	@Test
+	public void testRuleStore1(){
+		//test constructor that takes Namespace namespace, TupleStore tupleStore, String ruleFile
+		Namespace namespace = new Namespace("D:/DFKI/hfc/src/main/resources/default.ns");
+		TupleStore tupleStore = new TupleStore(2, 3);
+		String ruleFile = new String("D:/DFKI/hfc/src/main/resources/default.test.rdl");
+		RuleStore rs2 = new RuleStore(namespace, tupleStore, ruleFile);
+		assertNotNull(rs2);
+	}
+	@Test
+	public void testRuleStore2(){
+		/*test constructor that takes RuleStore(boolean verbose, boolean rdfCheck, int minNoOfArgs, int maxNoOfArgs,
+		Namespace namespace, TupleStore tupleStore, String ruleFile)*/
+		Namespace namespace = new Namespace("D:/DFKI/hfc/src/main/resources/default.ns");
+		TupleStore tupleStore = new TupleStore(2, 4);
+		String ruleFile = new String("D:/DFKI/hfc/src/main/resources/default.test.rdl");
+		RuleStore rs3 = new RuleStore(true, true, 2, 3, namespace, tupleStore, ruleFile);
+		assertNotNull(rs3);
+		RuleStore rs4 = new RuleStore(false, true, 2, 5, namespace, tupleStore, ruleFile);
+		assertNotNull(rs4);
+		RuleStore rs5 = new RuleStore(true, false, 2, 6, namespace, tupleStore, ruleFile);
+		assertNotNull(rs5);
+		RuleStore rs6 = new RuleStore(false, false, 1, 4, namespace, tupleStore, ruleFile);
+		assertNotNull(rs6);
+	}
+	@Test
+	public void testisFunctionalVariable1(){
+		//test method that takes String literal
+		assertFalse(RuleStore.isFunctionalVariable("literal"));
+		assertTrue(RuleStore.isFunctionalVariable("?dgdfgdfgj"));
+		assertFalse(RuleStore.isFunctionalVariable("??jjgjg"));
+		assertFalse(RuleStore.isFunctionalVariable("f?jddgjffjg"));
+	}
+    @Test
+    public void testisFunctionalVariable2(){
+    	//test method that takes int id
+    	assertFalse(RuleStore.isFunctionalVariable(1));
+        assertTrue(RuleStore.isFunctionalVariable(-1));
+        assertFalse(RuleStore.isFunctionalVariable(-1000000001));
+    }
+    @Test
+    public void testisRelationalVariable(){
+    	//test method that takes int id
+    	assertFalse(RuleStore.isRelationalVariable(1));
+    }
+    @Test
+    //TODO refactor
+    public void testisValidTuple(){
+    	ArrayList<String> stringTuple = new ArrayList<String>();
+    	stringTuple.add("a");
+    	Namespace namespace = new Namespace("D:/DFKI/hfc/src/main/resources/default.ns");
+		TupleStore tupleStore = new TupleStore(1, 2);
+		String ruleFile = new String("D:/DFKI/hfc/src/main/resources/default.test.rdl");
+		//RuleStore rs = new RuleStore(true, true, 0, 0, namespace, tupleStore, ruleFile);
+		//RuleStore rs = new RuleStore(namespace, tupleStore);
+		//rs.isValidTuple(stringTuple);
+    }
+    @Test
+    public void testwriteRules(){
+    	Namespace namespace = new Namespace("D:/DFKI/hfc/src/main/resources/default.ns");
+		TupleStore tupleStore = new TupleStore(2, 4);
+		String ruleFile = new String("D:/DFKI/hfc/src/main/resources/default.test.rdl");
+		RuleStore rstest = new RuleStore(true, true, 2, 3, namespace, tupleStore, ruleFile);
+		rstest.writeRules("fileRules");
+		assertFalse("fileRules".isEmpty());
+		//test for case verbose != true
+		RuleStore rsverbosefalse = new RuleStore(false, true, 2, 3, namespace, tupleStore, ruleFile);
+		rsverbosefalse.writeRules("fileRules1");
+		assertFalse("fileRules1".isEmpty());
+    }
+    @Test
+    public void testcopyRuleStore(){
+    	Namespace namespace = new Namespace("D:/DFKI/hfc/src/main/resources/default.ns");
+		//TupleStore tupleStore = new TupleStore(2, 4);
+		TupleStore ts = new TupleStore(true, true, true, 2, 5, 4, 2, namespace, "D:/DFKI/hfc/src/main/resources/default.nt");
+		RuleStore rs = new RuleStore(namespace, ts);
+		rs.copyRuleStore(namespace, ts);
+		assertFalse(rs == rs.copyRuleStore(namespace, ts));
+		//TODO one more branch
+    }
+}
