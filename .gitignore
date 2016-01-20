@@ -3,5 +3,9 @@
 .project
 .settings
 bin
-.DS_Store
-hfc_xcodeproj
+**/.DS_Store
+hfc.xcodeproj
+lib
+dist
+jars
+misc

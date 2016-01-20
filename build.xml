@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="hfc" default="jar" basedir=".">
-	<property name="src" location="src"/> <!-- java source folder -->
+	<property name="src" location="src/main/java"/> <!-- java source folder -->
+  <property name="src_test" location="src/test/java"/> <!-- java source folder -->
 	<property name="bin" location="bin"/> <!-- intermediate build products -->
 	<property name="jars" location="jars"/> <!-- jar files -->
 	<property name="lib" location="lib"/> <!-- local libraries linked against -->
@@ -30,7 +31,11 @@
 			   includeAntRuntime="no"
 			   classpathref="lib.path" debug="${compile.debug}">
 		</javac>
-	</target>
+    <javac deprecation="on" srcdir="${src_test}" destdir="${bin}"
+			   includeAntRuntime="no"
+         classpathref="lib.path" debug="${compile.debug}">
+    </javac>
+  </target>
 
 	<target name="jar" depends="compile" description="Build jar from class files">
 		<mkdir dir="${jars}"/>
