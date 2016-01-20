@@ -4,25 +4,31 @@ import java.util.ArrayList;
 import de.dfki.lt.hfc.*;
 import de.dfki.lt.hfc.types.XsdInt;
 
-public class MaterializedTriplesToQuintuples {
-	
-	private static final int MAX_INT = 1000;
-	
-	private static final int NO_OF_ATOMS = 100000;
-	
-	private static final int NO_OF_TUPLES = 500000;
-	
-	private static final String IN_FILE = "/Users/krieger/Desktop/Java/HFC/hfc/resources/ltworld.jena.materialized.nt";
-	
-	private static final String OUT_FILE = "/Users/krieger/Desktop/Java/HFC/hfc/resources/approach1.ltworld.nt";
+import static de.dfki.lt.hfc.AddSameAs.getResource;
 
-	
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class MaterializedTriplesToQuintuples {
+
+	private static final int MAX_INT = 1000;
+
+	private static final int NO_OF_ATOMS = 100000;
+
+	private static final int NO_OF_TUPLES = 500000;
+
+	private static final String IN_FILE = getResource("ltworld.jena.materialized.nt");
+
+	private static final String OUT_FILE = getResource("approach1.ltworld.nt");
+
+
 	private static int makeRandom(int max) {
 		return (int)(Math.round(Math.random() * max));
 	}
-	
-	public static void main(String[] args) throws Exception {
-		
+
+	@Test public void triplesToQuintuplesTest() throws Exception {
+
 		//   time java -server -cp .:../lib/trove-2.1.0.jar -Xmx1024m de/dfki/lt/hfc/tests/MaterializedTriplesToQuintuples
 		ForwardChainer fc =	new ForwardChainer(2,      // noOfCores
 																					 true,   // verbose
@@ -33,8 +39,8 @@ public class MaterializedTriplesToQuintuples {
 																					 NO_OF_ATOMS,
 																					 NO_OF_TUPLES,
 																					 IN_FILE,
-																					 "/Users/krieger/Desktop/Java/HFC/hfc/resources/default.rdl",
-																					 "/Users/krieger/Desktop/Java/HFC/hfc/resources/default.ns");
+																					 getResource("default.rdl"),
+																					 getResource("default.ns"));
 
 		TupleStore ts = fc.tupleStore;
 		int start, end;
@@ -55,10 +61,25 @@ public class MaterializedTriplesToQuintuples {
 			tuple[4] = ts.putObject(XsdInt.toString(end, Namespace.shortIsDefault));
 			newTuples.add(tuple);
 		}
-		
+		int tuples = ts.allTuples.size();
 		ts.writeTuples(newTuples, OUT_FILE);
-		
+
+		fc =  new ForwardChainer(2,      // noOfCores
+        true,   // verbose
+        false,  // rdfCheck
+        true,
+        3,      // minNoOfArgs
+        5,      // maxNoOfArgs
+        NO_OF_ATOMS,
+        NO_OF_TUPLES,
+        IN_FILE,
+        getResource("default.rdl"),
+        getResource("default.ns"));
+		fc.tupleStore.readTuples(OUT_FILE);
+
+		assertEquals(tuples, fc.tupleStore.allTuples.size());
+
 		fc.shutdown();
 	}
-	
+
 }

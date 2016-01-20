@@ -14,7 +14,7 @@ public class MaterializeTimedQuintuples {
 		//System.out.println("time: " + (System.currentTimeMillis() - time) / 1000.0);
 		//System.exit(1);
 		fc.computeClosure();
-		//fc.tupleStore.writeTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/??????");
+		//fc.tupleStore.writeTuples(getResource("??????"));
 		fc.shutdown();
 	}
 	
