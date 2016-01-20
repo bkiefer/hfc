@@ -39,7 +39,7 @@ import de.dfki.lt.hfc.types.XsdLong;
  * @version Thu Jan  7 17:41:55 CET 2016
  */
 public final class LGetLatest extends AggregationalOperator {
-  
+
   /**
    * general form of the aggregate call:  ?arg1' ... ?argN' = LGetLatest ?arg1 ... ?argN ?time ?limit
    */
@@ -61,7 +61,6 @@ public final class LGetLatest extends AggregationalOperator {
     final int sortColumnNo = rowLength - 2;
     // supply the sort method with its own comparator
     Arrays.sort(table, new Comparator<int[]>() {
-      @Override
       public int compare(int[] t1, int[] t2) {
         final long l1 = ((XsdLong)(getObject(t1[sortColumnNo]))).value;
         final long l2 = ((XsdLong)(getObject(t2[sortColumnNo]))).value;
