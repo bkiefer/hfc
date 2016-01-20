@@ -4,11 +4,11 @@ import java.util.*;
 import de.dfki.lt.hfc.*;
 
 /**
- * returns the input binding table, changing only the heading of the columns
+ * returns a shallow copy of the input binding table, changing only the heading of the columns
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Wed Nov 25 17:18:34 CET 2009
+ * @version Tue Dec 22 11:25:19 CET 2015
  */
 public final class Identity extends AggregationalOperator {
 	

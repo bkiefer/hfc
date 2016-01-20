@@ -1,9 +1,13 @@
 package de.dfki.lt.hfc;
 
 /**
+ * posing a syntactically-wrong query should _not_ be regarded
+ * as an error, but instead as an exception as the tuple store
+ * and the forward chainer are still consistent
+ *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Wed Aug 12 14:30:12 CEST 2009
+ * @version Fri Oct 30 11:54:54 CET 2015
  */
 
 public final class QueryParseException extends Exception {

@@ -1,6 +1,11 @@
 package de.dfki.lt.hfc;
 
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
 import java.io.*;
+import java.nio.file.Paths;
 import java.util.*;
 import de.dfki.lt.hfc.*;
 
@@ -11,13 +16,20 @@ import de.dfki.lt.hfc.*;
  *         equivalenceClassReduction
  */
 public class AddSameAs {
-	
+
 	private static int makeRandom(int max) {
 		return (int)(Math.round(Math.random() * max));
 	}
-	
-	public static void main(String[] args) throws Exception {
-		
+
+	public static String getResource(String name) {
+	  System.out.println(System.getProperty("user.dir"));
+	  System.out.println(Paths.get(".", "target", "classes", name).toAbsolutePath());
+
+	  return Paths.get(".", "target", "classes", name).toString();
+	}
+
+	@Test public void sameAsTest() throws Exception {
+
 		// java -server -cp .:../lib/trove-2.1.0.jar -Xms1024m -Xmx4096m de/dfki/lt/hfc/tests/AddSameAs
 
 		/*
@@ -51,40 +63,41 @@ public class AddSameAs {
 			System.exit(1);
 		}
 		*/
-		
+
 		//long time = System.currentTimeMillis();
 
 		/*
 		ForwardChainer fc =	new ForwardChainer(100000, 500000,
-																					 "/Users/krieger/Desktop/Java/HFC/hfc/resources/default.nt",
-																					 "/Users/krieger/Desktop/Java/HFC/hfc/resources/default.rdl",
-																					 "/Users/krieger/Desktop/Java/HFC/hfc/resources/default.ns");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/ltworld.jena.nt");
+																					 getResource("default.nt"),
+																					 getResource("default.rdl"),
+																					 getResource("default.ns"));
+		fc.uploadTuples(getResource("ltworld.jena.nt"));
 		fc.uploadTuples("/Users/krieger/Desktop/sameas/sameas1000.nt");  // 10000 is too much
 		fc.computeClosure();
 		fc.shutdown();
 		*/
-		
-		
+
+
 		ForwardChainer fc =	new ForwardChainer(100000, 500000,
-																					 "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.eqred.nt",
-																					 "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.eqred.rdl",
-																					 "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.sameAs.test.ns");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/src/resources/ltworld.jena.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/PAPERS/ICSC2013/sameAs/sameas100000.nt");
+																					 getResource("default.eqred.nt"),
+																					 getResource("default.eqred.rdl"),
+																					 getResource("default.sameAs.test.ns"));
+		fc.uploadTuples(getResource("ltworld.jena.nt"));
+		//fc.uploadTuples("/Users/krieger/Desktop/PAPERS/ICSC2013/sameAs/sameas100000.nt");
 		fc.computeClosure();
 		fc.computeClosure();
-		fc.shutdown();
-		
-		
+		assertEquals(511046, fc.tupleStore.allTuples.size());
+		fc.shutdownNoExit();
+
+
 		//System.out.println("time: " + (System.currentTimeMillis() - time) / 1000.0);
-		
+
 		/*
 		Query q = new Query(fc.tupleStore);
 		BindingTable bt = q.query("SELECT ?i WHERE ?i <rdf:type> <ltw:CONCRETE>");
 		System.out.println(bt.toString());
 		*/
-		
+
 	}
-	
+
 }

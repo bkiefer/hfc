@@ -2,3 +2,6 @@
 .classpath
 .project
 .settings
+bin
+.DS_Store
+hfc_xcodeproj

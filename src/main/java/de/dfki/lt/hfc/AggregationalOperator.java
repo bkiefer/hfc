@@ -68,7 +68,17 @@ public abstract class AggregationalOperator extends Operator {
   }
   
   /**
+   *
    * !!! this is the one and only method that you MUST implement !!!
+   *
+   * NOTE for a future implementation:
+   *   in order to make this comparable to relational variables ??(...) in the
+   *   @test section of HFC's RDL rules, parameter args below should be of type
+   *     BindingTable[] args
+   *   thus the other two arguments must also be extended into an array:
+   *     SortedMap<Integer, Integer>[] nameToPos,
+   *     Map<Integer, String>[] nameToExternalName
+   *
    */
   public abstract BindingTable apply(BindingTable args,
 																		 SortedMap<Integer, Integer> nameToPos,
