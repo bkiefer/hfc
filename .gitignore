@@ -1,0 +1,11 @@
+/target/
+.classpath
+.project
+.settings
+bin
+**/.DS_Store
+hfc_xcodeproj
+lib
+dist
+jars
+misc
