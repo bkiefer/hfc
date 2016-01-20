@@ -1,4 +1,4 @@
-package de.dfki.lt.hfc;
+package de.dfki.lt.hfc.tests;
 
 import java.util.ArrayList;
 import de.dfki.lt.hfc.*;
