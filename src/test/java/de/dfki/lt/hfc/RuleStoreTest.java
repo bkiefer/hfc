@@ -1,5 +1,6 @@
 package de.dfki.lt.hfc;
 
+import static de.dfki.lt.hfc.TestUtils.*;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ public class RuleStoreTest {
 	@Test
 	public void testRuleStore() {
 		//test constructor that takes Namespace namespace, TupleStore tupleStore
-		Namespace namespace = new Namespace("D:/DFKI/hfc/src/main/resources/default.ns");
+		Namespace namespace = new Namespace(getResource("default.ns"));
 		TupleStore tupleStore = new TupleStore(1, 2);
 		RuleStore rs1 = new RuleStore(namespace, tupleStore);
 		assertNotNull(rs1);
@@ -19,9 +20,9 @@ public class RuleStoreTest {
 	@Test
 	public void testRuleStore1(){
 		//test constructor that takes Namespace namespace, TupleStore tupleStore, String ruleFile
-		Namespace namespace = new Namespace("D:/DFKI/hfc/src/main/resources/default.ns");
+		Namespace namespace = new Namespace(getResource("default.ns"));
 		TupleStore tupleStore = new TupleStore(2, 3);
-		String ruleFile = new String("D:/DFKI/hfc/src/main/resources/default.test.rdl");
+		String ruleFile = new String(getResource("default.test.rdl"));
 		RuleStore rs2 = new RuleStore(namespace, tupleStore, ruleFile);
 		assertNotNull(rs2);
 	}
@@ -29,9 +30,9 @@ public class RuleStoreTest {
 	public void testRuleStore2(){
 		/*test constructor that takes RuleStore(boolean verbose, boolean rdfCheck, int minNoOfArgs, int maxNoOfArgs,
 		Namespace namespace, TupleStore tupleStore, String ruleFile)*/
-		Namespace namespace = new Namespace("D:/DFKI/hfc/src/main/resources/default.ns");
+		Namespace namespace = new Namespace(getResource("default.ns"));
 		TupleStore tupleStore = new TupleStore(2, 4);
-		String ruleFile = new String("D:/DFKI/hfc/src/main/resources/default.test.rdl");
+		String ruleFile = new String(getResource("default.test.rdl"));
 		RuleStore rs3 = new RuleStore(true, true, 2, 3, namespace, tupleStore, ruleFile);
 		assertNotNull(rs3);
 		RuleStore rs4 = new RuleStore(false, true, 2, 5, namespace, tupleStore, ruleFile);
@@ -66,18 +67,18 @@ public class RuleStoreTest {
     public void testisValidTuple(){
     	ArrayList<String> stringTuple = new ArrayList<String>();
     	stringTuple.add("a");
-    	Namespace namespace = new Namespace("D:/DFKI/hfc/src/main/resources/default.ns");
+    	Namespace namespace = new Namespace(getResource("default.ns"));
 		TupleStore tupleStore = new TupleStore(1, 2);
-		String ruleFile = new String("D:/DFKI/hfc/src/main/resources/default.test.rdl");
+		String ruleFile = new String(getResource("default.test.rdl"));
 		//RuleStore rs = new RuleStore(true, true, 0, 0, namespace, tupleStore, ruleFile);
 		//RuleStore rs = new RuleStore(namespace, tupleStore);
 		//rs.isValidTuple(stringTuple);
     }
     @Test
     public void testwriteRules(){
-    	Namespace namespace = new Namespace("D:/DFKI/hfc/src/main/resources/default.ns");
+    	Namespace namespace = new Namespace(getResource("default.ns"));
 		TupleStore tupleStore = new TupleStore(2, 4);
-		String ruleFile = new String("D:/DFKI/hfc/src/main/resources/default.test.rdl");
+		String ruleFile = new String(getResource("default.test.rdl"));
 		RuleStore rstest = new RuleStore(true, true, 2, 3, namespace, tupleStore, ruleFile);
 		rstest.writeRules("fileRules");
 		assertFalse("fileRules".isEmpty());
@@ -88,9 +89,9 @@ public class RuleStoreTest {
     }
     @Test
     public void testcopyRuleStore(){
-    	Namespace namespace = new Namespace("D:/DFKI/hfc/src/main/resources/default.ns");
+    	Namespace namespace = new Namespace(getResource("default.ns"));
 		//TupleStore tupleStore = new TupleStore(2, 4);
-		TupleStore ts = new TupleStore(true, true, true, 2, 5, 4, 2, namespace, "D:/DFKI/hfc/src/main/resources/default.nt");
+		TupleStore ts = new TupleStore(true, true, true, 2, 5, 4, 2, namespace, getResource("default.nt"));
 		RuleStore rs = new RuleStore(namespace, ts);
 		rs.copyRuleStore(namespace, ts);
 		assertFalse(rs == rs.copyRuleStore(namespace, ts));

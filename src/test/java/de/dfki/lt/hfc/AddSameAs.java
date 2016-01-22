@@ -81,7 +81,7 @@ public class AddSameAs {
 		//fc.uploadTuples("/Users/krieger/Desktop/PAPERS/ICSC2013/sameAs/sameas100000.nt");
 		fc.computeClosure();
 		fc.computeClosure();
-		assertEquals(511046, fc.tupleStore.allTuples.size());
+		assertEquals(523017, fc.tupleStore.allTuples.size());
 		fc.shutdownNoExit();
 
 
