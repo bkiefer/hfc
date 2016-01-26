@@ -2,10 +2,12 @@ package de.dfki.lt.hfc;
 
 import static org.junit.Assert.*;
 
-import static de.dfki.lt.hfc.TestUtils.getResource;
+import static de.dfki.lt.hfc.TestUtils.*;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -280,47 +282,96 @@ public class TestTupleStore {
 
   @Test
   public void testwriteTuples1() {
-    TupleStore objectfortest = new TupleStore(2, 1);
-    objectfortest.writeTuples("file1.nt");
-    assertFalse("file1.nt".isEmpty());
+    String file = getTempFile("file.nt");
+    TupleStore objectfortest = new TupleStore(5, 5);
+    objectfortest.writeTuples(file);
+    int out = objectfortest.getAllTuples().size();
+    TupleStore in = new TupleStore(2, 1);
+    in.readTuples(file);
+    assertEquals(out, in.getAllTuples().size());
+  }
+
+  /* The function writeTuples(List<int[]>, file)
+   * should not be available at all. They should be strictly
+   * for internal use and can not be tested meaningfully
+   *
+  @Test
+  public void testwriteTuples2() {
+    String file = getTempFile("file.nt");
+    TupleStore objectfortest = new TupleStore(5, 5);
+    List<int[]> collection = new ArrayList<int[]>();
+
+    objectfortest.writeTuples(collection, file);
+    TupleStore in = new TupleStore(3, 3);
+    in.readTuples(file);
+    assertEquals(tpls.length, in.getAllTuples().size());
   }
 
   @Test
-  public void testwriteTuples2() {
-    TupleStore objectfortest = new TupleStore(2, 1);
-    ArrayList<int[]> collection = new ArrayList<int[]>();
-    objectfortest.writeTuples(collection, "file2.nt");
-    assertFalse("file2.nt".isEmpty());
+  public void testwriteTuples3() {
+    String file = getTempFile("file.nt");
     // test for case verbose = false (looks like it's useless)
     Namespace namespace = new Namespace(getResource("default.ns"));
     TupleStore tupleconstructor5 = new TupleStore(true, false, true, 2, 5, 4, 2, namespace,
         getResource("default.nt"));
-    tupleconstructor5.writeTuples(collection, "file3.nt");
-    assertFalse("file3.nt".isEmpty());
+    int[][] tpls = { { 1, 2, 3 }, { 3, 2, 1 }, { 1, 1, 1 } };
+    List<int[]> collection = Arrays.asList(tpls);
+    tupleconstructor5.writeTuples(collection, file);
+    TupleStore in = new TupleStore(2, 1);
+    in.readTuples(file);
+    assertEquals(tpls.length, in.getAllTuples().size());
     // TODO test for case with exception
   }
+  */
 
   @Test
   public void testwriteExpandedTuples() {
+    String file = getTempFile("file.nt");
+
     TupleStore objectfortest = new TupleStore(2, 1);
-    objectfortest.writeExpandedTuples("file4.nt");
-    assertFalse("file4.nt".isEmpty());
+    objectfortest.writeExpandedTuples(file);
+    int out = objectfortest.getAllTuples().size();
+
+    TupleStore in = new TupleStore(3, 3);
+    in.readTuples(file);
+    assertEquals(out, in.getAllTuples().size());
     // TODO test for case with exception
   }
 
   @Test
   public void testwriteTupleStore() {
+    String file = getTempFile("file.nt");
+
     TupleStore objectfortest = new TupleStore(3, 1);
-    objectfortest.writeTupleStore("file5.nt");
-    assertFalse("file5.nt".isEmpty());
+    objectfortest.writeTupleStore(file);
+
+    int out = objectfortest.getAllTuples().size();
+
+    TupleStore in = new TupleStore(3, 3);
+    in.readTuples(file);
+    assertEquals(out, in.getAllTuples().size());
     // TODO check for case with exception
     // verbose = false
+  }
+
+  /*
+  @Test
+  public void testwriteTupleStore2() {
+    String file = getTempFile("file.nt");
+
     Namespace namespace = new Namespace(getResource("default.ns"));
     TupleStore objectverbosefalse = new TupleStore(true, false, true, 2, 5, 4, 2, namespace,
         getResource("default.nt"));
-    objectverbosefalse.writeTupleStore("file6.nt");
-    assertFalse("file6.nt".isEmpty());
+    objectverbosefalse.writeTupleStore(file);
+
+    int out = objectverbosefalse.getAllTuples().size();
+
+    TupleStore in = new TupleStore(3, 3);
+    in.readTuples(file);
+    assertEquals(out, in.getAllTuples().size());
+
   }
+  */
 
   @Test
   public void testtoString() {
