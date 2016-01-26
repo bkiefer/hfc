@@ -111,6 +111,9 @@ public class TestLGetLatest {
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT * WHERE ?d1 <rdf:type> <dafn:DialogueAct> & ?d2 <rdf:type> <dafn:DialogueAct> & ?d1 <dafn:follows> ?d2 FILTER ?d1 != ?d2");
     System.out.println(bt);
+    // TODO call checkresult here, same for the other tests, and remove the
+    // println if no longer needed
+
   }
 
   @Test
