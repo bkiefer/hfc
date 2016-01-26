@@ -1,35 +1,18 @@
 package de.dfki.lt.hfc;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.dfki.lt.hfc.BindingTable.BindingTableIterator;
+import static de.dfki.lt.hfc.TestUtils.checkResult;
 
 public class TestLGetLatest {
   static ForwardChainer fc;
 
   private static String getResource(String name) {
     return TestUtils.getTestResource("LGetLatest", name);
-  }
-
-  private static boolean checkResult(String[][] expected,
-      BindingTable bt, String ... vars) {
-    int rows = 0;
-    try {
-      BindingTableIterator it = bt.iterator(vars);
-      while (it.hasNext()) {
-        String[] tuple = it.nextAsString();
-        // make sure all tuples from expected are covered: find the right one
-        // TODO: WRITE THE CODE AND APPLY IT CORRECTLY IN THE TESTS
-        ++rows;
-      }
-    }
-    catch (BindingTableIteratorException e) {
-      throw new RuntimeException(e); // should never happen
-    }
-    return rows == expected.length;
   }
 
 

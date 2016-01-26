@@ -1,7 +1,8 @@
 package de.dfki.lt.hfc;
 
 import java.io.File;
-import java.nio.file.Path;
+
+import de.dfki.lt.hfc.BindingTable.BindingTableIterator;
 
 public class TestUtils {
   private static final File testResourceDir = new File("src/test/data/");
@@ -20,6 +21,24 @@ public class TestUtils {
   public static String getTempFile(String name) {
     // System.out.println(new File(".").getAbsolutePath());
     return new File(tmpDir, name).getPath();
+  }
+
+  public static boolean checkResult(String[][] expected,
+      BindingTable bt, String ... vars) {
+    int rows = 0;
+    try {
+      BindingTableIterator it = bt.iterator(vars);
+      while (it.hasNext()) {
+        String[] tuple = it.nextAsString();
+        // make sure all tuples from expected are covered: find the right one
+        // TODO: WRITE THE CODE AND APPLY IT CORRECTLY IN THE TESTS
+        ++rows;
+      }
+    }
+    catch (BindingTableIteratorException e) {
+      throw new RuntimeException(e); // should never happen
+    }
+    return rows == expected.length;
   }
 
 }
