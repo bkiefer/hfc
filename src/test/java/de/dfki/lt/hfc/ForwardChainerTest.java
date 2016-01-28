@@ -3,6 +3,7 @@ package de.dfki.lt.hfc;
 import static org.junit.Assert.*;
 
 import java.util.Collection;
+import java.util.Hashtable;
 import java.util.Set;
 
 import org.junit.Test;
@@ -13,7 +14,7 @@ public class ForwardChainerTest {
 
 	@Test
 	public void test() {
-		//test constructor 
+		//test constructor
 		/*ForwardChainer fc =	new ForwardChainer(100000, 500000,
 				 "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.eqred.nt",
 				 "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.eqred.rdl",
@@ -39,7 +40,7 @@ fc.shutdown();*/
 	}
 	@Test
 	public void testForwardChainer2(){
-		//test constructor ForwardChainer(int noOfAtoms, int noOfTuples, String tupleFile, String ruleFile) 
+		//test constructor ForwardChainer(int noOfAtoms, int noOfTuples, String tupleFile, String ruleFile)
 		int noOfAtoms = 2;
 		int noOfTuples = 2;
 		String tupleFile = "D:/DFKI/hfc/src/main/resources/default.nt";
@@ -69,7 +70,7 @@ fc.shutdown();*/
 	@Test
 	public void testForwardChainer5(){
 		/*test constructor ForwardChainer(
-		 int noOfCores, 
+		 int noOfCores,
 	     boolean verbose,
 		boolean rdfCheck,
 		boolean eqReduction,
@@ -92,13 +93,13 @@ fc.shutdown();*/
 		String tupleFile = "D:/DFKI/hfc/src/main/resources/default.nt";
 		String ruleFile = "D:/DFKI/hfc/src/main/resources/default.eqred.rdl";
 		String namespaceFile = "D:/DFKI/hfc/src/main/resources/default.ns";
-		ForwardChainer fc = new ForwardChainer(noOfCores, verboseT, rdfCheck,eqReduction, minNoOfArgs, 
+		ForwardChainer fc = new ForwardChainer(noOfCores, verboseT, rdfCheck,eqReduction, minNoOfArgs,
 				maxNoOfArgs, noOfAtoms, noOfTuples, tupleFile, ruleFile,namespaceFile);
 		assertNotNull(fc);
-		ForwardChainer fc0 = new ForwardChainer(noOfCores, verboseF, rdfCheck,eqReduction, minNoOfArgs, 
+		ForwardChainer fc0 = new ForwardChainer(noOfCores, verboseF, rdfCheck,eqReduction, minNoOfArgs,
 				maxNoOfArgs, noOfAtoms, noOfTuples, tupleFile, ruleFile,namespaceFile);
 		assertNotNull(fc0);
-		
+
 	}
 	@Test
 	public void testForwardChainer6(){
@@ -134,7 +135,7 @@ fc.shutdown();*/
 		ForwardChainer fc = new ForwardChainer(tupleFile, ruleFile);
 		fc.setNoOfCores(104);
 		assertEquals(fc.noOfCores, 104);
-	}		
+	}
 	@Test
 	public void testnextBlankNode(){
 	//test method nextBlankNode () that returns an int
@@ -159,10 +160,10 @@ fc.shutdown();*/
 		String tupleFile = "D:/DFKI/hfc/src/main/resources/default.nt";
 		String ruleFile = "D:/DFKI/hfc/src/main/resources/default.eqred.rdl";
 		String namespaceFile = "D:/DFKI/hfc/src/main/resources/default.ns";
-		ForwardChainer fc = new ForwardChainer(noOfCores, verboseT, rdfCheck,eqReduction, minNoOfArgs, 
+		ForwardChainer fc = new ForwardChainer(noOfCores, verboseT, rdfCheck,eqReduction, minNoOfArgs,
 				maxNoOfArgs, noOfAtoms, noOfTuples, tupleFile, ruleFile,namespaceFile);
 		assertEquals(fc.computeClosure(1, true), true);
-		ForwardChainer fc1 = new ForwardChainer(noOfCores, verboseF, rdfCheck,eqReduction, minNoOfArgs, 
+		ForwardChainer fc1 = new ForwardChainer(noOfCores, verboseF, rdfCheck,eqReduction, minNoOfArgs,
 				maxNoOfArgs, noOfAtoms, noOfTuples, tupleFile, ruleFile,namespaceFile);
 		assertEquals(fc1.computeClosure(1, true), true);
 		assertEquals(fc1.computeClosure(2, false), true);
@@ -211,7 +212,7 @@ fc.shutdown();*/
 		String tupleFile = "D:/DFKI/hfc/src/main/resources/default.nt";
 		String ruleFile = "D:/DFKI/hfc/src/main/resources/default.eqred.rdl";
 		String namespaceFile = "D:/DFKI/hfc/src/main/resources/default.ns";
-		ForwardChainer fc1 = new ForwardChainer(noOfCores, verboseF, rdfCheck,eqReduction, minNoOfArgs, 
+		ForwardChainer fc1 = new ForwardChainer(noOfCores, verboseF, rdfCheck,eqReduction, minNoOfArgs,
 				maxNoOfArgs, noOfAtoms, noOfTuples, tupleFile, ruleFile,namespaceFile);
 		assertEquals(fc1.computeClosure(newTuples, noOfIterations, cleanUpRepository), false);
 		//newTuples not empty:
@@ -239,7 +240,7 @@ fc.shutdown();*/
 		String tupleFile = "D:/DFKI/hfc/src/main/resources/default.nt";
 		String ruleFile = "D:/DFKI/hfc/src/main/resources/default.eqred.rdl";
 		String namespaceFile = "D:/DFKI/hfc/src/main/resources/default.ns";
-		ForwardChainer fc = new ForwardChainer(noOfCores, verboseF, rdfCheck,eqReduction, minNoOfArgs, 
+		ForwardChainer fc = new ForwardChainer(noOfCores, verboseF, rdfCheck,eqReduction, minNoOfArgs,
 				maxNoOfArgs, noOfAtoms, noOfTuples, tupleFile, ruleFile,namespaceFile);
 		assertEquals(fc.computeClosure(newTuples), false);
 	}
@@ -278,7 +279,7 @@ fc.shutdown();*/
 		ForwardChainer fc = new ForwardChainer(namespace, tupleStore, ruleStore);
 		fc.addTuples(tuples);
 		//TODO create a test
-		
+
 	}
 	@Test
 	public void testremoveTuples(){
@@ -321,9 +322,9 @@ fc.shutdown();*/
 		String tupleFile = "D:/DFKI/hfc/src/main/resources/default.nt";
 		String ruleFile = "D:/DFKI/hfc/src/main/resources/default.eqred.rdl";
 		String namespaceFile = "D:/DFKI/hfc/src/main/resources/default.ns";
-		ForwardChainer fcverboseF = new ForwardChainer(noOfCores, verboseF, rdfCheck,eqReduction, minNoOfArgs, 
+		ForwardChainer fcverboseF = new ForwardChainer(noOfCores, verboseF, rdfCheck,eqReduction, minNoOfArgs,
 				maxNoOfArgs, noOfAtoms, noOfTuples, tupleFile, ruleFile,namespaceFile);
-		ForwardChainer fcverboseT = new ForwardChainer(noOfCores, verboseT, rdfCheck,eqReduction, minNoOfArgs, 
+		ForwardChainer fcverboseT = new ForwardChainer(noOfCores, verboseT, rdfCheck,eqReduction, minNoOfArgs,
 				maxNoOfArgs, noOfAtoms, noOfTuples, tupleFile, ruleFile,namespaceFile);
 		//How to check? It just exits the system, so other tests are not executed
 		//fcverboseT.shutdown();
@@ -344,9 +345,9 @@ fc.shutdown();*/
 		String tupleFile = "D:/DFKI/hfc/src/main/resources/default.nt";
 		String ruleFile = "D:/DFKI/hfc/src/main/resources/default.eqred.rdl";
 		String namespaceFile = "D:/DFKI/hfc/src/main/resources/default.ns";
-		ForwardChainer fcverboseF = new ForwardChainer(noOfCores, verboseF, rdfCheck,eqReduction, minNoOfArgs, 
+		ForwardChainer fcverboseF = new ForwardChainer(noOfCores, verboseF, rdfCheck,eqReduction, minNoOfArgs,
 				maxNoOfArgs, noOfAtoms, noOfTuples, tupleFile, ruleFile,namespaceFile);
-		ForwardChainer fcverboseT = new ForwardChainer(noOfCores, verboseT, rdfCheck,eqReduction, minNoOfArgs, 
+		ForwardChainer fcverboseT = new ForwardChainer(noOfCores, verboseT, rdfCheck,eqReduction, minNoOfArgs,
 				maxNoOfArgs, noOfAtoms, noOfTuples, tupleFile, ruleFile,namespaceFile);
 		fcverboseF.shutdownNoExit();
 		fcverboseT.shutdownNoExit();
@@ -398,7 +399,7 @@ fc.shutdown();*/
 		String tupleFile = "D:/DFKI/hfc/src/main/resources/default.nt";
 		String ruleFile = "D:/DFKI/hfc/src/main/resources/default.eqred.rdl";
 		String namespaceFile = "D:/DFKI/hfc/src/main/resources/default.ns";
-		ForwardChainer fc = new ForwardChainer(noOfCores, verboseT, rdfCheck,eqReduction, minNoOfArgs, 
+		ForwardChainer fc = new ForwardChainer(noOfCores, verboseT, rdfCheck,eqReduction, minNoOfArgs,
 				maxNoOfArgs, noOfAtoms, noOfTuples, tupleFile, ruleFile,namespaceFile);
 		fc.copyForwardChainer(noOfCores, verboseT);
 		assertFalse(fc.copyForwardChainer(noOfCores, verboseT)== fc);
@@ -419,13 +420,108 @@ fc.shutdown();*/
 		String tupleFile = "D:/DFKI/hfc/src/main/resources/default.nt";
 		String ruleFile = "D:/DFKI/hfc/src/main/resources/default.eqred.rdl";
 		String namespaceFile = "D:/DFKI/hfc/src/main/resources/default.ns";
-		ForwardChainer fc = new ForwardChainer(noOfCores, verboseT, rdfCheck,eqReduction, minNoOfArgs, 
+		ForwardChainer fc = new ForwardChainer(noOfCores, verboseT, rdfCheck,eqReduction, minNoOfArgs,
 				maxNoOfArgs, noOfAtoms, noOfTuples, tupleFile, ruleFile,namespaceFile);
 		assertEquals(fc.tupleDeletionEnabled(), false);
 	}
 	@Test
 	public void testenableTupleDeletion(){
 		//test method enableTupleDeletion()
-		
+	  int noOfCores = 1;
+    boolean verboseT = true;
+    boolean verboseF = false;
+    boolean rdfCheck = true;
+    boolean eqReduction = true;
+    int minNoOfArgs = 2;
+    int maxNoOfArgs = 3;
+    int noOfAtoms = 2;
+    int noOfTuples = 3;
+    String tupleFile = "D:/DFKI/hfc/src/main/resources/default.nt";
+    String ruleFile = "D:/DFKI/hfc/src/main/resources/default.eqred.rdl";
+    String namespaceFile = "D:/DFKI/hfc/src/main/resources/default.ns";
+    ForwardChainer fcverboseT = new ForwardChainer(noOfCores, verboseT, rdfCheck,eqReduction, minNoOfArgs,
+        maxNoOfArgs, noOfAtoms, noOfTuples, tupleFile, ruleFile,namespaceFile);
+    assertEquals(true, fcverboseT.enableTupleDeletion());
+    ForwardChainer fcverboseF = new ForwardChainer(noOfCores, verboseF, rdfCheck,eqReduction, minNoOfArgs,
+        maxNoOfArgs, noOfAtoms, noOfTuples, tupleFile, ruleFile,namespaceFile);
+    assertEquals(true, fcverboseF.enableTupleDeletion());
+	}
+	@Test
+	public void testdeleteTuple(){
+	//test method deleteTuple(int[] tuple)
+    int[] tuple = new int[2];
+    tuple[0] = 2;
+    tuple[1] = 2;
+    Namespace namespace = new Namespace("D:/DFKI/hfc/src/main/resources/default.ns");
+    TupleStore tupleStore = new TupleStore(2, 2);
+    RuleStore ruleStore = new RuleStore(namespace, tupleStore);
+    ForwardChainer fc = new ForwardChainer(namespace, tupleStore, ruleStore);
+    //fc.deleteTuple(tuple); Null pointer exception
+	}
+	@Test
+	public void testdeleteTuples(){
+	  //test method deleteTuples(Collection<int[]> tuples)
+	  Collection<int[]> tuples = new THashSet<int[]>();
+    int[] e = new int[2];
+    e[0] = 1;
+    e[1] = 2;
+    tuples.add(e);
+    Namespace namespace = new Namespace("D:/DFKI/hfc/src/main/resources/default.ns");
+    TupleStore tupleStore = new TupleStore(1, 2);
+    RuleStore ruleStore = new RuleStore(namespace, tupleStore);
+    ForwardChainer fc = new ForwardChainer(namespace, tupleStore, ruleStore);
+    //fc.deleteTuples(tuples); Null pointer exception
+	}
+	@Test
+	public void testaddTuplesToRepository(){
+	//test method addTuplesToRepository(Collection<int[]> tuples)
+	  Collection<int[]> tuples = new THashSet<int[]>();
+    int[] e = new int[2];
+    e[0] = 1;
+    e[1] = 2;
+    tuples.add(e);
+    Namespace namespace = new Namespace("D:/DFKI/hfc/src/main/resources/default.ns");
+    TupleStore tupleStore = new TupleStore(1, 2);
+    RuleStore ruleStore = new RuleStore(namespace, tupleStore);
+    ForwardChainer fc = new ForwardChainer(namespace, tupleStore, ruleStore);
+    assertEquals(false, fc.addTuplesToRepository(tuples));
+	}
+	@Test
+	public void testremoveTuplesFromRepository(){
+	//test method removeTuplesFromRepository(Collection<int[]> tuples)
+	  Collection<int[]> tuples = new THashSet<int[]>();
+    int[] e = new int[2];
+    e[0] = 1;
+    e[1] = 2;
+    tuples.add(e);
+    Namespace namespace = new Namespace("D:/DFKI/hfc/src/main/resources/default.ns");
+    TupleStore tupleStore = new TupleStore(1, 2);
+    RuleStore ruleStore = new RuleStore(namespace, tupleStore);
+    ForwardChainer fc = new ForwardChainer(namespace, tupleStore, ruleStore);
+    assertEquals(false, fc.removeTuplesFromRepository(tuples));
+	}
+	@Test
+	public void testdeleteTuplesFromRepository(){
+	//test method deleteTuplesFromRepository(Collection<int[]> tuples)
+	  Collection<int[]> tuples = new THashSet<int[]>();
+    int[] e = new int[2];
+    e[0] = 1;
+    e[1] = 2;
+    tuples.add(e);
+    Namespace namespace = new Namespace("D:/DFKI/hfc/src/main/resources/default.ns");
+    TupleStore tupleStore = new TupleStore(1, 2);
+    RuleStore ruleStore = new RuleStore(namespace, tupleStore);
+    ForwardChainer fc = new ForwardChainer(namespace, tupleStore, ruleStore);
+    assertEquals(false, fc.deleteTuplesFromRepository(tuples));
+	}
+	@Test
+	public void testcomputeClosureFromRepository(){
+	  //test method computeClosureFromRepository()
+	  Namespace namespace = new Namespace("D:/DFKI/hfc/src/main/resources/default.ns");
+    TupleStore tupleStore = new TupleStore(1, 2);
+    RuleStore ruleStore = new RuleStore(namespace, tupleStore);
+    ForwardChainer fc = new ForwardChainer(namespace, tupleStore, ruleStore);
+    assertEquals(false, fc.computeClosure());
 	}
 }
+

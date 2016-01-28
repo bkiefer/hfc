@@ -2,6 +2,7 @@ package de.dfki.lt.hfc;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,6 +16,12 @@ import org.junit.Test;
 import gnu.trove.THashSet;
 
 public class BindingTableTest {
+  private static final File resourceDir = new File("src/main/resources/");
+
+  public static String getResource(String name) {
+    System.out.println(new File(".").getAbsolutePath());
+    return new File(resourceDir, name).getPath();
+  }
 
 	@Test
 	public void testBindingTable() {
@@ -138,8 +145,8 @@ public class BindingTableTest {
 		nameToPos.put(1, 1);
 		Map<Integer, String> nameToExternalName = new TreeMap<Integer, String>();
 		nameToExternalName.put(1, "value");
-		Namespace namespace = new Namespace("D:/DFKI/hfc/src/main/resources/default.ns");
-		TupleStore ts = new TupleStore(true, true, true, 2, 5, 4, 2, namespace, "D:/DFKI/hfc/src/main/resources/default.nt");
+		Namespace namespace = new Namespace(getResource("default.ns"));
+		TupleStore ts = new TupleStore(true, true, true, 2, 5, 4, 2, namespace, getResource("default.nt"));
     	BindingTable bt = new BindingTable(table, nameToPos, nameToExternalName, ts);
     	//System.out.println("IF expand set to TRUE " + bt.toString(true));
     	assertEquals(bt.toString(true).substring(6, 11), "value");
@@ -154,8 +161,8 @@ public class BindingTableTest {
 		nameToPos.put(1, 1);
 		Map<Integer, String> nameToExternalName = new TreeMap<Integer, String>();
 		nameToExternalName.put(1, "val");
-		Namespace namespace = new Namespace("D:/DFKI/hfc/src/main/resources/default.ns");
-		TupleStore ts = new TupleStore(true, true, true, 2, 5, 4, 2, namespace, "D:/DFKI/hfc/src/main/resources/default.nt");
+		Namespace namespace = new Namespace(getResource("default.ns"));
+		TupleStore ts = new TupleStore(true, true, true, 2, 5, 4, 2, namespace, getResource("default.nt"));
     	BindingTable bt = new BindingTable(table, nameToPos, nameToExternalName, ts);
     	//System.out.println("IF expand set to FALSE, maxLength to 3 " + bt.toString(3, false));
     	assertEquals(bt.toString(3, false).substring(10, 13), "val");
@@ -164,15 +171,12 @@ public class BindingTableTest {
     	assertEquals(bt.toString(0, true).substring(7, 10), "val");
     	assertEquals(bt.toString(5, false).substring(12, 15), "val");
     	//
-		TupleStore objfortest = new TupleStore(true, true, true, 2, 5, 4, 2, namespace, "D:/DFKI/hfc/src/main/resources/default.nt");
+		TupleStore objfortest = new TupleStore(true, true, true, 2, 5, 4, 2, namespace, getResource("default.nt"));
 		int[] tuple = new int[3];
 		tuple[0] = 2;
 		tuple[1] = 2;
 		tuple[2] = 2;
 		objfortest.addToIndex(tuple);
 		BindingTable bt1 = new BindingTable(table, nameToPos, nameToExternalName, objfortest);
-		System.out.println("for (int[] tuple : this.table) " + bt1.toString(3, false));
-		System.out.println("for (int[] tuple : this.table) " + bt1.toString(6, false));
-
     }
 }
