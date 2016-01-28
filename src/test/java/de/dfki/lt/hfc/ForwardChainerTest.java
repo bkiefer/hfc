@@ -183,7 +183,7 @@ public class ForwardChainerTest {
 	}
 
 	@Test
-	public void testdeleteTuple(){
+	public void testdeleteTuple() throws FileNotFoundException, WrongFormatException, IOException{
 	//test method deleteTuple(int[] tuple)
     int[] tuple = new int[2];
     tuple[0] = 2;
@@ -196,7 +196,7 @@ public class ForwardChainerTest {
 	}
 
 	@Test
-	public void testdeleteTuples(){
+	public void testdeleteTuples() throws FileNotFoundException, WrongFormatException, IOException{
 	  //test method deleteTuples(Collection<int[]> tuples)
 	  Collection<int[]> tuples = new THashSet<int[]>();
     int[] e = new int[2];
@@ -211,7 +211,7 @@ public class ForwardChainerTest {
 	}
 
 	@Test
-	public void testaddTuplesToRepository(){
+	public void testaddTuplesToRepository() throws FileNotFoundException, WrongFormatException, IOException{
 	//test method addTuplesToRepository(Collection<int[]> tuples)
 	  Collection<int[]> tuples = new THashSet<int[]>();
     int noOfCores = 1;
@@ -355,7 +355,7 @@ public class ForwardChainerTest {
   }
 
   @Test
-  public void testremoveTuplesFromRepository(){
+  public void testremoveTuplesFromRepository() throws FileNotFoundException, WrongFormatException, IOException{
     //test method removeTuplesFromRepository(Collection<int[]> tuples)
     Collection<int[]> tuples = new THashSet<int[]>();
 
@@ -385,7 +385,7 @@ public class ForwardChainerTest {
   }
 
   @Test
-  public void testdeleteTuplesFromRepository(){
+  public void testdeleteTuplesFromRepository() throws FileNotFoundException, WrongFormatException, IOException{
     //test method deleteTuplesFromRepository(Collection<int[]> tuples)
     Collection<int[]> tuples = new THashSet<int[]>();
     int[] e = new int[2];
@@ -400,7 +400,7 @@ public class ForwardChainerTest {
   }
 
   @Test
-  public void testcomputeClosureFromRepository(){
+  public void testcomputeClosureFromRepository() throws FileNotFoundException, WrongFormatException, IOException{
     //test method computeClosureFromRepository()
     Namespace namespace = new Namespace(getResource("default.ns"));
     TupleStore tupleStore = new TupleStore(1, 2);
