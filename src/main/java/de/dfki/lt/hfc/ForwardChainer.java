@@ -17,7 +17,7 @@ import gnu.trove.*;
  *       it might be the case that the closure computation needs to be called
  *       again, since the cleanup phase performed afterwards could lead to the
  *       possibility that passive rules become active again !!
- * 
+ *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
  * @version Thu Jan  7 17:41:55 CET 2016
@@ -28,43 +28,43 @@ public final class ForwardChainer {
 	 * HFC version number string
 	 */
 	public static final String VERSION = "6.1.13";
-	
+
 	/**
 	 * HFC info string
 	 */
 	public static final String INFO = "v" + ForwardChainer.VERSION + " (Thu Jan  7 17:41:55 CET 2016)";
-	
+
 	/**
 	 * a pointer to the tuple store for this forward chainer
 	 */
 	public TupleStore tupleStore;
-	
+
 	/**
 	 * a pointer to the rule store for this forward chainer
 	 */
 	public RuleStore ruleStore;
-	
+
 	/**
 	 * the namespace object, whose namespaces are used in rules and tuples
 	 */
 	public Namespace namespace;
-	
+
 	/**
 	 * default settings that might speed up the forward chainer (actually the tuple store)
 	 */
 	protected int noOfAtoms = 100000;
-	
+
 	/**
 	 * default settings that might speed up the forward chainer (actually the tuple store)
 	 */
 	protected int noOfTuples = 500000;
-	
+
 	/**
 	 * the default hashing and equals strategy for tuples from the rule output set of the current
 	 * iteration: take ALL positions of a tuple into account
 	 */
 	protected static TIntArrayHashingStrategy DEFAULT_HASHING_STRATEGY = new TIntArrayHashingStrategy();
-	
+
 	/**
 	 * tells the forward chainer how many top-level loops should be performed
 	 * during the computation of the deductive closure;
@@ -72,7 +72,7 @@ public final class ForwardChainer {
 	 * any number
 	 */
 	public int noOfIterations = Integer.MAX_VALUE;
-	
+
 	/**
 	 * this Boolean flag is only considered in the closure computation, when the
 	 * equivalence class reduction is turned on in the tuple store
@@ -80,7 +80,7 @@ public final class ForwardChainer {
 	 * @see computeClosure()
 	 */
 	public boolean cleanUpRepository = true;
-	
+
 	/**
 	 * generation counter is incremented during each iteration, independent of how
 	 * many times computeClosure() is called;
@@ -89,7 +89,7 @@ public final class ForwardChainer {
 	 * is used during local clause querying
 	 */
 	protected int generationCounter = 0;
-	
+
 	/**
 	 * a constant that controls whether a warning is printed in case an invalid
 	 * tuple is read in;
@@ -97,7 +97,7 @@ public final class ForwardChainer {
 	 * @see #exitOnError
 	 */
 	public boolean verbose = true;
-	
+
 	/**
 	 * a constant that controls whether the system is terminated in case an invalid
 	 * tuple is read in (exit code = 1);
@@ -105,46 +105,46 @@ public final class ForwardChainer {
 	 * @see #verbose
 	 */
 	public boolean exitOnError = false;
-	
+
 	/**
 	 * call the garbage collector after each iteration step
 	 */
 	public boolean gc = false;
-	
+
 	/**
 	 * specifies the number of parallel executed rule threads;
 	 * do not specify a number larger than the sum of all cores of your computer
 	 */
 	public int noOfCores = 4;
-	
+
 	/**
 	 * specifies the number of tasks (= #rules) that are executed within a single
 	 * iteration; will be assigned a value when constructor is executed
 	 */
 	private int noOfTasks;
-	
+
 	/**
 	 * container to gather the rule threads
 	 */
 	private ExecutorService threadPool;
-	
+
 	/**
 	 * needed to to start a new iteration
 	 */
 	private CountDownLatch doneSignal;
-	
+
 	/**
 	 * used to generate unique blank node names for _this_ forward chainer
 	 */
 	private final String blankNodePrefix = "_:" + this.toString();
-	
+
 	/**
 	 * used to generate unique blank node names
 	 */
 	private int blankCounter = 0;
-	
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+
 	/**
 	 * initialization code of nullary and binary constructors that is outsourced to avoid
 	 * code reduplication
@@ -158,14 +158,14 @@ public final class ForwardChainer {
 			System.out.println("  " + this.toString());
 		}
 	}
-	 	
+
 	/**
 	 * prints a welcome message to standard out
 	 */
 	private ForwardChainer() {
 		init();
 	}
-	
+
 	/**
 	 * used by copyForwardChainer()
 	 */
@@ -173,32 +173,36 @@ public final class ForwardChainer {
 		this.noOfCores = noOfCores;
 		this.verbose = verbose;
 		init();
-	}	
-	
+	}
+
 	/**
 	 * generates a new forward chainer with the default namespace for XSD, RDF, RDFS, and OWL
 	 */
 	public ForwardChainer(String tupleFile, String ruleFile) {
 		this();
-		this.namespace = new Namespace();		
+		this.namespace = new Namespace();
 		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, this.namespace, tupleFile);
 		this.ruleStore = new RuleStore(this.namespace, this.tupleStore, ruleFile);
 		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
 		this.noOfTasks = this.ruleStore.allRules.size();
 	}
-	
+
 	/**
 	 * this version allows to explicitly define the namespace
+	 * @throws IOException
+	 * @throws WrongFormatException
+	 * @throws FileNotFoundException
 	 */
-	public ForwardChainer(String tupleFile, String ruleFile,	String namespaceFile) {
+	public ForwardChainer(String tupleFile, String ruleFile,	String namespaceFile)
+	    throws FileNotFoundException, WrongFormatException, IOException {
 		this();
-		this.namespace = new Namespace(namespaceFile);		
+		this.namespace = new Namespace(namespaceFile);
 		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, this.namespace, tupleFile);
 		this.ruleStore = new RuleStore(this.namespace, this.tupleStore, ruleFile);
 		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
 		this.noOfTasks = this.ruleStore.allRules.size();
 	}
-	
+
 	/**
 	 * generates a new forward chainer with the default namespace for XSD, RDF, RDFS, and OWL;
 	 * noOfAtoms and noOfTuples are important parameters that affects the performance of the
@@ -208,44 +212,51 @@ public final class ForwardChainer {
 		this();
 		this.noOfAtoms = noOfAtoms;
 	  this.noOfTuples = noOfTuples;
-		this.namespace = new Namespace();		
+		this.namespace = new Namespace();
 		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, this.namespace, tupleFile);
 		this.ruleStore = new RuleStore(this.namespace, this.tupleStore, ruleFile);
 		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
 		this.noOfTasks = this.ruleStore.allRules.size();
 	}
-	
+
 	/**
 	 * this version allows to explicitly define the namespace
+	 * @throws IOException
+	 * @throws WrongFormatException
+	 * @throws FileNotFoundException
 	 */
-	public ForwardChainer(int noOfAtoms, int noOfTuples, String tupleFile, String ruleFile, String namespaceFile) {
+	public ForwardChainer(int noOfAtoms, int noOfTuples, String tupleFile, String ruleFile, String namespaceFile)
+	    throws FileNotFoundException, WrongFormatException, IOException {
 		this();
 		this.noOfAtoms = noOfAtoms;
-	  this.noOfTuples = noOfTuples;																											
-		this.namespace = new Namespace(namespaceFile);		
+	  this.noOfTuples = noOfTuples;
+		this.namespace = new Namespace(namespaceFile);
 		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, this.namespace, tupleFile);
 		this.ruleStore = new RuleStore(this.namespace, this.tupleStore, ruleFile);
 		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
 		this.noOfTasks = this.ruleStore.allRules.size();
 	}
-	
-	
+
+
 	/**
 	 *  assumes a default of 100,000 atoms and 500,000 tuples
 	 */
 	public ForwardChainer(Namespace namespace, TupleStore tupleStore, RuleStore ruleStore) {
 		this();
 		this.noOfAtoms = 100000;
-	  this.noOfTuples = 500000;																											
-		this.namespace = namespace;		
+	  this.noOfTuples = 500000;
+		this.namespace = namespace;
 		this.tupleStore = tupleStore;
 		this.ruleStore = ruleStore;
 		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
 		this.noOfTasks = this.ruleStore.allRules.size();
 	}
-	
+
 	/**
 	 * more options that will also affect namespace, tuple store, and rule store
+	 * @throws IOException
+	 * @throws WrongFormatException
+	 * @throws FileNotFoundException
 	 */
 	public ForwardChainer(int noOfCores,
 												boolean verbose,
@@ -257,10 +268,11 @@ public final class ForwardChainer {
 												int noOfTuples,
 												String tupleFile,
 												String ruleFile,
-												String namespaceFile) {
+												String namespaceFile)
+			throws FileNotFoundException, WrongFormatException, IOException {
 		this(noOfCores, verbose);
 		this.noOfAtoms = noOfAtoms;
-	  this.noOfTuples = noOfTuples;																											
+	  this.noOfTuples = noOfTuples;
 		this.namespace = new Namespace(namespaceFile, verbose);
 		this.tupleStore = new TupleStore(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
 																		 this.noOfAtoms, this.noOfTuples, this.namespace, tupleFile);
@@ -269,7 +281,7 @@ public final class ForwardChainer {
 		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
 		this.noOfTasks = this.ruleStore.allRules.size();
 	}
-	
+
 	/**
 	 * slightly less options as before, but namespace, tuple store, and rule store have already
 	 * been created
@@ -283,16 +295,16 @@ public final class ForwardChainer {
 												RuleStore ruleStore) {
 		this(noOfCores, verbose);
 		this.noOfAtoms = noOfAtoms;
-	  this.noOfTuples = noOfTuples;																											
+	  this.noOfTuples = noOfTuples;
 		this.namespace = namespace;
 		this.tupleStore = tupleStore;
 		this.ruleStore = ruleStore;
 		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
 		this.noOfTasks = this.ruleStore.allRules.size();
 	}
-	
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+
 	/**
 	 * to (dynamically) change the number of processor cores at runtime, use this method
 	 */
@@ -312,7 +324,7 @@ public final class ForwardChainer {
 			return this.tupleStore.putObject(this.blankNodePrefix + this.blankCounter++);
 		}
 	}
-	
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
@@ -362,7 +374,7 @@ public final class ForwardChainer {
 		rule.isApplicable = true;
 		//System.out.println();
 	}
-	
+
 	/**
 	 * performs a global matching over the LHS clauses;
 	 * local tables within the LHS of this rule are joined in case they share variables;
@@ -428,7 +440,7 @@ public final class ForwardChainer {
 			}
 		}
 	}
-	
+
 	/**
 	 * does the recursive job for executeGlobalMatch();
 	 * recursively takes the union of the continuation of complexJoin() for both delta and old at
@@ -491,7 +503,7 @@ public final class ForwardChainer {
 															delta.nameToPos != null ? delta.nameToPos : old.nameToPos);
 		}
 	}
-	
+
 	/**
 	 * in order to speed up rule execution, it is important to check whether the two
 	 * variables in an in-eq constraint belong to a same rule cluster from the rule's
@@ -524,7 +536,7 @@ public final class ForwardChainer {
 				rule.isApplicable = true;
 		}
 	}
-		
+
 	/**
 	 * computes delta, new, old, etc. for each independent LHS cluster (information
 	 * stored in the cluster object);
@@ -637,7 +649,7 @@ public final class ForwardChainer {
 															delta.nameToPos != null ? delta.nameToPos : old.nameToPos);
 		}
 	}
-	
+
 	/**
 	 * the input table for RHS instantiation has already been projected to the RHS variables
 	 * @see #prepareInstantiation
@@ -726,8 +738,8 @@ public final class ForwardChainer {
 				rule.output.add(newTuple);
 			}
 		}
-	}	
-		
+	}
+
 	/**
 	 * performs the matching and instantiation for each rule;
 	 * keeps track of local information in order to speed up rule execution;
@@ -790,7 +802,7 @@ public final class ForwardChainer {
 			this.doneSignal.countDown();
 		}
 	}
-	
+
 	/**
 	 * assigns each rule execution a single task which is added to the thread pool
 	 */
@@ -890,7 +902,7 @@ public final class ForwardChainer {
 	public boolean computeClosure() {
 		return computeClosure(this.noOfIterations, this.cleanUpRepository);
 	}
-	
+
 	/**
 	 * calls computeClosure(int noOfIterations) again, assuming that a set of
 	 * new tuples has been added to the tuple store;
@@ -913,26 +925,30 @@ public final class ForwardChainer {
 		// and finally call nullary computeClosure()
 		return computeClosure(noOfIterations, cleanUpRepository);
 	}
-	
+
 	/**
 	 * the number of iterations is given by field noOfIterations
 	 */
 	public boolean computeClosure(Set<int[]> newTuples) {
 		return computeClosure(newTuples, this.noOfIterations, this.cleanUpRepository);
 	}
-	
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+
 	/**
 	 * uploads further namespaces stored in a file to an already established forward chainer;
 	 * this method directly calls readNamespaces() from class Namespace
+	 * @throws IOException
+	 * @throws WrongFormatException
+	 * @throws FileNotFoundException
 	 * @see Namespace.readNamespaces()
 	 */
-	public void uploadNamespaces(String filename) {
+	public void uploadNamespaces(String filename)
+	    throws FileNotFoundException, WrongFormatException, IOException {
 		this.namespace.readNamespaces(filename);
 	}
-	
-	
+
+
 	/**
 	 * uploads further tuples stored in a file to an already established forward chainer;
 	 * this method directly calls readTuples() from class TupleStore;
@@ -943,7 +959,7 @@ public final class ForwardChainer {
 	public void uploadTuples(String filename) {
 		this.tupleStore.readTuples(filename);
 	}
-	
+
 	/**
 	 * add tuples, represented as int[], to the set of all tuples;
 	 * if tuple deletion is enabled in the forward chainer, the tuples from the set are
@@ -954,7 +970,7 @@ public final class ForwardChainer {
 		for (int[] tuple : tuples)
 			this.tupleStore.addTuple(tuple);
 	}
-	
+
 	/**
 	 * remove tuples, represented as int[], from the set of all tuples;
 	 * if tuple deletion is enabled in the forward chainer, the tuples from the set are
@@ -965,7 +981,7 @@ public final class ForwardChainer {
 		for (int[] tuple : tuples)
 			this.tupleStore.removeTuple(tuple);
 	}
-	
+
 	/**
 	 * uploads further rules stored in a file to an already established forward chainer;
 	 * the set of all rules is returned;
@@ -979,9 +995,9 @@ public final class ForwardChainer {
 		// update noOfTask in order to guarantee proper rule execution in a multi-threaded environment
 		this.noOfTasks = this.ruleStore.allRules.size();
 	}
-	
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+
 	/**
 	 * shutdowns the thread pool and exits with value 0
 	 */
@@ -993,7 +1009,7 @@ public final class ForwardChainer {
 		}
 		System.exit(0);
 	}
-	
+
 	/**
 	 * only shutdowns the thread pool, but no System.exit() is called;
 	 * used by the XMLRPC server
@@ -1004,9 +1020,9 @@ public final class ForwardChainer {
 			System.out.println("  shutting down thread pool ...");
 		}
 	}
-	
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+
 	/**
 	 * if 0, auxiliary structures in forward chainer are not compressed/deleted;
 	 * if 1, the old/new separation for clause proxies, clusters, and mega
@@ -1030,7 +1046,7 @@ public final class ForwardChainer {
 				break;
 		}
 	}
-	
+
 	/**
 	 *
 	 */
@@ -1054,8 +1070,8 @@ public final class ForwardChainer {
 			rule.megaCluster.delta = null;
 			rule.megaCluster.old = null;
 		}
-	}	
-	
+	}
+
 	/**
 	 *
 	 */
@@ -1065,7 +1081,7 @@ public final class ForwardChainer {
 			// do not call clear() since it does NOT frees the memory (only clears the mappings)
 			index[i] = new HashMap<Integer, Set<int[]>>();
 	}
-	
+
 	/**
 	 *
 	 */
@@ -1073,7 +1089,7 @@ public final class ForwardChainer {
 		for (int[] tuple : this.tupleStore.allTuples)
 			this.tupleStore.addToIndex(tuple);
 	}
-	
+
 	/**
 	 * returns a copy of the forward chainer that can be used to generate "choice points"
 	 * during reasoning;
@@ -1107,9 +1123,9 @@ public final class ForwardChainer {
 		// finished!
 		return copy;
 	}
-	
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+
 	/**
 	 * @return true iff tuple deletion has been enabled by method enableTupleDeletion()
 	 * @return false otherwise
@@ -1119,8 +1135,8 @@ public final class ForwardChainer {
 	 */
 	public boolean tupleDeletionEnabled() {
 		return (this.tupleStore.tupleToGeneration != null);
-	}	
-	
+	}
+
 	/**
 	 * enableTupleDeletion() makes use of a special field that is initialized by an empty map
 	 * from tuples (int[]) to generations (Integer);
@@ -1164,7 +1180,7 @@ public final class ForwardChainer {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * deletes a tuple and _potentially_ dependent entailed tuples of specific generations from the
 	 * tuples store, followed by a new closure computation;
@@ -1234,7 +1250,7 @@ public final class ForwardChainer {
 			return this.tupleStore.allTuples.contains(tuple);
 		}
 	}
-	
+
 	/**
 	 * use this method if you want to delete SEVERAL tuples at once, since both this and the above method
 	 * always call computeClosure() at the very end (expensive!), independent of the number of tuples deleted
@@ -1256,11 +1272,11 @@ public final class ForwardChainer {
 			if (this.tupleStore.equivalenceClassReduction) {
 				Collection<int[]> newTuples = new ArrayList<int[]>(tuples.size());
 				int[] newTuple;
-				for (int[] tuple : tuples) {				
+				for (int[] tuple : tuples) {
 					newTuple = new int[tuple.length];
 					for (int i = 0; i < tuple.length; i++)
 						newTuple[i] = this.tupleStore.getProxy(tuple[i]);
-					newTuples.add(newTuple);				
+					newTuples.add(newTuple);
 				}
 				tuples = newTuples;
 			}
@@ -1305,15 +1321,15 @@ public final class ForwardChainer {
 				System.out.println("  calling closure computation again ...");
 			}
 			computeClosure();
-			return result;		
+			return result;
 		}
 	}
-	
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
 	// NOTE: the four transactions below require that tuple deletion has been enabled in the forward chainer
 	// @see ForwardChainer.enableTupleDeletion()
-	
+
 	/**
 	 * transaction 1: addTuplesToRepository()
 	 * adds a collection of tuples to the repository;
@@ -1343,7 +1359,7 @@ public final class ForwardChainer {
 					}
 					return true;
 				}
-				catch (Exception e) {				
+				catch (Exception e) {
 					System.err.println(e);
 					// if something went wrong during the transaction, iterate over the remembered tuples and
 					// redo the insertions, not necessarily _all_ tuples
@@ -1358,7 +1374,7 @@ public final class ForwardChainer {
 		else
 			return false;
 	}
-	
+
 	/**
 	 * transaction 2: removeTuplesFromRepository()
 	 * removes a collection of tuples from the repository;
@@ -1388,7 +1404,7 @@ public final class ForwardChainer {
 					}
 					return true;
 				}
-				catch (Exception e) {				
+				catch (Exception e) {
 					System.err.println(e);
 					// if something went wrong during transaction, iterate over removed tuples
 					// and undo the deletions
@@ -1402,7 +1418,7 @@ public final class ForwardChainer {
 		else
 			return false;
 	}
-	
+
 	/**
 	 * this private method differs from deleteTuples() above in that it destructively modifies
 	 * the tuple-to-be-deleted-TO-generation mapping as given by parameter mapping and is
@@ -1417,11 +1433,11 @@ public final class ForwardChainer {
 		if (this.tupleStore.equivalenceClassReduction) {
 			Collection<int[]> newTuples = new ArrayList<int[]>(tuples.size());
 			int[] newTuple;
-			for (int[] tuple : tuples) {				
+			for (int[] tuple : tuples) {
 				newTuple = new int[tuple.length];
 				for (int i = 0; i < tuple.length; i++)
 					newTuple[i] = this.tupleStore.getProxy(tuple[i]);
-				newTuples.add(newTuple);				
+				newTuples.add(newTuple);
 			}
 			tuples = newTuples;
 		}
@@ -1473,9 +1489,9 @@ public final class ForwardChainer {
 		}
 		// call closure computation again to reestablish the entailed tuples and auxiliary structures
 		computeClosure();
-		return result;		
+		return result;
 	}
-	
+
 	/**
 	 * transaction 3: deleteTuplesFromRepository()
 	 * deletes a collection of tuples from the repository; not only the direct tuples
@@ -1499,7 +1515,7 @@ public final class ForwardChainer {
 					deleteTuplesRecordGenerations(tuples, tuple2generation);
 					return true;
 				}
-				catch (Exception e) {				
+				catch (Exception e) {
 					System.err.println(e);
 					// if something went wrong during transaction, iterate over removed tuples
 					// and undo the deletions
@@ -1514,8 +1530,8 @@ public final class ForwardChainer {
 		else
 			return false;
 	}
-	
-	
+
+
 	/**
 	 * transaction 4: computeClosureFromRepository()
 	 * a `nullary' transaction that computes the deductive closure for the repository;
@@ -1534,7 +1550,7 @@ public final class ForwardChainer {
 					computeClosure();
 					return true;
 				}
-				catch (Exception e) {				
+				catch (Exception e) {
 					System.err.println(e);
 					// undo the effects of the closure computation
 					for (int[] tuple : this.tupleStore.allTuples) {
@@ -1551,9 +1567,9 @@ public final class ForwardChainer {
 		else
 			return false;
 	}
-	
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+
 	/**
 	 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	 * !!! FOR TEST PURPOSES ONLY !!!
@@ -1572,9 +1588,9 @@ public final class ForwardChainer {
 		fc.computeClosure();
 		fc.shutdown();
 		*/
-		
+
 		// call THIS with equivalence class reduction ENABLED
-		
+
 		ForwardChainer fc =	new ForwardChainer(100000, 500000,
 																					 "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.eqred.nt",
 																					 "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.eqred.rdl",
@@ -1583,8 +1599,8 @@ public final class ForwardChainer {
 		fc.computeClosure();
 		fc.computeClosure();
 		fc.shutdown();
-		
-		
+
+
 		/*
 		ForwardChainer fc =	new ForwardChainer(100000, 500000,
 																					 "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/tests/RelationalVariable/relvar.nt",
@@ -1596,7 +1612,7 @@ public final class ForwardChainer {
 		System.out.println(bt.toString());
 		fc.shutdown();
 		*/
-		
+
 		/*
 		ForwardChainer fc =	new ForwardChainer(100000, 500000,
 																					 "/Users/krieger/Desktop/MONNET/server/resources/tuples/0default.eqred.nt",
@@ -1643,7 +1659,7 @@ public final class ForwardChainer {
 		System.out.println(bt.toString());
 	  fc.shutdown();
 		*/
-		 
+
 		/*
 		Query q = new Query(fc.tupleStore);
 		BindingTable bt = q.query("SELECT DISTINCT * WHERE ?s <owl:sameAs> <http://www.lt-world.org/ltw.owl#lt-world_Individual_293>");
@@ -1658,14 +1674,14 @@ public final class ForwardChainer {
 		//fc.compress(3);
 		//fc.uncompressIndex();
 		//fc.computeClosure();
-		
+
 		// use integrity constraints at the very end ...
 		//fc.uploadRules("/Users/krieger/Desktop/Java/HFC/hfc/resources/idefault.rdl");
 		// ... and start closure computation again
 		//fc.computeClosure();
 		//fc.shutdown();
-		
-		
+
+
 		//fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/furniture2/furniture2.rdf.nt");
 		//fc.computeClosure();
 		//fc.shutdown();
@@ -1733,11 +1749,11 @@ public final class ForwardChainer {
 		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/type.nt");
 		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/worksAt.nt");
 		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/wrote.nt");
-		
+
 		fc.computeClosure();
 		fc.shutdown();
 		*/
-	
+
 	}
-	
+
 }

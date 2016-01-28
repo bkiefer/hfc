@@ -1,9 +1,9 @@
-package de.dfki.lt.hfc.tests;
+package de.dfki.lt.hfc;
 
 import de.dfki.lt.hfc.*;
 
 public class MaterializeTimedTriples {
-	
+
 	public static void main(String[] args) throws Exception {
 		// java -server -cp .:../lib/trove-2.1.0.jar -Xms1024m -Xmx4096m de/dfki/lt/hfc/tests/MaterializeTimedTriples
 		long time = System.currentTimeMillis();
@@ -14,8 +14,8 @@ public class MaterializeTimedTriples {
 		//System.out.println("time: " + (System.currentTimeMillis() - time) / 1000.0);
 		//System.exit(1);
 		fc.computeClosure();
-		//fc.tupleStore.writeTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/??????");
-		fc.shutdown();
+		//fc.tupleStore.writeTuples(getResource("??????"));
+		fc.shutdownNoExit();
 	}
-	
+
 }

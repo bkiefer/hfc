@@ -1,17 +1,22 @@
 # short to long namespace name mappings: use &short2long directive
 
 &short2long
+# RDF and friends
 xsd  http://www.w3.org/2001/XMLSchema#
 rdf  http://www.w3.org/1999/02/22-rdf-syntax-ns#
-rdfs  http://www.w3.org/2000/01/rdf-schema#
+rdfs http://www.w3.org/2000/01/rdf-schema#
 owl  http://www.w3.org/2002/07/owl#
-# LT-World
-ltw http://www.lt-world.org/ltw.owl#
+# for HySociaTea
+time http://www.dfki.de/lt/onto/hysociatea/time.owl#
+upp  http://www.dfki.de/lt/onto/hysociatea/upper.owl#
+dafn http://www.dfki.de/lt/onto/hysociatea/dialframe.owl#
+dom  http://www.dfki.de/lt/onto/hysociatea/domain.owl#
+hst  http://www.dfki.de/lt/onto/hysociatea/hysociatea.owl#
 
 
 # short namespace type URIs to HFC classes: use &type2class directive
 # note: all (custom) type classes should be put in package
-#         de.dfki.lt.hfc.types
+#       de.dfki.lt.hfc.types
 
 &type2class
 xsd:boolean  XsdBoolean

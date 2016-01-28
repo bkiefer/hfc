@@ -10,7 +10,7 @@ import java.util.*;
  * properties names, tuples, and rules (file names _without_ double quotes):
  *
  *   names = <namespace file>
- *   tuples = <tuple file> 
+ *   tuples = <tuple file>
  *   rules = <rule files>
  *
  * this class even support MULTIPLE namespace, tuple, and rule file
@@ -73,40 +73,40 @@ import java.util.*;
  * @version Fri Aug 29 16:56:11 CEST 2014
  */
 public class Configuration {
-	
+
 	/**
 	 * the following private and public fields are assigned values
 	 * when a config file is read in
 	 */
-	
+
 	public int noofcores = 4;
-	
+
 	public boolean verbose = true;
-	
+
 	public boolean rdfcheck = true;
-	
+
 	public boolean eqreduction = true;
-	
+
 	public int minnoofargs = 3;
-	
+
 	public int maxnoofargs = 3;
-	
+
 	public int noofatoms = 100000;
-	
+
 	public int nooftuples = 500000;
-	
+
 	public Namespace namespace = null;
-	
+
 	public TupleStore tupleStore = null;
-	
+
 	public RuleStore ruleStore = null;
-	
+
 	public ForwardChainer forwardChainer = null;
-	
+
 	public Query query = null;
-	
+
 	private HashSet<String> files = new HashSet<String>();
-	
+
 	/**
 	 * the unary constructor takes a config file as explained above
 	 */
@@ -127,7 +127,7 @@ public class Configuration {
 		catch (Exception e) {
 			System.err.println("\nerror while reading configuration file " + configFile);
 			System.exit(1);
-		}		
+		}
 	}
 
 	/**
@@ -168,11 +168,15 @@ public class Configuration {
 		else
 			throw new Exception("wrong property " + property);
 	}
-	
+
 	/**
+	 * @throws IOException
+	 * @throws WrongFormatException
+	 * @throws FileNotFoundException
 	 *
 	 */
-	private void processNames(String namespaceFile) {
+	private void processNames(String namespaceFile)
+	    throws FileNotFoundException, WrongFormatException, IOException {
 		if (this.files.contains(namespaceFile)) {
 			System.out.println(namespaceFile + " used twice");
 			return;
@@ -182,7 +186,7 @@ public class Configuration {
 		else
 			this.namespace.readNamespaces(namespaceFile);
 	}
-	
+
 	/**
 	 *
 	 */
@@ -201,7 +205,7 @@ public class Configuration {
 		else
 			this.tupleStore.readTuples(tupleFile);
 	}
-	
+
 	/**
 	 *
 	 */
@@ -221,12 +225,12 @@ public class Configuration {
 		else
 			this.forwardChainer.uploadRules(ruleFile);  // use uploadRules() to guarantee right number of tasks
 	}
-	
+
 	/**
 	 * FOR TEST PUPOSES ONLY
 	 */
 	public static void main(String[] args) {
 		Configuration config = new Configuration(args[0]);
 	}
-	
+
 }
