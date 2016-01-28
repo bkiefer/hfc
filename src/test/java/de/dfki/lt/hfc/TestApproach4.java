@@ -11,13 +11,13 @@ public class TestApproach4 {
 
 	private static final int NO_OF_TUPLES = 500000;
 
-	private static final Namespace NAMESPACE = new Namespace(getResource("default.ns"));
+	private static Namespace NAMESPACE;
 
 	private static final String TUPLE_FILE = getResource("approach4.ltworld.nt");
 
 
 	public static void main(String[] args) throws Exception {
-
+	  NAMESPACE = new Namespace(getResource("default.ns"));
 		long start = System.currentTimeMillis();
 
 		//   time java -server -cp .:../lib/trove-2.1.0.jar -Xmx1024m de/dfki/lt/hfc/tests/QuintuplesToNaryRelations

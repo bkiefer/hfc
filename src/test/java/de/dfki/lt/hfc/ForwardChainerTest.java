@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import static de.dfki.lt.hfc.TestUtils.getResource;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Set;
 
@@ -32,7 +34,7 @@ public class ForwardChainerTest {
   }
 
   @Test
-  public void testForwardChainer1() {
+  public void testForwardChainer1() throws FileNotFoundException, WrongFormatException, IOException {
     //test constructor ForwardChainer(String tupleFile, String ruleFile, String namespaceFile)
     String tupleFile = getResource("default.nt");
     String ruleFile = getResource("default.eqred.rdl");
@@ -53,7 +55,7 @@ public class ForwardChainerTest {
   }
 
   @Test
-  public void testForwardChainer3() {
+  public void testForwardChainer3() throws FileNotFoundException, WrongFormatException, IOException {
     //test constructor ForwardChainer(int noOfAtoms, int noOfTuples, String tupleFile, String ruleFile, String namespaceFile) {
     int noOfAtoms = 1;
     int noOfTuples = 100;
@@ -64,7 +66,7 @@ public class ForwardChainerTest {
   }
 
   @Test
-  public void testForwardChainer4() {
+  public void testForwardChainer4() throws FileNotFoundException, WrongFormatException, IOException {
     //test constructor ForwardChainer(Namespace namespace, TupleStore tupleStore, RuleStore ruleStore)
     Namespace namespace = new Namespace(getResource("default.ns"));
     TupleStore tupleStore = new TupleStore(1, 2);
@@ -74,7 +76,7 @@ public class ForwardChainerTest {
   }
 
   @Test
-  public void testForwardChainer5() {
+  public void testForwardChainer5() throws FileNotFoundException, WrongFormatException, IOException {
     /*test constructor ForwardChainer(
      int noOfCores,
        boolean verbose,
@@ -109,7 +111,7 @@ public class ForwardChainerTest {
   }
 
   @Test
-  public void testForwardChainer6() {
+  public void testForwardChainer6() throws FileNotFoundException, WrongFormatException, IOException {
     /* test constructor ForwardChainer(
     int noOfCores,
     boolean verbose,
@@ -156,7 +158,7 @@ public class ForwardChainerTest {
   }
 
   @Test
-  public void testcomputeClosure() {
+  public void testcomputeClosure() throws FileNotFoundException, WrongFormatException, IOException {
     //test method computeClosure(int noOfIterations, boolean cleanUpRepository)
     int noOfCores = 1;
     boolean verboseT = true;
@@ -191,7 +193,7 @@ public class ForwardChainerTest {
   }
 
   @Test
-  public void testcomputeClosure1() {
+  public void testcomputeClosure1() throws FileNotFoundException, WrongFormatException, IOException {
     //test method computeClosure() that returns a boolean
     Namespace namespace = new Namespace(getResource("default.ns"));
     TupleStore tupleStore = new TupleStore(true, true, true, 2, 5, 4, 2, namespace, getResource("default.nt"));
@@ -201,7 +203,7 @@ public class ForwardChainerTest {
   }
 
   @Test
-  public void testcomputeClosure2() {
+  public void testcomputeClosure2() throws FileNotFoundException, WrongFormatException, IOException {
     //test method computeClosure(Set<int[]> newTuples, int noOfIterations, boolean cleanUpRepository)
     Set<int[]> newTuples = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     int noOfIterations = 2;
@@ -239,7 +241,7 @@ public class ForwardChainerTest {
   }
 
   @Test
-  public void testcomputeClosure3() {
+  public void testcomputeClosure3() throws FileNotFoundException, WrongFormatException, IOException {
     //test method computeClosure(Set<int[]> newTuples)
     Set<int[]> newTuples = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     int noOfCores = 1;
@@ -259,7 +261,7 @@ public class ForwardChainerTest {
   }
 
   @Test
-  public void testuploadNamespaces() {
+  public void testuploadNamespaces() throws FileNotFoundException, WrongFormatException, IOException {
     //test method uploadNamespaces(String filename)
     String filename = getResource("default.ns");
     String tupleFile = getResource("default.nt");
@@ -270,7 +272,7 @@ public class ForwardChainerTest {
   }
 
   @Test
-  public void testuploadTuples() {
+  public void testuploadTuples() throws FileNotFoundException, WrongFormatException, IOException {
     //test method uploadTuples(string filename)
     String filename = getResource("default.nt");
     Namespace namespace = new Namespace(getResource("default.ns"));
@@ -282,7 +284,7 @@ public class ForwardChainerTest {
   }
 
   @Test
-  public void testaddTuples() {
+  public void testaddTuples() throws FileNotFoundException, WrongFormatException, IOException {
     //test method addTuples(Collection<int[]> tuples)
     Collection<int[]> tuples = new THashSet<int[]>();
     int[] e = new int[2];
@@ -299,7 +301,7 @@ public class ForwardChainerTest {
   }
 
   @Test
-  public void testremoveTuples() {
+  public void testremoveTuples() throws FileNotFoundException, WrongFormatException, IOException {
     //test method removeTuples(Collection<int[]> tuples)
     Collection<int[]> tuples = new THashSet<int[]>();
     int[] e = new int[2];
@@ -315,7 +317,7 @@ public class ForwardChainerTest {
   }
 
   @Test
-  public void testuploadRules() {
+  public void testuploadRules() throws FileNotFoundException, WrongFormatException, IOException {
     //test method uploadRules(String filename)
     String filename = getResource("default.eqred.rdl");
     Namespace namespace = new Namespace(getResource("default.ns"));
@@ -327,7 +329,7 @@ public class ForwardChainerTest {
   }
 
   @Test
-  public void testshutdown() {
+  public void testshutdown() throws FileNotFoundException, WrongFormatException, IOException {
     //test method shutdown()
     int noOfCores = 1;
     boolean verboseT = true;
@@ -351,7 +353,7 @@ public class ForwardChainerTest {
   }
 
   @Test
-  public void testshutdownNoExit() {
+  public void testshutdownNoExit() throws FileNotFoundException, WrongFormatException, IOException {
     //test method shutdownNoExit()
     int noOfCores = 1;
     boolean verboseT = true;
@@ -394,7 +396,7 @@ public class ForwardChainerTest {
   }
 
   @Test
-  public void testuncompressIndex() {
+  public void testuncompressIndex() throws FileNotFoundException, WrongFormatException, IOException {
     Namespace namespace = new Namespace(getResource("default.ns"));
     TupleStore tupleStore = new TupleStore(1, 2);
     RuleStore ruleStore = new RuleStore(namespace, tupleStore);
@@ -408,7 +410,7 @@ public class ForwardChainerTest {
   }
 
   @Test
-  public void testcopyForwardChainer() {
+  public void testcopyForwardChainer() throws FileNotFoundException, WrongFormatException, IOException {
     //test method copyForwardChainer(int noOfCores, boolean verbose)
     int noOfCores = 1;
     boolean verboseT = true;
@@ -430,7 +432,7 @@ public class ForwardChainerTest {
   }
 
   @Test
-  public void testtupleDeletionEnabled() {
+  public void testtupleDeletionEnabled() throws FileNotFoundException, WrongFormatException, IOException {
     //test method tupleDeletionEnabled(), returns a boolean
     int noOfCores = 1;
     boolean verboseT = true;

@@ -6,7 +6,11 @@ import org.apache.xmlrpc.server.XmlRpcServer;
 import org.apache.xmlrpc.webserver.WebServer;
 import de.dfki.lt.hfc.ForwardChainer;
 import de.dfki.lt.hfc.Query;
+import de.dfki.lt.hfc.WrongFormatException;
+
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -19,28 +23,28 @@ import java.util.Collection;
  * @version Thu Jun 30 16:10:04 CEST 2011
  */
 public class HfcServer {
-	
+
 	/**
 	 * the port number for the web server
 	 */
 	private int port;
-	
+
 	/**
 	 * forward chainer generated from the input args of the main method
 	 */
 	private ForwardChainer hfc;
-	
+
 	/**
 	 * the query object generated form the tuple store sitting inside the
 	 * forward chainer
 	 */
 	private Query query;
-	
+
 	/**
 	 * the web server that embodies the XML-RPC server
 	 */
 	private WebServer webServer;
-	
+
 	/**
 	 * called by the main method and is given EXACTLY four arguments:
 	 *   + port number
@@ -49,10 +53,13 @@ public class HfcServer {
 	 *   + path to rule directory
 	 *
 	 * NOTE: subdirectories, i.e., recursive embeddings of files are NOT allowed
+	 * @throws IOException
+	 * @throws WrongFormatException
+	 * @throws FileNotFoundException
 	 *
 	 * @see main()
 	 */
-	private HfcServer(String[] args) {
+	private HfcServer(String[] args) throws FileNotFoundException, WrongFormatException, IOException {
 		this.port = Integer.parseInt(args[0]);
 		String[] namespaces = (new File(args[1])).list();
 		String[] tuples = (new File(args[2])).list();
@@ -110,7 +117,7 @@ public class HfcServer {
 		// construct query store
 		this.query = new Query(this.hfc.tupleStore);
 	}
-	
+
 	/**
 	 * returns true iff the file does NOT start with a '.' and/or ends with a '~';
 	 * otherwise false is returned
@@ -122,7 +129,7 @@ public class HfcServer {
 			return false;
 		return true;
 	}
-	
+
 	/**
 	 * starts the server and assigns instance fields hfc and query to the static
 	 * class fields HFC and QUERY in class HfcServerApi
@@ -150,7 +157,7 @@ public class HfcServer {
 			System.err.println("\n  HfcServer: " + exception.toString());
 		}
 	}
-	
+
 	/**
 	 * the main method requires EXACTLY four (4) arguments:
 	 *   + 1st arg: port number (int)
@@ -160,8 +167,11 @@ public class HfcServer {
 	 *
 	 * call with, e.g.,
 	 *   java -server -cp .:../lib/* -Xms800m -Xmx1200m de/dfki/lt/hfc/server/HfcServer 1408 ../resources/namespaces/ ../resources/tuples/ ../resources/rules/
+	 * @throws IOException
+	 * @throws WrongFormatException
+	 * @throws FileNotFoundException
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException, WrongFormatException, IOException {
 		if (args.length != 4) {
 			System.err.println("  wrong number of arguments; required (4): port-no namespace-dir tuple-dir rule-dir");
 			System.exit(1);
@@ -170,5 +180,5 @@ public class HfcServer {
 		HfcServer hs = new HfcServer(args);
 		hs.startServer();
 	}
-	
+
 }
