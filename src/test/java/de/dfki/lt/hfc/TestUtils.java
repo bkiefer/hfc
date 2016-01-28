@@ -26,13 +26,25 @@ public class TestUtils {
   public static boolean checkResult(String[][] expected,
       BindingTable bt, String ... vars) {
     int rows = 0;
+    //boolean result;
     try {
       BindingTableIterator it = bt.iterator(vars);
       while (it.hasNext()) {
         String[] tuple = it.nextAsString();
         // make sure all tuples from expected are covered: find the right one
         // TODO: WRITE THE CODE AND APPLY IT CORRECTLY IN THE TESTS
-        ++rows;
+        Iterator<String[]> exp = expected.iterator();
+        while (exp.hasNext()) {
+          String[] other = exp.next();
+          if (tuple.equals(other)) {
+           //result = true; 
+           ++rows;
+          } else {
+           //result = false;
+           break;
+           }
+        //return result;
+      }
       }
     }
     catch (BindingTableIteratorException e) {
