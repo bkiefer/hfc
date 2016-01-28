@@ -132,7 +132,7 @@ public class QuintuplesToTimeSlices {
 
 		ts.writeTuples(newTriples, OUT_FILE);
 
-		fc.shutdown();
+		fc.shutdownNoExit();
 	}
 
 }

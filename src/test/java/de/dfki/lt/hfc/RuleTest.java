@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import static de.dfki.lt.hfc.TestUtils.getResource;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.junit.Test;
@@ -11,7 +13,7 @@ import org.junit.Test;
 public class RuleTest {
 
   @Test
-  public void testRule() {
+  public void testRule() throws FileNotFoundException, WrongFormatException, IOException {
     //test the constructor Rule(String name, int[][] ante, int[][] cons, TupleStore tstore, RuleStore rstore)
     TupleStore ts = new TupleStore(1, 3);
     Namespace namespace = new Namespace(getResource("default.ns"));
@@ -23,7 +25,7 @@ public class RuleTest {
   }
 
   @Test
-  public void testsetName() {
+  public void testsetName() throws FileNotFoundException, WrongFormatException, IOException {
     TupleStore ts = new TupleStore(1, 3);
     Namespace namespace = new Namespace(getResource("default.ns"));
     RuleStore rs = new RuleStore(namespace, ts);
@@ -36,7 +38,7 @@ public class RuleTest {
 
   @SuppressWarnings("deprecation")
   @Test
-  public void testsetAntecedent() {
+  public void testsetAntecedent() throws FileNotFoundException, WrongFormatException, IOException {
     //test method that takes int[][] ante
     TupleStore ts = new TupleStore(1, 3);
     Namespace namespace = new Namespace(getResource("default.ns"));
@@ -49,7 +51,7 @@ public class RuleTest {
   }
 
   @Test
-  public void testsetAntecedent1() {
+  public void testsetAntecedent1() throws FileNotFoundException, WrongFormatException, IOException {
     //test method that takes ArrayList<int[]> anteList
     ArrayList<int[]> anteList = new ArrayList<int[]>();
     anteList.add(null);
@@ -64,7 +66,7 @@ public class RuleTest {
   }
 
   @Test
-  public void testsetConsequent() {
+  public void testsetConsequent() throws FileNotFoundException, WrongFormatException, IOException {
     //test method setConsequent(int[][] cons)
     TupleStore ts = new TupleStore(1, 3);
     Namespace namespace = new Namespace(getResource("default.ns"));
@@ -77,7 +79,7 @@ public class RuleTest {
   }
 
   @Test
-  public void testsetConsequent1() {
+  public void testsetConsequent1() throws FileNotFoundException, WrongFormatException, IOException {
     //test method setConsequent(ArrayList<int[]> consList)
     ArrayList<int[]> consList = new ArrayList<int[]>();
     consList.add(null);
@@ -92,7 +94,7 @@ public class RuleTest {
   }
 
   @Test
-  public void testsetTupleStore() {
+  public void testsetTupleStore() throws FileNotFoundException, WrongFormatException, IOException {
     //test method setTupleStore(TupleStore tstore)
     TupleStore tstore = new TupleStore(1, 2);
     Namespace namespace = new Namespace(getResource("default.ns"));
@@ -105,7 +107,7 @@ public class RuleTest {
   }
 
   @Test
-  public void testsetRuleStore() {
+  public void testsetRuleStore() throws FileNotFoundException, WrongFormatException, IOException {
     //test method setRuleStore(RuleStore rstore)
     TupleStore tstore = new TupleStore(1, 2);
     Namespace namespace = new Namespace(getResource("default.ns"));
@@ -118,7 +120,7 @@ public class RuleTest {
   }
 
   @Test
-  public void testtoString() {
+  public void testtoString() throws FileNotFoundException, WrongFormatException, IOException {
     //test method toString()
     TupleStore tstore = new TupleStore(1, 2);
     Namespace namespace = new Namespace(getResource("default.ns"));

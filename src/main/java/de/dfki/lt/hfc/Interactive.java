@@ -47,36 +47,36 @@ public class Interactive {
 	public RuleStore ruleStore = null;
 	public ForwardChainer forwardChainer = null;
 	public Query query = null;
-	
+
 	/**
 	 * this setting is used for output encoding in Interactive
 	 * @see TupleStore.INPUT_CHARACTER_ENCODING
 	 * @see TupleStore.OUTPUT_CHARACTER_ENCODING
 	 */
 	public static final String OUTPUT_CHARACTER_ENCODING = "UTF-8";
-	
+
 	/**
 	 * JLine's console reader
 	 */
 	private ConsoleReader consoleReader = null;
-	
+
 	/**
 	 * this print stream is needed to redirect the output obtained by a query
 	 */
 	private PrintStream queryOutput = null;
-	
+
 	/**
 	 * a negative truncate value indicates NO truncation
 	 */
 	public int truncate = -1;
-	
+
 	/**
 	 * used by the main() method to invoke the interaction
 	 */
 	public Interactive() {
 		readEvalPrint(System.in);
 	}
-	
+
 	/**
 	 * used by the main() method to evaluate commands stored in commandFile;
 	 * interaction is NOT allowed afterwards
@@ -87,27 +87,35 @@ public class Interactive {
 		readEvalPrintLoop();
 		readEvalPrint(System.in);
 	}
-	
+
 	/**
+	 * @throws IOException
+	 * @throws WrongFormatException
+	 * @throws FileNotFoundException
 	 *
 	 */
-	public Interactive(String namespaceFile, String tupleFile) {
+	public Interactive(String namespaceFile, String tupleFile)
+	    throws FileNotFoundException, WrongFormatException, IOException {
 		this.namespace = new Namespace(namespaceFile);
 		this.tupleStore = new TupleStore(this.namespace, tupleFile);
 		this.query = new Query(this.tupleStore);
 		readEvalPrint(System.in);
 	}
-	
+
 	/**
+	 * @throws IOException
+	 * @throws WrongFormatException
+	 * @throws FileNotFoundException
 	 *
 	 */
-	public Interactive(String namespaceFile, String tupleFile, String ruleFile) {
+	public Interactive(String namespaceFile, String tupleFile, String ruleFile)
+	    throws FileNotFoundException, WrongFormatException, IOException {
 		this(namespaceFile, tupleFile);
 		this.ruleStore = new RuleStore(this.namespace, this.tupleStore, ruleFile);
 		this.forwardChainer = new ForwardChainer(this.namespace, this.tupleStore, this.ruleStore);
 		readEvalPrint(System.in);
 	}
-	
+
 	/**
 	 *
 	 */
@@ -119,7 +127,7 @@ public class Interactive {
 		this.forwardChainer = fc;
 		readEvalPrint(System.in);
 	}
-	
+
 	/**
 	 * single-line commands:
 	 *   new <namespaceFile>
@@ -158,7 +166,7 @@ public class Interactive {
 			readEvalPrint(in);
 		}
 	}
-	
+
 	private void readEvalPrintLoop() throws Exception {
 		String line, upline;
 		this.consoleReader.printNewline();
@@ -205,7 +213,7 @@ public class Interactive {
 				this.consoleReader.printString("  wrong command: try 'help'");
 				this.consoleReader.printNewline();
 			}
-		}		
+		}
 	}
 
 	/**
@@ -219,7 +227,7 @@ public class Interactive {
 		//this.consoleReader.printString(this.tupleStore.proxyToUris);
 		//this.consoleReader.printNewline();
 	}
-	
+
 	/**
 	 *
 	 */
@@ -242,7 +250,7 @@ public class Interactive {
 		else
 			this.queryOutput.println(bt.toString(this.truncate));
 	}
-	
+
 	/**
 	 * checks whether a single ground tuple (tuple NOT containing any variable)
 	 * exists in the tuple store;
@@ -259,7 +267,7 @@ public class Interactive {
 		this.consoleReader.printString(Boolean.toString(this.tupleStore.ask(tuple)));
 		this.consoleReader.printNewline();
 	}
-	
+
 	/**
 	 *
 	 */
@@ -269,7 +277,7 @@ public class Interactive {
 		st.nextToken();
 		this.truncate = Integer.parseInt(st.nextToken());
 	}
-	
+
 	/**
 	 *
 	 */
@@ -279,7 +287,7 @@ public class Interactive {
 		st.nextToken();
 		this.forwardChainer.uploadTuples(st.nextToken());
 	}
-	
+
 	/**
 	 *
 	 */
@@ -293,7 +301,7 @@ public class Interactive {
 			tuple.add(st.nextToken());
 		this.tupleStore.addTuple(tuple, 1);
 	}
-	
+
 	/**
 	 *
 	 */
@@ -309,7 +317,7 @@ public class Interactive {
 		this.consoleReader.printString(Boolean.toString(this.tupleStore.removeTuple(tuple)));
 		this.consoleReader.printNewline();
 	}
-	
+
 	/**
 	 *
 	 */
@@ -319,14 +327,14 @@ public class Interactive {
 		st.nextToken();
 		this.forwardChainer.uploadRules(st.nextToken());
 	}
-	
+
 	/**
 	 *
 	 */
 	private void processClosure() {
 		this.forwardChainer.computeClosure();
 	}
-	
+
 	/**
 	 *
 	 */
@@ -336,7 +344,7 @@ public class Interactive {
 		st.nextToken();
 		this.tupleStore.writeTuples(st.nextToken());
 	}
-	
+
 	/**
 	 *
 	 */
@@ -346,7 +354,7 @@ public class Interactive {
 		st.nextToken();
 		this.tupleStore.writeTupleStore(st.nextToken());
 	}
-	
+
 	/**
 	 *
 	 */
@@ -356,7 +364,7 @@ public class Interactive {
 		st.nextToken();
 		this.tupleStore.readTupleStore(st.nextToken());
 	}
-	
+
 	/**
 	 *
 	 */
@@ -373,7 +381,7 @@ public class Interactive {
 			System.exit(1);
 		}
 	}
-	
+
 	/**
 	 *
 	 */
@@ -400,7 +408,7 @@ public class Interactive {
 			System.exit(1);
 		}
 	}
-	
+
 	/**
 	 *
 	 */
@@ -452,7 +460,7 @@ public class Interactive {
 		this.consoleReader.printString("    selectall <query> -- evaluate a QDL query (output is affected by proxy expansion and by value of truncate)");
 		this.consoleReader.printNewline();
 	}
-	
+
 	/**
 	 *
 	 */
@@ -486,7 +494,7 @@ public class Interactive {
 				break;
 		}
 	}
-	
+
 	/**
 	 *
 	 */
@@ -496,8 +504,8 @@ public class Interactive {
 			this.forwardChainer.shutdown();
 		System.exit(0);
 	}
-		
-	
+
+
 	/**
 	 * starts the read-eval-print loop, e.g.,
 	 *   time java -server -cp .:../lib/trove-2.1.0.jar:../lib/jline-0_9_5.jar -Xmx13500m de/dfki/lt/hfc/Interactive ../src/resources/default.ns ../src/resources/default.eqred.nt ../src/resources/default.eqred.rdl
@@ -508,5 +516,5 @@ public class Interactive {
 		else
 			new Interactive(args[0]);
 	}
-	
+
 }

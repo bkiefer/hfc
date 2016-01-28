@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import static de.dfki.lt.hfc.TestUtils.getResource;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -142,7 +144,7 @@ public class BindingTableTest {
   }
 
   @Test
-  public void testtoString1() {
+  public void testtoString1() throws FileNotFoundException, WrongFormatException, IOException {
     //test method toString(boolean expand)
     Set<int[]> table;
     table = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
@@ -161,7 +163,7 @@ public class BindingTableTest {
   }
 
   @Test
-  public void testtoString2() {
+  public void testtoString2() throws FileNotFoundException, WrongFormatException, IOException {
     //test method toString(int maxLength, boolean expand)
     Set<int[]> table = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     SortedMap<Integer, Integer> nameToPos = new TreeMap<Integer, Integer>();

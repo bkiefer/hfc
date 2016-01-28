@@ -3,7 +3,7 @@ package de.dfki.lt.hfc;
 import de.dfki.lt.hfc.*;
 
 public class MaterializeTimedQuintuples {
-	
+
 	public static void main(String[] args) throws Exception {
 		// java -server -cp .:../lib/trove-2.1.0.jar -Xms1024m -Xmx4096m de/dfki/lt/hfc/tests/MaterializeTimedQuintuples
 		//long time = System.currentTimeMillis();
@@ -15,7 +15,7 @@ public class MaterializeTimedQuintuples {
 		//System.exit(1);
 		fc.computeClosure();
 		//fc.tupleStore.writeTuples(getResource("??????"));
-		fc.shutdown();
+		fc.shutdownNoExit();
 	}
-	
+
 }

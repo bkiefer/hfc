@@ -60,7 +60,7 @@ public class TriplesWithoutTimeToQuintuplesWithTime {
 
 		ts.writeTuples(newTuples, OUT_FILE);
 
-		fc.shutdown();
+		fc.shutdownNoExit();
 	}
 
 }

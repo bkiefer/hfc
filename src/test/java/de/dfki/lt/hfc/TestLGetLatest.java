@@ -40,7 +40,7 @@ public class TestLGetLatest {
   public static void init() throws Exception {
 
     fc =	new ForwardChainer(4,                                                    // #cores
-        true,                                                 // verbose
+        false,                                                 // verbose
         true,                                                 // RDF Check
         false,                                                // EQ reduction disabled
         3,                                                    // min #args
@@ -382,7 +382,7 @@ public class TestLGetLatest {
 
   @AfterClass
   public static void finish() {
-    fc.shutdown();
+    fc.shutdownNoExit();
   }
 
     /*

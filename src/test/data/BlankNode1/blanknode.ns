@@ -4,6 +4,7 @@
 # @author Hans-Ulrich Krieger
 #
 
+&short2long
 xsd http://www.w3.org/2001/XMLSchema#
 
 rdf http://www.w3.org/1999/02/22-rdf-syntax-ns#
@@ -15,3 +16,7 @@ owl http://www.w3.org/2002/07/owl#
 
 # for test purposes
 test http://www.dfki.de/test#
+
+# short namespace type URIs to HFC classes: use &type2class directive
+# note: all (custom) type classes should be put in package
+#       de.dfki.lt.hfc.types

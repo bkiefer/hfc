@@ -69,7 +69,7 @@ public class AddSameAs {
 		fc.uploadTuples(getResource("ltworld.jena.nt"));
 		fc.uploadTuples("/Users/krieger/Desktop/sameas/sameas1000.nt");  // 10000 is too much
 		fc.computeClosure();
-		fc.shutdown();
+		fc.shutdownNoExit();
 		*/
 
 
