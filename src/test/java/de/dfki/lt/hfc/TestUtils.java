@@ -39,10 +39,8 @@ public class TestUtils {
           if (tuple.equals(other)) {
            //result = true; 
            ++rows;
-          } else {
-           //result = false;
            break;
-           }
+          } 
         //return result;
       }
       }
