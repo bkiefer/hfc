@@ -2,7 +2,8 @@ package de.dfki.lt.hfc;
 
 import static org.junit.Assert.*;
 
-import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,13 +15,11 @@ import org.junit.Test;
 
 import gnu.trove.THashSet;
 
-public class CalcTest {
-  private static final File resourceDir = new File("src/main/resources/");
+import static de.dfki.lt.hfc.TestUtils.*;
 
-  public static String getResource(String name) {
-    System.out.println(new File(".").getAbsolutePath());
-    return new File(resourceDir, name).getPath();
-  }
+
+public class CalcTest {
+
   @Test
   public void testunion(){
   //test method union(Set<int[]> set1, Set<int[]> set2)
@@ -199,7 +198,7 @@ public class CalcTest {
     assertEquals(true, (Calc.project(tt, pos) instanceof BindingTable));
   }
   @Test
-  public void testrestrict(){
+  public void testrestrict() throws FileNotFoundException, WrongFormatException, IOException{
     //test method restrict(BindingTable bt, ArrayList<Integer> varvarIneqs, ArrayList<Integer> varconstIneqs)
     TupleStore ts = new TupleStore(1,2);
     BindingTable bt = new BindingTable(ts);
