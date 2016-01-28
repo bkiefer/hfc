@@ -1,6 +1,6 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.AddSameAs.getResource;
+import static de.dfki.lt.hfc.TestUtils.getResource;
 
 import java.util.ArrayList;
 import de.dfki.lt.hfc.*;

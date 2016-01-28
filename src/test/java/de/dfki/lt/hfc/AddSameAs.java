@@ -2,6 +2,8 @@ package de.dfki.lt.hfc;
 
 import static org.junit.Assert.*;
 
+import static de.dfki.lt.hfc.TestUtils.getResource;
+
 import org.junit.Test;
 
 import java.io.*;
@@ -19,13 +21,6 @@ public class AddSameAs {
 
 	private static int makeRandom(int max) {
 		return (int)(Math.round(Math.random() * max));
-	}
-
-	public static String getResource(String name) {
-	  System.out.println(System.getProperty("user.dir"));
-	  System.out.println(Paths.get(".", "target", "classes", name).toAbsolutePath());
-
-	  return Paths.get(".", "target", "classes", name).toString();
 	}
 
 	@Test public void sameAsTest() throws Exception {
@@ -86,7 +81,7 @@ public class AddSameAs {
 		//fc.uploadTuples("/Users/krieger/Desktop/PAPERS/ICSC2013/sameAs/sameas100000.nt");
 		fc.computeClosure();
 		fc.computeClosure();
-		assertEquals(511046, fc.tupleStore.allTuples.size());
+		assertEquals(523017, fc.tupleStore.allTuples.size());
 		fc.shutdownNoExit();
 
 
