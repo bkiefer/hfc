@@ -20,7 +20,7 @@ import gnu.trove.*;
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Thu Jan  7 17:41:55 CET 2016
+ * @version Mon Feb  1 14:09:47 CET 2016
  */
 public final class ForwardChainer {
 
@@ -32,7 +32,7 @@ public final class ForwardChainer {
 	/**
 	 * HFC info string
 	 */
-	public static final String INFO = "v" + ForwardChainer.VERSION + " (Thu Jan  7 17:41:55 CET 2016)";
+	public static final String INFO = "v" + ForwardChainer.VERSION + " (Mon Feb  1 14:09:47 CET 2016)";
 
 	/**
 	 * a pointer to the tuple store for this forward chainer
