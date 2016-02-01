@@ -20,19 +20,19 @@ import gnu.trove.*;
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Thu Jan  7 17:41:55 CET 2016
+ * @version Mon Feb  1 14:09:47 CET 2016
  */
 public final class ForwardChainer {
 
 	/**q
 	 * HFC version number string
 	 */
-	public static final String VERSION = "6.1.14";
+	public static final String VERSION = "6.1.15";
 	
 	/**
 	 * HFC info string
 	 */
-	public static final String INFO = "v" + ForwardChainer.VERSION + " (Thu Jan  7 17:41:55 CET 2016)";
+	public static final String INFO = "v" + ForwardChainer.VERSION + " (Mon Feb  1 14:09:47 CET 2016)";
 
 	/**
 	 * a pointer to the tuple store for this forward chainer
