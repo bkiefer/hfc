@@ -8,7 +8,7 @@ import gnu.trove.*;
 import de.dfki.lt.hfc.types.*;
 
 /**
- * 
+ *
  * tuples are represented as int[] in order to save space;
  * although container objects (embodying the int[]) are easier to
  * handle -- we can define proper equals() and hashCode() methods for
@@ -42,13 +42,13 @@ import de.dfki.lt.hfc.types.*;
  * @see de.dfki.lt.hfc.TIntArrayHashingStrategy
  * @see de.dfki.lt.hfc.RuleStore
  * @see de.dfki.lt.hfc.ForwardChainer
- * 
+ *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
  * @version Wed Sep 30 15:44:31 CEST 2015
  */
 public final class TupleStore {
-	
+
 	/**
 	 * this field serves a different purpose compared to field ForwardChainer.generationCounter
 	 * and is solely used when tuple deletion is enabled in the forward chainer;
@@ -59,7 +59,7 @@ public final class TupleStore {
 	 * @see ForwardChainer.enableTupleDeletion()
 	 */
 	protected int generation = 0;
-	
+
 	/**
 	 * a special field that is initialized by an empty map from tuples (int[]) to generations
 	 * (Integer) in case tuple deletion is switched on through method enableTupleDeletion() in
@@ -67,7 +67,7 @@ public final class TupleStore {
 	 * @see ForwardChainer.enableTupleDeletion()
 	 */
 	protected THashMap<int[], Integer> tupleToGeneration = null;
-	
+
 	/**
 	 * @return true iff tuple deletion has been enabled by method ForwardChainer.enableTupleDeletion()
 	 * @return false otherwise
@@ -77,7 +77,7 @@ public final class TupleStore {
 	 */
 	private boolean tupleDeletionEnabled() {
 		return (this.tupleToGeneration != null);
-	}		
+	}
 
 	/**
 	 * an optimization, currently applicable only to
@@ -103,7 +103,7 @@ public final class TupleStore {
 	 *       field!!
 	 */
 	public boolean equivalenceClassReduction = true;
-	
+
 	/**
 	 * specifies the position of the subject, predicate, and object in an RDF triple
 	 *   0 : subject
@@ -117,7 +117,7 @@ public final class TupleStore {
 	public static final int SUBJECT_POSITION = 0;
 	public static final int PREDICATE_POSITION = 1;
 	public static final int OBJECT_POSITION = 2;
-	
+
 	/**
 	 * this setting is used for input encoding in TupleStore
 	 * @see TupleStore.OUTPUT_CHARACTER_ENCODING
@@ -130,8 +130,8 @@ public final class TupleStore {
 	 * @see TupleStore.INPUT_CHARACTER_ENCODING
 	 * @see Interactive.OUTPUT_CHARACTER_ENCODING
 	 */
-	public static final String OUTPUT_CHARACTER_ENCODING = "UTF-8";	
-	
+	public static final String OUTPUT_CHARACTER_ENCODING = "UTF-8";
+
 	/**
 	 * a mapping from the internal representation of URIs (ints) to their
 	 * representatives/proxies, again internal representation of URIs;
@@ -139,19 +139,19 @@ public final class TupleStore {
 	 * statements are entered here (at the moment)
 	 */
 	protected TIntIntHashMap uriToProxy;
-	
+
 	/**
 	 * a mapping from a proxy to its equivalence class, represented as an
 	 * array list of ints
 	 */
 	protected TIntObjectHashMap<TIntArrayList> proxyToUris;
-	
+
 	/**
 	 * a mapping from URI in subject/object position to the equivalence
 	 * relation name (internal ID) in predicate position
 	 */
 	protected TIntIntHashMap uriToEquivalenceRelation;
-	
+
 	/**
 	 * it seems reasonable to have tuples of at least length 1;
 	 * use value 3 to be compliant with RDF;
@@ -159,7 +159,7 @@ public final class TupleStore {
 	 * @see #maxNoOfARgs
 	 */
 	public int minNoOfArgs = 3;
-	
+
 	/**
 	 * this constant is used to create the right number of index tables;
 	 * note that the value of this constant has an effect on the index data
@@ -170,7 +170,7 @@ public final class TupleStore {
 	 * @see #minNoOfARgs
 	 */
 	public int maxNoOfArgs = 5;
-	
+
 	/**
 	 * a constant that controls whether a warning is printed in case an invalid
 	 * tuple is read in;
@@ -178,14 +178,14 @@ public final class TupleStore {
 	 * @see #exitOnError
 	 */
 	private boolean verbose = true;
-	
+
 	/**
 	 * when tuples are read in, this variable decides whether tuples are compliant with
 	 * what RDF requests, viz., that the first argument is either an URI or a blank node,
 	 * and that the second arg is a URI
 	 */
 	public boolean rdfCheck = true;
-	
+
 	/**
 	 * a constant that controls whether the system is terminated in case an invalid
 	 * tuple is read in (exit code = 1);
@@ -203,28 +203,28 @@ public final class TupleStore {
 	 * negative integers represent (local) variable names
 	 * @see TupleStore.INTERNAL_UNBOUND
 	 */
-	private int currentId = 0;	
-	
+	private int currentId = 0;
+
 	/**
 	 * a namespace object used to expand short form namespaces into full forms
 	 */
 	protected Namespace namespace;
-	
+
 	/**
 	 * used during input, when URIs, blank nodes, or XSD atoms are replaced by their IDs (ints)
 	 */
 	protected HashMap<String, Integer> objectToId;
-	
+
 	/**
 	 * used during output, when IDs (ints) are replaced by URI or XSD names
 	 */
 	protected ArrayList<String> idToObject;
-	
+
 	/**
 	 * a mapping used by tests & actions to speed up processing
 	 */
 	protected ArrayList<AnyType> idToJavaObject;
-	
+
 	/**
 	 * the index data structure is used to find all those tuples which contain an
 	 * object represented as an int at a specific position;
@@ -234,12 +234,12 @@ public final class TupleStore {
 	 *
 	 */
 	protected Map<Integer, Set<int[]>>[] index;
-	
+
 	/**
 	 * a set of all tuples known to TupleStore
 	 */
 	protected Set<int[]> allTuples;
-	
+
 	/**
 	 * the default hashing (and equals) strategy for tuples from the tuple store
 	 * (all positions of a tuple are taken into account);
@@ -247,7 +247,7 @@ public final class TupleStore {
 	 * index!
 	 */
 	protected static TIntArrayHashingStrategy DEFAULT_HASHING_STRATEGY = new TIntArrayHashingStrategy();
-	
+
 	/**
 	 * this registry object gathers the functional operators potentially used
 	 * during querying (FILTER) and forward chaining (LHS matching via predicates
@@ -258,7 +258,7 @@ public final class TupleStore {
 	 * registry every time a new tuple store is build
 	 */
 	protected OperatorRegistry operatorRegistry = new OperatorRegistry(this);
-	
+
 	/**
 	 * this registry object gathers the aggregational operators potentially used
 	 * during querying (AGGREGATE) and forward chaining (all-rules), and so during
@@ -268,7 +268,7 @@ public final class TupleStore {
 	 * registry every time a new tuple store is build
 	 */
 	protected AggregateRegistry aggregateRegistry = new AggregateRegistry(this);
-	
+
 	/**
 	 * init form that "outsources" initialization code that needs to be duplicated by the
 	 * binary (that is used be several other constructors) and 8-ary constructor
@@ -301,7 +301,7 @@ public final class TupleStore {
 			this.index[i] = new HashMap<Integer, Set<int[]>>();
 		this.allTuples = new THashSet<int[]>(noOfTuples, TupleStore.DEFAULT_HASHING_STRATEGY);
 	}
-	
+
 	/**
 	 * specify mappings here that stay constant for efficiency reasons, independent of
 	 * whether these URIs are seen first at different places in a file that is read in;
@@ -357,13 +357,13 @@ public final class TupleStore {
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		this.currentId = 5;
 	}
-	
+
 	/**
 	 * (should) only (be) used by copyTupleStore()
 	 */
 	private TupleStore() {
 	}
-	
+
 	/**
 	 * choose a proper noOfAtoms/noOfTuples in order not to arrive at copying (at all or
    * too early) the elements into a larger structure; keep in mind that other services
@@ -375,7 +375,7 @@ public final class TupleStore {
 				 this.minNoOfArgs, this.maxNoOfArgs, noOfAtoms, noOfTuples);
     this.namespace = new Namespace();
 	}
-	
+
 	/**
 	 * extends the binary constructor with the ability to read in a namespace
 	 */
@@ -383,7 +383,7 @@ public final class TupleStore {
 		this(noOfAtoms, noOfTuples);
 		this.namespace = namespace;
 	}
-	
+
 	/**
 	 * extends the binary constructor with the ability to read in a namespace and a
 	 * textual representation of facts (basically N-Triples syntax), stored in a file
@@ -394,7 +394,7 @@ public final class TupleStore {
 		this.namespace = namespace;
 		readTuples(tupleFile);
 	}
-	
+
 	/**
 	 * more options to fully parameterize the tuple store
 	 */
@@ -423,17 +423,26 @@ public final class TupleStore {
 		this.namespace = namespace;
 		readTuples(tupleFile);
 	}
-	
+
 	/**
 	 * a simple STATIC method, translating an int array into something readable (N-tuple syntax)
 	 */
 	public static void printTuple(int[] tuple, ArrayList<String> mapping) {
-		for (int element : tuple)
-			System.out.print(mapping.get(element) + " ");
-		System.out.println(".");
+		System.out.println(toString(tuple, mapping));
 	}
-	
-	/**
+
+  /**
+   * a simple STATIC method, translating an int array into something readable (N-tuple syntax)
+   */
+  public static String toString(int[] tuple, ArrayList<String> mapping) {
+    StringBuilder sb = new StringBuilder();
+    for (int element : tuple)
+      sb.append(mapping.get(element)).append(' ');
+    sb.append('.');
+    return sb.toString();
+  }
+
+  /**
 	 * three cases to distinguish here:
 	 * (1) left and right are _not_ keys in uriToProxy
 	 * (2) left xor right is a key in uriToProxy
@@ -482,7 +491,7 @@ public final class TupleStore {
 			}
 		}
 	}
-	
+
 	/**
 	 * given a tuple, isEquivalenceRelation() determines whether the predicate
 	 * in position this.predicatePosition is an equivalence relation;
@@ -499,7 +508,7 @@ public final class TupleStore {
 						(pred == Namespace.OWL_EQUIVALENTCLASS_ID) ||
 						(pred == Namespace.OWL_EQUIVALENTPROPERTY_ID));
 	}
-	
+
 	/**
 	 * returns the proxy for URI uri iff uri is a key in uriToProxy;
 	 * otherwise, uri is returned
@@ -510,7 +519,7 @@ public final class TupleStore {
 		else
 			return uri;
 	}
-	
+
 	/**
 	 * remove those tuples from the set of all tuples and from the index which have
 	 * an equivalence relation in predicate position;
@@ -579,7 +588,7 @@ public final class TupleStore {
 		}
 		return toBeRemoved.size();
 	}
-	
+
 	/**
 	 * return a brand new id, resulting from the very last id, incremeted by 1 (values 0--5
 	 * are reserved)
@@ -587,7 +596,7 @@ public final class TupleStore {
 	private int getNextId() {
 		return ++this.currentId;
 	}
-	
+
 	/**
 	 * obj is either a URI or an XSD literal, encoded as a string;
 	 * in case obj has _not_ been seen before, the method assigns a new id (an int) to obj,
@@ -607,7 +616,7 @@ public final class TupleStore {
 			return id;
 		}
 	}
-	
+
 	/**
 	 * returns the the textual representation for id (an int);
 	 * notice that since tuples are not always grounded (since they are
@@ -620,7 +629,7 @@ public final class TupleStore {
 		else
 			return this.idToObject.get(id);
 	}
-	
+
 	/**
 	 * returns a Java object for a given literal, internally represented by parameter id;
 	 * Java classes have been defined for the following types of literals:
@@ -655,7 +664,7 @@ public final class TupleStore {
 		else
 			return obj;
 	}
-	
+
 	/**
 	 * for each new URI, blank node, or XSD atom, we construct a new Java
 	 * object on _demand_ when calling makeJavaObject();
@@ -729,7 +738,7 @@ public final class TupleStore {
 		}
 		return id;
 	}
-	
+
 	/**
 	 * at several places, messages were output depending on this.exitOnError
 	 * and this.verbose -- unify this in this special private method;
@@ -744,7 +753,7 @@ public final class TupleStore {
 			System.out.println("  " + lineNo + message);
 		return false;
 	}
-	
+
 	/**
 	 * same method without the line numbering
 	 */
@@ -757,7 +766,7 @@ public final class TupleStore {
 			System.out.println("  " + message);
 		return false;
 	}
-	
+
 	/**
 	 * checks whether a tuple of proper length as specified by this.minNoOfArgs
 	 * and this.maxNoOfArgs;
@@ -795,7 +804,7 @@ public final class TupleStore {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * given a string representation of a literal (an argument of a tuple),
 	 * isUri() returns true iff literal is a URI; false, otherwise
@@ -803,7 +812,7 @@ public final class TupleStore {
 	public static boolean isUri (String literal) {
 		return literal.startsWith("<");
 	}
-	
+
 	/**
 	 * given an id (an int), returns true iff id represents a URI;
 	 * false, otherwise
@@ -811,7 +820,7 @@ public final class TupleStore {
 	public boolean isUri(int id) {
 		return (this.idToJavaObject.get(id) instanceof Uri);
 	}
-	
+
 	/**
 	 * given a string representation of a literal (an argument of a tuple),
 	 * isBlankNode() returns true iff literal is a blank node; false, otherwise
@@ -819,7 +828,7 @@ public final class TupleStore {
 	public static boolean isBlankNode (String literal) {
 		return literal.startsWith("_");
 	}
-	
+
 	/**
 	 * given an id (an int), returns true iff id represents a blank node;
 	 * false, otherwise
@@ -827,7 +836,7 @@ public final class TupleStore {
 	public boolean isBlankNode(int id) {
 		return (this.idToJavaObject.get(id) instanceof BlankNode);
 	}
-	
+
 	/**
 	 * given a string representation of a literal (an argument of a tuple),
 	 * isAtom() returns true iff literal is an XSD atom; false, otherwise
@@ -835,15 +844,15 @@ public final class TupleStore {
 	public static boolean isAtom (String literal) {
 		return literal.startsWith("\"");
 	}
-	
+
 	/**
 	 * given an id (an int), returns true iff id represents a XSD atom;
 	 * false, otherwise
 	 */
 	public boolean isAtom(int id) {
 		return (this.idToJavaObject.get(id) instanceof XsdAnySimpleType);
-	}	
-	
+	}
+
 	/**
 	 * tests whether literal is a constant (i.e., URI, blank node, or XSD atom) as known
 	 * by the tuple store; i.e., literal must be part of a tuple that has been added to
@@ -853,14 +862,14 @@ public final class TupleStore {
 	public boolean isConstant(String literal) {
 		return this.objectToId.containsKey(literal);
 	}
-	
+
 	/**
 	 * internal representation: constants are positive numbers
 	 */
 	public static boolean isConstant(int id) {
 		return (id > 0);
 	}
-	
+
 	/**
 	 * internalizeTuple() maps array lists of strings to int arrays of unique
 	 * ints;
@@ -877,7 +886,7 @@ public final class TupleStore {
 		}
 		return intTuple;
 	}
-	
+
 	/**
 	 * internalizeTuple() maps string arrays to int arrays of unique ints;
 	 * uses putObject() to generate new ints in case the string argument is
@@ -893,7 +902,7 @@ public final class TupleStore {
 		}
 		return intTuple;
 	}
-	
+
 	/**
 	 * addTuple() assumes a textual tuple representation after tokenization
 	 * (an array list of strings);
@@ -918,14 +927,14 @@ public final class TupleStore {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * addTuple(String[]) performs the internalization and then calls addTuple(int[])
 	 */
 	public boolean addTuple(String[] stringTuple) {
 		return addTuple(internalizeTuple(stringTuple));
 	}
-	
+
 	/**
 	 * addTuple() assumes an int[] as input (the tuple);
 	 * the mappings are established and the index is updated;
@@ -948,7 +957,7 @@ public final class TupleStore {
 		}
 		return isNew;
 	}
-	
+
 	/**
 	 * helper for cleanUpTupleStore;
 	 * differs from addTuple(int[]) in that it carries a second argument, the
@@ -962,8 +971,8 @@ public final class TupleStore {
 				this.tupleToGeneration.put(tuple, gennum);
 		}
 	}
-	
-	
+
+
 	/**
 	 * I separated this code from the addTuple method above to make it
 	 * accessible from other classes
@@ -987,7 +996,7 @@ public final class TupleStore {
 			ithset.add(tuple);
 		}
 	}
-		
+
 	/**
 	 * obtains all those tuples which contain an object obj (represented as an int)
 	 * at a specific position pos in a tuple (an int);
@@ -1003,7 +1012,7 @@ public final class TupleStore {
 		else
 			return result;
 	}
-	
+
 	/**
 	 * instead of using the obj id (an int), one can alternatively specify the object
 	 * directly;
@@ -1017,14 +1026,14 @@ public final class TupleStore {
 		else
 			return result;
 	}
-	
+
 	/**
 	 * returns the set of all tuples
 	 */
 	public Set<int[]> getAllTuples() {
 		return this.allTuples;
 	}
-	
+
 	/**
 	 * removes the tuple from the set of all tuples and cleans up the index structure;
 	 * if tuple deletion is enabled, the tuple-generation pair is also removed from the
@@ -1046,7 +1055,7 @@ public final class TupleStore {
 		}
 		return contained;
 	}
-	
+
 	/**
 	 * differs from removeTuple() in that it returns the generation of the tuple
 	 * that is going to be deleted;
@@ -1067,7 +1076,7 @@ public final class TupleStore {
 		}
 		return gennum;
 	}
-	
+
 	/**
 	 * readTuples() reads in a sequence of tuples from a text file;
 	 * tuples must be finished in a _single_ line, constrained by the following
@@ -1188,11 +1197,11 @@ public final class TupleStore {
 			if (this.verbose) {
 				System.out.println("  removing " + no + " equivalence relation instances");
 				System.out.println("  removing " + (all - this.allTuples.size()) + " resulting duplicates");
-				System.out.println("  number of all tuples: " + this.allTuples.size());
+				System.out.println("  number of all tuples: " + this.allTuples.size() + "\n");
 			}
 		}
 	}
-	
+
 	/**
 	 * reads in a 'compressed' tuple store (extension usually "ts") generated by
 	 * writeTupleStore(); usage:
@@ -1233,7 +1242,7 @@ public final class TupleStore {
 		System.out.println("  overall " + this.allTuples.size() + " unique tuples");
 		return this.allTuples;
 	}
-	
+
 	/**
 	 * helper for readTupleStore()
 	 */
@@ -1247,7 +1256,7 @@ public final class TupleStore {
 													Integer.parseInt(line.substring(seppos + 1)));
 		}
 	}
-	
+
 	/**
 	 * helper for readTupleStore()
 	 */
@@ -1255,9 +1264,9 @@ public final class TupleStore {
 		for (int i = noOfLines; i > 0; i--) {
 			this.idToObject.add(br.readLine());
 			this.idToJavaObject.add(null);
-		}		
+		}
 	}
-	
+
 	/**
 	 * helper for readTupleStore()
 	 */
@@ -1279,7 +1288,7 @@ public final class TupleStore {
 			addTuple(tuple);
 		}
 	}
-	
+
 	/**
 	 * a URI starts with a '<' and ends with a '>';
 	 */
@@ -1303,7 +1312,7 @@ public final class TupleStore {
 		tuple.add(token);
 		return token;
 	}
-	
+
 	/**
 	 * a blank node starts with a "_:" and ends before the next whitespace character,
 	 * i.e., no whitespaces are allowed inside the name of the blank node;
@@ -1316,7 +1325,7 @@ public final class TupleStore {
 		sb.append(st.nextToken());  // the rest of the blank node
 		tuple.add(sb.toString());
 	}
-	
+
 	/**
 	 * XSD atoms are strings optionally followed by either a type identifier (^^type)
 	 * or a language tag (@lang);
@@ -1368,7 +1377,7 @@ public final class TupleStore {
 		tuple.add(token);
 		return token;
 	}
-	
+
 	/**
 	 * variables in a rule or query tuple start with a '?' char and are followed by a string,
 	 * containing no whitespace chars;
@@ -1379,7 +1388,7 @@ public final class TupleStore {
 		StringBuilder sb = new StringBuilder("?");
 		sb.append(st.nextToken());  // the rest of the URI
 		String var = sb.toString();
-		tuple.add(var);		
+		tuple.add(var);
 		return var;
 	}
 
@@ -1391,7 +1400,7 @@ public final class TupleStore {
 	public void writeTuples(String filename) {
 		writeTuples(this.allTuples, filename);
 	}
-	
+
 	/**
 	 * a simple version that writes all tuple from the tuple store to a file using
 	 * the external representation (encoding: UTF-16);
@@ -1414,7 +1423,7 @@ public final class TupleStore {
 			System.exit(1);
 		}
 	}
-	
+
 	/**
 	 * this method differs from writeTuples() above in that it always tries to
 	 * fully expand the namespace of an URI when writing out tuples
@@ -1435,8 +1444,8 @@ public final class TupleStore {
 			System.exit(1);
 		}
 	}
-	
-	
+
+
 	/**
 	 * a simple version that writes the relevant parts of a tuple store to a file, using
 	 * a specific format; much faster than Java's serialization;
@@ -1448,7 +1457,7 @@ public final class TupleStore {
 		try {
 			PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(filename),
 																															TupleStore.OUTPUT_CHARACTER_ENCODING));
-			// dump objectToId (null -> 0 given by constructor is overwritten by exactly the same mapping) 
+			// dump objectToId (null -> 0 given by constructor is overwritten by exactly the same mapping)
 			pw.println("&object2id " + this.objectToId.size());
 			for (Map.Entry<String, Integer> entry : this.objectToId.entrySet())
 				pw.println(entry.getKey() + " " + entry.getValue());
@@ -1475,7 +1484,7 @@ public final class TupleStore {
 			System.exit(1);
 		}
 	}
-	
+
 	/**
 	 * generates an external string representation from the internal int[]
 	 * representation of a tuple
@@ -1485,9 +1494,9 @@ public final class TupleStore {
 		for (int i = 0; i < tuple.length; i++)
 			sb.append(getObject(tuple[i]) + " ");
 		sb.append(".");
-		return sb.toString();		
+		return sb.toString();
 	}
-	
+
 	/**
 	 * this method differs from toString() above in that is always tries
 	 * to fully expand the namespace of an URI (if present)
@@ -1505,9 +1514,9 @@ public final class TupleStore {
 				sb.append(this.namespace.expandUri(literal) + " ");
 		}
 		sb.append(".");
-		return sb.toString();		
-	}	
-	
+		return sb.toString();
+	}
+
 	/**
 	 * checks whether a tuple (represented as a string array) is contained in the
 	 * tuple store
@@ -1530,14 +1539,14 @@ public final class TupleStore {
 	public boolean ask(ArrayList<String> externalTuple) {
 		return ask(externalTuple.toArray(new String[externalTuple.size()]));
 	}
-	
+
 	/**
 	 * use this method for containment test in order not to make this.allTuples public
 	 */
 	public boolean ask(int[] tuple) {
 		return this.allTuples.contains(tuple);
 	}
-	
+
 	/**
 	 * returns those ground tuples g = p+s, such that p matches the prefix pattern parameter;
 	 * a pattern is composed of variables, URIs, and XSD atoms;
@@ -1554,7 +1563,7 @@ public final class TupleStore {
 	 * repository;
 	 *
 	 * NOTE: we will return the EMPTY SET for patterns longer than the longest tuple
-	 * 
+	 *
 	 * NOTE: we will return the NULL VALUE for the EMPTY prefix pattern (even though ALL
 	 *       tuples match this pattern)
 	 *
@@ -1583,7 +1592,7 @@ public final class TupleStore {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * checks whether matchPrefixPattern() returns a NON-empty set
 	 * NOTE: this method will only work for patterns not longer than the size of the index
@@ -1592,7 +1601,7 @@ public final class TupleStore {
 	public boolean containsPrefixPattern(String[] prefixPattern) {
 		return (! matchPrefixPattern(prefixPattern).isEmpty());
 	}
-	
+
 	/**
 	 * queries the index, given a rule pattern, consisting of constants and variables;
 	 * potentially performs several calls to the index using getTuples(), followed by
@@ -1625,7 +1634,7 @@ public final class TupleStore {
 		boolean onlyVars = true;
 		int length = pattern.length;
 		Set<int[]> query;
-		Set<int[]> result = null;		
+		Set<int[]> result = null;
 		for (int i = 0; i < length; i++) {
 			if (! RuleStore.isVariable(pattern[i])) {
 				onlyVars = false;
@@ -1671,7 +1680,7 @@ public final class TupleStore {
 		// finished !!
 		return result;
 	}
-	
+
 	/**
 	 * destructively reduces the input set by making sure that columns headed
 	 * by the same variable hold the same value;
@@ -1701,7 +1710,7 @@ public final class TupleStore {
 		}
 		return input;
 	}
-	
+
 	/**
 	 * returns a copy of the tuple store that can be used to generate "choice points",
 	 * e.g., during reasoning, as is done by the forward chainer
@@ -1735,7 +1744,7 @@ public final class TupleStore {
 		// finished!
 		return copy;
 	}
-	
+
 	/**
 	 * returns a nearly-deep copy of the index: everything is copied with the notable
 	 * exception of the tuples (the int arrays) at the leaves of the index
@@ -1767,7 +1776,7 @@ public final class TupleStore {
 		ts.readTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/ltworld.jena.nt");
 		System.out.println((System.currentTimeMillis() - start)/1000.0);
 		*/
-		/*		
+		/*
 		ts.addEquivalentElements(1, 2);
 		System.out.println(ts.uriToProxy);
 		System.out.println(ts.proxyToUris);
@@ -1819,6 +1828,6 @@ public final class TupleStore {
 		System.out.println(args[2] + " in object position: " + (ts.index[2].get(no) == null ? 0 : ts.index[2].get(no).size()) + " times");
 		*/
 	}
-	
+
 }
 

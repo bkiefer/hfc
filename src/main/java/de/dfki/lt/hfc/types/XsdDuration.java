@@ -18,7 +18,7 @@ package de.dfki.lt.hfc.types;
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Tue Jan  3 14:42:53 CET 2012
+ * @version Fri Jan 29 19:09:59 CET 2016
  */
 public final class XsdDuration extends XsdAnySimpleType {
 	
@@ -180,22 +180,32 @@ public final class XsdDuration extends XsdAnySimpleType {
 		int index = time.lastIndexOf('^');
 		return time.substring(1, index - 2);
 	}
+  
+  /**
+   * even though there exist a javax.xml.datatype.Duration class, this
+   * class does not perfectly fit the intention behind XsdDuration, so
+   * return this object
+   */
+  public Object toJava() {
+    return this;
+  }
 	
-	/*
-	 public static void main(String[] args) {
-	 XsdDuration xt = new XsdDuration("\"-P12000Y0M04D\"^^<xsd:duration>");
-	 System.out.println(xt.year);
-	 System.out.println(xt.hour);
-	 System.out.println(xt.second);
-	 System.out.println(xt.toString(true));
-	 System.out.println(xt.toString(false));
-	 System.out.println();
-	 xt = new XsdDuration(false, 2009, 1, 12, 1, 0, 3.456F);
-	 System.out.println(xt.toString(true));
-	 System.out.println(xt.toName());
-	 System.out.println(xt.toString(true));
-	 System.out.println(xt.toString(false));
-	 }
-	 */
+	/**
+   * for test puposes only
+   */
+  public static void main(String[] args) {
+    XsdDuration xt = new XsdDuration("\"-P12000Y0M04D\"^^<xsd:duration>");
+    System.out.println(xt.year);
+    System.out.println(xt.hour);
+    System.out.println(xt.second);
+    System.out.println(xt.toString(true));
+    System.out.println(xt.toString(false));
+    System.out.println();
+    xt = new XsdDuration(false, 2009, 1, 12, 1, 0, 3.456F);
+    System.out.println(xt.toString(true));
+    System.out.println(xt.toName());
+    System.out.println(xt.toString(true));
+    System.out.println(xt.toString(false));
+  }
 	
 }

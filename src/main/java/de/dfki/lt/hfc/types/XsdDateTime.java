@@ -18,7 +18,7 @@ package de.dfki.lt.hfc.types;
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Tue Jan  3 10:49:29 CET 2012
+ * @version Fri Jan 29 19:02:02 CET 2016
  */
 public final class XsdDateTime extends XsdAnySimpleType {
 
@@ -179,10 +179,21 @@ public final class XsdDateTime extends XsdAnySimpleType {
 		int index = time.lastIndexOf('^');
 		return time.substring(1, index - 2);
 	}
+  
+  /**
+   * even though there exist a java.util.Date and java.util.GregorianCalendar
+   * class, these classes do not perfectly fit the intention behind XsdDateTime,
+   * so return this object
+   */
+  public Object toJava() {
+    return this;
+  }
 	
-	/*
-	public static void main(String[] args) {
-		XsdDateTime xt = new XsdDateTime("\"-12000-03-04T23:00:01.123\"^^<xsd:dateTime>");
+	/**
+   * for test purposes only
+   */
+  public static void main(String[] args) {
+    XsdDateTime xt = new XsdDateTime("\"-12000-03-04T23:00:01.123\"^^<xsd:dateTime>");
 	  System.out.println(xt.year);
 		System.out.println(xt.hour);
 		System.out.println(xt.second);
@@ -194,7 +205,6 @@ public final class XsdDateTime extends XsdAnySimpleType {
 		System.out.println(xt.toName());
 		System.out.println(xt.toString(true));
 		System.out.println(xt.toString(false));
-	}
-	*/
+  }
 
 }

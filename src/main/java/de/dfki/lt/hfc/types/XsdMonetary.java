@@ -22,7 +22,7 @@ package de.dfki.lt.hfc.types;
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Tue Sep 13 15:10:13 CEST 2011
+ * @version Fri Jan 29 19:35:14 CET 2016
  */
 public final class XsdMonetary extends XsdAnySimpleType {
 	
@@ -117,20 +117,28 @@ public final class XsdMonetary extends XsdAnySimpleType {
 		return Double.toString(this.amount) + this.currency;
 	}
 	
-	/*
-	 public static void main(String[] args) {
-	 XsdMonetary mon = new XsdMonetary("\"42USD\"^^<xsd:monetary>");
-	 System.out.println(mon.amount);
-	 System.out.println(mon.currency);
-	 System.out.println(mon.toString(true));
-	 System.out.println(mon.toString(false));
-	 System.out.println();
-	 mon = new XsdMonetary(4.31, "EUR");
-	 System.out.println(mon.toString(true));
-	 System.out.println(mon.toName());
-	 System.out.println(mon.toString(true));
-	 System.out.println(mon.toString(false));
-	 }
-	 */
-	
+  /**
+   * there exists no Java counterpart, so return this object
+   */
+  public Object toJava() {
+    return this;
+  }
+  
+	/**
+   * for test purposes only
+   */
+  public static void main(String[] args) {
+    XsdMonetary mon = new XsdMonetary("\"42USD\"^^<xsd:monetary>");
+    System.out.println(mon.amount);
+    System.out.println(mon.currency);
+    System.out.println(mon.toString(true));
+    System.out.println(mon.toString(false));
+    System.out.println();
+    mon = new XsdMonetary(4.31, "EUR");
+    System.out.println(mon.toString(true));
+    System.out.println(mon.toName());
+    System.out.println(mon.toString(true));
+    System.out.println(mon.toString(false));
+  }
+
 }

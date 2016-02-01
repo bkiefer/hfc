@@ -9,7 +9,7 @@ import de.dfki.lt.hfc.TupleStore;
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Mon May 30 16:46:09 CEST 2011
+ * @version Fri Jan 29 19:32:15 CET 2016
  */
 public final class XsdLong extends XsdAnySimpleType {
 	
@@ -72,12 +72,10 @@ public final class XsdLong extends XsdAnySimpleType {
 	}
   
   /**
-   * returns the value (a long int covered in a Long container) for a given XsdLong
-   * object which is refered to by its internal TupleStore ID (a positive int)
+   * returns a java.lang.Long container for an HFC XsdLong object
    */
-  public static Object getValue(int id, TupleStore ts) {
-    final XsdLong xl = (XsdLong)(ts.getJavaObject(id));
-    return new Long(xl.value);
+  public Object toJava() {
+    return new Long(this.value);
   }
 
 }

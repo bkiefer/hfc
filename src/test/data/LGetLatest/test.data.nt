@@ -1,0 +1,89 @@
+#
+# @author Hans-Ulrich Krieger
+# @version Wed Dec 30 15:12:56 CET 2015
+#
+
+# the protagonists
+
+<hst:w1> <rdf:type> <dom:Worker> .
+<hst:w1> <dom:name> "Harry" .
+<hst:w2> <rdf:type> <dom:Worker> .
+<hst:w2> <dom:name> "Larry" .
+<hst:m> <rdf:type> <dom:Manager> .
+<hst:m> <dom:name> "Barry" .
+
+# manager makes suggestion to _both_ worker1 and worker2;
+# follows and refersTo are "empty"
+
+<hst:da1> <rdf:type> <dafn:Suggestion> .
+<hst:da1> <dafn:happens> "468"^^<xsd:long> .
+<hst:da1> <dafn:sender> <hst:m> .
+<hst:da1> <dafn:addressee> <hst:w1> .
+<hst:da1> <dafn:addressee> <hst:w2> .
+
+# worker2 rejects suggestion, but not worker1: addressee;
+# both are listening what the other is saying: participant
+
+<hst:da2> <rdf:type> <dafn:DeclineSuggestion> .
+<hst:da2> <dafn:happens> "489"^^<xsd:long> .
+<hst:da2> <dafn:sender> <hst:w2> .
+<hst:da2> <dafn:addressee> <hst:m> .
+<hst:da2> <dafn:participant> <hst:w1> .
+<hst:da2> <dafn:follows> <hst:da1> .
+<hst:da2> <dafn:refersTo> <hst:da1> .
+
+<hst:da3> <rdf:type> <dafn:AcceptSuggestion> .
+<hst:da3> <dafn:happens> "503"^^<xsd:long> .
+<hst:da3> <dafn:sender> <hst:w1> .
+<hst:da3> <dafn:addressee> <hst:m> .
+<hst:da3> <dafn:participant> <hst:w2> .
+<hst:da3> <dafn:follows> <hst:da1> .
+<hst:da3> <dafn:refersTo> <hst:da1> .
+
+# worker1 is already on its way;
+# worker2 is presented another suggestion by the manager;
+# note that property refersTo links to _both_ DAs da1 and da2;
+
+<hst:da4> <rdf:type> <dafn:Suggestion> .
+<hst:da4> <dafn:happens> "533"^^<xsd:long> .
+<hst:da4> <dafn:sender> <hst:m> .
+<hst:da4> <dafn:addressee> <hst:w2> .
+<hst:da4> <dafn:follows> <hst:da2> .
+<hst:da4> <dafn:refersTo> <hst:da1> .
+<hst:da4> <dafn:refersTo> <hst:da2> .
+
+# worker2 is able/willing to carry out the task
+
+<hst:da5> <rdf:type> <dafn:AcceptSuggestion> .
+<hst:da5> <dafn:happens> "548"^^<xsd:long> .
+<hst:da5> <dafn:sender> <hst:w2> .
+<hst:da5> <dafn:addressee> <hst:m> .
+<hst:da5> <dafn:follows> <hst:da4> .
+<hst:da5> <dafn:refersTo> <hst:da4> .
+
+# worker1 reports about progress of his work
+
+<hst:da6> <rdf:type> <dafn:Inform> .
+<hst:da6> <dafn:happens> "686"^^<xsd:long> .
+<hst:da6> <dafn:sender> <hst:w1> .
+<hst:da6> <dafn:addressee> <hst:m> .
+<hst:da6> <dafn:follows> <hst:da3> .
+<hst:da6> <dafn:refersTo> <hst:da1> .
+
+# manager checks whether worker2 is on the right track
+
+<hst:da7> <rdf:type> <dafn:YNQuestion> .
+<hst:da7> <dafn:happens> "731"^^<xsd:long> .
+<hst:da7> <dafn:sender> <hst:m> .
+<hst:da7> <dafn:addressee> <hst:w2> .
+<hst:da7> <dafn:follows> <hst:da5> .
+<hst:da7> <dafn:refersTo> <hst:da4> .
+
+# everything is fine with worker2
+<hst:da8> <rdf:type> <dafn:Confirm> .
+<hst:da8> <dafn:happens> "755"^^<xsd:long> .
+<hst:da8> <dafn:sender> <hst:w2> .
+<hst:da8> <dafn:addressee> <hst:m> .
+<hst:da8> <dafn:follows> <hst:da7> .
+<hst:da8> <dafn:refersTo> <hst:da4> .
+

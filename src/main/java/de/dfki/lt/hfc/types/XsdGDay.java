@@ -11,7 +11,7 @@ package de.dfki.lt.hfc.types;
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Tue Jan  3 13:33:32 CET 2012
+ * @version Fri Jan 29 19:10:24 CET 2016
  */
 public final class XsdGDay extends XsdAnySimpleType {
 	
@@ -79,20 +79,30 @@ public final class XsdGDay extends XsdAnySimpleType {
 		int index = time.lastIndexOf('^');
 		return time.substring(1, index - 2);
 	}
+  
+  /**
+   * even though there exist a java.util.Date and java.util.GregorianCalendar
+   * class, these classes do not perfectly fit the intention behind XsdGDay
+   * so return this object
+   */
+  public Object toJava() {
+    return this;
+  }
 	
-	/*
-	 public static void main(String[] args) {
-	 XsdGDay xt = new XsdGDay("\"---13\"^^<xsd:gDay>");
-	 System.out.println(xt.day);
-	 System.out.println(xt.toString(true));
-	 System.out.println(xt.toString(false));
-	 System.out.println();
-	 xt = new XsdGDay(1);
-	 System.out.println(xt.toString(true));
-	 System.out.println(xt.toName());
-	 System.out.println(xt.toString(true));
-	 System.out.println(xt.toString(false));
-	 }
-	 */
+	/**
+   * for test purposes only
+   */
+  public static void main(String[] args) {
+    XsdGDay xt = new XsdGDay("\"---13\"^^<xsd:gDay>");
+    System.out.println(xt.day);
+    System.out.println(xt.toString(true));
+    System.out.println(xt.toString(false));
+    System.out.println();
+    xt = new XsdGDay(1);
+    System.out.println(xt.toString(true));
+    System.out.println(xt.toName());
+    System.out.println(xt.toString(true));
+    System.out.println(xt.toString(false));
+  }
 	
 }

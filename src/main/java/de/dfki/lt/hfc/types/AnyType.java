@@ -18,7 +18,7 @@ package de.dfki.lt.hfc.types;
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Tue Sep 13 16:47:00 CEST 2011
+ * @version Fri Jan 29 17:02:37 CET 2016
  */
 public abstract class AnyType {
 
@@ -44,5 +44,24 @@ public abstract class AnyType {
 	 *   are replaced by the underscore character '_'
 	 */
 	public abstract String toName();
+  
+  /*
+   * returns an instance of a "corresponding" Java class if there is such a class;
+   * for instance
+   *   + XsdString -> java.lang.String
+   *   + XsdInt -> java.lang.Integer
+   *   + XsdFloat -> java.lang.Float
+   *   + XsdAnyURI -> java.net.URI
+   * as some of HFC's XSD types do _not_ have a counterpart in Java, we return the
+   * HFC XSD type instance itself in such a case;
+   * for instance
+   *   + XsdMonetary -> XsdMonetary
+   *   + XsdGMonthYear -> XsdGMonthYear
+   *   + BlankNode -> BlankNode
+   *   + Uri -> Uri
+   * as the types of the return values for the different toJava() methods vary, we define
+   * the return type of this method to be the most general type, viz., java.lang.Object
+   */
+  public abstract Object toJava();
 	
 }

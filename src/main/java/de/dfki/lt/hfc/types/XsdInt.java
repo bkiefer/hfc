@@ -5,7 +5,7 @@ import de.dfki.lt.hfc.TupleStore;
 /**
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Mon May 30 16:46:09 CEST 2011
+ * @version Fri Jan 29 19:30:23 CET 2016
  */
 public final class XsdInt extends XsdAnySimpleType {
 	
@@ -68,18 +68,18 @@ public final class XsdInt extends XsdAnySimpleType {
 	}
   
   /**
-   * returns the value (an int covered in an Integer container) for a given XsdInt
-   * object which is refered to by its internal TupleStore ID (a positive int)
+   * returns a java.lang.Integer container for an HFC XsdInt object
    */
-  public static Object getValue(int id, TupleStore ts) {
-    final XsdInt xi = (XsdInt)(ts.getJavaObject(id));
-    return new Integer(xi.value);
+  public Object toJava() {
+    return new Integer(this.value);
   }
 	
-	/*
-	public static void main(String[] args) {
-		XsdInt xi = new XsdInt("\"42\"^^<xsd:int>");
-		System.out.println(xi.value);
+  /**
+   * for test purposes only
+   */
+  public static void main(String[] args) {
+    XsdInt xi = new XsdInt("\"42\"^^<xsd:int>");
+    System.out.println(xi.value);
 		System.out.println(xi.toString(true));
 		System.out.println(xi.toString(false));
 	  System.out.println();
@@ -87,7 +87,6 @@ public final class XsdInt extends XsdAnySimpleType {
 		System.out.println(xi.value);
 		System.out.println(xi.toString(true));
 		System.out.println(xi.toString(false));
-	}
-	 */
+  }
 	
 }

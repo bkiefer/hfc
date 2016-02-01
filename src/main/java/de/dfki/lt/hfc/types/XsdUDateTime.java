@@ -31,7 +31,7 @@ package de.dfki.lt.hfc.types;
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Wed Jun 22 13:53:35 CEST 2011
+ * @version Fri Jan 29 19:22:44 CET 2016
  */
 public final class XsdUDateTime extends XsdAnySimpleType {
 	
@@ -298,21 +298,31 @@ public final class XsdUDateTime extends XsdAnySimpleType {
 		int index = time.lastIndexOf('^');
 		return time.substring(1, index - 2);
 	}
+  
+  /**
+   * even though there exist a java.util.Date and java.util.GregorianCalendar
+   * class, these classes do not perfectly fit the intention behind XsdUDateTime
+   * so return this object
+   */
+  public Object toJava() {
+    return this;
+  }
 
-	/*
-	 public static void main(String[] args) {
-	 // an instance within the fourth day of a month in 2000
-	 XsdUDateTime xt = new XsdUDateTime("\"2000-??-04T??:??:??.???\"^^<xsd:uDateTime>");
-	 System.out.println(xt.hour);
-	 System.out.println(xt.second);
-	 System.out.println(xt.toString(true));
-	 System.out.println(xt.toString(false));
-	 System.out.println();
-	 // an instance within the 12th Jan 2009
-	 xt = new XsdUDateTime(2009, 1, 12, -1, -1, -1F);
-	 System.out.println(xt.toString(true));
-	 System.out.println(xt.toString(false));
-	 }
-	 */
+	/**
+   * for test purposes only
+   */
+  public static void main(String[] args) {
+    // an instance within the fourth day of a month in 2000
+    XsdUDateTime xt = new XsdUDateTime("\"2000-??-04T??:??:??.???\"^^<xsd:uDateTime>");
+    System.out.println(xt.hour);
+    System.out.println(xt.second);
+    System.out.println(xt.toString(true));
+    System.out.println(xt.toString(false));
+    System.out.println();
+    // an instance within the 12th Jan 2009
+    xt = new XsdUDateTime(2009, 1, 12, -1, -1, -1F);
+    System.out.println(xt.toString(true));
+    System.out.println(xt.toString(false));
+  }
 	
 }
