@@ -27,13 +27,9 @@ public final class ForwardChainer {
 	/**q
 	 * HFC version number string
 	 */
-<<<<<<< HEAD
+
 	public static final String VERSION = "6.1.14";
 	
-=======
-	public static final String VERSION = "6.1.13";
-
->>>>>>> 2333e9c8d22c874eaa34f7b82949ccf11442f91e
 	/**
 	 * HFC info string
 	 */
@@ -1685,83 +1681,7 @@ public final class ForwardChainer {
 		// ... and start closure computation again
 		//fc.computeClosure();
 		//fc.shutdown();
-<<<<<<< HEAD
-=======
 
-
-		//fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/furniture2/furniture2.rdf.nt");
-		//fc.computeClosure();
-		//fc.shutdown();
-		/*
-		ForwardChainer fc =	new ForwardChainer(100000, 500000,
-																					 "/Users/krieger/Desktop/Java/HFC/hfc/resources/default.nt",
-																					 "/Users/krieger/Desktop/Java/HFC/hfc/resources/default.rdl",
-																					 "/Users/krieger/Desktop/Java/HFC/hfc/resources/default.ns");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/furniture2/furniture2.rdf.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/ReligionType.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/actedIn.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/bornIn.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/bornOnDate.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/causeOfDeath.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/created.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/diedIn.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/diedOnDate.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/directed.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/discovered.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/gossip.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/graduatedFrom.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasAcademicAdvisor.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasAlbum.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasBoyfriend.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasBrother.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasChild.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasDaughter.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasFamilyName.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasFather.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasFullName.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasGender.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasGirlfriend.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasGivenName.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasHusband.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasImdbId.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasImdbPage.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasMember.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasMother.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasName.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasNationality.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasParent.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasPartner.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasPartyAffiliation.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasProfession.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasReligion.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasRemain.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasSexualOrientation.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasSibling.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasSister.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasSon.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasSpouse.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasWebPage.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasWife.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasWikipediaPage.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/hasWonPrize.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/influences.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/interestedIn.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/isCitizenOf.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/isMemberOf.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/locatedIn.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/madeCoverFor.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/originatedFrom.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/participatedIn.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/produced.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/type.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/worksAt.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/gossip-nt/wrote.nt");
-
-		fc.computeClosure();
-		fc.shutdown();
-		*/
-
->>>>>>> 2333e9c8d22c874eaa34f7b82949ccf11442f91e
 	}
 
 }
