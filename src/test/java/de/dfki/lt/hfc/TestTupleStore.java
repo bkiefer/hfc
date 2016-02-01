@@ -4,12 +4,9 @@ import static org.junit.Assert.*;
 
 import static de.dfki.lt.hfc.TestUtils.*;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import org.junit.Test;
 
@@ -20,6 +17,7 @@ public class TestTupleStore {
     // constructor TupleStore(int noOfAtoms, int noOfTuples) is tested
     Namespace namespace = new Namespace(getResource("default.ns"));
     assertNotNull(namespace);
+    /*
     TupleStore tupleconstructor1 = new TupleStore(5, 5);
     assertNotNull(tupleconstructor1);
     // constructor TupleStore(int noOfAtoms, int noOfTuples, ns) is tested
@@ -34,6 +32,7 @@ public class TestTupleStore {
     // namespace) is tested
     TupleStore tupleconstructor4 = new TupleStore(2, 4, namespace);
     assertNotNull(tupleconstructor4);
+    */
     // constructor TupleStore(boolean verbose, boolean rdfCheck, boolean
     // eqReduction, int minNoOfArgs, int maxNoOfArgs,
     // int noOfAtoms, int noOfTuples, Namespace namespace, String tupleFile) is
@@ -186,10 +185,8 @@ public class TestTupleStore {
 
   @Test
   public void testisConstant2() {
-    TupleStore objecttotest = new TupleStore(2, 7);
-    assertFalse(objecttotest.isConstant(0));
-    assertTrue(objecttotest.isConstant(1));
-
+    assertFalse(TupleStore.isConstant(0));
+    assertTrue(TupleStore.isConstant(1));
   }
 
   @Test
@@ -283,7 +280,8 @@ public class TestTupleStore {
   }
 
   @Test
-  public void testwriteTuples1() {
+  public void testwriteTuples1()
+      throws FileNotFoundException, IOException, WrongFormatException {
     String file = getTempFile("file.nt");
     TupleStore objectfortest = new TupleStore(5, 5);
     objectfortest.writeTuples(file);
@@ -327,7 +325,8 @@ public class TestTupleStore {
   */
 
   @Test
-  public void testwriteExpandedTuples() {
+  public void testwriteExpandedTuples()
+      throws FileNotFoundException, IOException, WrongFormatException {
     String file = getTempFile("file.nt");
 
     TupleStore objectfortest = new TupleStore(2, 1);
@@ -341,7 +340,8 @@ public class TestTupleStore {
   }
 
   @Test
-  public void testwriteTupleStore() {
+  public void testwriteTupleStore()
+      throws FileNotFoundException, IOException, WrongFormatException {
     String file = getTempFile("file.nt");
 
     TupleStore objectfortest = new TupleStore(3, 1);
@@ -442,10 +442,10 @@ public class TestTupleStore {
     Namespace namespace = new Namespace(getResource("default.ns"));
     TupleStore objectfortest = new TupleStore(true, true, true, 2, 5, 4, 2, namespace,
         getResource("default.nt"));
-    objectfortest.copyTupleStore(namespace);
+    objectfortest.copyTupleStore();
     // TODO check these assertions
-    assertFalse(objectfortest == objectfortest.copyTupleStore(namespace));
-    assertTrue(objectfortest != objectfortest.copyTupleStore(namespace));
+    assertFalse(objectfortest == objectfortest.copyTupleStore());
+    assertTrue(objectfortest != objectfortest.copyTupleStore());
 
   }
 }

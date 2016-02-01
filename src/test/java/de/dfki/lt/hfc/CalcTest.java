@@ -215,7 +215,7 @@ public class CalcTest {
     assertFalse(varvarIneqs1.isEmpty());//the arrays are not empty
     assertFalse(varconstIneqs1.isEmpty());//the arrays are not empty
     Namespace namespace = new Namespace(getResource("default.ns"));
-    TupleStore tuple = new TupleStore(3, 2, namespace);
+    TupleStore tuple = new TupleStore(3, 2);
     BindingTable bt1 = new BindingTable(tuple);
     //Calc.restrict(bt1, varvarIneqs1, varconstIneqs1);// Null pointer exception
   }

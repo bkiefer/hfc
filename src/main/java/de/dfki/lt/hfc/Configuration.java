@@ -188,9 +188,12 @@ public class Configuration {
 	}
 
 	/**
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 * @throws WrongFormatException
 	 *
 	 */
-	private void processTuples(String tupleFile) {
+	private void processTuples(String tupleFile) throws FileNotFoundException, IOException, WrongFormatException {
 		if (this.files.contains(tupleFile)) {
 			System.out.println(tupleFile + " used twice");
 			return;
@@ -207,9 +210,10 @@ public class Configuration {
 	}
 
 	/**
+	 * @throws IOException
 	 *
 	 */
-	private void processRules(String ruleFile) {
+	private void processRules(String ruleFile) throws IOException {
 		if (this.files.contains(ruleFile)) {
 			System.out.println(ruleFile + " used twice");
 			return;
@@ -217,10 +221,10 @@ public class Configuration {
 		if (this.ruleStore == null) {
 			this.ruleStore = new RuleStore(this.verbose, this.rdfcheck,
 																		 this.minnoofargs, this.maxnoofargs,
-																		 this.namespace, this.tupleStore, ruleFile);
+																		 this.tupleStore, ruleFile);
 			this.forwardChainer = new ForwardChainer(this.noofcores, this.verbose,
 																							 this.noofatoms, this.nooftuples,
-																							 this.namespace, this.tupleStore, this.ruleStore);
+																							 this.tupleStore, this.ruleStore);
 		}
 		else
 			this.forwardChainer.uploadRules(ruleFile);  // use uploadRules() to guarantee right number of tasks

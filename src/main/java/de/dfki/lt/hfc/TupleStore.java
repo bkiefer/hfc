@@ -4,6 +4,9 @@ import java.io.*;
 import java.util.*;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+
 import gnu.trove.*;
 import de.dfki.lt.hfc.types.*;
 
@@ -387,9 +390,13 @@ public final class TupleStore {
 	/**
 	 * extends the binary constructor with the ability to read in a namespace and a
 	 * textual representation of facts (basically N-Triples syntax), stored in a file
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 * @throws WrongFormatException
 	 * @see #readTuples
 	 */
-	public TupleStore(int noOfAtoms, int noOfTuples, Namespace namespace, String tupleFile) {
+	public TupleStore(int noOfAtoms, int noOfTuples, Namespace namespace, String tupleFile)
+	    throws FileNotFoundException, IOException, WrongFormatException {
 		this(noOfAtoms, noOfTuples);
 		this.namespace = namespace;
 		readTuples(tupleFile);
@@ -397,11 +404,15 @@ public final class TupleStore {
 
 	/**
 	 * more options to fully parameterize the tuple store
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 * @throws WrongFormatException
 	 */
 	public TupleStore(boolean verbose, boolean rdfCheck, boolean eqReduction,
 										int minNoOfArgs, int maxNoOfArgs,
 										int noOfAtoms, int noOfTuples,
-										Namespace namespace, String tupleFile) {
+										Namespace namespace, String tupleFile)
+										    throws FileNotFoundException, IOException, WrongFormatException {
 		init(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs, noOfAtoms, noOfTuples);
 		this.namespace = namespace;
 		readTuples(tupleFile);
@@ -417,8 +428,12 @@ public final class TupleStore {
 
 	/**
 	 * assumes a default of 100,000 atoms and 500,000 tuples
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 * @throws WrongFormatException
 	 */
-	public TupleStore(Namespace namespace, String tupleFile) {
+	public TupleStore(Namespace namespace, String tupleFile)
+	    throws FileNotFoundException, IOException, WrongFormatException {
 		this(100000, 500000);
 		this.namespace = namespace;
 		readTuples(tupleFile);
@@ -743,11 +758,13 @@ public final class TupleStore {
 	 * at several places, messages were output depending on this.exitOnError
 	 * and this.verbose -- unify this in this special private method;
 	 * perhaps will be replaced by Apache's log4j
+	 * @throws WrongFormatException
 	 */
-	private boolean sayItLoud(int lineNo, String message) {
+	private boolean sayItLoud(int lineNo, String message) throws WrongFormatException {
 		if (this.exitOnError) {
 			System.out.println("  " + lineNo + message);
-			System.exit(1);
+			// System.exit(1);
+			throw new WrongFormatException("  " + lineNo + message);
 		}
 		if (this.verbose)
 			System.out.println("  " + lineNo + message);
@@ -783,10 +800,12 @@ public final class TupleStore {
 	 *
 	 * depending on this.verbose and this.exitOnError, the method is
 	 * silent, outputs a warning, or exit the process
+	 * @throws WrongFormatException
 	 *
 	 * @see RuleStore#isValidTuple
 	 */
-	public boolean isValidTuple(ArrayList<String> stringTuple, int lineNo) {
+	public boolean isValidTuple(List<String> stringTuple, int lineNo)
+	    throws WrongFormatException {
 		// check against min length
 		if (stringTuple.size() < this.minNoOfArgs)
 			return sayItLoud(lineNo, ": tuple too short");
@@ -887,6 +906,22 @@ public final class TupleStore {
 		return intTuple;
 	}
 
+  /**
+   * internalizeTuple() maps array lists of strings to int arrays of unique
+   * ints;
+   * uses putObject() to generate new ints in case the string argument is
+   * brand new, or retrieves the already generated int in case the string
+   * argument has already been seen
+   */
+  public int[] internalizeTuple(List<String> stringTuple) {
+    int[] intTuple = new int[stringTuple.size()];
+    int i = 0;
+    for (String s : stringTuple) {
+      intTuple[i++] = putObject(s);
+    }
+    return intTuple;
+  }
+
 	/**
 	 * internalizeTuple() maps string arrays to int arrays of unique ints;
 	 * uses putObject() to generate new ints in case the string argument is
@@ -913,8 +948,10 @@ public final class TupleStore {
 	 * @return null iff the tuple representation is illegal OR the tuple is
 	 *         already contained in the tuple store
 	 * @return the int[] representation of parameter stringTuple, otherwise
+	 * @throws WrongFormatException
 	 */
-	protected int[] addTuple (ArrayList<String> stringTuple, int lineNo) {
+	protected int[] addTuple (ArrayList<String> stringTuple, int lineNo)
+	    throws WrongFormatException {
 		// check whether external representation is valid for a ground tuple
 		if (!isValidTuple(stringTuple, lineNo))
 				return null;
@@ -928,7 +965,34 @@ public final class TupleStore {
 		}
 	}
 
-	/**
+  /**
+   * addTuple() assumes a textual tuple representation after tokenization
+   * (an array list of strings);
+   * the bidirectional mapping is established and the index is updated;
+   * this method is used when an external tuple file is read in;
+   * lineNo refers to the line number in the file that is read in
+   *
+   * @return null iff the tuple representation is illegal OR the tuple is
+   *         already contained in the tuple store
+   * @return the int[] representation of parameter stringTuple, otherwise
+   * @throws WrongFormatException
+   */
+  protected int[] addTuple (List<String> stringTuple, int lineNo)
+      throws WrongFormatException {
+    // check whether external representation is valid for a ground tuple
+    if (!isValidTuple(stringTuple, lineNo))
+        return null;
+    // internalize tuple
+    int[] intTuple = internalizeTuple(stringTuple);
+    if (addTuple(intTuple))
+      return intTuple;
+    else {
+      sayItLoud(lineNo, ": tuple specified twice");
+      return null;
+    }
+  }
+
+  /**
 	 * addTuple(String[]) performs the internalization and then calls addTuple(int[])
 	 */
 	public boolean addTuple(String[] stringTuple) {
@@ -1111,19 +1175,15 @@ public final class TupleStore {
 	 *   <huk> <hasName> _:foo42 .
 	 *   _:foo42 <firstName> "Uli" .
 	 *   _:foo42 <lastName> "Krieger" .
+	 * @throws WrongFormatException
 	 *
 	 */
-	public void readTuples(String filename) {
-		if (this.verbose)
-			System.out.println("\n  reading tuples from " + filename + " ...");
+	public void readTuples(BufferedReader br) throws IOException, WrongFormatException {
 		String line, token;
     StringTokenizer st;
 		int noOfTuples = 0, lineNo = 0;
 		ArrayList<String> tuple = new ArrayList<String>();
 		boolean eol = true;
-		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filename),
-																																	 TupleStore.INPUT_CHARACTER_ENCODING));
       while ((line = br.readLine()) != null) {
 				// strip of spaces at begin and end of line
 				line = line.trim();
@@ -1166,11 +1226,6 @@ public final class TupleStore {
 				else
 					eol = true;
 			}
-		}
-		catch (IOException e) {
-			System.err.println("\nerror while reading tuples from " + filename);
-			System.exit(1);
-		}
 		if (this.verbose) {
 			System.out.println("\n  read " + noOfTuples + " proper tuples");
 			System.out.println("  overall " + this.allTuples.size() + " unique tuples");
@@ -1202,7 +1257,16 @@ public final class TupleStore {
 		}
 	}
 
-	/**
+  public void readTuples(String filename)
+    throws IOException, WrongFormatException {
+    if (this.verbose)
+      System.out.println("\n  reading tuples from " + filename + " ...");
+    readTuples(Files.newBufferedReader(new File(filename).toPath(),
+        Charset.forName(TupleStore.INPUT_CHARACTER_ENCODING)));
+  }
+
+
+        /**
 	 * reads in a 'compressed' tuple store (extension usually "ts") generated by
 	 * writeTupleStore(); usage:
 	 *   Namespace ns = new Namespace("...");
@@ -1714,9 +1778,12 @@ public final class TupleStore {
 	/**
 	 * returns a copy of the tuple store that can be used to generate "choice points",
 	 * e.g., during reasoning, as is done by the forward chainer
+	 *
+	 * The copy uses the same namespace object as this object
+	 *
 	 * @see de.dfki.lt.hfc.ForwardChainer.copyForwardChainer()
 	 */
-	public TupleStore copyTupleStore(Namespace namespace) {
+	public TupleStore copyTupleStore() {
 		TupleStore copy = new TupleStore();
 		copy.currentId = this.currentId;  // means different things in different tuple stores
 		copy.minNoOfArgs = this.minNoOfArgs;
@@ -1724,7 +1791,7 @@ public final class TupleStore {
 		copy.verbose = this.verbose;
 		copy.rdfCheck = this.rdfCheck;
 		copy.exitOnError = this.exitOnError;
-		copy.namespace = namespace;
+		copy.namespace = this.namespace;
 		copy.equivalenceClassReduction = this.equivalenceClassReduction;
 		// JavaDoc says clone() returns deep copy in both cases; second clone does not need casting
 		copy.uriToProxy = (TIntIntHashMap)this.uriToProxy.clone();
@@ -1744,6 +1811,20 @@ public final class TupleStore {
 		// finished!
 		return copy;
 	}
+
+	/**
+   * uploads further namespaces stored in a file to an already established forward chainer;
+   * this method directly calls readNamespaces() from class Namespace
+   * @throws IOException
+   * @throws WrongFormatException
+   * @throws FileNotFoundException
+   * @see Namespace.readNamespaces()
+   */
+  public void uploadNamespaces(String filename)
+      throws FileNotFoundException, WrongFormatException, IOException {
+    this.namespace.readNamespaces(filename);
+  }
+
 
 	/**
 	 * returns a nearly-deep copy of the index: everything is copied with the notable
@@ -1830,4 +1911,3 @@ public final class TupleStore {
 	}
 
 }
-

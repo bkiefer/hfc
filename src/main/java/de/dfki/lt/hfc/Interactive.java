@@ -111,8 +111,8 @@ public class Interactive {
 	public Interactive(String namespaceFile, String tupleFile, String ruleFile)
 	    throws FileNotFoundException, WrongFormatException, IOException {
 		this(namespaceFile, tupleFile);
-		this.ruleStore = new RuleStore(this.namespace, this.tupleStore, ruleFile);
-		this.forwardChainer = new ForwardChainer(this.namespace, this.tupleStore, this.ruleStore);
+		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
+		this.forwardChainer = new ForwardChainer(this.tupleStore, this.ruleStore);
 		readEvalPrint(System.in);
 	}
 
@@ -120,7 +120,7 @@ public class Interactive {
 	 *
 	 */
 	public Interactive(ForwardChainer fc) {
-		this.namespace = fc.namespace;
+		// this.namespace = fc.namespace;
 		this.tupleStore = fc.tupleStore;
 		this.query = new Query(this.tupleStore);
 		this.ruleStore = fc.ruleStore;
@@ -279,9 +279,13 @@ public class Interactive {
 	}
 
 	/**
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 * @throws WrongFormatException
 	 *
 	 */
-	private void processTuples(String line) {
+	private void processTuples(String line)
+	    throws FileNotFoundException, IOException, WrongFormatException {
 		StringTokenizer st = new StringTokenizer(line);
 		// get rid of 'tuples'
 		st.nextToken();
@@ -289,9 +293,10 @@ public class Interactive {
 	}
 
 	/**
+	 * @throws WrongFormatException
 	 *
 	 */
-	private void processAdd(String line) {
+	private void processAdd(String line) throws WrongFormatException {
 		StringTokenizer st = new StringTokenizer(line);
 		// get rid of 'add'
 		st.nextToken();
@@ -319,9 +324,10 @@ public class Interactive {
 	}
 
 	/**
+	 * @throws IOException
 	 *
 	 */
-	private void processRules(String line) {
+	private void processRules(String line) throws IOException {
 		StringTokenizer st = new StringTokenizer(line);
 		// get rid of 'rules'
 		st.nextToken();
@@ -485,8 +491,8 @@ public class Interactive {
 				this.namespace = new Namespace(st.nextToken());
 				this.tupleStore = new TupleStore(this.namespace, st.nextToken());
 				this.query = new Query(this.tupleStore);
-				this.ruleStore = new RuleStore(this.namespace, this.tupleStore, st.nextToken());
-				this.forwardChainer = new ForwardChainer(this.namespace, this.tupleStore, this.ruleStore);
+				this.ruleStore = new RuleStore(this.tupleStore, st.nextToken());
+				this.forwardChainer = new ForwardChainer(this.tupleStore, this.ruleStore);
 				break;
 			default:
 				this.consoleReader.printString("  wrong command: try 'help'");

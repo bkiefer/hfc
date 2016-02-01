@@ -2,8 +2,6 @@ package de.dfki.lt.hfc;
 
 import static org.junit.Assert.*;
 
-import static de.dfki.lt.hfc.TestUtils.getResource;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,8 +14,7 @@ public class RuleTest {
   public void testRule() throws FileNotFoundException, WrongFormatException, IOException {
     //test the constructor Rule(String name, int[][] ante, int[][] cons, TupleStore tstore, RuleStore rstore)
     TupleStore ts = new TupleStore(1, 3);
-    Namespace namespace = new Namespace(getResource("default.ns"));
-    RuleStore rs = new RuleStore(namespace, ts);
+    RuleStore rs = new RuleStore(ts);
     int[][] ante = new int[1][2];
     int[][] cons = new int[2][3];
     Rule r = new Rule("name", ante, cons, ts, rs);
@@ -27,8 +24,7 @@ public class RuleTest {
   @Test
   public void testsetName() throws FileNotFoundException, WrongFormatException, IOException {
     TupleStore ts = new TupleStore(1, 3);
-    Namespace namespace = new Namespace(getResource("default.ns"));
-    RuleStore rs = new RuleStore(namespace, ts);
+    RuleStore rs = new RuleStore(ts);
     int[][] ante = new int[1][2];
     int[][] cons = new int[1][2];
     Rule r = new Rule("name", ante, cons, ts, rs);
@@ -36,13 +32,11 @@ public class RuleTest {
     assertEquals(r.getName(), "name");
   }
 
-  @SuppressWarnings("deprecation")
   @Test
   public void testsetAntecedent() throws FileNotFoundException, WrongFormatException, IOException {
     //test method that takes int[][] ante
     TupleStore ts = new TupleStore(1, 3);
-    Namespace namespace = new Namespace(getResource("default.ns"));
-    RuleStore rs = new RuleStore(namespace, ts);
+    RuleStore rs = new RuleStore(ts);
     int[][] ante = new int[1][2];
     int[][] cons = new int[1][2];
     Rule r = new Rule("name", ante, cons, ts, rs);
@@ -56,8 +50,7 @@ public class RuleTest {
     ArrayList<int[]> anteList = new ArrayList<int[]>();
     anteList.add(null);
     TupleStore ts = new TupleStore(1, 3);
-    Namespace namespace = new Namespace(getResource("default.ns"));
-    RuleStore rs = new RuleStore(namespace, ts);
+    RuleStore rs = new RuleStore(ts);
     int[][] ante = new int[1][2];
     int[][] cons = new int[1][2];
     Rule r = new Rule("name", ante, cons, ts, rs);
@@ -69,8 +62,7 @@ public class RuleTest {
   public void testsetConsequent() throws FileNotFoundException, WrongFormatException, IOException {
     //test method setConsequent(int[][] cons)
     TupleStore ts = new TupleStore(1, 3);
-    Namespace namespace = new Namespace(getResource("default.ns"));
-    RuleStore rs = new RuleStore(namespace, ts);
+    RuleStore rs = new RuleStore(ts);
     int[][] ante = new int[1][2];
     int[][] cons = new int[2][3];
     Rule r = new Rule("name", ante, cons, ts, rs);
@@ -84,8 +76,7 @@ public class RuleTest {
     ArrayList<int[]> consList = new ArrayList<int[]>();
     consList.add(null);
     TupleStore ts = new TupleStore(1, 3);
-    Namespace namespace = new Namespace(getResource("default.ns"));
-    RuleStore rs = new RuleStore(namespace, ts);
+    RuleStore rs = new RuleStore(ts);
     int[][] ante = new int[1][2];
     int[][] cons = new int[2][3];
     Rule r = new Rule("name", ante, cons, ts, rs);
@@ -97,8 +88,7 @@ public class RuleTest {
   public void testsetTupleStore() throws FileNotFoundException, WrongFormatException, IOException {
     //test method setTupleStore(TupleStore tstore)
     TupleStore tstore = new TupleStore(1, 2);
-    Namespace namespace = new Namespace(getResource("default.ns"));
-    RuleStore rs = new RuleStore(namespace, tstore);
+    RuleStore rs = new RuleStore(tstore);
     int[][] ante = new int[1][2];
     int[][] cons = new int[2][3];
     Rule r = new Rule("name", ante, cons, tstore, rs);
@@ -110,8 +100,7 @@ public class RuleTest {
   public void testsetRuleStore() throws FileNotFoundException, WrongFormatException, IOException {
     //test method setRuleStore(RuleStore rstore)
     TupleStore tstore = new TupleStore(1, 2);
-    Namespace namespace = new Namespace(getResource("default.ns"));
-    RuleStore rs = new RuleStore(namespace, tstore);
+    RuleStore rs = new RuleStore(tstore);
     int[][] ante = new int[1][2];
     int[][] cons = new int[2][3];
     Rule r = new Rule("name", ante, cons, tstore, rs);
@@ -123,8 +112,7 @@ public class RuleTest {
   public void testtoString() throws FileNotFoundException, WrongFormatException, IOException {
     //test method toString()
     TupleStore tstore = new TupleStore(1, 2);
-    Namespace namespace = new Namespace(getResource("default.ns"));
-    RuleStore rs = new RuleStore(namespace, tstore);
+    RuleStore rs = new RuleStore(tstore);
     int[][] ante = new int[1][2];
     int[][] cons = new int[2][3];
     Rule r = new Rule("name", ante, cons, tstore, rs);

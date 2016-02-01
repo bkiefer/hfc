@@ -46,8 +46,10 @@ public final class ForwardChainer {
 
 	/**
 	 * the namespace object, whose namespaces are used in rules and tuples
+	 *
+	 * TODO: Should be removed here, and only accessible through the tupleStore
 	 */
-	public Namespace namespace;
+	// public Namespace namespace;
 
 	/**
 	 * default settings that might speed up the forward chainer (actually the tuple store)
@@ -177,12 +179,16 @@ public final class ForwardChainer {
 
 	/**
 	 * generates a new forward chainer with the default namespace for XSD, RDF, RDFS, and OWL
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 * @throws WrongFormatException
 	 */
-	public ForwardChainer(String tupleFile, String ruleFile) {
+	public ForwardChainer(String tupleFile, String ruleFile)
+	    throws FileNotFoundException, IOException, WrongFormatException {
 		this();
-		this.namespace = new Namespace();
-		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, this.namespace, tupleFile);
-		this.ruleStore = new RuleStore(this.namespace, this.tupleStore, ruleFile);
+		Namespace namespace = new Namespace();
+		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
+		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
 		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
 		this.noOfTasks = this.ruleStore.allRules.size();
 	}
@@ -196,9 +202,9 @@ public final class ForwardChainer {
 	public ForwardChainer(String tupleFile, String ruleFile,	String namespaceFile)
 	    throws FileNotFoundException, WrongFormatException, IOException {
 		this();
-		this.namespace = new Namespace(namespaceFile);
-		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, this.namespace, tupleFile);
-		this.ruleStore = new RuleStore(this.namespace, this.tupleStore, ruleFile);
+		Namespace namespace = new Namespace(namespaceFile);
+		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
+		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
 		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
 		this.noOfTasks = this.ruleStore.allRules.size();
 	}
@@ -207,14 +213,19 @@ public final class ForwardChainer {
 	 * generates a new forward chainer with the default namespace for XSD, RDF, RDFS, and OWL;
 	 * noOfAtoms and noOfTuples are important parameters that affects the performance of the
 	 * tuple store used by the forward chainer
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 * @throws WrongFormatException
 	 */
-	public ForwardChainer(int noOfAtoms, int noOfTuples, String tupleFile, String ruleFile) {
+	public ForwardChainer(int noOfAtoms, int noOfTuples, String tupleFile, String ruleFile)
+	    throws FileNotFoundException, IOException, WrongFormatException {
 		this();
 		this.noOfAtoms = noOfAtoms;
 	  this.noOfTuples = noOfTuples;
-		this.namespace = new Namespace();
-		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, this.namespace, tupleFile);
-		this.ruleStore = new RuleStore(this.namespace, this.tupleStore, ruleFile);
+		//this.namespace = new Namespace();
+		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples);
+		this.tupleStore.readTuples(tupleFile);
+		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
 		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
 		this.noOfTasks = this.ruleStore.allRules.size();
 	}
@@ -230,9 +241,9 @@ public final class ForwardChainer {
 		this();
 		this.noOfAtoms = noOfAtoms;
 	  this.noOfTuples = noOfTuples;
-		this.namespace = new Namespace(namespaceFile);
-		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, this.namespace, tupleFile);
-		this.ruleStore = new RuleStore(this.namespace, this.tupleStore, ruleFile);
+		Namespace namespace = new Namespace(namespaceFile);
+		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
+		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
 		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
 		this.noOfTasks = this.ruleStore.allRules.size();
 	}
@@ -241,11 +252,10 @@ public final class ForwardChainer {
 	/**
 	 *  assumes a default of 100,000 atoms and 500,000 tuples
 	 */
-	public ForwardChainer(Namespace namespace, TupleStore tupleStore, RuleStore ruleStore) {
+	public ForwardChainer(TupleStore tupleStore, RuleStore ruleStore) {
 		this();
 		this.noOfAtoms = 100000;
 	  this.noOfTuples = 500000;
-		this.namespace = namespace;
 		this.tupleStore = tupleStore;
 		this.ruleStore = ruleStore;
 		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
@@ -273,11 +283,11 @@ public final class ForwardChainer {
 		this(noOfCores, verbose);
 		this.noOfAtoms = noOfAtoms;
 	  this.noOfTuples = noOfTuples;
-		this.namespace = new Namespace(namespaceFile, verbose);
+		Namespace namespace = new Namespace(namespaceFile, verbose);
 		this.tupleStore = new TupleStore(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
-																		 this.noOfAtoms, this.noOfTuples, this.namespace, tupleFile);
+																		 this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
 		this.ruleStore = new RuleStore(verbose, rdfCheck, minNoOfArgs, maxNoOfArgs,
-																	 this.namespace, this.tupleStore, ruleFile);
+																	 this.tupleStore, ruleFile);
 		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
 		this.noOfTasks = this.ruleStore.allRules.size();
 	}
@@ -290,13 +300,11 @@ public final class ForwardChainer {
 												boolean verbose,
 												int noOfAtoms,
 												int noOfTuples,
-												Namespace namespace,
 												TupleStore tupleStore,
 												RuleStore ruleStore) {
 		this(noOfCores, verbose);
 		this.noOfAtoms = noOfAtoms;
 	  this.noOfTuples = noOfTuples;
-		this.namespace = namespace;
 		this.tupleStore = tupleStore;
 		this.ruleStore = ruleStore;
 		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
@@ -945,7 +953,7 @@ public final class ForwardChainer {
 	 */
 	public void uploadNamespaces(String filename)
 	    throws FileNotFoundException, WrongFormatException, IOException {
-		this.namespace.readNamespaces(filename);
+		this.tupleStore.uploadNamespaces(filename);
 	}
 
 
@@ -954,9 +962,13 @@ public final class ForwardChainer {
 	 * this method directly calls readTuples() from class TupleStore;
 	 * if tuple deletion is enabled in the forward chainer, the tuples from the file are
 	 * assigned the actual generation TupleStore.generation
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 * @throws WrongFormatException
 	 * @see TupleStore.readTuples()
 	 */
-	public void uploadTuples(String filename) {
+	public void uploadTuples(String filename)
+	    throws FileNotFoundException, IOException, WrongFormatException {
 		this.tupleStore.readTuples(filename);
 	}
 
@@ -987,9 +999,10 @@ public final class ForwardChainer {
 	 * the set of all rules is returned;
 	 * NOTE: a similar method readRules() is defined in class RuleStore;
 	 *       however, uploadRules set the field noOfTasks in ForwardChainer to the proper value
+	 * @throws IOException
 	 * @see RuleStore.readRules()
 	 */
-	public void uploadRules(String filename) {
+	public void uploadRules(String filename) throws IOException {
 		this.ruleStore.lineNo = 0;
 		this.ruleStore.readRules(filename);
 		// update noOfTask in order to guarantee proper rule execution in a multi-threaded environment
@@ -1102,11 +1115,11 @@ public final class ForwardChainer {
 	public ForwardChainer copyForwardChainer(int noOfCores, boolean verbose) {
 		ForwardChainer copy = new ForwardChainer(noOfCores, verbose);
 		// take over namespace object and generation counter
-		copy.namespace = this.namespace;
+		// copy.namespace = this.namespace;
 		copy.generationCounter = this.generationCounter;
 		// copy tuple store and rule store
-		copy.tupleStore = this.tupleStore.copyTupleStore(copy.namespace);
-		copy.ruleStore = this.ruleStore.copyRuleStore(copy.namespace, copy.tupleStore);
+		copy.tupleStore = this.tupleStore.copyTupleStore();
+		copy.ruleStore = this.ruleStore.copyRuleStore(copy.tupleStore);
 		// ***WARNING***: do not let work this and copy in PARALLEL !!!!!
 		// reuse thread pool of this object
 		copy.threadPool = this.threadPool;

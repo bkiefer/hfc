@@ -16,9 +16,9 @@ public class RuleComparatorTest {
   //TODO
   public void testRuleComparator() throws FileNotFoundException, WrongFormatException, IOException {
     //test method compare(Rule rule1, Rule rule2)
-    TupleStore ts = new TupleStore(1, 3);
     Namespace namespace = new Namespace(getResource("default.ns"));
-    RuleStore rs = new RuleStore(namespace, ts);
+    TupleStore ts = new TupleStore(1, 3, namespace);
+    RuleStore rs = new RuleStore(ts);
     int[][] ante = new int[1][2];
     int[][] cons = new int[2][3];
     Rule rule1 = new Rule("name", ante, cons, ts, rs);

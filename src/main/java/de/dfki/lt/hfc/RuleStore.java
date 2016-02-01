@@ -1,6 +1,7 @@
 package de.dfki.lt.hfc;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.*;
 import gnu.trove.*;
 
@@ -135,8 +136,12 @@ public final class RuleStore {
 
 	/**
 	 * a namespace object used to expand short form namespaces into full forms
+	 *
+	 * TODO: THIS IS NOT USED AT ALL IN THIS CLASS AND SHOULD BE REMOVED
+	 * THERE ARE STATIC REFERENCES TO NAMESPACE OF EQUIVALENCE REDUCTION
+	 * IF AT ALL, CALLS SHOULD GO THROUGH TUPLESTORE
 	 */
-	protected Namespace namespace;
+	//protected Namespace namespace;
 
 	/**
 	 * a list of all rules known to RuleStore
@@ -201,26 +206,30 @@ public final class RuleStore {
 	/**
 	 * creates an empty rule store
 	 */
-	public RuleStore(Namespace namespace, TupleStore tupleStore) {
-		this.namespace = namespace;
+	public RuleStore(TupleStore tupleStore) {
+		//this.namespace = namespace;
 		this.tupleStore = tupleStore;
 	}
 
 	/**
 	 * initializes the rule store with the information stored in file ruleFile
+	 * @throws IOException
 	 */
-	public RuleStore(Namespace namespace, TupleStore tupleStore, String ruleFile) {
-		this(namespace, tupleStore);
+	public RuleStore(TupleStore tupleStore, String ruleFile)
+	    throws IOException {
+		this(tupleStore);
 		readRules(ruleFile);
 	}
 
 	/**
 	 * more options to parameterize the rule store
+	 * @throws IOException
 	 */
 
 	public RuleStore(boolean verbose, boolean rdfCheck, int minNoOfArgs, int maxNoOfArgs,
-									 Namespace namespace, TupleStore tupleStore, String ruleFile) {
-		this(namespace, tupleStore);
+									 TupleStore tupleStore, String ruleFile)
+									     throws IOException {
+		this(tupleStore);
 		this.verbose = verbose;
 		this.rdfCheck = rdfCheck;
 		this.minNoOfArgs = minNoOfArgs;
@@ -1232,6 +1241,12 @@ public final class RuleStore {
 		}
 	}
 
+  protected ArrayList<Rule> readRules(String filename) throws IOException {
+    if (this.verbose)
+      System.out.println("\n  reading rules from " + filename + " ...");
+    return readRules(Files.newBufferedReader(new File(filename).toPath()));
+  }
+
 	/**
 	 * some of the checks that are performed during a rule file is read in:
 	 *   + check that antecedent and consequent consist of at least one tuple
@@ -1241,10 +1256,9 @@ public final class RuleStore {
 	 *     on RHS) -- encode introduction of a fresh new individual
 	 *   + output warning for URIs & XSD atoms that are not
 	 *     mentioned in the initial fact base
+         * @throws IOException
 	 */
-	protected ArrayList<Rule> readRules(String filename) {
-		if (this.verbose)
-			System.out.println("\n  reading rules from " + filename + " ...");
+	protected ArrayList<Rule> readRules(BufferedReader br) throws IOException {
 		String line, token;
     StringTokenizer st;
 		int noOfRules = 0;
@@ -1258,8 +1272,6 @@ public final class RuleStore {
 		ArrayList<int[]> tlist = new ArrayList<int[]>();
 		Rule rule = null;
 		boolean parseLhs = true;
-		try {
-      BufferedReader br = new BufferedReader(new FileReader(filename));
       while ((line = br.readLine()) != null) {
 				// get rid of spaces at begin and end of line
 				line = line.trim();
@@ -1430,11 +1442,7 @@ public final class RuleStore {
           }
 				}
 			}
-		}
-		catch (IOException e) {
-			System.err.println("\n" + this.lineNo + ": error while reading rules from " + filename);
-			System.exit(1);
-		}
+
 		if (this.verbose) {
 			System.out.println("\n  read " + noOfRules + " proper rules");
 			System.out.println("  found " + this.allRules.size() + " unique rules");
@@ -1536,8 +1544,8 @@ public final class RuleStore {
 	 * e.g., during reasoning, as is used by ForwardChainer
 	 * @see de.dfki.lt.hfc.ForwardChainer.copyForwardChainer()
 	 */
-	public RuleStore copyRuleStore(Namespace namespace, TupleStore tupleStore) {
-		RuleStore copy = new RuleStore(namespace, tupleStore);
+	public RuleStore copyRuleStore(TupleStore tupleStore) {
+		RuleStore copy = new RuleStore(tupleStore);
 		copy.minNoOfArgs = this.minNoOfArgs;
 		copy.maxNoOfArgs = this.maxNoOfArgs;
 		copy.verbose = this.verbose;
