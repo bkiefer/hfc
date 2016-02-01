@@ -27,8 +27,7 @@ public final class ForwardChainer {
 	/**q
 	 * HFC version number string
 	 */
-
-	public static final String VERSION = "6.1.14";
+	public static final String VERSION = "6.1.15";
 	
 	/**
 	 * HFC info string
