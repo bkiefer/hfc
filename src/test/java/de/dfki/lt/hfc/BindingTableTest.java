@@ -201,9 +201,9 @@ public class BindingTableTest {
     TupleStore ts = new TupleStore(new Namespace());
     Query q = new Query(ts);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    List<String> vars = bt.getVars();
+    String[] vars = bt.getVars();
     String[] expected = { "?s", "?p", "?o" };
-    assertEquals(Arrays.asList(expected), vars);
+    assertArrayEquals(expected, vars);
   }
 
   @Test
@@ -211,11 +211,11 @@ public class BindingTableTest {
     TupleStore ts = new TupleStore(new Namespace());
     Query q = new Query(ts);
     BindingTable bt = q.query("SELECT * WHERE ?s ?p ?o");
-    List<String> vars = bt.getVars();
+    String[] vars = bt.getVars();
     String[] expected = { "?s", "?p", "?o" };
     Set<String> s = new HashSet<String>();
     s.addAll(Arrays.asList(expected));
-    assertTrue(s.containsAll(vars));
+    assertTrue(s.containsAll(Arrays.asList(vars)));
     for (int i = 0; i < expected.length; ++i) {
       assertEquals(i, bt.obtainPosition(expected[i]));
     }

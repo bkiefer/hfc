@@ -204,8 +204,8 @@ public class Query {
 		// equip bt with the idToName mapping for later output;
 		// note: idToName even contains LHS aggregate variables
 		bt.nameToExternalName = idToName;
-		bt.selectVars = new ArrayList<String>();
-		bt.selectVars.addAll(projectedVars);
+		bt.selectVars = new String[projectedVars.size()];
+		projectedVars.toArray(bt.selectVars);
 		// finally consider projected vars and DISTINCT keyword
 		makeDistinctAndProject(bt, projectedVars, foundVars, nameToId, makeDistinct);
 		// bt is now destructively changed; finally consider potential aggregation;
