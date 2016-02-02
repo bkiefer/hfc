@@ -1,19 +1,17 @@
 package de.dfki.lt.hfc.types;
 
-import de.dfki.lt.hfc.TupleStore;
-import java.net.URI;
-import java.net.URISyntaxException;
-
 /**
- * NOTE: XsdAnyURI should be used to represent <xsd:anyURI> values;
+ * NOTE: XsdAnyURI should be used to represent true URI values, i.e.,
+ *       _without_ angle brackets !
  *       this must be distinguished from class Uri in HFC, the latter
  *       representing URIs (contrary to blank nodes or XSD atoms) in
- *       the HFC forward chainer;
+ *       the HFC forward chainer, and written _with_ angle brackets !
+ *
  * @see de.dfki.lt.hfc.types.Uri
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Wed Sep 23 10:14:27 CEST 2015
+ * @version Fri Jan 29 17:16:44 CET 2016
  */
 public final class XsdAnyURI extends XsdAnySimpleType {
 	
@@ -69,12 +67,32 @@ public final class XsdAnyURI extends XsdAnySimpleType {
 	}
 	
   /**
-   * returns a Java URI object for a given XsdAnyURI object which is
-   * refered to by its internal TupleStore ID (a positive int)
+   * returns a java.net.URI object for a given XsdAnyURI object from HFC if
+   * the this.value is compliant with the syntax specification of URIs;
+   * null otherwise as the java.net.URISyntaxException is caught in toJava();
+   * an error message is furthermore printed to System.err
    */
-  public static Object getValue(int id, TupleStore ts) throws URISyntaxException {
-    final XsdAnyURI xu = (XsdAnyURI)(ts.getJavaObject(id));
-    return new URI(xu.value);
+  public Object toJava() {
+    try {
+     return new java.net.URI(this.value);
+    }
+    catch (java.net.URISyntaxException e) {
+      System.err.println("  " + this.value + " not compliant with URI syntax specification");
+    }
+    return null;
+  }
+  
+  /**
+   * for test purposes only
+   */
+  public static void main(String[] args) {
+    XsdAnyURI u1 = new XsdAnyURI("\"rdf:type\"^^<xsd:anyURI>");
+    System.out.println(u1.toJava());
+    XsdAnyURI u2 = new XsdAnyURI("\"http://www.w3.org/1999/02/22-rdf-syntax-ns#type\"^^<xsd:anyURI>");
+    System.out.println(u2.toJava());
+    // not compliant with URI syntax; return: null
+    XsdAnyURI u3 = new XsdAnyURI("\"<rdf:type>\"^^<xsd:anyURI>");
+    System.out.println(u3.toJava());
   }
   
 }

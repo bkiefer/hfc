@@ -1,11 +1,21 @@
 package de.dfki.lt.hfc.types;
 
 /**
- * NOTE: at the moment, we do NOT decompose an URI into namespace and value
+ * the Java representation of a URI in HFC, either as a short or long form name;
+ * for instance
+ *   + <rdf:type>
+ *   + <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>
+ * note that we are always assuming angle brackets in _both_ cases here, contrary
+ * to the XSD data type anyURI !!
+ 
+ * these instances will only be constructed lazily, i.e., only if their
+ * internal content need to be accessed
+ *
+ * NOTE: at the moment, we do NOT decompose an URI into namespace and `value'
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Mon May 30 16:46:09 CEST 2011
+ * @version Fri Jan 29 17:12:34 CET 2016
  */
 public class Uri extends AnyType {
 	
@@ -28,5 +38,12 @@ public class Uri extends AnyType {
 	public String toName() {
 		return this.value.substring(1, this.value.length() - 1);
 	}
+  
+  /**
+   * as there is no direct Java counterpart, we return this object
+   */
+  public Object toJava() {
+    return this;
+  }
 	
 }

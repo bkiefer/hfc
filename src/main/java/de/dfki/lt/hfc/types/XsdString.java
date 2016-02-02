@@ -5,7 +5,7 @@ import de.dfki.lt.hfc.TupleStore;
 /**
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Mon May 30 16:46:09 CEST 2011
+ * @version Fri Jan 29 19:38:30 CET 2016
  */
 public final class XsdString extends XsdAnySimpleType {
 	
@@ -100,20 +100,19 @@ public final class XsdString extends XsdAnySimpleType {
 	}
   
   /**
-   * returns the value (the Java string; note: language tag _not_ used) for a
-   * given XsdString object which is refered to by its internal TupleStore ID
-   * (a positive int)
+   * we return the pure string _without_ the language tag
    */
-  public static Object getValue(int id, TupleStore ts) {
-    final XsdString xs = (XsdString)(ts.getJavaObject(id));
-    return xs.value;
+  public Object toJava() {
+    return this.value;
   }
 	
-	/*
-	public static void main(String[] args) {
-		XsdString xs = new XsdString("\"hel <lo>\"^^<xsd:string>");
+  /**
+   * for test purposes only
+   */
+  public static void main(String[] args) {
+    XsdString xs = new XsdString("\"hel <lo>\"^^<xsd:string>");
 		System.out.println(xs.toName());
-		xs = new XsdString("\"hello\"^^<xsd:string>");
+    xs = new XsdString("\"hello\"^^<xsd:string>");
 		System.out.println(xs.value);
 		System.out.println(xs.languageTag);
 		System.out.println(xs.toString(true));
@@ -142,7 +141,6 @@ public final class XsdString extends XsdAnySimpleType {
 		System.out.println(xs.languageTag);
 		System.out.println(xs.toString(true));
 		System.out.println(xs.toString(false));
-	}
-	*/
+  }
 	
 }

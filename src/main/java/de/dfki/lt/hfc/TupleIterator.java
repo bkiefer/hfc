@@ -10,9 +10,9 @@ package de.dfki.lt.hfc;
  *     returns the total number of stored in the collection
  *   + nextAsString()
  *     returns an _external_ representation of the tuple as a String[]
- *   + nextAsXsdType
+ *   + nextAsHfcType
  *     returns an HFC XSD type representation of the tuple
- *   + nextAsObject()
+ *   + nextAsJavaObject()
  *     returns a Java representation of Java objects, related to the XSD types
  *
  * an implementing class of this interface is BindingTable.BindingTableIterator
@@ -27,8 +27,8 @@ public interface TupleIterator extends java.util.Iterator<int[]> {
   
   public abstract String[] nextAsString();
   
-  public abstract de.dfki.lt.hfc.types.AnyType[] nextAsXsdType();
+  public abstract de.dfki.lt.hfc.types.AnyType[] nextAsHfcType();
   
-  public abstract Object[] nextAsObject();
+  public abstract Object[] nextAsJavaObject();
 
 }

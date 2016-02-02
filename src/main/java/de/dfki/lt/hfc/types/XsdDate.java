@@ -16,7 +16,7 @@ package de.dfki.lt.hfc.types;
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Tue Jan  3 10:11:10 CET 2012
+ * @version Fri Jan 29 19:01:44 CET 2016
  */
 public final class XsdDate extends XsdAnySimpleType {
 
@@ -140,22 +140,32 @@ public final class XsdDate extends XsdAnySimpleType {
 		int index = time.lastIndexOf('^');
 		return time.substring(1, index - 2);
 	}
+  
+  /**
+   * even though there exist a java.util.Date and java.util.GregorianCalendar
+   * class, these classes do not perfectly fit the intention behind XsdDate,
+   * so return this object
+   */
+  public Object toJava() {
+    return this;
+  }
 	
-	/*
-	 public static void main(String[] args) {
-	 XsdDate xt = new XsdDate("\"-12000-03-04\"^^<xsd:date>");
-	 System.out.println(xt.year);
-	 System.out.println(xt.month);
-	 System.out.println(xt.day);
-	 System.out.println(xt.toString(true));
-	 System.out.println(xt.toString(false));
-	 System.out.println();
-	 xt = new XsdDate(2009, 1, 12);
-	 System.out.println(xt.toString(true));
-	 System.out.println(xt.toName());
-	 System.out.println(xt.toString(true));
-	 System.out.println(xt.toString(false));
-	 }
-	*/
+	/**
+   * for test purposes only
+   */
+  public static void main(String[] args) {
+    XsdDate xt = new XsdDate("\"-12000-03-04\"^^<xsd:date>");
+    System.out.println(xt.year);
+    System.out.println(xt.month);
+    System.out.println(xt.day);
+    System.out.println(xt.toString(true));
+    System.out.println(xt.toString(false));
+    System.out.println();
+    xt = new XsdDate(2009, 1, 12);
+    System.out.println(xt.toString(true));
+    System.out.println(xt.toName());
+    System.out.println(xt.toString(true));
+    System.out.println(xt.toString(false));
+  }
 	
 }

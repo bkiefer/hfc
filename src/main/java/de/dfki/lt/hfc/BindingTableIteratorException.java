@@ -2,8 +2,8 @@ package de.dfki.lt.hfc;
 
 /**
  * constructing an iterator through BindingTable.iterator(Sting ... vars)
- * whose variables vars not natch the table headings complete should not
- * be allowed;
+ * whose variables vars do not match the table headings completely should
+ * not be allowed!
  * this is signaled though through this exception class which should _not_
  * be regarded as an error, but instead as an exception as the tuple store
  * and the forward chainer are still consistent
