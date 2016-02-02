@@ -5,7 +5,7 @@ import de.dfki.lt.hfc.TupleStore;
 /**
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Wed Sep 23 10:57:55 CEST 2015
+ * @version Fri Jan 29 18:42:17 CET 2016
  */
 public final class XsdBoolean extends XsdAnySimpleType {
 	
@@ -68,12 +68,10 @@ public final class XsdBoolean extends XsdAnySimpleType {
 	}
 	
   /**
-   * returns a Java Boolean container for a given XsdAnyURI object which is
-   * refered to by its internal TupleStore ID (a positive int)
+   * returns a java.lang.Boolean container for an HFC XsdBoolean object
    */
-  public static Object getValue(int id, TupleStore ts) {
-    final XsdBoolean xb = (XsdBoolean)(ts.getJavaObject(id));
-    return new Boolean(xb.value);
+  public Object toJava() {
+    return new Boolean(this.value);
   }
   
 }

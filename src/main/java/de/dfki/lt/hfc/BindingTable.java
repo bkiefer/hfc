@@ -9,7 +9,7 @@ import de.dfki.lt.hfc.types.*;
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Thu Oct 29 15:26:15 CET 2015
+ * @version Mon Feb  1 12:41:14 CET 2016
  */
 public class BindingTable {
 
@@ -66,9 +66,11 @@ public class BindingTable {
 	protected HashMap<String, Integer> varToId;
 
 	/**
-	 *  The list of vars from the select query generating this table, or "*"
+	 *  The list of variables from the select query generating this table, or "*",
+	 *  which will be lazily expanded into the list of variables for all columns,
+	 *  when requested.
 	 */
-	List<String> selectVars;
+	String[] selectVars;
 
 	/**
 	 * assigns the null value to all four public fields
@@ -209,13 +211,12 @@ public class BindingTable {
    *  after the select in the order in which they were specified, if "*" was
    *  specified, return all variables in the table in column order
    */
-  List<String> getVars() {
-    if ("*".equals(selectVars.get(0))) {
-      String[] result = new String[nameToPos.size()];
+  String[] getVars() {
+    if ("*".equals(selectVars[0])) {
+      selectVars = new String[nameToPos.size()];
       for (Map.Entry<Integer, Integer> e : nameToPos.entrySet()) {
-        result[e.getValue()] = this.nameToExternalName.get(e.getKey());
+        selectVars[e.getValue()] = this.nameToExternalName.get(e.getKey());
       }
-      selectVars = Arrays.asList(result);
     }
     return selectVars;
   }
@@ -415,6 +416,14 @@ public class BindingTable {
    * tuple, depending on the sequence of variable names, given by parameter vars;
    * in case vars.length < tuple.length, the nextXXX() method also implement a kind
    * of table projection, however, _without_ removing potential duplicate elements!
+   * by using this method (instead of the above nullary method), one can be certain
+   * that the order of specified column headings is kept (which is not guaranteed for
+   * the above method);
+   * furthermore, as we are working with Trove hash sets and strategy objects, it
+   * might even be the cxase that the above method returns an n-tuple, even though
+   * we projected via SELECT only k elements (k < n);
+   * note: as a (legal) cornercase, even columns can be duplicated by specifying
+   * a header variable multiple times!
    */
   public BindingTableIterator iterator(String ... vars) throws BindingTableIteratorException {
     // check whether vars refers to _legal_ variables, i.e., check whether each
@@ -423,7 +432,7 @@ public class BindingTable {
     final Collection<String> allVars = this.nameToExternalName.values();
     for (String var : vars)
       if (! allVars.contains(var))
-        throw new BindingTableIteratorException("wrongly-specified vars: there is no table column named " + var);
+        throw new BindingTableIteratorException("wrongly-specified variable: there is no table column named " + var);
     return this.new BindingTableIterator(vars);
   }
 
@@ -433,12 +442,7 @@ public class BindingTable {
   class BindingTableIterator implements TupleIterator {
 
     /**
-     * make the tuple store from BindingTable directly accessable in this local class
-     */
-    private TupleStore tupleStore = BindingTable.this.tupleStore;
-
-    /**
-     * the number of tuples of the binding table
+     * the number of tuples covered by the binding table
      */
     private int size = BindingTable.this.table.size();
 
@@ -446,76 +450,216 @@ public class BindingTable {
      * if null, next(), nextAsXsdType(), nextAsString(), and nextAsObject() keep the
      * original sequence of the elements of the individual tuples;
      * otherwise, the elements of the returned tuples are reordered according to the
-     * sequence given by vars
+     * sequence given by vars in BindingTableIterator()
      */
-    private String[] vars;
+    private int[] varPos;
 
     /**
-     * is called by iterator()
+     * make the iterator operating on BindingTable.this.table private
+     */
+    private Iterator<int[]> it = BindingTable.this.table.iterator();
+
+    /**
+     * is called by BindingTable.iterator()
      */
     private BindingTableIterator() {
       super();
-      this.vars = null;
+      this.varPos = null;
     }
 
     /**
-     * is called by iterator(String ... vars) and the sequence of vars are recorded
+     * is called by BindingTable.iterator(String ... vars) and the sequence of vars are recorded
      */
     private BindingTableIterator(String[] vars) {
       super();
-      this.vars = vars;
+      // compute the positions for the column headings of interest, given by vars
+      this.varPos = new int[vars.length];
+      // construct the inverse mapping (external name -> internal name)
+      final HashMap<String, Integer> externalNameToName = new HashMap<String, Integer>();
+      for (Map.Entry<Integer, String> entry : BindingTable.this.nameToExternalName.entrySet())
+        externalNameToName.put(entry.getValue(), entry.getKey());
+      // obtain position via a two times table lookup
+      for (int i = 0; i < vars.length; i++)
+        varPos[i] = BindingTable.this.nameToPos.get(externalNameToName.get(vars[i]));
     }
 
     /**
-     *
+     * return the size of the table object stored in BindingTable
      */
     public int hasSize() {
       return this.size;
     }
 
     /**
-     *
+     * returns true if we have not returned all elements from BindingTable.this.table
      */
     public boolean hasNext() {
-      return true;
+      return this.it.hasNext();
     }
 
     /**
-     *
+     * return the next element in the iteration (an int[]), but consider only the columns
+     * listed in this.vars in that order, if specified;
+     * this method is used by the below three nextXXX() methods;
      */
     public int[] next() {
-      return null;
+      final int[] next = this.it.next();
+      if (this.varPos == null)
+        return next;
+      final int[] result = new int[this.varPos.length];
+      for (int i = 0; i < this.varPos.length; i++)
+        result[i] = next[this.varPos[i]];
+      return result;
     }
 
     /**
-     *
-     */
-    public AnyType[] nextAsXsdType() {
-      return null;
-    }
-
-    /**
-     *
+     * uses the next() method from above and returns a string representation for
+     * the int ids;
+     * this is the cheapest of the 3 nextXXX() methods
      */
     public String[] nextAsString() {
-      return null;
+      final int[] intNext = next();
+      final String[] result = new String[intNext.length];
+      for (int i = 0; i < intNext.length; i++)
+        result[i] = BindingTable.this.tupleStore.getObject(intNext[i]);
+      return result;
     }
 
     /**
-     *
+     * uses the next() method from above and returns a HFC XSD type representation
+     * for the int ids;
+     * this is more expensive as potentially new HFC Java objects need to be build
      */
-    public Object[] nextAsObject() {
-      return null;
+    public AnyType[] nextAsHfcType() {
+      final int[] intNext = next();
+      final AnyType[] result = new AnyType[intNext.length];
+      for (int i = 0; i < intNext.length; i++)
+        result[i] = BindingTable.this.tupleStore.getJavaObject(intNext[i]);
+      return result;
+    }
+
+    /**
+     * @see de.dfki.lt.hfc.types.toJava()
+     * nextAsJavaObjects is the most expensive method of the 3 nextXXX() methods
+     */
+    public Object[] nextAsJavaObject() {
+      AnyType[] anyTypeNext = nextAsHfcType();
+      Object[] result = new Object[anyTypeNext.length];
+      for (int i = 0; i < anyTypeNext.length; i++)
+        result[i] = anyTypeNext[i].toJava();
+      return result;
     }
 
   }
 
+  /**
+   * for test purposes only
+   *   + go to HFC's bin directory
+   *   + java -cp .:../lib/trove-2.1.0.jar -Xms800m -Xmx1200m de/dfki/lt/hfc/BindingTable
+   */
+  public static void main(String[] args) throws Exception {
+    Namespace ns = new Namespace("/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.ns");
+    TupleStore ts = new TupleStore(100000, 250000, ns,
+                                   "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.nt");
+    Query q = new Query(ts);
 
+    BindingTable bt = q.query("SELECT * WHERE ?s <rdf:type> ?o FILTER ?o != <rdfs:Datatype>");
+    System.out.println(bt);
+    // returns triples even though we're asking for pairs (?s, ?o), but because we're using
+    // Trove sets and strategy objects for table projection, the underlying int arrays are
+    // still of length 3
+    BindingTableIterator it = bt.iterator();
+    System.out.println(it.hasSize());
+    while (it.hasNext()) {
+      int[] next = it.next();
+      for (int i = 0; i < next.length; i++)
+        System.out.print(next[i] + " ");
+      System.out.println();
+    }
 
+    it = bt.iterator();
+    System.out.println(it.hasSize());
+    while (it.hasNext()) {
+      String[] next = it.nextAsString();
+      for (int i = 0; i < next.length; i++)
+        System.out.print(next[i] + " ");
+      System.out.println();
+    }
 
+    it = bt.iterator("?s", "?o");
+    System.out.println(it.hasSize());
+    while (it.hasNext()) {
+      String[] next = it.nextAsString();
+      for (int i = 0; i < next.length; i++)
+        System.out.print(next[i] + " ");
+      System.out.println();
+    }
 
+    it = bt.iterator("?s", "?o");
+    System.out.println(it.hasSize());
+    while (it.hasNext()) {
+      AnyType[] next = it.nextAsHfcType();
+      for (int i = 0; i < next.length; i++)
+        System.out.print(next[i] + " ");
+      System.out.println();
+    }
 
+    it = bt.iterator("?o", "?s");
+    System.out.println(it.hasSize());
+    while (it.hasNext()) {
+      String[] next = it.nextAsString();
+      for (int i = 0; i < next.length; i++)
+        System.out.print(next[i] + " ");
+      System.out.println();
+    }
 
+    it = bt.iterator("?s", "?o", "?s", "?o");
+    System.out.println(it.hasSize());
+    while (it.hasNext()) {
+      String[] next = it.nextAsString();
+      for (int i = 0; i < next.length; i++)
+        System.out.print(next[i] + " ");
+      System.out.println();
+    }
 
+    it = bt.iterator("?o");
+    System.out.println(it.hasSize());
+    while (it.hasNext()) {
+      String[] next = it.nextAsString();
+      for (int i = 0; i < next.length; i++)
+        System.out.print(next[i] + " ");
+      System.out.println();
+    }
 
+    bt = q.query("SELECT ?p WHERE ?s ?p ?o AGGREGATE ?number = CountDistinct ?p & ?subject = Identity ?p");
+    System.out.println(bt);
+    it = bt.iterator("?number", "?subject");
+    System.out.println(it.hasSize());
+    while (it.hasNext()) {
+      String[] next = it.nextAsString();
+      for (int i = 0; i < next.length; i++)
+        System.out.print(next[i] + " ");
+      System.out.println();
+    }
+
+    it = bt.iterator("?number", "?subject");
+    System.out.println(it.hasSize());
+    while (it.hasNext()) {
+      AnyType[] next = it.nextAsHfcType();
+      for (int i = 0; i < next.length; i++)
+        System.out.print(next[i] + " ");
+      System.out.println();
+    }
+
+    it = bt.iterator("?subject");
+    System.out.println(it.hasSize());
+    while (it.hasNext()) {
+      String[] next = it.nextAsString();
+      for (int i = 0; i < next.length; i++)
+        System.out.print(next[i] + " ");
+      System.out.println();
+    }
+
+    it = bt.iterator("?s", "?p", "?o");   // error!
+  }
 }

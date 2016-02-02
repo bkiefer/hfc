@@ -6,7 +6,7 @@ import de.dfki.lt.hfc.TupleStore;
  * The double datatype is patterned after the IEEE double-precision 64-bit floating point type [IEEE 754-1985]
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Mon May 30 16:46:09 CEST 2011
+ * @version Fri Jan 29 19:28:31 CET 2016
  */
 public final class XsdDouble extends XsdAnySimpleType {
 	
@@ -67,14 +67,12 @@ public final class XsdDouble extends XsdAnySimpleType {
 	public String toName() {
 		return Double.toString(this.value);
 	}
-	
+  
   /**
-   * returns the value (a double covered in a Double container) for a given XsdDouble
-   * object which is refered to by its internal TupleStore ID (a positive int)
+   * returns a java.lang.Double container for an HFC XsdDouble object
    */
-  public static Object getValue(int id, TupleStore ts) {
-    final XsdDouble xd = (XsdDouble)(ts.getJavaObject(id));
-    return new Double(xd.value);
+  public Object toJava() {
+    return new Double(this.value);
   }
   
 }

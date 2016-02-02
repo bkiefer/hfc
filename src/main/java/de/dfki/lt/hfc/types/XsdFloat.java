@@ -6,7 +6,7 @@ import de.dfki.lt.hfc.TupleStore;
  * float is patterned after the IEEE single-precision 32-bit floating point type [IEEE 754-1985]
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Mon May 30 16:46:09 CEST 2011
+ * @version Fri Jan 29 19:29:19 CET 2016
  */
 public final class XsdFloat extends XsdAnySimpleType {
 	
@@ -69,26 +69,25 @@ public final class XsdFloat extends XsdAnySimpleType {
 	}
   
   /**
-   * returns the value (a float covered in a Float container) for a given XsdFloat
-   * object which is refered to by its internal TupleStore ID (a positive int)
+   * returns a java.lang.Float container for an HFC XsdFloat object
    */
-  public static Object getValue(int id, TupleStore ts) {
-    final XsdFloat xf = (XsdFloat)(ts.getJavaObject(id));
-    return new Float(xf.value);
+  public Object toJava() {
+    return new Float(this.value);
   }
   
-	/*
-	public static void main(String[] args) {
-		XsdFloat xf = new XsdFloat("\"3.1415\"^^<xsd:float>");
-		System.out.println(xf.value);
-		System.out.println(xf.toString(true));
-		System.out.println(xf.toString(false));
+  /**
+   * for test purposes only
+   */
+  public static void main(String[] args) {
+    XsdFloat xf = new XsdFloat("\"3.1415\"^^<xsd:float>");
+    System.out.println(xf.value);
+    System.out.println(xf.toString(true));
+    System.out.println(xf.toString(false));
 	  System.out.println();
 		xf = new XsdFloat(2.71828f);
 		System.out.println(xf.value);
 		System.out.println(xf.toString(true));
 		System.out.println(xf.toString(false));
-	}
-	*/
+  }
 	
 }

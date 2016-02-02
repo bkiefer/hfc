@@ -1252,7 +1252,7 @@ public final class TupleStore {
 			if (this.verbose) {
 				System.out.println("  removing " + no + " equivalence relation instances");
 				System.out.println("  removing " + (all - this.allTuples.size()) + " resulting duplicates");
-				System.out.println("  number of all tuples: " + this.allTuples.size());
+				System.out.println("  number of all tuples: " + this.allTuples.size() + "\n");
 			}
 		}
 	}
