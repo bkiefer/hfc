@@ -7,7 +7,9 @@ import java.lang.reflect.Constructor;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 
-import gnu.trove.*;
+import gnu.trove.map.hash.*;
+import gnu.trove.set.hash.*;
+import gnu.trove.list.array.*;
 import de.dfki.lt.hfc.types.*;
 
 /**
@@ -69,7 +71,7 @@ public final class TupleStore {
 	 * the forward chainer
 	 * @see ForwardChainer.enableTupleDeletion()
 	 */
-	protected THashMap<int[], Integer> tupleToGeneration = null;
+	protected TCustomHashMap<int[], Integer> tupleToGeneration = null;
 
 	/**
 	 * @return true iff tuple deletion has been enabled by method ForwardChainer.enableTupleDeletion()
@@ -302,7 +304,7 @@ public final class TupleStore {
 		this.index = (HashMap[])Array.newInstance(HashMap.class, this.maxNoOfArgs);
 		for (int i = 0; i < this.maxNoOfArgs; i++)
 			this.index[i] = new HashMap<Integer, Set<int[]>>();
-		this.allTuples = new THashSet<int[]>(noOfTuples, TupleStore.DEFAULT_HASHING_STRATEGY);
+		this.allTuples = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY, noOfTuples);
 	}
 
 	/**
@@ -476,7 +478,7 @@ public final class TupleStore {
 				if (leftProxy == rightProxy)
 					return;
 				// now choose leftProxy as _the_ proxy
-				final int[] rightElements = this.proxyToUris.get(rightProxy).toNativeArray();
+				final int[] rightElements = this.proxyToUris.get(rightProxy).toArray();
 				for (int e : rightElements) {
 					this.uriToProxy.put(e, leftProxy);
 				}
@@ -1053,7 +1055,7 @@ public final class TupleStore {
 				ithset = ithmap.get(itharg);
 			else {
 				// if not, create an empty one
-				ithset = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
+				ithset = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
 				ithmap.put(itharg, ithset);
 			}
 			// and finally add tuple to this set
@@ -1728,7 +1730,7 @@ public final class TupleStore {
 		// do _not_ blow up the set of "right" tuples w.r.t. the input pattern
 		query = result;  // reuse query
 		// use relevant position (and NOT proper), since in-eqs might be applied
-		result = new THashSet<int[]>(new TIntArrayHashingStrategy(table.getRelevantPositions()));
+		result = new TCustomHashSet<int[]>(new TIntArrayHashingStrategy(table.getRelevantPositions()));
 		for (int[] tuple : query) {
 			if (tuple.length == length)
 				result.add(tuple);
@@ -1794,14 +1796,19 @@ public final class TupleStore {
 		copy.namespace = this.namespace;
 		copy.equivalenceClassReduction = this.equivalenceClassReduction;
 		// JavaDoc says clone() returns deep copy in both cases; second clone does not need casting
+		/*
 		copy.uriToProxy = (TIntIntHashMap)this.uriToProxy.clone();
 		copy.proxyToUris = this.proxyToUris.clone();
 		copy.uriToEquivalenceRelation = (TIntIntHashMap)this.uriToEquivalenceRelation.clone();
+		*/
+    copy.uriToProxy = new TIntIntHashMap(this.uriToProxy);
+    copy.proxyToUris = new TIntObjectHashMap<TIntArrayList>(this.proxyToUris);
+    copy.uriToEquivalenceRelation = new TIntIntHashMap(this.uriToEquivalenceRelation);
 		// use copy constructor for objectToId, idToObject, idToJavaObject, and allTuples
 		copy.objectToId = new HashMap<String, Integer>(this.objectToId);
 		copy.idToObject = new ArrayList<String>(this.idToObject);
 		copy.idToJavaObject = new ArrayList<AnyType>(this.idToJavaObject);
-		copy.allTuples = new THashSet<int[]>(this.allTuples, TupleStore.DEFAULT_HASHING_STRATEGY);
+		copy.allTuples = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY, this.allTuples);
 		// operatorRegistry and aggregateRegistry need to be copied (above mappings might be different
 		// for different tuple stores)
 		copy.operatorRegistry = new OperatorRegistry(copy, this.operatorRegistry);
@@ -1837,7 +1844,7 @@ public final class TupleStore {
 			// shallow copy this.index[i], but after that also shallow copy the values of the map
 			copy[i] = new HashMap<Integer, Set<int[]>>(this.index[i]);
 			for (Integer key : copy[i].keySet()) {
-				copy[i].put(key, new THashSet<int[]>(copy[i].get(key), TupleStore.DEFAULT_HASHING_STRATEGY));
+				copy[i].put(key, new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY, copy[i].get(key)));
 			}
 		}
 		return copy;

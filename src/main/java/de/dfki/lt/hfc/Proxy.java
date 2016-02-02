@@ -1,11 +1,11 @@
 package de.dfki.lt.hfc;
 
 import java.util.*;
-import gnu.trove.*;
+import gnu.trove.set.hash.*;
 
 /**
  * information that is shared between equivalent patterns, even across rules
- * 
+ *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
  * @version Thu Jan 14 14:57:24 CET 2010
@@ -16,24 +16,24 @@ class Proxy {
 	 * the query result from the current iteration
 	 */
 	protected Set<int[]> table;
-	
+
 	/**
 	 * the query result from the last iteration
 	 */
 	protected Set<int[]> old;
-	
+
 	/**
 	 * the difference ("delta") that is given by set difference between new and old query result
 	 */
 	protected Set<int[]> delta;
-	
+
 	/**
 	 * needed for clause/proxy resharing;
 	 * @see Table.getGeneration()
 	 * @see ForwardChainer.executeLocalMatch()
 	 */
 	protected int generation = 0;
-	
+
 	/**
 	 * encodes positions of (proper) duplicate variables in a local clause;
 	 * e.g., <?s, ?t, ?u, ?t, ?s> leads to the following structure: [[0, 4], [1, 3]];
@@ -41,7 +41,7 @@ class Proxy {
 	 * this information is
 	 */
 	protected int[][] equalPositions;
-	
+
 	/**
 	 * duplicates are counted only once, using their FIRST occurrence;
 	 * note that the int array is always *SORTED*;
@@ -50,7 +50,7 @@ class Proxy {
 	 * same for <?s, a, ?s>, assuming a is an atom: [0]
 	 */
 	protected int[] properPositions;
-	
+
 	/**
 	 * proper variables are counted by their occurrence;
 	 * note that the int array is always *SORTED*;
@@ -59,12 +59,12 @@ class Proxy {
 	 * same for <?s, a, ?s>, assuming a is an atom: [0, 2]
 	 */
 	protected int[] relevantPositions;
-	
+
 	/**
 	 * the equals and hash code strategy for the sets stored in table and delta
 	 */
 	protected TIntArrayHashingStrategy strategy;
-	
+
 	/**
 	 * only for the use in TupleStore.query()
 	 */
@@ -84,7 +84,7 @@ class Proxy {
 				array[j] = list.get(j);
 		}
 	}
-	
+
 	/**
 	 * set instance fields to the parameter values;
 	 * note: generation field uses default value 0
@@ -104,21 +104,21 @@ class Proxy {
 		this.relevantPositions = relevantPositions;
 		this.strategy = strategy;
 	}
-	
+
 	/**
 	 * copy contructor for copyRuleStore();
 	 * table, old, and delta are shallow copied, but everything else is taken over (incl. generation)
 	 */
 	protected Proxy(Proxy proxy) {
-		this.table = new THashSet<int[]>(proxy.table, proxy.strategy);
+		this.table = new TCustomHashSet<int[]>(proxy.strategy, proxy.table);
 		if (proxy.old == null)
 			this.old = null;
 		else
-			this.old = new THashSet<int[]>(proxy.old, proxy.strategy);
+			this.old = new TCustomHashSet<int[]>(proxy.strategy, proxy.old);
 		if (proxy.delta == null)
 			this.delta = null;
 		else
-			this.delta = new THashSet<int[]>(proxy.delta, proxy.strategy);
+			this.delta = new TCustomHashSet<int[]>(proxy.strategy, proxy.delta);
 		this.generation = proxy.generation;
 		this.equalPositions = proxy.equalPositions;
 		this.properPositions = proxy.properPositions;

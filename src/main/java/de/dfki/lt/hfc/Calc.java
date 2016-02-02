@@ -1,7 +1,7 @@
 package de.dfki.lt.hfc;
 
 import java.util.*;
-import gnu.trove.*;
+import gnu.trove.set.hash.*;
 
 /**
  * a collection of static methods that deal with sets and binding tables, used by the
@@ -11,7 +11,7 @@ import gnu.trove.*;
  * non-destructive: project(), product(), join()
  * destructive: project(), restrict()
  * non-destructive: map()
- * 
+ *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
  * @version Fri Mar 15 18:26:17 CET 2013
@@ -23,7 +23,7 @@ public final class Calc {
 	 * iteration: take ALL positions of a tuple into account
 	 */
 	protected static TIntArrayHashingStrategy DEFAULT_HASHING_STRATEGY = new TIntArrayHashingStrategy();
-	
+
 	/**
 	 * a non-destructive set union operation (in contrast to addAll) that better
 	 * serve our needs when we query the index, perform table joins, etc.;
@@ -36,12 +36,12 @@ public final class Calc {
 			set1 = set2;
 			set2 = set;
 		}
-		Set<int[]> res = new THashSet<int[]>(set2, Calc.DEFAULT_HASHING_STRATEGY);
+		Set<int[]> res = new TCustomHashSet<int[]>(Calc.DEFAULT_HASHING_STRATEGY, set2);
 		for (int[] elem : set1)
 			res.add(elem);  // add already checks for containment
 		return res;
 	}
-	
+
 	/**
 	 * extends the binary version by a third TIntArrayHashingStrategy argument
 	 */
@@ -53,12 +53,12 @@ public final class Calc {
 			set1 = set2;
 			set2 = set;
 		}
-		Set<int[]> res = new THashSet<int[]>(set2, strategy);
+		Set<int[]> res = new TCustomHashSet<int[]>(strategy, set2);
 		for (int[] elem : set1)
 			res.add(elem);  // add already checks for containment
 		return res;
 	}
-	
+
 	/**
 	 * a non-destructive set intersection operation (in contrast to retainAll) that
 	 * better serve our needs when we query the index, perform table joins, etc.;
@@ -71,13 +71,13 @@ public final class Calc {
 			set1 = set2;
 			set2 = set;
 		}
-		Set<int[]> res = new THashSet<int[]>(Calc.DEFAULT_HASHING_STRATEGY);
+		Set<int[]> res = new TCustomHashSet<int[]>(Calc.DEFAULT_HASHING_STRATEGY);
 		for (int[] elem : set1)
 			if (set2.contains(elem))
 				res.add(elem);
 		return res;
 	}
-	
+
 	/**
 	 * extends the binary version by a third TIntArrayHashingStrategy argument
 	 */
@@ -89,13 +89,13 @@ public final class Calc {
 			set1 = set2;
 			set2 = set;
 		}
-		Set<int[]> res = new THashSet<int[]>(strategy);
+		Set<int[]> res = new TCustomHashSet<int[]>(strategy);
 		for (int[] elem : set1)
 			if (set2.contains(elem))
 				res.add(elem);
 		return res;
 	}
-	
+
 	/**
 	 * a non-destructive set difference operation (in contrast to removeAll) that
 	 * better serve our needs when we query the index, perform table joins, etc.;
@@ -103,39 +103,39 @@ public final class Calc {
 	 * by default, uses Calc.DEFAULT_HASHING_STRATEGY
 	 */
 	public static Set<int[]> difference(Set<int[]> set1, Set<int[]> set2) {
-		Set<int[]> res = new THashSet<int[]>(Calc.DEFAULT_HASHING_STRATEGY);
+		Set<int[]> res = new TCustomHashSet<int[]>(Calc.DEFAULT_HASHING_STRATEGY);
 		for (int[] elem : set1)
 			if (!set2.contains(elem))
 				res.add(elem);
 		return res;
 	}
-	
+
 	/**
 	 * similar to the binary version of Calc.difference(), but assumes that
 	 * set2 is always a SUBSET of set1
 	 */
 	public static Set<int[]> monotonicDifference(Set<int[]> set1, Set<int[]> set2) {
 		if (set1.size() == set2.size())
-			return  new THashSet<int[]>(Calc.DEFAULT_HASHING_STRATEGY);
-		Set<int[]> res = new THashSet<int[]>(Calc.DEFAULT_HASHING_STRATEGY);
+			return  new TCustomHashSet<int[]>(Calc.DEFAULT_HASHING_STRATEGY);
+		Set<int[]> res = new TCustomHashSet<int[]>(Calc.DEFAULT_HASHING_STRATEGY);
 		for (int[] elem : set1)
 			if (!set2.contains(elem))
 				res.add(elem);
 		return res;
 	}
-	
+
 	/**
 	 * extends the binary version by a third TIntArrayHashingStrategy argument
 	 */
 	public static Set<int[]> difference(Set<int[]> set1, Set<int[]> set2,
 																			TIntArrayHashingStrategy strategy) {
-		Set<int[]> res = new THashSet<int[]>(strategy);
+		Set<int[]> res = new TCustomHashSet<int[]>(strategy);
 		for (int[] elem : set1)
 			if (!set2.contains(elem))
 				res.add(elem);
 		return res;
 	}
-	
+
 	/**
 	 * similar to the ternary version of Calc.difference(), but assumes that
 	 * set2 is always a SUBSET of set1
@@ -143,14 +143,14 @@ public final class Calc {
 	public static Set<int[]> monotonicDifference(Set<int[]> set1, Set<int[]> set2,
 																							 TIntArrayHashingStrategy strategy) {
 		if (set1.size() == set2.size())
-			return  new THashSet<int[]>(strategy);
-		Set<int[]> res = new THashSet<int[]>(strategy);
+			return  new TCustomHashSet<int[]>(strategy);
+		Set<int[]> res = new TCustomHashSet<int[]>(strategy);
 		for (int[] elem : set1)
 			if (!set2.contains(elem))
 				res.add(elem);
 		return res;
 	}
-	
+
 	/**
 	 * given a table, project() constructs a _new_ table by taking into account only
 	 * the columns given by pos (positive ints including 0);
@@ -163,11 +163,11 @@ public final class Calc {
 	 *       compatible hash codes!!!
 	 */
 	public static Set<int[]> project(Set<int[]> table, int[] pos) {
-		THashSet<int[]> projTable = new THashSet<int[]>(new TIntArrayHashingStrategy(pos));
+		TCustomHashSet<int[]> projTable = new TCustomHashSet<int[]>(new TIntArrayHashingStrategy(pos));
 		projTable.addAll(table);
 		return projTable;
 	}
-	
+
 	/**
 	 * this is code originally allocated in class Query that turns out to be useful
 	 * in ForwardChainer;
@@ -208,8 +208,8 @@ public final class Calc {
 		}
 		return newTable;
 	}
-	
-	
+
+
 	/**
 	 * DESTRUCTIVELY modifies the table field of the BindingTable object tt
 	 */
@@ -217,7 +217,7 @@ public final class Calc {
 		tt.table = Calc.project(tt.table, pos);
 		return tt;
 	}
-	
+
 	/**
 	 * _destructively_ removes tuples from the _existing_ binding table which do
 	 * not satisfy the inequalities;
@@ -230,7 +230,7 @@ public final class Calc {
 	 * NOTE: restrict() does NOT check whether the variables mentioned in varvarineqs
 	 *       or varconstineqs are legal column headings in the binding table
 	 */
-	public static BindingTable restrict(BindingTable bt, 
+	public static BindingTable restrict(BindingTable bt,
 																			ArrayList<Integer> varvarIneqs,
 																			ArrayList<Integer> varconstIneqs) {
 		// check whether both ineq lists are empty in order to avoid iterator
@@ -275,7 +275,7 @@ public final class Calc {
 		}
 		return bt;
 	}
-	
+
 	/**
 	 * removes tuples from the _existing_ binding table which do not satisfy at least one of the predicates
 	 */
@@ -364,7 +364,7 @@ public final class Calc {
 		}
 		return bt;
 	}
-	
+
 	/**
 	 * performs the Cartesian product of the tables stored under tt1 and tt2
 	 * and returns a _new_ binding table;
@@ -416,7 +416,7 @@ public final class Calc {
 		}
 		return bt;
 	}
-	
+
 	/*
   // slightly slower than mergeSort(); nevertheless, thanks Bernie!=
 	protected static void qsort(int[][] ia, TupleComparator tc) {
@@ -459,7 +459,7 @@ public final class Calc {
 	 * used in preference to mergesort or quicksort.
 	 */
 	private static final int INSERTIONSORT_THRESHOLD = 7;
-	
+
 	/**
 	 * sorts an array ia of int[] (= tuples) according to a given int[] comparator tc
 	 */
@@ -472,7 +472,7 @@ public final class Calc {
 		Calc.mergeSort(aux, ia, 0, ia.length, 0, tc);
 	}
 	 */
-	
+
 	/**
 	 * adaption of Sun's mergeSort() for Object[] to int[]
 	 */
@@ -515,7 +515,7 @@ public final class Calc {
 		}
 	}
 	 */
-	
+
 	/**
 	 * sorts an array ia of int[] (= tuples) according to an order established by compare0()
 	 */
@@ -526,7 +526,7 @@ public final class Calc {
 			aux[i] = ia[i];
 		Calc.mergeSort0(aux, ia, 0, ia.length, 0, col0);
 	}
-	
+
 	/**
 	 * adaption of Sun's mergeSort() for Object[] to int[]
 	 */
@@ -567,7 +567,7 @@ public final class Calc {
 				dest[i] = src[q++];
 		}
 	}
-	
+
 	/**
 	 * sorts an array ia of int[] (= tuples) according to an order established by compare1()
 	 */
@@ -578,7 +578,7 @@ public final class Calc {
 			aux[i] = ia[i];
 		Calc.mergeSort1(aux, ia, 0, ia.length, 0, col1);
 	}
-	
+
 	/**
 	 * adaption of Sun's mergeSort() for Object[] to int[]
 	 */
@@ -635,7 +635,7 @@ public final class Calc {
 		}
 		return 0;
 	}
-	
+
 	private static int compare0(int[] tuple0, int[] tuple1, int[] col0) {
 		int diff;
 		for (int i = 0; i < col0.length; ++i) {
@@ -645,7 +645,7 @@ public final class Calc {
 		}
 		return 0;
 	}
-	
+
 	private static int compare1(int[] tuple0, int[] tuple1, int[] col1) {
 		int diff;
 		for (int i = 0; i < col1.length; ++i) {
@@ -655,7 +655,7 @@ public final class Calc {
 		}
 		return 0;
 	}
-	
+
 	/**
 	 * don't know whether this special arraycopy pays off (even though it avoids
 	 * src and dest to be of type Object, it is not a native method)
@@ -666,7 +666,7 @@ public final class Calc {
 		for (int i = srcPos; i < srcPos + length; i++)
 			dest[i] = src[i];
 	}
-	
+
 	/**
 	 * private helper for join()
 	 */
@@ -696,30 +696,30 @@ public final class Calc {
 			}
 		}
 	}
-	
+
 	/**
 	 * @author (C) Bernd Kiefer, Hans-Ulrich Krieger
 	 * @return a new table representing the join of tt1 and tt2
 	 */
 	public static BindingTable join(BindingTable tt1, BindingTable tt2) {
-		
+
 		BindingTable result = null;
 		int[] transformer = null;
 		int newTupleSize = -1;
 		int tuple1Size = -1;
-		
+
 		SortedSet<Integer> commonVars = new TreeSet<Integer>(tt1.nameToPos.keySet());
 		commonVars.retainAll(tt2.nameToPos.keySet());
 		int subs = 0;
 		if (commonVars.size() >= tt1.nameToPos.keySet().size()) { subs = 1; }
-		if (commonVars.size() >= tt2.nameToPos.keySet().size()) { subs = 2; }   
+		if (commonVars.size() >= tt2.nameToPos.keySet().size()) { subs = 2; }
 		if (subs == 1) {
-			// make table 2 the table to reduce 
+			// make table 2 the table to reduce
 			BindingTable help = tt2;
 			tt2 = tt1;
 			tt2 = help;
 		}
-		
+
 		// check if one of the variable sets is a subset of the other;
 		// if this is not the case, we create a new BindingTable, and the fact that
 		// result is not null is an indicator that we collect tuples into the new
@@ -728,15 +728,15 @@ public final class Calc {
 		//             we always generate a NEW result table
 		if (true) {    // was: (subs == 0)
 			result = new BindingTable();
-			
+
 			result.nameToPos = new TreeMap<Integer, Integer>();
 			result.table = new THashSet<int[]>();
 			transformer = new int[tt1.nameToPos.size() + tt2.nameToPos.size()	- commonVars.size()];
-			
+
 			// create a new variable assignment for the result and a mapping from old
 			// to new columns, the transformer
 			Calc.mergeAssignments(commonVars, tt1.nameToPos, tt2.nameToPos, result.nameToPos, transformer);
-			
+
 			// NOTE (HUK): originally, the following condition was the very first lines of join();
 			//             however, even if one of the tables is empty, we need a canonical nameToPos
 			//             mapping
@@ -745,11 +745,11 @@ public final class Calc {
 				// was: return null;
 				return result;
 			}
-			
+
 			newTupleSize = transformer.length;
 			tuple1Size = tt1.nameToPos.size();
 		}
-		
+
 		// BEGIN of TupleComparator constructor code
 		int[][] columns;
 		int[] vars = new int[commonVars.size()];
@@ -769,30 +769,30 @@ public final class Calc {
 		// END of TupleComparator constructor code
 
 		// now produce a sorted list view of both tables
-		
+
 		int pos;
 		int[][] tl1 = new int[tt1.table.size()][];
 		pos = 0;
 		for (int[] tuple : tt1.table)
 			tl1[pos++] = tuple;
 		Calc.msort0(tl1, columns[0]);
-		
+
 		int[][] tl2 = new int[tt2.table.size()][];
 		pos = 0;
 		for (int[] tuple : tt2.table)
 			tl2[pos++] = tuple;
 		Calc.msort1(tl2, columns[1]);
-		
+
 		// traverse them in order and remove the non-fitting triples
-		
+
 		int current1 = 0;
 		int current2 = 0;
-		
+
 		// ok 'cause we tested in the beginning
-		
+
 		int[] tuple1, tuple2, newTuple;
 		int res, start2, end2;
-		
+
 		do {
 			tuple1 = tl1[current1];
 			tuple2 = tl2[current2];
@@ -826,9 +826,9 @@ public final class Calc {
 				// Finally, the pointer of table 2 is set to end2
 				start2 = current2;  //pointers[1];
 				end2 = tl2.length;
-				
+
 				int compres = 0;  // result of comparison
-				
+
 				do {
 					tuple1 = tl1[current1];
 					current2 = start2;
@@ -861,38 +861,38 @@ public final class Calc {
 			}
 		} while (current1 < tl1.length && current2 < tl2.length);
 		if (result == null) {
-			// remove all remaining elements of tl1    
+			// remove all remaining elements of tl1
 			while (current1 < tl1.length) {
 				tt1.table.remove(tl1[current1++]);
 			}
 		}
 		return (result == null ? tt1 : result);
 	}
-	
+
   // use this version of join() together with the outcommented code from
   // class TupleComparator to apply Arrays.parallelSort(), but make sure
   // that there are enough free processor cores available (instead of
   // parallelizing rules too much)
   /*
 	public static BindingTable join(BindingTable tt1, BindingTable tt2) {
-		
+
 		BindingTable result = null;
 		int[] transformer = null;
 		int newTupleSize = -1;
 		int tuple1Size = -1;
-		
+
 		SortedSet<Integer> commonVars = new TreeSet<Integer>(tt1.nameToPos.keySet());
 		commonVars.retainAll(tt2.nameToPos.keySet());
 		int subs = 0;
 		if (commonVars.size() >= tt1.nameToPos.keySet().size()) { subs = 1; }
-		if (commonVars.size() >= tt2.nameToPos.keySet().size()) { subs = 2; }   
+		if (commonVars.size() >= tt2.nameToPos.keySet().size()) { subs = 2; }
 		if (subs == 1) {
-			// make table 2 the table to reduce 
+			// make table 2 the table to reduce
 			BindingTable help = tt2;
 			tt2 = tt1;
 			tt2 = help;
 		}
-		
+
 		TupleComparator tc = new TupleComparator(commonVars, tt1.nameToPos, tt2.nameToPos);
 		// check if one of the variable sets is a subset of the other;
 		// if this is not the case, we create a new BindingTable, and the fact that
@@ -902,15 +902,15 @@ public final class Calc {
 		//             we always generate a NEW result table
 		if (true) {    // was: (subs == 0)
 			result = new BindingTable();
-			
+
 			result.nameToPos = new TreeMap<Integer, Integer>();
 			result.table = new THashSet<int[]>();
 			transformer = new int[tt1.nameToPos.size() + tt2.nameToPos.size()	- commonVars.size()];
-			
+
 			// create a new variable assignment for the result and a mapping from old
 			// to new columns, the transformer
 			Calc.mergeAssignments(commonVars, tt1.nameToPos, tt2.nameToPos, result.nameToPos, transformer);
-			
+
 			// NOTE (HUK): originally, the following condition was the very first lines of join();
 			//             however, even if one of the tables is empty, we need a canonical nameToPos
 			//             mapping
@@ -919,16 +919,16 @@ public final class Calc {
 				// was: return null;
 				return result;
 			}
-			
+
 			newTupleSize = transformer.length;
 			tuple1Size = tt1.nameToPos.size();
 		}
-		
+
 		// HUK: tried below code for tl1/tl2 with arrays instead of ArrayList
 		//      does NOT give any reproducable advantage using the profiler
-		
+
 		// Now produce a sorted list view of both tables
-		
+
 		int pos;
 		tc.setWhich(0, 0);
 		int[][] tl1 = new int[tt1.table.size()][];
@@ -937,7 +937,7 @@ public final class Calc {
 			tl1[pos++] = tuple;
     //Calc.msort(tl1, tc);
     Arrays.parallelSort(tl1, tc);
-		
+
 		tc.setWhich(1, 1);
 		int[][] tl2 = new int[tt2.table.size()][];
 		pos = 0;
@@ -945,14 +945,14 @@ public final class Calc {
 			tl2[pos++] = tuple;
     //Calc.msort(tl2, tc);
     Arrays.parallelSort(tl2, tc);
-		
+
 		// traverse them in order and remove the non-fitting triples
-		
+
 		tc.setWhich(0, 1);
 		int current1 = 0;
 		int current2 = 0;
 		// ok 'cause we tested in the beginning
-		
+
 		do {
 			int[] tuple1 = tl1[current1];
 			int[] tuple2 = tl2[current2];
@@ -987,9 +987,9 @@ public final class Calc {
 				// Finally, the pointer of table 2 is set to end2
 				int start2 = current2;  //pointers[1];
 				int end2 = tl2.length;
-				
+
 				int compres = 0;  // result of comparison
-				
+
 				do {
 					tuple1 = tl1[current1];
 					current2 = start2;
@@ -1022,7 +1022,7 @@ public final class Calc {
 			}
 		} while (current1 < tl1.length && current2 < tl2.length);
 		if (result == null) {
-			// remove all remaining elements of tl1    
+			// remove all remaining elements of tl1
 			while (current1 < tl1.length) {
 				tt1.table.remove(tl1[current1++]);
 			}
@@ -1030,5 +1030,5 @@ public final class Calc {
 		return (result == null ? tt1 : result);
 	}
   */
-	
+
 }

@@ -9,7 +9,7 @@ import java.util.TreeMap;
 
 import org.junit.Test;
 
-import gnu.trove.THashSet;
+import gnu.trove.set.hash.*;
 
 public class AggregateRegistryTest {
 	@Test
@@ -24,8 +24,8 @@ public class AggregateRegistryTest {
 	public void testevaluate() {
 		/*test method evaluate(String className, BindingTable args, SortedMap<Integer, Integer> nameToPos,
 		 Map<Integer, String> nameToExternalName) */
-		
-		Set<int[]> table1 = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
+
+		Set<int[]> table1 = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
 		SortedMap<Integer, Integer> nameToPos = new TreeMap<Integer, Integer>();
 		Map<Integer, String> nameToExternalName = new TreeMap<Integer, String>();
 		BindingTable bt = new BindingTable(table1, nameToPos, nameToExternalName);

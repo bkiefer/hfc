@@ -13,7 +13,7 @@ import java.util.TreeMap;
 
 import org.junit.Test;
 
-import gnu.trove.THashSet;
+import gnu.trove.set.hash.*;
 
 import static de.dfki.lt.hfc.TestUtils.*;
 
@@ -23,7 +23,7 @@ public class CalcTest {
   @Test
   public void testunion(){
   //test method union(Set<int[]> set1, Set<int[]> set2)
-    Set<int[]> set1 = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
+    Set<int[]> set1 = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     Set<int[]> set2 = new THashSet<int[]>();
     assertTrue(Calc.union(set1, set2).isEmpty());
     //test for case set2 > set1
@@ -38,7 +38,7 @@ public class CalcTest {
   @Test
   public void testunion1(){
   //test method union(Set<int[]> set1, Set<int[]> set2, TIntArrayHashingStrategy strategy)
-    Set<int[]> set1 = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
+    Set<int[]> set1 = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     Set<int[]> set2 = new THashSet<int[]>();
     TIntArrayHashingStrategy strategy = new TIntArrayHashingStrategy();
     assertTrue(Calc.union(set1, set2, strategy).isEmpty());
@@ -54,7 +54,7 @@ public class CalcTest {
   @Test
   public void testintersection(){
   //test method intersection(Set<int[]> set1, Set<int[]> set2)
-    Set<int[]> set1 = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
+    Set<int[]> set1 = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     Set<int[]> set2 = new THashSet<int[]>();
     assertTrue(Calc.intersection(set1, set2).isEmpty());
     //test for case set1 > set2 and set2 contains the element
@@ -71,7 +71,7 @@ public class CalcTest {
   @Test
   public void testintersection1(){
     //test method intersection(Set<int[]> set1, Set<int[]> set2, TIntArrayHashingStrategy strategy)
-    Set<int[]> set1 = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
+    Set<int[]> set1 = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     Set<int[]> set2 = new THashSet<int[]>();
     TIntArrayHashingStrategy strategy = new TIntArrayHashingStrategy();
     assertTrue(Calc.intersection(set1, set2, strategy).isEmpty());
@@ -87,7 +87,7 @@ public class CalcTest {
   @Test
   public void testdifference(){
   //test method difference(Set<int[]> set1, Set<int[]> set2)
-    Set<int[]> set1 = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
+    Set<int[]> set1 = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     Set<int[]> set2 = new THashSet<int[]>();
     assertTrue(Calc.difference(set1, set2).isEmpty());
     //set2 contains element
@@ -104,7 +104,7 @@ public class CalcTest {
   @Test
   public void testmonotonicDifference() {
     //test method monotonicDifference(Set<int[]> set1, Set<int[]> set2)
-    Set<int[]> set1 = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
+    Set<int[]> set1 = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     Set<int[]> set2 = new THashSet<int[]>();
     Calc.monotonicDifference(set1, set2);
 
@@ -122,7 +122,7 @@ public class CalcTest {
   @Test
   public void testdifference1(){
     //test method difference(Set<int[]> set1, Set<int[]> set2, TIntArrayHashingStrategy strategy)
-    Set<int[]> set1 = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
+    Set<int[]> set1 = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     Set<int[]> set2 = new THashSet<int[]>();
     TIntArrayHashingStrategy strategy = new TIntArrayHashingStrategy();
     assertTrue(Calc.difference(set1, set2, strategy).isEmpty());
@@ -238,7 +238,7 @@ public class CalcTest {
   public void testproduct(){
   //test method product(BindingTable bt1, BindingTable bt2)
     //create bt1
-    Set<int[]> table3 = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
+    Set<int[]> table3 = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     SortedMap<Integer, Integer> nameToPos3 = new TreeMap<Integer, Integer>();
     Map<Integer, String> nameToExternalName3 = new TreeMap<Integer, String>();
     TupleStore ts3 = new TupleStore(1,2);
@@ -248,7 +248,7 @@ public class CalcTest {
     BindingTable bt1 = new BindingTable(table3, nameToPos3, nameToExternalName3, ts3, arguments, relIdToFunIds, varToId);
     assertNotNull(bt1);
     //create bt2
-    Set<int[]> table4 = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
+    Set<int[]> table4 = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     SortedMap<Integer, Integer> nameToPos4 = new TreeMap<Integer, Integer>();
     Map<Integer, String> nameToExternalName4 = new TreeMap<Integer, String>();
     TupleStore ts4 = new TupleStore(2,5);
@@ -264,7 +264,7 @@ public class CalcTest {
   public void testjoin(){
   //test method join(BindingTable tt1, BindingTable tt2)
     //create binding table 1
-    Set<int[]> table3 = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
+    Set<int[]> table3 = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     SortedMap<Integer, Integer> nameToPos3 = new TreeMap<Integer, Integer>();
     Map<Integer, String> nameToExternalName3 = new TreeMap<Integer, String>();
     TupleStore ts3 = new TupleStore(1,2);
@@ -274,7 +274,7 @@ public class CalcTest {
     BindingTable bt1 = new BindingTable(table3, nameToPos3, nameToExternalName3, ts3, arguments, relIdToFunIds, varToId);
     assertNotNull(bt1);
     //create binding table 2
-    Set<int[]> table4 = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
+    Set<int[]> table4 = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     SortedMap<Integer, Integer> nameToPos4 = new TreeMap<Integer, Integer>();
     Map<Integer, String> nameToExternalName4 = new TreeMap<Integer, String>();
     TupleStore ts4 = new TupleStore(2,5);

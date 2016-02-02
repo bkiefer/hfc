@@ -17,7 +17,7 @@ import java.util.TreeMap;
 
 import org.junit.Test;
 
-import gnu.trove.THashSet;
+import gnu.trove.set.hash.*;
 
 public class BindingTableTest {
 
@@ -32,7 +32,7 @@ public class BindingTableTest {
   public void testBindingTable1() {
     //test constructor BindingTable(Set<int[]> table)
     Set<int[]> table;
-    table = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
+    table = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     BindingTable bt1 = new BindingTable(table);
     assertNotNull(bt1);
   }
@@ -49,7 +49,7 @@ public class BindingTableTest {
   public void testBindingTable3() {
     //test constructor BindingTable(Set<int[]> table, SortedMap<Integer, Integer> nameToPos)
     Set<int[]> table0;
-    table0 = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
+    table0 = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     SortedMap<Integer, Integer> nameToPos = new TreeMap<Integer, Integer>();
     BindingTable bt3 = new BindingTable(table0, nameToPos);
     assertNotNull(bt3);
@@ -58,7 +58,7 @@ public class BindingTableTest {
   @Test
   public void testBindingTable4() {
     //test constructor BindingTable(Set<int[]> table, SortedMap<Integer, Integer> nameToPos, Map<Integer, String> nameToExternalName)
-    Set<int[]> table1 = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
+    Set<int[]> table1 = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     SortedMap<Integer, Integer> nameToPos1 = new TreeMap<Integer, Integer>();
     Map<Integer, String> nameToExternalName = new TreeMap<Integer, String>();
     BindingTable bt4 = new BindingTable(table1, nameToPos1, nameToExternalName);
@@ -69,7 +69,7 @@ public class BindingTableTest {
   public void testBindingTable5() {
     /*test constructor BindingTable(Set<int[]> table, SortedMap<Integer, Integer> nameToPos,
     Map<Integer, String> nameToExternalName, TupleStore tupleStore)*/
-    Set<int[]> table2 = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
+    Set<int[]> table2 = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     SortedMap<Integer, Integer> nameToPos2 = new TreeMap<Integer, Integer>();
     Map<Integer, String> nameToExternalName2 = new TreeMap<Integer, String>();
     TupleStore ts = new TupleStore(1, 2);
@@ -82,7 +82,7 @@ public class BindingTableTest {
     /*test constructor BindingTable(Set<int[]> table, SortedMap<Integer, Integer> nameToPos,
     Map<Integer, String> nameToExternalName, TupleStore tupleStore, int[] arguments,
     HashMap<Integer, ArrayList<Integer>> relIdToFunIds, HashMap<String, Integer> varToId) */
-    Set<int[]> table3 = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
+    Set<int[]> table3 = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     SortedMap<Integer, Integer> nameToPos3 = new TreeMap<Integer, Integer>();
     Map<Integer, String> nameToExternalName3 = new TreeMap<Integer, String>();
     TupleStore ts3 = new TupleStore(1, 2);
@@ -133,7 +133,7 @@ public class BindingTableTest {
   public void testtoString() {
     //test method toString()
     //nameToPos is empty
-    Set<int[]> table0 = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
+    Set<int[]> table0 = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     SortedMap<Integer, Integer> nameToPos = new TreeMap<Integer, Integer>();
     BindingTable bt = new BindingTable(table0, nameToPos);
     //System.out.println("toString " + bt.toString());//the first element is =
@@ -149,7 +149,7 @@ public class BindingTableTest {
   public void testtoString1() throws FileNotFoundException, WrongFormatException, IOException {
     //test method toString(boolean expand)
     Set<int[]> table;
-    table = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
+    table = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     SortedMap<Integer, Integer> nameToPos = new TreeMap<Integer, Integer>();
     nameToPos.put(1, 1);
     Map<Integer, String> nameToExternalName = new TreeMap<Integer, String>();
@@ -167,7 +167,7 @@ public class BindingTableTest {
   @Test
   public void testtoString2() throws FileNotFoundException, WrongFormatException, IOException {
     //test method toString(int maxLength, boolean expand)
-    Set<int[]> table = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
+    Set<int[]> table = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     SortedMap<Integer, Integer> nameToPos = new TreeMap<Integer, Integer>();
     nameToPos.put(1, 1);
     Map<Integer, String> nameToExternalName = new TreeMap<Integer, String>();

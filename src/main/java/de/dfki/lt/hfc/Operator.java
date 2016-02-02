@@ -12,7 +12,7 @@ import de.dfki.lt.hfc.types.AnyType;
  *
  * @see de.dfki.lt.hfc.FunctionalOperator
  * @see de.dfki.lt.hfc.AggregationalOperator
- * 
+ *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
  * @version Fri Jun 17 15:33:16 CEST 2011
@@ -24,7 +24,7 @@ public abstract class Operator {
 	 * methods, calling (potentially synchronized) methods from the tuple store
    */
   protected TupleStore tupleStore;
-	
+
 	/**
 	 * calls getJavaObject() from class TupleStore;
 	 * calling this.tupleStore.getJavaObject(...) inside a FO can thus be reduced to
@@ -33,14 +33,14 @@ public abstract class Operator {
 	public AnyType getObject(int id) {
 		return this.tupleStore.getJavaObject(id);
 	}
-	
+
 	/**
 	 * calls getObject() from class TupleStore
 	 */
 	public String getExternalRepresentation(int id) {
 		return this.tupleStore.getObject(id);
 	}
-	
+
 	/**
 	 * returns the id for a given literal (e.g., a string encoding a URI, blank node,
 	 * XSD int, XSD string, etc.);
@@ -55,7 +55,7 @@ public abstract class Operator {
 		else
 			return id;
 	}
-	
+
 	/**
 	 * returns the proxy (the representative) for a given uri which serves as the internal
 	 * name for a URI or a blank node
@@ -63,7 +63,7 @@ public abstract class Operator {
 	public int getProxy(int uri) {
 		return this.tupleStore.uriToProxy.get(uri);
 	}
-	
+
 	/**
 	 * calls addEquivalentElements() for the int representation of two individuals;
 	 * we make sure that the modification of the data structures is synchronized!
@@ -72,14 +72,14 @@ public abstract class Operator {
 		// note: TupleStore.addEquivalentElements() is already synchronized
 		this.tupleStore.addEquivalentElements(left, right);
 	}
-	
+
 	/**
 	 * returns the equivalence relation for uri
 	 */
 	public int getRelation(int uri) {
 		return this.tupleStore.uriToEquivalenceRelation.get(uri);
 	}
-	
+
 	/**
 	 * make an association between an internal uri and the internal representation
 	 * of the equivalence relation;
@@ -92,7 +92,7 @@ public abstract class Operator {
 			this.tupleStore.uriToEquivalenceRelation.put(uri, rel);
 		}
 	}
-	
+
 	/**
 	 * calls registerJavaObject() from class TupleStore;
 	 * calling this.tupleStore.registerJavaObject(...) inside a FO can thus be reduced to
@@ -103,14 +103,14 @@ public abstract class Operator {
 		// note: TupleStore.registerJavaObject() is already synchronized
 		return this.tupleStore.registerJavaObject(string, object);
 	}
-	
+
 	/**
 	 * checks whether a ground tuple (i.e., a tuple wo/ vars) exists in the tuple store
 	 */
 	public boolean ask(int[] tuple) {
 		return this.tupleStore.allTuples.contains(tuple);
 	}
-	
+
 	/**
 	 * obtains all those tuples which contain an object obj (represented as an int)
 	 * at a specific position pos in a tuple (an int);
@@ -122,7 +122,7 @@ public abstract class Operator {
 	public Set<int[]> ask(int pos, int obj) {
 		return this.tupleStore.getTuples(pos, obj);
 	}
-	
+
 	/**
 	 * @return the set of all tuples
 	 *
@@ -131,5 +131,5 @@ public abstract class Operator {
 	public Set<int[]> ask() {
 		return this.tupleStore.allTuples;
 	}
-	
+
 }

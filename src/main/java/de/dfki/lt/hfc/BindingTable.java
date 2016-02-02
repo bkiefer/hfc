@@ -1,7 +1,9 @@
 package de.dfki.lt.hfc;
 
 import java.util.*;
-import gnu.trove.*;
+import gnu.trove.map.hash.*;
+import gnu.trove.list.array.*;
+import gnu.trove.set.hash.*;
 import de.dfki.lt.hfc.types.*;
 
 /**
@@ -154,7 +156,7 @@ public class BindingTable {
 	}
 
 	/**
-	 * a further argument varToId originating from the RuleStore when reading in rules
+	 * a further argument varToIsetd originating from the RuleStore when reading in rules
 	 * (individual map for each rule)
 	 */
 	public BindingTable(Set<int[]> table,

@@ -3,7 +3,8 @@ package de.dfki.lt.hfc;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.*;
-import gnu.trove.*;
+import gnu.trove.set.hash.*;
+import gnu.trove.map.hash.*;
 
 /**
  * a rule consists of an antecedent and a consequent;
@@ -190,7 +191,8 @@ public final class RuleStore {
 	 * a data structure that maps "equivalent" LHS clauses (even across rules) to binding
 	 * tables (plus additional info), coming from the index
 	 */
-	protected Map<int[], Proxy> equivalentClauses = new THashMap<int[], Proxy>(TupleStore.DEFAULT_HASHING_STRATEGY);
+	protected Map<int[], Proxy> equivalentClauses =
+	    new TCustomHashMap<int[], Proxy>(TupleStore.DEFAULT_HASHING_STRATEGY);
 
 	/**
 	 * @see de.dfki.lt.hfc.RuleStore.reorderAntecedent()
@@ -1552,7 +1554,7 @@ public final class RuleStore {
 		copy.rdfCheck = this.rdfCheck;
 		copy.exitOnError = this.exitOnError;
 		// copy this.equivalentClauses: keys can be taken over, but the values needed to be nearly deep copied
-		copy.equivalentClauses = new THashMap<int[], Proxy>(this.equivalentClauses, TupleStore.DEFAULT_HASHING_STRATEGY);
+		copy.equivalentClauses = new TCustomHashMap<int[], Proxy>(TupleStore.DEFAULT_HASHING_STRATEGY, this.equivalentClauses);
 		for (int[] key : copy.equivalentClauses.keySet()) {
 			// use special Proxy copy constructor
 			copy.equivalentClauses.put(key, new Proxy(this.equivalentClauses.get(key)));

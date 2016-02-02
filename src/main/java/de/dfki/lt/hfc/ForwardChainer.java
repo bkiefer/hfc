@@ -3,7 +3,8 @@ package de.dfki.lt.hfc;
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.*;
-import gnu.trove.*;
+import gnu.trove.set.hash.*;
+import gnu.trove.map.hash.*;
 
 /**
  * generates a tuple store, a rule store, and a namespace object in order to
@@ -28,7 +29,7 @@ public final class ForwardChainer {
 	 * HFC version number string
 	 */
 	public static final String VERSION = "6.1.15";
-	
+
 	/**
 	 * HFC info string
 	 */
@@ -421,7 +422,7 @@ public final class ForwardChainer {
 				else
 					// shallow copy delta
 					rule.clusters[0].bindingTable =
-					new BindingTable(new THashSet<int[]>(table.getDelta(), table.getStrategy()),
+					new BindingTable(new TCustomHashSet<int[]>(table.getStrategy(), table.getDelta()),
 													 table.nameToPosProper);
 			}
 		}
@@ -1073,7 +1074,7 @@ public final class ForwardChainer {
 		}
 		// delete local rule-level cluster/mega-cluster info + output field
 		for (Rule rule : this.ruleStore.allRules) {
-			rule.output = new THashSet<int[]>(ForwardChainer.DEFAULT_HASHING_STRATEGY);
+			rule.output = new TCustomHashSet<int[]>(ForwardChainer.DEFAULT_HASHING_STRATEGY);
 			for (Cluster cluster : rule.clusters) {
 				cluster.table = new THashSet<int[]>();
 				cluster.delta = null;
@@ -1130,7 +1131,7 @@ public final class ForwardChainer {
 		copy.tupleStore.generation = this.tupleStore.generation;
 		if (tupleDeletionEnabled())
 			copy.tupleStore.tupleToGeneration =
-			  new THashMap<int[], Integer>(this.tupleStore.tupleToGeneration, ForwardChainer.DEFAULT_HASHING_STRATEGY);
+			  new TCustomHashMap<int[], Integer>(ForwardChainer.DEFAULT_HASHING_STRATEGY, this.tupleStore.tupleToGeneration);
 		else
 			copy.tupleStore.tupleToGeneration = null;
 		// finished!
@@ -1180,7 +1181,7 @@ public final class ForwardChainer {
 		if (this.tupleStore.generation == 0) {
 			// at the moment, NO closure has been computed
 			if (this.tupleStore.tupleToGeneration == null)
-				this.tupleStore.tupleToGeneration = new THashMap<int[], Integer>(ForwardChainer.DEFAULT_HASHING_STRATEGY);
+				this.tupleStore.tupleToGeneration = new TCustomHashMap<int[], Integer>(ForwardChainer.DEFAULT_HASHING_STRATEGY);
 			for (int[] tuple : this.tupleStore.allTuples)
 				this.tupleStore.tupleToGeneration.put(tuple, 0);
 			if (this.verbose)
