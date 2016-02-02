@@ -6,65 +6,70 @@ import de.dfki.lt.hfc.types.*;
 
 /**
  * a wrapper class, hiding a table (a set of int arrays) and several _mappings_
- * 
+ *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
  * @version Thu Oct 29 15:26:15 CET 2015
  */
 public class BindingTable {
-	
+
 	/**
 	 *
 	 */
 	public Set<int[]> table;
-	
+
 	/**
 	 * important to establish an order to guarantee proper set operations over binding tables
 	 * whose column labels vary
 	 */
 	protected SortedMap<Integer, Integer> nameToPos;
-	
+
 	/**
 	 * (internal) name (a negative int, e.g., -2) to external name (a string, e.g., "?y")
 	 */
 	protected Map<Integer, String> nameToExternalName;
-	
+
 	/**
 	 * needed in case toString() is called in order to access the idToObject field and the
 	 * proxyToUris field when equivalence class reduction is turned on as specified by Boolean
 	 * field equivalenceClassReduction in class TupleStore
 	 */
 	protected TupleStore tupleStore;
-	
+
 	/**
 	 * in case (addProxyInfo == true), the toString() methods add a further mapping table
 	 * to the result string, representing the mapping from proxis to URIs
 	 */
 	protected boolean addProxyInfo = false;
-	
+
 	/**
 	 * expansion through expandBindingTable() can only be called once
 	 */
 	protected boolean isExpanded = false;
-	
+
 	/**
 	 * might be assigned a value by Calc.restrict(BindingTable bt, ArrayList<Predicate> predicate);
 	 * is usually important for tests & actions involving (complex) relational variables
 	 */
 	public int[] arguments;
-	
+
 	/**
 	 * might be assigned a value by Calc.restrict(BindingTable bt, ArrayList<Predicate> predicate);
 	 * is usually important for tests & actions involving (complex) relational variables
 	 */
 	public HashMap<Integer, ArrayList<Integer>> relIdToFunIds;
-	
+
 	/**
 	 * might be assigned a value by Calc.restrict(BindingTable bt, ArrayList<Predicate> predicate);
 	 * is usually important for tests & actions involving (complex) relational variables
 	 */
 	protected HashMap<String, Integer> varToId;
-	
+
+	/**
+	 *  The list of vars from the select query generating this table, or "*"
+	 */
+	List<String> selectVars;
+
 	/**
 	 * assigns the null value to all four public fields
 	 */
@@ -74,7 +79,7 @@ public class BindingTable {
 		this.nameToExternalName = null;
 		this.tupleStore = null;
 	}
-	
+
 	/**
 	 * assigns value of parameter table to this.table;
 	 * three other fields are assigned the null value
@@ -93,13 +98,13 @@ public class BindingTable {
 	 * to be relevant)
 	 */
 	public BindingTable(TupleStore tupleStore) {
-		
+
 		this.table = new THashSet<int[]>();
 		this.nameToPos = null;
 		this.nameToExternalName = null;
 		this.tupleStore = tupleStore;
 	}
-	
+
 	/**
 	 * copy constructor for exclusive use in copy constructor of Cluster;
 	 * only table value needs to be shallow copied
@@ -110,7 +115,7 @@ public class BindingTable {
 		this.nameToExternalName = bt.nameToExternalName;
 		this.tupleStore = ts;
 	}
-	
+
 	/**
 	 * assigns non-null values to this.table and this.nameToPos
 	 */
@@ -120,7 +125,7 @@ public class BindingTable {
 		this.nameToExternalName = null;
 		this.tupleStore = null;
 	}
-	
+
 	/**
 	 * assigns non-null values to this.table, this.nameToPos, and this.nameToExternalName
 	 */
@@ -132,7 +137,7 @@ public class BindingTable {
 		this.nameToExternalName = nameToExternalName;
 		this.tupleStore = null;
 	}
-	
+
 	/**
 	 * assigns non-null values to all four public fields
 	 */
@@ -145,7 +150,7 @@ public class BindingTable {
 		this.nameToExternalName = nameToExternalName;
 		this.tupleStore = tupleStore;
 	}
-	
+
 	/**
 	 * a further argument varToId originating from the RuleStore when reading in rules
 	 * (individual map for each rule)
@@ -179,7 +184,7 @@ public class BindingTable {
 		this.nameToExternalName = nameToExternalName;
 		this.tupleStore = tupleStore;
 	}
-  
+
   /**
    * given an external name, this method returns the position (an int)
    * of the column which is headed by externalName;
@@ -199,14 +204,29 @@ public class BindingTable {
     else
       return this.nameToPos.get(iname);
   }
-	
+
+  /** If this BindingTable was created by a select query, return the variables
+   *  after the select in the order in which they were specified, if "*" was
+   *  specified, return all variables in the table in column order
+   */
+  List<String> getVars() {
+    if ("*".equals(selectVars.get(0))) {
+      String[] result = new String[nameToPos.size()];
+      for (Map.Entry<Integer, Integer> e : nameToPos.entrySet()) {
+        result[e.getValue()] = this.nameToExternalName.get(e.getKey());
+      }
+      selectVars = Arrays.asList(result);
+    }
+    return selectVars;
+  }
+
 	/**
 	 * uses the full URI/XSD name
 	 * note: in order to properly behave, toString() needs properly set fields, viz.,
 	 * table, nameToPos, nameToExternalName, and tupleStore;
 	 * note: the content of the table is NOT expanded when this method is called directly
 	 */
-	public String toString() {		
+	public String toString() {
 		int maxLength = -1;
 		int size = this.nameToPos.keySet().size();
 		Integer[] nameArray = new Integer[size];
@@ -223,7 +243,7 @@ public class BindingTable {
 		// call unary toString() with the maximal length
 		return toString(maxLength);
 	}
-	
+
 	/**
 	 * depending on the argument, the content is destructively expanded and
 	 * returned as a string
@@ -234,14 +254,14 @@ public class BindingTable {
 			expandBindingTable();
 		return toString();
 	}
-	
+
 	public String toString(int maxLength, boolean expand) {
 		this.addProxyInfo = !expand;
 		if (expand)
 			expandBindingTable();
 		return toString(maxLength);
 	}
-	
+
 	/**
 	 * maxLength indicates when entries need to be truncated;
 	 * note: in order to properly behave, toString() needs properly set fields, viz.,
@@ -320,7 +340,7 @@ public class BindingTable {
 		}
 		return sb.toString();
 	}
-	
+
 	/**
 	 * expands this binding table by multiplying out proxies by their equivalent
 	 * URIs;
@@ -379,7 +399,7 @@ public class BindingTable {
 			newTuples.add(newTuple);
 		}
 	}
-  
+
   /**
    * as the constructors of the inner class are private, I do provide two methods
    * which return a BindingTableIterator object;
@@ -389,7 +409,7 @@ public class BindingTable {
   public BindingTableIterator iterator() {
     return this.new BindingTableIterator();
   }
-  
+
   /**
    * this implementation of iterator() might reorder the sequence of elements in a
    * tuple, depending on the sequence of variable names, given by parameter vars;
@@ -406,22 +426,22 @@ public class BindingTable {
         throw new BindingTableIteratorException("wrongly-specified vars: there is no table column named " + var);
     return this.new BindingTableIterator(vars);
   }
-  
+
   /**
    * an implementation of TupleIterator for BindingTable objects
    */
   class BindingTableIterator implements TupleIterator {
-    
+
     /**
      * make the tuple store from BindingTable directly accessable in this local class
      */
     private TupleStore tupleStore = BindingTable.this.tupleStore;
-    
+
     /**
      * the number of tuples of the binding table
      */
     private int size = BindingTable.this.table.size();
-    
+
     /**
      * if null, next(), nextAsXsdType(), nextAsString(), and nextAsObject() keep the
      * original sequence of the elements of the individual tuples;
@@ -429,7 +449,7 @@ public class BindingTable {
      * sequence given by vars
      */
     private String[] vars;
-    
+
     /**
      * is called by iterator()
      */
@@ -437,7 +457,7 @@ public class BindingTable {
       super();
       this.vars = null;
     }
-    
+
     /**
      * is called by iterator(String ... vars) and the sequence of vars are recorded
      */
@@ -452,50 +472,50 @@ public class BindingTable {
     public int hasSize() {
       return this.size;
     }
-    
+
     /**
      *
      */
     public boolean hasNext() {
       return true;
     }
-    
+
     /**
      *
      */
     public int[] next() {
       return null;
     }
-    
+
     /**
      *
      */
     public AnyType[] nextAsXsdType() {
       return null;
     }
-    
+
     /**
      *
      */
     public String[] nextAsString() {
       return null;
     }
-    
+
     /**
      *
      */
     public Object[] nextAsObject() {
       return null;
     }
-    
+
   }
-  
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
 
 }

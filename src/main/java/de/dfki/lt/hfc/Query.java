@@ -30,7 +30,7 @@ import gnu.trove.*;
  * @version Tue Jan  5 11:45:27 CET 2016
  */
 public class Query {
-	
+
 	/**
 	 * do we want proxy expansion in the resulting binding table if equivalence reduction
 	 * has been turned on ?
@@ -38,25 +38,25 @@ public class Query {
 	 * (expandProxy = false) or SELECTALL (expandProxy = true) is used
 	 */
 	private boolean expandProxy = false;
-  
+
   /**
    * a constant that controls whether a warning is printed in case "unexpected" things
    * happen; similar variables exists in class TupleStore, RuleStore, and ForwardChainer
    */
   private boolean verbose = true;
-	
+
 	/**
 	 * in order to query, we need a tuple store
 	 */
 	protected TupleStore tupleStore;
-	
+
 	/**
 	 * the unary constructor internalizes the tuple store
 	 */
 	public Query(TupleStore tupleStore) {
 		this.tupleStore = tupleStore;
 	}
-	
+
 	/**
 	 * the unary constructor internalizes the tuple store that `sits'
 	 * inside the forward chainer
@@ -64,7 +64,7 @@ public class Query {
 	public Query(ForwardChainer fc) {
 		this.tupleStore = fc.tupleStore;
 	}
-	
+
 	/**
 	 * reads in a QDL query and returns a binding table, encoding the result of the query;
 	 * at the moment (= v2.3), QDL is described by the following EBNF:
@@ -117,7 +117,7 @@ public class Query {
 		// remove unnecessary whitespaces
 		query = query.trim();
     // use set to get rid of duplicates
-		HashSet<String> projectedVars = new HashSet<String>();
+		HashSet<String> projectedVars = new LinkedHashSet<String>();
 		// parse SELECT section
 		boolean makeDistinct = parseSelect(new StringTokenizer(query), projectedVars);
 		// parse WHERE section
@@ -204,6 +204,8 @@ public class Query {
 		// equip bt with the idToName mapping for later output;
 		// note: idToName even contains LHS aggregate variables
 		bt.nameToExternalName = idToName;
+		bt.selectVars = new ArrayList<String>();
+		bt.selectVars.addAll(projectedVars);
 		// finally consider projected vars and DISTINCT keyword
 		makeDistinctAndProject(bt, projectedVars, foundVars, nameToId, makeDistinct);
 		// bt is now destructively changed; finally consider potential aggregation;
@@ -219,7 +221,9 @@ public class Query {
 		}
     return bt;
 	}
-	
+
+
+
 	/**
 	 * parses the SELECT section of a QDL query
 	 */
@@ -263,7 +267,7 @@ public class Query {
 		}
 		return distinct;
 	}
-	
+
 	/**
 	 * parses the WHERE section of a QDL query
 	 */
@@ -302,7 +306,7 @@ public class Query {
 		if (! tuple.isEmpty())
 			whereClauses.add(tuple);
 	}
-	
+
 	/**
 	 * parses the optional FILTER section of a QDL query
 	 */
@@ -342,7 +346,7 @@ public class Query {
 		if (! constraint.isEmpty())
 			filterClauses.add(constraint);
 	}
-	
+
 	/**
 	 * parses the optional AGGREGATE section of a QDL query
 	 */
@@ -375,7 +379,7 @@ public class Query {
 		if (! aggregate.isEmpty())
 			aggregateClauses.add(aggregate);
 	}
-	
+
 	/**
 	 * maps surface WHERE form to internal representation
 	 * @return null iff constants in the WHERE clause are NOT known to the tuple store
@@ -427,7 +431,7 @@ public class Query {
 		// return internalized where clause
 		return patterns;
 	}
-	
+
 	/**
 	 * a predicate symbol is neither a URI, a blank node, a variable, nor an XSD atom
 	 */
@@ -436,8 +440,8 @@ public class Query {
 		!TupleStore.isAtom(literal) &&
 		!TupleStore.isUri(literal) &&
 		!TupleStore.isBlankNode(literal);
-	}	
-	
+	}
+
 	/**
 	 * maps surface FILTER form to internal representation, stored in varvarIneqs and
 	 * varconstIneqs (as used by Calc.restrict) and predicates;
@@ -582,7 +586,7 @@ public class Query {
 					else {
 						if (! projectedVars.contains(elem))
 							throw new QueryParseException("  aggregate RHS variable not contained in SELECT: " + elem);
-					}					
+					}
 					args[i - eqpos - 2] = nameToId.get(elem);
 				}
 				// a constant
@@ -608,7 +612,7 @@ public class Query {
 			aggregates.add(new Aggregate(name, vars, args));
 		}
 	}
-	
+
 	/**
 	 * preparation phase, before querying the index for each clause;
 	 * determines the proper vars, don't care vars, relevant positions,
@@ -658,7 +662,7 @@ public class Query {
 			tables.add(table);
 		}
 	}
-	
+
 	/**
 	 * queries the index for each clause and successively joins the results
 	 */
@@ -679,7 +683,7 @@ public class Query {
 			bt = Calc.join(bt, localTables.get(i));
 		return bt;
 	}
-	
+
 	/**
 	 * potentially modifies the binding table, due to the use of DISTINCT and
 	 * the set of projected variables
@@ -730,7 +734,7 @@ public class Query {
 				bt.table = new HashSet(bt.table);
 		}
 	}
-	
+
 	/**
 	 * applies the aggregates as specified in the AGGREGATE section and joins the resulting
 	 * tables (if there is more than one aggregate)
@@ -754,7 +758,7 @@ public class Query {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * potentially renames internal variable names (negative ints) in next, given result;
 	 * this requires changing next.nameToPos and next.nameToExternalName
@@ -794,7 +798,7 @@ public class Query {
 		next.nameToPos = newNameToPos;
 		next.nameToExternalName = newNameToExternalName;
 	}
-	
+
 	/**
 	 * applies an aggregate given a binding table and returns a new BindingTable
 	 * @see de.dfki.lt.hfc.Calc.map()
@@ -824,7 +828,7 @@ public class Query {
 	 * > closure
 	 * > select ...
 	 */
-	
+
 	public static void main(String[] args) throws Exception {
 		Namespace ns = new Namespace("/Users/krieger/Desktop/Java/HFC/hfc/resources/default.ns");
 		TupleStore ts = new TupleStore(100000, 250000, ns,
@@ -852,6 +856,6 @@ public class Query {
 		//System.out.println(bt.toString());
 		//System.out.println((System.currentTimeMillis() - start)/1000.0);
 	}
-	
-	
+
+
 }

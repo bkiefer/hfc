@@ -51,9 +51,10 @@ public class Hfc {
     return result;
   }
 
-  public BindingTable selectQuery(String query) {
+  public BindingTable executeQuery(String query) throws QueryParseException {
     Query q = new Query(_tupleStore);
-
+    BindingTable bt = q.query(query);
+    return bt;
   }
 
 }

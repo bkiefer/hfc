@@ -1,13 +1,15 @@
 package de.dfki.lt.hfc;
 
-import static org.junit.Assert.*;
-
 import static de.dfki.lt.hfc.TestUtils.getResource;
+import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
@@ -193,4 +195,30 @@ public class BindingTableTest {
     System.out.println("for (int[] tuple : this.table) " + bt1.toString(6, false));
 
   }
+
+  @Test
+  public void testVars() throws QueryParseException {
+    TupleStore ts = new TupleStore(new Namespace());
+    Query q = new Query(ts);
+    BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
+    List<String> vars = bt.getVars();
+    String[] expected = { "?s", "?p", "?o" };
+    assertEquals(Arrays.asList(expected), vars);
+  }
+
+  @Test
+  public void testVarsStar() throws QueryParseException {
+    TupleStore ts = new TupleStore(new Namespace());
+    Query q = new Query(ts);
+    BindingTable bt = q.query("SELECT * WHERE ?s ?p ?o");
+    List<String> vars = bt.getVars();
+    String[] expected = { "?s", "?p", "?o" };
+    Set<String> s = new HashSet<String>();
+    s.addAll(Arrays.asList(expected));
+    assertTrue(s.containsAll(vars));
+    for (int i = 0; i < expected.length; ++i) {
+      assertEquals(i, bt.obtainPosition(expected[i]));
+    }
+  }
+
 }
