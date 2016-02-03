@@ -112,6 +112,7 @@ public class TestLGetLatest {
     BindingTable bt = q.query("SELECT * WHERE ?d1 <rdf:type> <dafn:DialogueAct> & ?d2 <rdf:type> <dafn:DialogueAct> & ?d1 <dafn:follows> ?d2 FILTER ?d1 != ?d2");
     System.out.println(bt);
     // TODO call checkresult here, same for the other tests, and remove the
+    assertTrue(checkResult(expected, bt, bt.getVars())); //throws AssertionError
     // println if no longer needed
 
   }
@@ -132,6 +133,7 @@ public class TestLGetLatest {
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT * WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t");
     System.out.println(bt);
+    assertTrue(checkResult(expected, bt, bt.getVars()));//throws AssertionError
   }
 
   @Test
@@ -143,6 +145,7 @@ public class TestLGetLatest {
     // 503 is related to DA da3
     BindingTable bt = q.query("SELECT ?d WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> \"503\"^^<xsd:long>");
     System.out.println(bt);
+    assertTrue(checkResult(expected, bt, bt.getVars()));
   }
 
   @Test
@@ -165,6 +168,7 @@ public class TestLGetLatest {
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?t WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t AGGREGATE ?latest = LMax ?t");
     System.out.println(bt);
+    assertTrue(checkResult(expected, bt, bt.getVars()));
   }
 
   @Test
@@ -180,6 +184,7 @@ public class TestLGetLatest {
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?d ?t WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t FILTER LGreaterEqual ?t \"548\"^^<xsd:long>");
     System.out.println(bt);
+    assertTrue(checkResult(expected, bt, bt.getVars()));
   }
 
   @Test
@@ -194,6 +199,7 @@ public class TestLGetLatest {
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT * WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t FILTER LGreaterEqual ?t \"650\"^^<xsd:long>");
     System.out.println(bt);
+    assertTrue(checkResult(expected, bt, bt.getVars()));
   }
 
   @Test
@@ -227,6 +233,7 @@ public class TestLGetLatest {
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?t WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t FILTER LGreaterEqual ?t \"650\"^^<xsd:long>  AGGREGATE ?latest = LMax ?t");
     System.out.println(bt);
+    assertTrue(checkResult(expected, bt, bt.getVars()));
   }
 
   @Test
@@ -248,6 +255,7 @@ public class TestLGetLatest {
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?t WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t FILTER LGreaterEqual ?t \"650\"^^<xsd:long> & ?t != \"755\"^^<xsd:long>  AGGREGATE ?latest = LMax ?t");
     System.out.println(bt);
+    assertTrue(checkResult(expected, bt, bt.getVars()));
   }
 
   @Test
@@ -259,6 +267,7 @@ public class TestLGetLatest {
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?t WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t FILTER LGreaterEqual ?t \"650\"^^<xsd:long> & ?t != \"1000\"^^<xsd:long>  AGGREGATE ?latest = LMax ?t");
     System.out.println(bt);
+    assertTrue(checkResult(expected, bt, bt.getVars()));
   }
 
   // general form of the aggregate call: ?arg1' ... ?argN' = LGetLatest ?arg1 ... ?argN ?time ?limit
@@ -278,6 +287,7 @@ public class TestLGetLatest {
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long> AGGREGATE ?dialact ?time = LGetLatest ?da ?t ?t \"5\"^^<xsd:int>");
     System.out.println(bt);
+    assertTrue(checkResult(expected, bt, bt.getVars()));
   }
 
   @Test
@@ -291,6 +301,7 @@ public class TestLGetLatest {
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long> AGGREGATE ?dialact ?time = LGetLatest ?da ?t ?t \"4\"^^<xsd:int>");
     System.out.println(bt);
+    assertTrue(checkResult(expected, bt, bt.getVars()));
   }
 
   @Test
@@ -303,6 +314,7 @@ public class TestLGetLatest {
    Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long> AGGREGATE ?dialact ?time = LGetLatest ?da ?t ?t \"3\"^^<xsd:int>");
     System.out.println(bt);
+    assertTrue(checkResult(expected, bt, bt.getVars()));
   }
 
   @Test
@@ -314,6 +326,7 @@ public class TestLGetLatest {
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long> AGGREGATE ?dialact ?time = LGetLatest ?da ?t ?t \"2\"^^<xsd:int>");
     System.out.println(bt);
+    assertTrue(checkResult(expected, bt, bt.getVars()));
   }
 
   @Test
@@ -324,6 +337,7 @@ public class TestLGetLatest {
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long> AGGREGATE ?dialact ?time = LGetLatest ?da ?t ?t \"1\"^^<xsd:int>");
     System.out.println(bt);
+    assertTrue(checkResult(expected, bt, bt.getVars()));
   }
 
   @Test
@@ -354,6 +368,7 @@ public class TestLGetLatest {
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"548\"^^<xsd:long> AGGREGATE ?dialact = LGetLatest ?da ?t \"3\"^^<xsd:int>");
     System.out.println(bt);
+    assertTrue(checkResult(expected, bt, bt.getVars()));
   }
 
   @Test
@@ -377,6 +392,7 @@ public class TestLGetLatest {
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"548\"^^<xsd:long> AGGREGATE ?dialact ?begin ?end = LGetLatest ?da ?t ?t ?t  \"3\"^^<xsd:int>");
     System.out.println(bt);
+    assertTrue(checkResult(expected, bt, bt.getVars()));
   }
 
 
