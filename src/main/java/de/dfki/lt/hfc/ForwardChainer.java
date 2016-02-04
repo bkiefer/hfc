@@ -437,7 +437,7 @@ public final class ForwardChainer {
 														 false,
 														 new ArrayList<BindingTable>(),
 														 new HashMap<Pair, BindingTable>());
-				if (result.table.isEmpty()) {
+				if (result.isEmpty()) {
 					// if at least one cluster yields an empty binding table, the whole LHS is not satisfiable
 					rule.isApplicable = false;
 					return;
@@ -539,7 +539,7 @@ public final class ForwardChainer {
 			cluster.bindingTable = Calc.restrict(cluster.bindingTable, cluster.tests);
 			//System.out.println(rule.name + ": " + cluster.bindingTable.table.size());
 			// one empty cluster suffices to let the rule fail overall (no RHS instantiations possible)
-			if (cluster.bindingTable.table.isEmpty())
+			if (cluster.bindingTable.isEmpty())
 				rule.isApplicable = false;
 			else
 				rule.isApplicable = true;
@@ -577,7 +577,7 @@ public final class ForwardChainer {
 			rule.megaCluster.bindingTable = Calc.restrict(rule.megaCluster.bindingTable, rule.megaCluster.varvarIneqs, rule.megaCluster.varconstIneqs);
 			rule.megaCluster.bindingTable = Calc.restrict(rule.megaCluster.bindingTable, rule.megaCluster.tests);
 			// check whether result is empty (assign rule.isApplicable appropriate value)
-			if (rule.megaCluster.bindingTable.table.isEmpty()) {
+			if (rule.megaCluster.bindingTable.isEmpty()) {
 				rule.isApplicable = false;
 				return;
 			}
