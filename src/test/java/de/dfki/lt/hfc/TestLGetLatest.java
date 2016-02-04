@@ -1,12 +1,16 @@
 package de.dfki.lt.hfc;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
-import static de.dfki.lt.hfc.TestUtils.checkResult;
+import de.dfki.lt.hfc.BindingTable.BindingTableIterator;
+
+import static de.dfki.lt.hfc.TestBindingTableIterator.*;
 
 public class TestLGetLatest {
   static ForwardChainer fc;
@@ -15,6 +19,26 @@ public class TestLGetLatest {
     return TestUtils.getTestResource("LGetLatest", name);
   }
 
+
+  private void printExpected(BindingTable bt) {
+    printNext(bt.iterator(),
+        new TestBindingTableIterator.NextAsIntCall(fc.tupleStore));
+  }
+
+  private void checkResult(BindingTable bt, String[][] expected){
+    check(bt.iterator(), expected,
+        new TestBindingTableIterator.NextAsIntCall(fc.tupleStore));
+  }
+
+  private void checkResult(BindingTable bt, String[][] expected, String ... vars){
+    try {
+      check(bt.iterator(vars), expected,
+          new TestBindingTableIterator.NextAsIntCall(fc.tupleStore));
+    } catch (BindingTableIteratorException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
 
   /**
    * for test purposes, I have (currently) switched off the equivalence class reduction
@@ -63,6 +87,11 @@ public class TestLGetLatest {
     fc.computeClosure();
   }
 
+  @AfterClass
+  public static void finish() {
+    fc.shutdownNoExit();
+  }
+
   @Test
   public void test1() throws QueryParseException {
     Query q = new Query(fc.tupleStore);
@@ -83,36 +112,37 @@ public class TestLGetLatest {
 | <hst:w2>              | "Larry"^^<xsd:string> |
 -------------------------------------------------
      */
-    System.out.println(bt);
+    checkResult(bt, expected);
   }
 
   @Test
-  public void test2() throws QueryParseException {
+  public void test2() throws QueryParseException, BindingTableIteratorException {
     String[][] expected = {
-        { "<hst:da7>", "<hst:da5>" },
-        { "<hst:da8>", "<hst:da2>" },
-        { "<hst:da5>", "<hst:da1>" },
-        { "<hst:da4>", "<hst:da1>" },
-        { "<hst:da5>", "<hst:da2>" },
-        { "<hst:da6>", "<hst:da1>" },
-        { "<hst:da7>", "<hst:da4>" },
-        { "<hst:da7>", "<hst:da1>" },
-        { "<hst:da8>", "<hst:da5>" },
-        { "<hst:da8>", "<hst:da7>" },
-        { "<hst:da8>", "<hst:da1>" },
-        { "<hst:da2>", "<hst:da1>" },
-        { "<hst:da4>", "<hst:da2>" },
-        { "<hst:da5>", "<hst:da4>" },
-        { "<hst:da6>", "<hst:da3>" },
-        { "<hst:da7>", "<hst:da2>" },
-        { "<hst:da8>", "<hst:da4>" },
-        { "<hst:da3>", "<hst:da1>" },
+        { "<hst:da2>", "<hst:da5>" },
+        { "<hst:da1>", "<hst:da6>" },
+        { "<hst:da1>", "<hst:da3>" },
+        { "<hst:da4>", "<hst:da8>" },
+        { "<hst:da2>", "<hst:da7>" },
+        { "<hst:da1>", "<hst:da2>" },
+        { "<hst:da1>", "<hst:da7>" },
+        { "<hst:da7>", "<hst:da8>" },
+        { "<hst:da2>", "<hst:da8>" },
+        { "<hst:da4>", "<hst:da5>" },
+        { "<hst:da5>", "<hst:da7>" },
+        { "<hst:da3>", "<hst:da6>" },
+        { "<hst:da1>", "<hst:da4>" },
+        { "<hst:da1>", "<hst:da5>" },
+        { "<hst:da4>", "<hst:da7>" },
+        { "<hst:da5>", "<hst:da8>" },
+        { "<hst:da2>", "<hst:da4>" },
+        { "<hst:da1>", "<hst:da8>" },
     };
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT * WHERE ?d1 <rdf:type> <dafn:DialogueAct> & ?d2 <rdf:type> <dafn:DialogueAct> & ?d1 <dafn:follows> ?d2 FILTER ?d1 != ?d2");
     System.out.println(bt);
     // TODO call checkresult here, same for the other tests, and remove the
     // println if no longer needed
+    checkResult(bt, expected);
 
   }
 
@@ -131,7 +161,6 @@ public class TestLGetLatest {
 
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT * WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t");
-    System.out.println(bt);
   }
 
   @Test
@@ -142,7 +171,7 @@ public class TestLGetLatest {
     Query q = new Query(fc.tupleStore);
     // 503 is related to DA da3
     BindingTable bt = q.query("SELECT ?d WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> \"503\"^^<xsd:long>");
-    System.out.println(bt);
+    checkResult(bt, expected);
   }
 
   @Test
@@ -153,7 +182,7 @@ public class TestLGetLatest {
     // prints:   unknown constant in WHERE clause: "333"^^<xsd:long>
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?d WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> \"333\"^^<xsd:long>");
-    assertTrue(bt.table.isEmpty());
+    assertEquals(0, bt.size());
   }
 
   @Test
@@ -164,7 +193,7 @@ public class TestLGetLatest {
     // would also like to return the corresponding DA, but this needs a special custom aggregate
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?t WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t AGGREGATE ?latest = LMax ?t");
-    System.out.println(bt);
+    checkResult(bt, expected);
   }
 
   @Test
@@ -179,7 +208,7 @@ public class TestLGetLatest {
     // "548" = sinceWhen; is known to the tuple store
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?d ?t WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t FILTER LGreaterEqual ?t \"548\"^^<xsd:long>");
-    System.out.println(bt);
+    checkResult(bt, expected);
   }
 
   @Test
@@ -193,18 +222,16 @@ public class TestLGetLatest {
     // prints: unknown constant in FILTER predicate: "650"^^<xsd:long>
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT * WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t FILTER LGreaterEqual ?t \"650\"^^<xsd:long>");
-    System.out.println(bt);
+    checkResult(bt, expected);
   }
 
   @Test
   public void test8() throws QueryParseException {
-    String[][] expected = {
-    };
     // "1000" = sinceWhen; note: there is _no_ "1000" so far in the tuple store
     // prints: unknown constant in FILTER predicate: "1000\"^^<xsd:long>
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?d ?t WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t FILTER LGreaterEqual ?t \"1000\"^^<xsd:long>");
-    assertTrue(bt.table.isEmpty());
+    assertEquals(0, bt.size());
   }
 
   @Test
@@ -215,7 +242,7 @@ public class TestLGetLatest {
    // "548" = sinceWhen
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?t WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t FILTER LGreaterEqual ?t \"548\"^^<xsd:long>  AGGREGATE ?latest = LMax ?t");
-    System.out.println(bt);
+    checkResult(bt, expected);
   }
 
   @Test
@@ -226,7 +253,7 @@ public class TestLGetLatest {
     // "650" = sinceWhen
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?t WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t FILTER LGreaterEqual ?t \"650\"^^<xsd:long>  AGGREGATE ?latest = LMax ?t");
-    System.out.println(bt);
+    checkResult(bt, expected);
   }
 
   @Test
@@ -236,7 +263,7 @@ public class TestLGetLatest {
     // "1000" = sinceWhen
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?t WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t FILTER LGreaterEqual ?t \"1000\"^^<xsd:long>  AGGREGATE ?latest = LMax ?t");
-    assertTrue(bt.table.isEmpty());
+    assertEquals(0, bt.size());
   }
 
   @Test
@@ -247,7 +274,7 @@ public class TestLGetLatest {
     // explicitly exclude the latest candidate "755"
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?t WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t FILTER LGreaterEqual ?t \"650\"^^<xsd:long> & ?t != \"755\"^^<xsd:long>  AGGREGATE ?latest = LMax ?t");
-    System.out.println(bt);
+    checkResult(bt, expected);
   }
 
   @Test
@@ -258,7 +285,7 @@ public class TestLGetLatest {
     // exclude non-existing candidate "1000"
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?t WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t FILTER LGreaterEqual ?t \"650\"^^<xsd:long> & ?t != \"1000\"^^<xsd:long>  AGGREGATE ?latest = LMax ?t");
-    System.out.println(bt);
+    checkResult(bt, expected);
   }
 
   // general form of the aggregate call: ?arg1' ... ?argN' = LGetLatest ?arg1 ... ?argN ?time ?limit
@@ -269,7 +296,8 @@ public class TestLGetLatest {
         { "<hst:da8>", "\"755\"^^<xsd:long>" },
         { "<hst:da7>", "\"731\"^^<xsd:long>" },
         { "<hst:da6>", "\"686\"^^<xsd:long>" },
-        { "<hst:da5>", "\"548\"^^<xsd:long>" },    };
+        { "<hst:da5>", "\"548\"^^<xsd:long>" },
+    };
     // double-valued aggregate
     /* prints
     unknown constant in FILTER predicate: "540\"^^<xsd:long>
@@ -277,7 +305,7 @@ public class TestLGetLatest {
     */
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long> AGGREGATE ?dialact ?time = LGetLatest ?da ?t ?t \"5\"^^<xsd:int>");
-    System.out.println(bt);
+    checkResult(bt, expected, "?dialact", "?time");
   }
 
   @Test
@@ -290,6 +318,7 @@ public class TestLGetLatest {
     };
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long> AGGREGATE ?dialact ?time = LGetLatest ?da ?t ?t \"4\"^^<xsd:int>");
+    checkResult(bt, expected, "?dialact", "?time");
     System.out.println(bt);
   }
 
@@ -302,6 +331,7 @@ public class TestLGetLatest {
     };
    Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long> AGGREGATE ?dialact ?time = LGetLatest ?da ?t ?t \"3\"^^<xsd:int>");
+    checkResult(bt, expected, "?dialact", "?time");
     System.out.println(bt);
   }
 
@@ -313,6 +343,7 @@ public class TestLGetLatest {
     };
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long> AGGREGATE ?dialact ?time = LGetLatest ?da ?t ?t \"2\"^^<xsd:int>");
+    checkResult(bt, expected, "?dialact", "?time");
     System.out.println(bt);
   }
 
@@ -323,25 +354,22 @@ public class TestLGetLatest {
     };
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long> AGGREGATE ?dialact ?time = LGetLatest ?da ?t ?t \"1\"^^<xsd:int>");
-    System.out.println(bt);
+    checkResult(bt, expected, "?dialact", "?time");
+   System.out.println(bt);
   }
 
   @Test
   public void test19() throws QueryParseException {
-    String[][] expected = {
-    };
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long> AGGREGATE ?dialact ?time = LGetLatest ?da ?t ?t \"0\"^^<xsd:int>");
-    assertTrue(bt.table.isEmpty());
+    assertEquals(0, bt.size());
   }
 
   @Test
   public void test20() throws QueryParseException {
-    String[][] expected = {
-    };
    Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"1000\"^^<xsd:long> AGGREGATE ?dialact ?time = LGetLatest ?da ?t ?t \"3\"^^<xsd:int>");
-    assertTrue(bt.table.isEmpty());
+    assertEquals(0, bt.size());
   }
 
   @Test
@@ -353,16 +381,15 @@ public class TestLGetLatest {
     // single-valued aggregate
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"548\"^^<xsd:long> AGGREGATE ?dialact = LGetLatest ?da ?t \"3\"^^<xsd:int>");
-    System.out.println(bt);
+    checkResult(bt, expected, "?dialact", "?time");
+   System.out.println(bt);
   }
 
   @Test
   public void test22() throws QueryParseException {
-    String[][] expected = {
-    };
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"1000\"^^<xsd:long> AGGREGATE ?dialact = LGetLatest ?da ?t \"3\"^^<xsd:int>");
-    assertTrue(bt.table.isEmpty());
+    assertEquals(0, bt.size());
   }
 
   // a three-valued returner
@@ -376,59 +403,8 @@ public class TestLGetLatest {
 
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"548\"^^<xsd:long> AGGREGATE ?dialact ?begin ?end = LGetLatest ?da ?t ?t ?t  \"3\"^^<xsd:int>");
+    checkResult(bt, expected, "?dialact", "?begin", "?end");
     System.out.println(bt);
   }
-
-
-  @AfterClass
-  public static void finish() {
-    fc.shutdownNoExit();
-  }
-
-    /*
-
-    BindingTable bt = q.query("SELECT DISTINCT * WHERE ?s <owl:equivalentClass> ?o FILTER ?s != ?o");
-    System.out.println(bt);
-
-    // query OPTIMIZATION for WHERE clauses
-    // SELECT * WHERE ?s1 <rdf:type> <footype> ?_ ?e & ?s2 <rdf:type> <bartype> ?_ ?_ FILTER ?s1 ?s2
-    // query for quintuples (1st & 2nd WHERE clause), BUT directly after project 5-tuple to 3-tuple before joining them !!
-
-    //System.out.println(bt.obtainPosition("?s"));
-    //System.out.println(bt.obtainPosition("?_"));
-    //System.out.println(bt.obtainPosition("?hmmm"));
-
-
-    //bt = q.query("SELECTALL * WHERE ?s <owl:equivalentClass> ?o");
-    //System.out.println(bt);
-
-    //BindingTable bt = q.query("SELECT * WHERE ?s <owl:equivalentClass> ?_ & ?_ <owl:equivalentClass> ?s & ?w ?_ ?_ ?_ ?_");
-    //System.out.println(bt);
-    //bt = q.query("SELECT * WHERE ?a ?b ?c ?d ?e");
-    //System.out.println(bt);
-
-    Query q = new Query(fc.tupleStore);
-    BindingTable bt = q.query("SELECT * WHERE ?s <dom:availableFor> <dafn:Agent> AGGREGATE ?count = Count ?s");  // there is no such triple pattern: return an empty table !!
-    System.out.println(bt);
-
-    bt = q.query("SELECT * WHERE ?s <hst:Actor> <foobarbaz> AGGREGATE ?count = Count ?s");  // bt == null as <foobarbaz> is not know to the tuple store !!
-
-    bt = q.query("SELECT ?start WHERE <hst:worker1> <upp:hasAbility> ?ability ?start ?end AGGREGATE ?mean = LMean ?start");
-    System.out.println(bt);
-
-    bt = q.query("SELECT ?end WHERE <hst:worker1> <upp:hasAbility> ?ability ?start ?end AGGREGATE ?min = LMin ?end");
-    System.out.println(bt);
-
-    bt = q.query("SELECT ?start WHERE <hst:worker1> <upp:hasAbility> ?ability ?start ?end AGGREGATE ?max = LMax ?start");
-    System.out.println(bt);
-
-    // more queries
-    //BindingTable bt = q.query("SELECT DISTINCT * WHERE ?s <rdfs:subClassOf> ?o");
-    //System.out.println(bt.toString());
-    //
-    //bt = q.query("SELECT ?s WHERE ?s <rdf:type> <rdfs:Datatype>");
-    //System.out.println(bt.toString());
-
-    */
 
 }

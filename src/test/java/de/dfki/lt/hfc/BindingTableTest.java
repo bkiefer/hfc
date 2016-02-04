@@ -216,9 +216,98 @@ public class BindingTableTest {
     Set<String> s = new HashSet<String>();
     s.addAll(Arrays.asList(expected));
     assertTrue(s.containsAll(Arrays.asList(vars)));
+    assertEquals(Arrays.toString(expected), expected.length, vars.length);
+    /* THIS IS NOT GUARANTEED, BY NO MEANS, THE TABLE CAN BE WIDER THAN THE
+     * NUMBER OF VARIABLES
+     * TODO: MARK THIS SOMEWHERE
     for (int i = 0; i < expected.length; ++i) {
       assertEquals(i, bt.obtainPosition(expected[i]));
     }
+    */
+  }
+
+  @Test
+  public void testVarsFilterStar() throws QueryParseException, FileNotFoundException, WrongFormatException, IOException {
+    TupleStore ts = new TupleStore(new Namespace(getResource("default.ns")));
+    Query q = new Query(ts);
+    String[] t = { "<rdf:a>", "<rdf:type>", "<rdf:b>" };
+    ts.addTuple(t);
+    BindingTable bt = q.query("SELECT * WHERE ?s <rdf:type> ?o FILTER ?o != <rdf:b>");
+    String[] vars = bt.getVars();
+    String[] expected = { "?s", "?o" };
+    Set<String> s = new HashSet<String>();
+    s.addAll(Arrays.asList(expected));
+    assertTrue(s.containsAll(Arrays.asList(vars)));
+    assertEquals(Arrays.toString(expected), expected.length, vars.length);
+    /* THIS IS NOT GUARANTEED, BY NO MEANS, THE TABLE CAN BE WIDER THAN THE
+     * NUMBER OF VARIABLES
+    for (int i = 0; i < expected.length; ++i) {
+      assertEquals(i, bt.obtainPosition(expected[i]));
+    }
+    */
+  }
+
+  @Test
+  public void testVarsFilter() throws QueryParseException, FileNotFoundException, WrongFormatException, IOException {
+    TupleStore ts = new TupleStore(new Namespace(getResource("default.ns")));
+    Query q = new Query(ts);
+    String[] t = { "<rdf:a>", "<rdf:type>", "<rdf:b>" };
+    ts.addTuple(t);
+    BindingTable bt = q.query("SELECT ?s ?o WHERE ?s <rdf:type> ?o FILTER ?o != <rdf:b>");
+    String[] vars = bt.getVars();
+    String[] expected = { "?s", "?o" };
+    Set<String> s = new HashSet<String>();
+    s.addAll(Arrays.asList(expected));
+    assertTrue(s.containsAll(Arrays.asList(vars)));
+    assertEquals(Arrays.toString(expected), expected.length, vars.length);
+    /* THIS IS NOT GUARANTEED, BY NO MEANS, THE TABLE CAN BE WIDER THAN THE
+     * NUMBER OF VARIABLES
+    for (int i = 0; i < expected.length; ++i) {
+      assertEquals(i, bt.obtainPosition(expected[i]));
+    }
+    */
+  }
+
+  @Test
+  public void testVarsAggregate() throws QueryParseException, FileNotFoundException, WrongFormatException, IOException {
+    TupleStore ts = new TupleStore(new Namespace(getResource("default.ns")));
+    Query q = new Query(ts);
+    String[] t = { "<rdf:a>", "<rdf:type>", "<rdf:b>" };
+    ts.addTuple(t);
+    BindingTable bt = q.query("SELECT ?p WHERE ?s ?p ?o AGGREGATE ?number = CountDistinct ?p & ?subject = Identity ?p");
+    String[] vars = bt.getVars();
+    String[] expected = { "?s", "?o" };
+    Set<String> s = new HashSet<String>();
+    s.addAll(Arrays.asList(expected));
+    assertTrue(Arrays.toString(expected), s.containsAll(Arrays.asList(vars)));
+    assertEquals(Arrays.toString(expected), expected.length, vars.length);
+    /* THIS IS NOT GUARANTEED, BY NO MEANS, THE TABLE CAN BE WIDER THAN THE
+     * NUMBER OF VARIABLES
+    for (int i = 0; i < expected.length; ++i) {
+      assertEquals(i, bt.obtainPosition(expected[i]));
+    }
+    */
+  }
+
+  @Test
+  public void testVarsAggregateStar() throws QueryParseException, FileNotFoundException, WrongFormatException, IOException {
+    TupleStore ts = new TupleStore(new Namespace(getResource("default.ns")));
+    Query q = new Query(ts);
+    String[] t = { "<rdf:a>", "<rdf:type>", "<rdf:b>" };
+    ts.addTuple(t);
+    BindingTable bt = q.query("SELECT * WHERE ?s ?p ?o AGGREGATE ?number = CountDistinct ?p & ?subject = Identity ?p");
+    String[] vars = bt.getVars();
+    String[] expected = { "?s", "?o" };
+    Set<String> s = new HashSet<String>();
+    s.addAll(Arrays.asList(expected));
+    assertTrue(Arrays.toString(expected), s.containsAll(Arrays.asList(vars)));
+    assertEquals(Arrays.toString(expected), expected.length, vars.length);
+    /* THIS IS NOT GUARANTEED, BY NO MEANS, THE TABLE CAN BE WIDER THAN THE
+     * NUMBER OF VARIABLES
+    for (int i = 0; i < expected.length; ++i) {
+      assertEquals(i, bt.obtainPosition(expected[i]));
+    }
+    */
   }
 
 }

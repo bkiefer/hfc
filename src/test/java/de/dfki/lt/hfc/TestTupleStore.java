@@ -48,11 +48,6 @@ public class TestTupleStore {
     assertNotNull(tupleconstructor7);
   }
 
-  @Test
-  public void initializeUriMappings() {
-    Namespace.shortIsDefault = false;
-    // nothing is tested, just to cover some fields
-  }
 
   @Test
   public void testprintTuple() {

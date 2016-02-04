@@ -72,7 +72,25 @@ public class MaterializedTriplesToQuintuples {
 
 	@Test
 	public void triplesToQuintuplesTest() throws Exception {
+    {
+      ForwardChainer fc = new ForwardChainer(
 
+        4, // int noOfCores,
+        true, // boolean verbose,
+        false, //boolean rdfCheck,
+        true, //boolean eqReduction,
+        3, //int minNoOfArgs,
+        3, //int maxNoOfArgs,
+        100000, //int noOfAtoms,
+        500000, //int noOfTuples,
+        getResource("default.eqred.nt"),
+        getResource("default.eqred.rdl"),
+        getResource("default.ns"));
+      fc.uploadTuples(getResource("ltworld.jena.nt"));
+      fc.computeClosure();
+      fc.tupleStore.writeTuples(IN_FILE);
+      fc.shutdownNoExit();
+    }
 		//   time java -server -cp .:../lib/trove-2.1.0.jar -Xmx1024m de/dfki/lt/hfc/tests/MaterializedTriplesToQuintuples
 		ForwardChainer fc =	new ForwardChainer(2,      // noOfCores
 																					 true,   // verbose

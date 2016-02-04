@@ -154,7 +154,7 @@ public class ForwardChainerTest {
     String tupleFile = getResource("default.nt");
     String ruleFile = getResource("default.eqred.rdl");
     ForwardChainer fc = new ForwardChainer(tupleFile, ruleFile);
-    assertEquals(54, fc.nextBlankNode());
+    assertEquals(53, fc.nextBlankNode());
     assertTrue(fc.nextBlankNode() > 0);
   }
 
