@@ -213,14 +213,29 @@ public class BindingTable {
    *  after the select in the order in which they were specified, if "*" was
    *  specified, return all variables in the table in column order
    */
-  String[] getVars() {
+  public String[] getVars() {
+    if (null == selectVars) {
+      final String[] res = {};
+      return res;
+    }
     if ("*".equals(selectVars[0])) {
       selectVars = new String[nameToPos.size()];
+      int pos = 0;
       for (Map.Entry<Integer, Integer> e : nameToPos.entrySet()) {
-        selectVars[e.getValue()] = this.nameToExternalName.get(e.getKey());
+        selectVars[pos++] = this.nameToExternalName.get(e.getKey());
       }
     }
-    return selectVars;
+    return selectVars ;
+  }
+
+
+  /** Return the number of rows in this BindingTable */
+  public int size() {
+    return (null == table ? 0 : table.size());
+  }
+
+  public boolean isEmpty() {
+    return (null == table || table.isEmpty());
   }
 
 	/**
@@ -431,6 +446,7 @@ public class BindingTable {
     // check whether vars refers to _legal_ variables, i.e., check whether each
     // variable from vars refers to one of the columns from the binding table
     // and keep the sequence of variables from vars in the tuple that is returned
+    if (this.size() == 0) return this.iterator();
     final Collection<String> allVars = this.nameToExternalName.values();
     for (String var : vars)
       if (! allVars.contains(var))
@@ -446,7 +462,7 @@ public class BindingTable {
     /**
      * the number of tuples covered by the binding table
      */
-    private int size = BindingTable.this.table.size();
+    private int size;
 
     /**
      * if null, next(), nextAsXsdType(), nextAsString(), and nextAsObject() keep the
@@ -459,21 +475,24 @@ public class BindingTable {
     /**
      * make the iterator operating on BindingTable.this.table private
      */
-    private Iterator<int[]> it = BindingTable.this.table.iterator();
+    private Iterator<int[]> it;
 
     /**
      * is called by BindingTable.iterator()
      */
     private BindingTableIterator() {
       super();
+      this.size = BindingTable.this.size();
       this.varPos = null;
+      this.it = (size == 0 ? Collections.<int[]>emptyList().iterator() :
+        BindingTable.this.table.iterator());
     }
 
     /**
      * is called by BindingTable.iterator(String ... vars) and the sequence of vars are recorded
      */
     private BindingTableIterator(String[] vars) {
-      super();
+      this();
       // compute the positions for the column headings of interest, given by vars
       this.varPos = new int[vars.length];
       // construct the inverse mapping (external name -> internal name)
@@ -558,7 +577,7 @@ public class BindingTable {
    * for test purposes only
    *   + go to HFC's bin directory
    *   + java -cp .:../lib/trove-2.1.0.jar -Xms800m -Xmx1200m de/dfki/lt/hfc/BindingTable
-   */
+   *
   public static void main(String[] args) throws Exception {
     Namespace ns = new Namespace("/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.ns");
     TupleStore ts = new TupleStore(100000, 250000, ns,
@@ -664,4 +683,5 @@ public class BindingTable {
 
     it = bt.iterator("?s", "?p", "?o");   // error!
   }
+  */
 }
