@@ -276,7 +276,11 @@ public class BindingTableTest {
     ts.addTuple(t);
     BindingTable bt = q.query("SELECT ?p WHERE ?s ?p ?o AGGREGATE ?number = CountDistinct ?p & ?subject = Identity ?p");
     String[] vars = bt.getVars();
-    String[] expected = { "?s", "?o" };
+    // TODO: I'm convinced that the order of variables of the aggregates is
+    // not guaranteed because the code has not been adapted, like it was done
+    // for the projectedVars. This test succeeds, but this is by no means
+    // ensuring that it works in all situations
+    String[] expected = { "?number", "?subject" };
     Set<String> s = new HashSet<String>();
     s.addAll(Arrays.asList(expected));
     assertTrue(Arrays.toString(expected), s.containsAll(Arrays.asList(vars)));
@@ -297,7 +301,7 @@ public class BindingTableTest {
     ts.addTuple(t);
     BindingTable bt = q.query("SELECT * WHERE ?s ?p ?o AGGREGATE ?number = CountDistinct ?p & ?subject = Identity ?p");
     String[] vars = bt.getVars();
-    String[] expected = { "?s", "?o" };
+    String[] expected = { "?number", "?subject" };
     Set<String> s = new HashSet<String>();
     s.addAll(Arrays.asList(expected));
     assertTrue(Arrays.toString(expected), s.containsAll(Arrays.asList(vars)));

@@ -214,11 +214,8 @@ public class BindingTable {
    *  specified, return all variables in the table in column order
    */
   public String[] getVars() {
-    if (null == selectVars) {
-      final String[] res = {};
-      return res;
-    }
-    if ("*".equals(selectVars[0])) {
+    // selectvars == null means there is an aggregate in the query
+    if (null == selectVars || "*".equals(selectVars[0])) {
       selectVars = new String[nameToPos.size()];
       int pos = 0;
       for (Map.Entry<Integer, Integer> e : nameToPos.entrySet()) {
