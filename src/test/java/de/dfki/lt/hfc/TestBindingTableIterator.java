@@ -11,24 +11,31 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
+import org.junit.After;
 import org.junit.Test;
 
 import de.dfki.lt.hfc.BindingTable.BindingTableIterator;
 import de.dfki.lt.hfc.types.AnyType;
+import de.dfki.lt.hfc.types.XsdString;
 
 public class TestBindingTableIterator {
-  static Query q;
-  static Namespace ns;
-  static TupleStore ts;
+  Query q;
+  Namespace ns;
+  TupleStore ts;
 
-  @BeforeClass
-  public static void setup() throws FileNotFoundException, IOException, WrongFormatException {
+  @Before
+  public void setup() throws FileNotFoundException, IOException, WrongFormatException {
     ns = new Namespace(getResource("default.ns"), false);
     ts = new TupleStore(100000, 250000, ns, getResource("default.nt"));
     q = new Query(ts);
+  }
 
-    // System.out.println(bt);
+  @After
+  public void tearDown() {
+    ns = null;
+    ts = null;
+    q = null;
   }
 
   public interface NextCall<T> {
@@ -599,5 +606,43 @@ public class TestBindingTableIterator {
     BindingTable bt = q.query("SELECT ?s WHERE ?s <rdf:flabbergast> ?o ");
     BindingTableIterator it = bt.iterator("?s"); // empty binding table
     assertEquals(0, it.hasSize());
+  }
+
+  @Test
+  public void testAsHfcObject() throws QueryParseException, BindingTableIteratorException {
+    String[] stringTuple = { "<owl:disjointWith>", "<rdfs:comment>", "\"A comment\"^^<xsd:string>"};
+    ts.addTuple(stringTuple);
+    BindingTable bt = q.query("SELECT ?s ?o WHERE ?s <rdfs:comment> ?o ");
+    BindingTableIterator it = bt.iterator("?s", "?o");
+    assertTrue(it.hasNext());
+    AnyType[] res = it.nextAsHfcType();
+    assertEquals(XsdString.class, res[1].getClass());
+    assertEquals("A comment", ((XsdString)res[1]).value);
+  }
+
+  /*  TODO: CHECK IT OR ACCOMODATE
+  @Test
+  public void testAsHfcObject2() throws QueryParseException, BindingTableIteratorException {
+    String[] stringTuple = { "<owl:disjointWith>", "<rdfs:comment>", "A comment"};
+    ts.addTuple(stringTuple);
+    BindingTable bt = q.query("SELECT ?s ?o WHERE ?s <rdfs:comment> ?o ");
+    BindingTableIterator it = bt.iterator("?s", "?o");
+    assertTrue(it.hasNext());
+    AnyType[] res = it.nextAsHfcType();
+    assertEquals(XsdString.class, res[1].getClass());
+    assertEquals("A comment", ((XsdString)res[1]).value);
+  }
+  */
+
+  @Test
+  public void testAsHfcObject1() throws QueryParseException, BindingTableIteratorException {
+    String[] stringTuple = { "<owl:disjointWith>", "<rdfs:comment>", "\"A comment\""};
+    ts.addTuple(stringTuple);
+    BindingTable bt = q.query("SELECT ?s ?o WHERE ?s <rdfs:comment> ?o ");
+    BindingTableIterator it = bt.iterator("?s", "?o");
+    assertTrue(it.hasNext());
+    AnyType[] res = it.nextAsHfcType();
+    assertEquals(XsdString.class, res[1].getClass());
+    assertEquals("A comment", ((XsdString)res[1]).value);
   }
 }
