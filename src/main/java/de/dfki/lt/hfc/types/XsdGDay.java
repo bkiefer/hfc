@@ -14,30 +14,33 @@ package de.dfki.lt.hfc.types;
  * @version Fri Jan 29 19:10:24 CET 2016
  */
 public final class XsdGDay extends XsdAnySimpleType {
-	
-	/**
+
+  static {
+    registerConstructor(XsdGDay.class, XSD_GDAY_SHORT, XSD_GDAY_LONG);
+  }
+
+  /**
 	 * I do NOT check whether 01 <= day <= 31
 	 */
 	public int day;
-	
+
 	/**
 	 *
 	 */
 	public XsdGDay(int day) {
 		this.day = day;
 	}
-	
+
 	/**
 	 * @param time a _fully_ specified XSD gDay expression
 	 */
 	public XsdGDay(String time) {
 		// get rid of "^^<xsd:gDay>" and leading & trailing '"' chars
-		int index = time.lastIndexOf('^');
-		time = time.substring(1, index - 2);
+	  time = extractValue(time);
 		// day is preceeded by three '-' chars
 		this.day = Integer.parseInt(time.substring(3));
 	}
-	
+
 	/**
 	 * depending on shortIsDefault, either the suffix
 	 *   de.dfki.lt.hfc.Namespace.XSD_GDAY_SHORT
@@ -46,7 +49,7 @@ public final class XsdGDay extends XsdAnySimpleType {
 	 * is used
 	 */
 	public String toString(boolean shortIsDefault) {
-		final String tail = "\"^^" + (shortIsDefault ? de.dfki.lt.hfc.Namespace.XSD_GDAY_SHORT : de.dfki.lt.hfc.Namespace.XSD_GDAY_LONG);
+		final String tail = "\"^^" + (shortIsDefault ? XSD_GDAY_SHORT : XSD_GDAY_LONG);
 		StringBuilder sb = new StringBuilder("\"---");
 		if (this.day >= 10)
 			sb.append(this.day);
@@ -54,7 +57,7 @@ public final class XsdGDay extends XsdAnySimpleType {
 			sb.append("0").append(this.day);
 		return sb.append(tail).toString();
 	}
-	
+
 	/**
 	 * binary version is given the value directly
 	 */
@@ -63,23 +66,12 @@ public final class XsdGDay extends XsdAnySimpleType {
 		sb.append(val);
 		sb.append("\"^^");
 		if (shortIsDefault)
-			sb.append(de.dfki.lt.hfc.Namespace.XSD_GDAY_SHORT);
+			sb.append(XSD_GDAY_SHORT);
 		else
-			sb.append(de.dfki.lt.hfc.Namespace.XSD_GDAY_LONG);
+			sb.append(XSD_GDAY_LONG);
 		return sb.toString();
 	}
-	
-	/**
-	 * generates a string representation from the internal fields, but omits
-	 * the XSD type specification
-	 */
-	public String toName() {
-		// get rid of "^^<xsd:gDay>"
-		String time = toString(de.dfki.lt.hfc.Namespace.shortIsDefault);
-		int index = time.lastIndexOf('^');
-		return time.substring(1, index - 2);
-	}
-  
+
   /**
    * even though there exist a java.util.Date and java.util.GregorianCalendar
    * class, these classes do not perfectly fit the intention behind XsdGDay
@@ -88,21 +80,5 @@ public final class XsdGDay extends XsdAnySimpleType {
   public Object toJava() {
     return this;
   }
-	
-	/**
-   * for test purposes only
-   */
-  public static void main(String[] args) {
-    XsdGDay xt = new XsdGDay("\"---13\"^^<xsd:gDay>");
-    System.out.println(xt.day);
-    System.out.println(xt.toString(true));
-    System.out.println(xt.toString(false));
-    System.out.println();
-    xt = new XsdGDay(1);
-    System.out.println(xt.toString(true));
-    System.out.println(xt.toName());
-    System.out.println(xt.toString(true));
-    System.out.println(xt.toString(false));
-  }
-	
+
 }

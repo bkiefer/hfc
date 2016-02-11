@@ -53,11 +53,6 @@ import de.dfki.lt.hfc.types.XsdAnySimpleType;
 public final class Namespace {
 
   /**
-   * all (custom) types should be put in package de.dfki.lt.hfc.types
-   */
-  public static final String TYPE_PATH = "de.dfki.lt.hfc.types.";  // last '.' char is OK
-
-  /**
    * the two directives that can be found in a namespace file
    */
   public static final String SHORT_TO_LONG = "&short2long";
@@ -81,61 +76,6 @@ public final class Namespace {
 
 	public static final String OWL_SHORT = "owl";
 	public static final String OWL_LONG = "http://www.w3.org/2002/07/owl#";
-
-	// XSD: string, int, long, float, double, gYear, gYearMonth, gMonth, gMonthDay, gDay, date, dateTime, duration, boolean, anyURI
-
-	public static final String XSD_STRING_SHORT = "<xsd:string>";
-	public static final String XSD_STRING_LONG = "<http://www.w3.org/2001/XMLSchema#string>";
-
-	public static final String XSD_INT_SHORT = "<xsd:int>";
-	public static final String XSD_INT_LONG = "<http://www.w3.org/2001/XMLSchema#int>";
-
-	public static final String XSD_LONG_SHORT = "<xsd:long>";
-	public static final String XSD_LONG_LONG = "<http://www.w3.org/2001/XMLSchema#long>";
-
-	public static final String XSD_FLOAT_SHORT = "<xsd:float>";
-	public static final String XSD_FLOAT_LONG = "<http://www.w3.org/2001/XMLSchema#float>";
-
-	public static final String XSD_DOUBLE_SHORT = "<xsd:double>";
-	public static final String XSD_DOUBLE_LONG = "<http://www.w3.org/2001/XMLSchema#double>";
-
-	public static final String XSD_GYEAR_SHORT = "<xsd:gYear>";
-	public static final String XSD_GYEAR_LONG = "<http://www.w3.org/2001/XMLSchema#gYear>";
-
-	public static final String XSD_GYEARMONTH_SHORT = "<xsd:gYearMonth>";
-	public static final String XSD_GYEARMONTH_LONG = "<http://www.w3.org/2001/XMLSchema#gYearMonth>";
-
-	public static final String XSD_GMONTH_SHORT = "<xsd:gMonth>";
-	public static final String XSD_GMONTH_LONG = "<http://www.w3.org/2001/XMLSchema#gMonth>";
-
-	public static final String XSD_GMONTHDAY_SHORT = "<xsd:gMonthDay>";
-	public static final String XSD_GMONTHDAY_LONG = "<http://www.w3.org/2001/XMLSchema#gMonthDay>";
-
-	public static final String XSD_GDAY_SHORT = "<xsd:gDay>";
-	public static final String XSD_GDAY_LONG = "<http://www.w3.org/2001/XMLSchema#gDay>";
-
-	public static final String XSD_DATE_SHORT = "<xsd:date>";
-	public static final String XSD_DATE_LONG = "<http://www.w3.org/2001/XMLSchema#date>";
-
-	public static final String XSD_DATETIME_SHORT = "<xsd:dateTime>";
-	public static final String XSD_DATETIME_LONG = "<http://www.w3.org/2001/XMLSchema#dateTime>";
-
-	public static final String XSD_DURATION_SHORT = "<xsd:duration>";
-	public static final String XSD_DURATION_LONG = "<http://www.w3.org/2001/XMLSchema#duration>";
-
-	public static final String XSD_BOOLEAN_SHORT = "<xsd:boolean>";
-	public static final String XSD_BOOLEAN_LONG = "<http://www.w3.org/2001/XMLSchema#boolean>";
-
-	public static final String XSD_ANYURI_SHORT = "<xsd:anyURI>";
-	public static final String XSD_ANYURI_LONG = "<http://www.w3.org/2001/XMLSchema#anyURI>";
-
-	// NOT predefined XSD datatypes: uDateTime, monetary
-
-  public static final String XSD_UDATETIME_SHORT = "<xsd:uDateTime>";
-	public static final String XSD_UDATETIME_LONG = "<http://www.w3.org/2001/XMLSchema#uDateTime>";
-
-  public static final String XSD_MONETARY_SHORT = "<xsd:monetary>";
-	public static final String XSD_MONETARY_LONG = "<http://www.w3.org/2001/XMLSchema#monetary>";
 
 	// RDF: type
 
@@ -198,8 +138,9 @@ public final class Namespace {
 
   /**
    * a mapping between XSD type specifiers and Java classes representing these types in HFC
+   * Now in XsdAnySimpleType, where it belongs.
    */
-  protected HashMap<String, Constructor<XsdAnySimpleType>> typeToConstructor = new HashMap<String, Constructor<XsdAnySimpleType>>();
+  //protected HashMap<String, Constructor<XsdAnySimpleType>> typeToConstructor = new HashMap<String, Constructor<XsdAnySimpleType>>();
 
 	/**
 	 * creates a default namespace, consisting only of mappings for RDF, RDFS, and OWL (1.0)
@@ -366,6 +307,7 @@ public final class Namespace {
         ++noOfNamespaces;
       }
       else if (sectionNo == 2) {
+        /* TODO: obsolete, we should go back to the namespace only files
         st = new StringTokenizer(line);
         first = "<" + st.nextToken() + ">";  // add the angle brackets
         second = st.nextToken();
@@ -390,20 +332,12 @@ public final class Namespace {
           throw new WrongFormatException(
               "XSD to Java class mapping failed for: " + line, ex);
         }
+        */
       }
       else {
         throw new WrongFormatException(
             "Missing directive reading namespace file in line " + line);
       }
-    }
-    // as TYPE_TO_CLASS might appear _before_ SHORT_TO_LONG, expand short name to long name and
-    // record this mapping as well (it might also happen that we have several namespace files);
-    // make sure to have a shallow copy of the keys (or key-value pairs) as iteration will modify
-    // the backed-up set !!
-    Set<String> keyset = this.typeToConstructor.keySet();
-    for (String key : keyset.toArray(new String[keyset.size()])) {
-      this.typeToConstructor.put(expandUri(key),
-                                 this.typeToConstructor.get(key));
     }
     if (this.verbose) {
 			System.out.println("\n  read " + noOfNamespaces + " namespace mappings");

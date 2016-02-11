@@ -14,9 +14,17 @@ package de.dfki.lt.hfc.types;
  * @version Fri Jan 29 17:16:44 CET 2016
  */
 public final class XsdAnyURI extends XsdAnySimpleType {
-	
+  public final static String NAME = "anyURI";
+
+  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
+  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
+
+  static {
+    registerConstructor(XsdAnyURI.class, SHORT_NAME, LONG_NAME );
+  }
+
 	public String value;
-	
+
 	/**
 	 * @param value a Java string, representing an XSD anyURI atom, e.g.,
 	 * "\"http://www.w3.org/1999/02/22-rdf-syntax-ns#type\"^^<xsd:anyURI>"
@@ -26,7 +34,7 @@ public final class XsdAnyURI extends XsdAnySimpleType {
 		final int index = value.lastIndexOf('^');
 		this.value = value.substring(1, index - 2);
 	}
-	
+
 	/**
 	 * depending on shortIsDefault, either the suffix
 	 *   de.dfki.lt.hfc.Namespace.XSD_ANYURI_SHORT
@@ -35,16 +43,9 @@ public final class XsdAnyURI extends XsdAnySimpleType {
 	 * is used
 	 */
 	public String toString(boolean shortIsDefault) {
-		StringBuilder sb = new StringBuilder("\"");
-		sb.append(this.value);
-		sb.append("\"^^");
-		if (shortIsDefault)
-			sb.append(de.dfki.lt.hfc.Namespace.XSD_ANYURI_SHORT);
-		else
-			sb.append(de.dfki.lt.hfc.Namespace.XSD_ANYURI_LONG);
-		return sb.toString();
+		return toString(this.value, shortIsDefault);
 	}
-	
+
 	/**
 	 * binary version is given the value directly
 	 */
@@ -53,19 +54,19 @@ public final class XsdAnyURI extends XsdAnySimpleType {
 		sb.append(val);
 		sb.append("\"^^");
 		if (shortIsDefault)
-			sb.append(de.dfki.lt.hfc.Namespace.XSD_ANYURI_SHORT);
+			sb.append(XSD_ANYURI_SHORT);
 		else
-			sb.append(de.dfki.lt.hfc.Namespace.XSD_ANYURI_LONG);
+			sb.append(XSD_ANYURI_LONG);
 		return sb.toString();
 	}
-	
+
 	/**
 	 * nothing to change with the internal value
 	 */
 	public String toName() {
 		return this.value;
 	}
-	
+
   /**
    * returns a java.net.URI object for a given XsdAnyURI object from HFC if
    * the this.value is compliant with the syntax specification of URIs;
@@ -81,18 +82,5 @@ public final class XsdAnyURI extends XsdAnySimpleType {
     }
     return null;
   }
-  
-  /**
-   * for test purposes only
-   */
-  public static void main(String[] args) {
-    XsdAnyURI u1 = new XsdAnyURI("\"rdf:type\"^^<xsd:anyURI>");
-    System.out.println(u1.toJava());
-    XsdAnyURI u2 = new XsdAnyURI("\"http://www.w3.org/1999/02/22-rdf-syntax-ns#type\"^^<xsd:anyURI>");
-    System.out.println(u2.toJava());
-    // not compliant with URI syntax; return: null
-    XsdAnyURI u3 = new XsdAnyURI("\"<rdf:type>\"^^<xsd:anyURI>");
-    System.out.println(u3.toJava());
-  }
-  
+
 }

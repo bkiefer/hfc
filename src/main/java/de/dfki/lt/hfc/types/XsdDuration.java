@@ -21,14 +21,18 @@ package de.dfki.lt.hfc.types;
  * @version Fri Jan 29 19:09:59 CET 2016
  */
 public final class XsdDuration extends XsdAnySimpleType {
-	
+
+  static {
+    registerConstructor(XsdDuration.class, XSD_DURATION_SHORT, XSD_DURATION_LONG);
+  }
+
 	/**
 	 * - = negative periods
 	 * + = positive periods (optional)
 	 * in case NO sign is specified, sign defaults to true (= positive periods)
 	 */
 	public boolean sign = true;
-	
+
 	/**
 	 * these fields are all of type int and are set to 0 by default;
 	 * OK, this is the default value anyway, but I make it explicit here;
@@ -39,13 +43,13 @@ public final class XsdDuration extends XsdAnySimpleType {
 	public int day = 0;
 	public int hour = 0;
 	public int minute = 0;
-	
+
 	/**
 	 * second is the only field that is of type float in order to
 	 * represent parts of a second
 	 */
 	public float second = 0;
-	
+
 	/**
 	 *
 	 */
@@ -57,7 +61,7 @@ public final class XsdDuration extends XsdAnySimpleType {
 		this.minute = minute;
 		this.second = second;
 	}
-	
+
 	/**
 	 *
 	 */
@@ -69,16 +73,15 @@ public final class XsdDuration extends XsdAnySimpleType {
 		this.hour = hour;
 		this.minute = minute;
 		this.second = second;
-	}	
-	
+	}
+
 	/**
 	 * NOTE: at the moment, I do NOT check whether the expression is syntactically legal
 	 * @param time a _fully_ specified XSD duration expression "[+|-]PnYnMnDTnHnMnS"
 	 */
 	public XsdDuration(String time) {
 		// get rid of "^^<xsd:duration>" and leading & trailing '"' chars
-		int index = time.lastIndexOf('^');
-		time = time.substring(1, index - 2);
+		time = extractValue(time);
 		// is there a sign ?
 		if (time.charAt(0) == '+')
 			time = time.substring(1);
@@ -121,7 +124,7 @@ public final class XsdDuration extends XsdAnySimpleType {
 			}
 		}
 	}
-	
+
 	/**
 	 * depending on shortIsDefault, either the suffix
 	 *   de.dfki.lt.hfc.Namespace.XSD_DURATION_SHORT
@@ -131,7 +134,7 @@ public final class XsdDuration extends XsdAnySimpleType {
 	 * format is: "[+|-]PnYnMnDTnHnMnS"
 	 */
 	public String toString(boolean shortIsDefault) {
-		final String tail = "\"^^" + (shortIsDefault ? de.dfki.lt.hfc.Namespace.XSD_DURATION_SHORT : de.dfki.lt.hfc.Namespace.XSD_DURATION_LONG);
+		final String tail = "\"^^" + (shortIsDefault ? XSD_DURATION_SHORT : XSD_DURATION_LONG);
 		StringBuilder sb = new StringBuilder("\"");
 		if (! this.sign)
 			sb.append('-');
@@ -155,7 +158,7 @@ public final class XsdDuration extends XsdAnySimpleType {
 		}
 		return sb.append(tail).toString();
 	}
-	
+
 	/**
 	 * binary version is given the value directly
 	 */
@@ -164,23 +167,12 @@ public final class XsdDuration extends XsdAnySimpleType {
 		sb.append(val);
 		sb.append("\"^^");
 		if (shortIsDefault)
-			sb.append(de.dfki.lt.hfc.Namespace.XSD_DURATION_SHORT);
+			sb.append(XSD_DURATION_SHORT);
 		else
-			sb.append(de.dfki.lt.hfc.Namespace.XSD_DURATION_LONG);
+			sb.append(XSD_DURATION_LONG);
 		return sb.toString();
 	}
-	
-	/**
-	 * generates a string representation from the internal fields, but omits
-	 * the XSD type specification
-	 */
-	public String toName() {
-		// get rid of "^^<xsd:duration>"
-		String time = toString(de.dfki.lt.hfc.Namespace.shortIsDefault);
-		int index = time.lastIndexOf('^');
-		return time.substring(1, index - 2);
-	}
-  
+
   /**
    * even though there exist a javax.xml.datatype.Duration class, this
    * class does not perfectly fit the intention behind XsdDuration, so
@@ -189,7 +181,7 @@ public final class XsdDuration extends XsdAnySimpleType {
   public Object toJava() {
     return this;
   }
-	
+
 	/**
    * for test puposes only
    */
@@ -207,5 +199,5 @@ public final class XsdDuration extends XsdAnySimpleType {
     System.out.println(xt.toString(true));
     System.out.println(xt.toString(false));
   }
-	
+
 }

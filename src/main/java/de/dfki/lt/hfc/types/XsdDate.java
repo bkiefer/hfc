@@ -20,19 +20,23 @@ package de.dfki.lt.hfc.types;
  */
 public final class XsdDate extends XsdAnySimpleType {
 
+  static {
+    registerConstructor(XsdDate.class, XSD_DATE_SHORT, XSD_DATE_LONG);
+  }
+
 	/**
 	 * - = BC = false
 	 * + = AD = true
 	 * in case NO sign is specified, sign defaults to true
 	 */
 	public boolean sign = true;
-	
+
 	/**
 	 * these fields are all of type int;
 	 * I represent the sign in a separate boolean field
 	 */
 	public int year, month, day;
-	
+
 	/**
 	 *
 	 */
@@ -41,7 +45,7 @@ public final class XsdDate extends XsdAnySimpleType {
 		this.month = month;
 		this.day = day;
 	}
-	
+
 	/**
 	 *
 	 */
@@ -51,7 +55,7 @@ public final class XsdDate extends XsdAnySimpleType {
 		this.month = month;
 		this.day = day;
 	}
-	
+
 	/**
 	 * @param time a _fully_ specified XSD date expression
 	 */
@@ -78,12 +82,12 @@ public final class XsdDate extends XsdAnySimpleType {
 		this.day = Integer.parseInt(time.substring(pos + 1));
 	}
 
-	
+
 	/**
 	 * depending on shortIsDefault, either the suffix
-	 *   de.dfki.lt.hfc.Namespace.XSD_DATE_SHORT
+	 *   de.dfki.lt.hfc.XSD_DATE_SHORT
 	 * or
-	 *   de.dfki.lt.hfc.Namespace.XSD_DATE_LONG
+	 *   de.dfki.lt.hfc.XSD_DATE_LONG
 	 * is used;
 	 * note that toString() does NOT check whether the internal
 	 * description is well-formed; e.g., we do not check whether
@@ -91,7 +95,6 @@ public final class XsdDate extends XsdAnySimpleType {
 	 * (= February)
 	 */
 	public String toString(boolean shortIsDefault) {
-		final String tail = "\"^^" + (shortIsDefault ? de.dfki.lt.hfc.Namespace.XSD_DATE_SHORT : de.dfki.lt.hfc.Namespace.XSD_DATE_LONG);
 		StringBuilder sb = new StringBuilder("\"");
 		if (! this.sign)
 			sb.append('-');
@@ -113,9 +116,11 @@ public final class XsdDate extends XsdAnySimpleType {
 			sb.append(this.day);
 		else
 			sb.append("0").append(this.day);
-		return sb.append(tail).toString();
+		sb.append("\"^^");
+		sb.append(shortIsDefault ? XSD_DATE_SHORT : XSD_DATE_LONG);
+		return sb.toString();
 	}
-	
+
 	/**
 	 * binary version is given the value directly
 	 */
@@ -123,24 +128,10 @@ public final class XsdDate extends XsdAnySimpleType {
 		StringBuilder sb = new StringBuilder("\"");
 		sb.append(val);
 		sb.append("\"^^");
-		if (shortIsDefault)
-			sb.append(de.dfki.lt.hfc.Namespace.XSD_DATE_SHORT);
-		else
-			sb.append(de.dfki.lt.hfc.Namespace.XSD_DATE_LONG);
+    sb.append(shortIsDefault ? XSD_DATE_SHORT : XSD_DATE_LONG);
 		return sb.toString();
 	}
-	
-	/**
-	 * generates a string representation from the internal fields, but omits
-	 * the XSD type specification
-	 */
-	public String toName() {
-		// get rid of "^^<xsd:date>"
-		String time = toString(de.dfki.lt.hfc.Namespace.shortIsDefault);
-		int index = time.lastIndexOf('^');
-		return time.substring(1, index - 2);
-	}
-  
+
   /**
    * even though there exist a java.util.Date and java.util.GregorianCalendar
    * class, these classes do not perfectly fit the intention behind XsdDate,
@@ -149,23 +140,5 @@ public final class XsdDate extends XsdAnySimpleType {
   public Object toJava() {
     return this;
   }
-	
-	/**
-   * for test purposes only
-   */
-  public static void main(String[] args) {
-    XsdDate xt = new XsdDate("\"-12000-03-04\"^^<xsd:date>");
-    System.out.println(xt.year);
-    System.out.println(xt.month);
-    System.out.println(xt.day);
-    System.out.println(xt.toString(true));
-    System.out.println(xt.toString(false));
-    System.out.println();
-    xt = new XsdDate(2009, 1, 12);
-    System.out.println(xt.toString(true));
-    System.out.println(xt.toName());
-    System.out.println(xt.toString(true));
-    System.out.println(xt.toString(false));
-  }
-	
+
 }

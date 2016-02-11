@@ -1,24 +1,25 @@
 package de.dfki.lt.hfc.types;
 
-import de.dfki.lt.hfc.TupleStore;
-
 /**
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
  * @version Fri Jan 29 19:38:30 CET 2016
  */
 public final class XsdString extends XsdAnySimpleType {
-	
+
+  static {
+    registerConstructor(XsdString.class, XSD_STRING_SHORT, XSD_STRING_LONG);
+  }
+
 	public String value;
-	
+
 	public String languageTag;
-	
+
 	/**
 	 * @param value a string, representing an XSD string, e.g., "\"hello\"",
 	 *              "\"hello\"@en", or "\"hello\"^^<xsd:string>"
 	 */
 	public XsdString(String value) {
-		String string;
 		int index = value.lastIndexOf('^');
 		if (index == -1) {
 			// no suffix "^^<xsd:string>"
@@ -40,7 +41,7 @@ public final class XsdString extends XsdAnySimpleType {
 			this.languageTag = null;
 		}
 	}
-	
+
 	/**
 	 * @param value a Java string representation of an XSD string
 	 * @param languageTag a language tag (e.g., "en");
@@ -50,7 +51,7 @@ public final class XsdString extends XsdAnySimpleType {
 		this.value = value;
 		this.languageTag = languageTag;
 	}
-	
+
 	/**
 	 * depending on shortIsDefault, either the suffix
 	 *   de.dfki.lt.hfc.Namespace.XSD_STRING_SHORT
@@ -70,13 +71,13 @@ public final class XsdString extends XsdAnySimpleType {
 		else {
 			sb.append("^^");
 			if (shortIsDefault)
-				sb.append(de.dfki.lt.hfc.Namespace.XSD_STRING_SHORT);
+				sb.append(XSD_STRING_SHORT);
 			else
-				sb.append(de.dfki.lt.hfc.Namespace.XSD_STRING_LONG);
+				sb.append(XSD_STRING_LONG);
 		}
 		return sb.toString();
 	}
-	
+
 	/**
 	 * binary version is given the value directly;
 	 */
@@ -85,12 +86,12 @@ public final class XsdString extends XsdAnySimpleType {
 		sb.append(val);
 		sb.append("\"^^");
 		if (shortIsDefault)
-			sb.append(de.dfki.lt.hfc.Namespace.XSD_STRING_SHORT);
+			sb.append(XSD_STRING_SHORT);
 		else
-			sb.append(de.dfki.lt.hfc.Namespace.XSD_STRING_LONG);
+			sb.append(XSD_STRING_LONG);
 		return sb.toString();
 	}
-	
+
 	/**
 	 * directly return the string value, but replace " ", "<", and ">"
 	 * by "_"
@@ -98,49 +99,12 @@ public final class XsdString extends XsdAnySimpleType {
 	public String toName() {
 		return this.value.replaceAll("[ <>]", "_");
 	}
-  
+
   /**
    * we return the pure string _without_ the language tag
    */
   public Object toJava() {
     return this.value;
   }
-	
-  /**
-   * for test purposes only
-   */
-  public static void main(String[] args) {
-    XsdString xs = new XsdString("\"hel <lo>\"^^<xsd:string>");
-		System.out.println(xs.toName());
-    xs = new XsdString("\"hello\"^^<xsd:string>");
-		System.out.println(xs.value);
-		System.out.println(xs.languageTag);
-		System.out.println(xs.toString(true));
-		System.out.println(xs.toString(false));
-		System.out.println();
-		xs = new XsdString("\"hello\"");
-		System.out.println(xs.value);
-		System.out.println(xs.languageTag);
-		System.out.println(xs.toString(true));
-		System.out.println(xs.toString(false));
-		System.out.println();
-		xs = new XsdString("\"hello\"@en");
-		System.out.println(xs.value);
-		System.out.println(xs.languageTag);
-		System.out.println(xs.toString(true));
-		System.out.println(xs.toString(false));
-		System.out.println();
-		xs = new XsdString("hello", null);
-		System.out.println(xs.value);
-		System.out.println(xs.languageTag);
-		System.out.println(xs.toString(true));
-		System.out.println(xs.toString(false));
-		System.out.println();
-		xs = new XsdString("hello", "en");
-		System.out.println(xs.value);
-		System.out.println(xs.languageTag);
-		System.out.println(xs.toString(true));
-		System.out.println(xs.toString(false));
-  }
-	
+
 }
