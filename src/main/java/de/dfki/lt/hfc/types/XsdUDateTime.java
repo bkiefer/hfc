@@ -34,10 +34,14 @@ package de.dfki.lt.hfc.types;
  * @version Fri Jan 29 19:22:44 CET 2016
  */
 public final class XsdUDateTime extends XsdAnySimpleType {
+  public final static String NAME = "uDateTime";
+
+  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
+  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
 
   static {
     registerConstructor(XsdUDateTime.class,
-        XSD_UDATETIME_SHORT, XSD_UDATETIME_LONG);
+        SHORT_NAME, LONG_NAME);
   }
 
 	/**
@@ -195,9 +199,9 @@ public final class XsdUDateTime extends XsdAnySimpleType {
 
 	/**
 	 * depending on shortIsDefault, either the suffix
-	 *   de.dfki.lt.hfc.Namespace.XSD_UDATETIME_SHORT
+	 *   de.dfki.lt.hfc.Namespace.SHORT_NAME
 	 * or
-	 *   de.dfki.lt.hfc.Namespace.XSD_UDATETIME_LONG
+	 *   de.dfki.lt.hfc.Namespace.LONG_NAME
 	 * is used;
 	 * note that toString() does NOT check whether the internal
 	 * description is well-formed; e.g., we do not check whether
@@ -205,8 +209,7 @@ public final class XsdUDateTime extends XsdAnySimpleType {
 	 * (= February)
 	 */
 	public String toString(boolean shortIsDefault) {
-		final String tail = "\"^^" + (shortIsDefault ? XSD_UDATETIME_SHORT : XSD_UDATETIME_LONG);
-		String field;
+		final String tail = "\"^^" + (shortIsDefault ? SHORT_NAME : LONG_NAME);
 		StringBuilder sb = new StringBuilder("\"");
 		if (this.year >= 1000)
 			sb.append(this.year);
@@ -286,9 +289,9 @@ public final class XsdUDateTime extends XsdAnySimpleType {
 		sb.append(val);
 		sb.append("\"^^");
 		if (shortIsDefault)
-			sb.append(XSD_UDATETIME_SHORT);
+			sb.append(SHORT_NAME);
 		else
-			sb.append(XSD_UDATETIME_LONG);
+			sb.append(LONG_NAME);
 		return sb.toString();
 	}
 

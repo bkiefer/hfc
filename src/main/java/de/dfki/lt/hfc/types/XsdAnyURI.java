@@ -37,9 +37,9 @@ public final class XsdAnyURI extends XsdAnySimpleType {
 
 	/**
 	 * depending on shortIsDefault, either the suffix
-	 *   de.dfki.lt.hfc.Namespace.XSD_ANYURI_SHORT
+	 *   de.dfki.lt.hfc.Namespace.SHORT_NAME
 	 * or
-	 *   de.dfki.lt.hfc.Namespace.XSD_ANYURI_LONG
+	 *   de.dfki.lt.hfc.Namespace.LONG_NAME
 	 * is used
 	 */
 	public String toString(boolean shortIsDefault) {
@@ -54,9 +54,9 @@ public final class XsdAnyURI extends XsdAnySimpleType {
 		sb.append(val);
 		sb.append("\"^^");
 		if (shortIsDefault)
-			sb.append(XSD_ANYURI_SHORT);
+			sb.append(SHORT_NAME);
 		else
-			sb.append(XSD_ANYURI_LONG);
+			sb.append(LONG_NAME);
 		return sb.toString();
 	}
 

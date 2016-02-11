@@ -19,9 +19,14 @@ package de.dfki.lt.hfc.types;
  * @version Fri Jan 29 19:01:44 CET 2016
  */
 public final class XsdDate extends XsdAnySimpleType {
+  public final static String NAME = "date";
+
+  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
+  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
+
 
   static {
-    registerConstructor(XsdDate.class, XSD_DATE_SHORT, XSD_DATE_LONG);
+    registerConstructor(XsdDate.class, SHORT_NAME, LONG_NAME);
   }
 
 	/**
@@ -85,9 +90,9 @@ public final class XsdDate extends XsdAnySimpleType {
 
 	/**
 	 * depending on shortIsDefault, either the suffix
-	 *   de.dfki.lt.hfc.XSD_DATE_SHORT
+	 *   de.dfki.lt.hfc.SHORT_NAME
 	 * or
-	 *   de.dfki.lt.hfc.XSD_DATE_LONG
+	 *   de.dfki.lt.hfc.LONG_NAME
 	 * is used;
 	 * note that toString() does NOT check whether the internal
 	 * description is well-formed; e.g., we do not check whether
@@ -117,7 +122,7 @@ public final class XsdDate extends XsdAnySimpleType {
 		else
 			sb.append("0").append(this.day);
 		sb.append("\"^^");
-		sb.append(shortIsDefault ? XSD_DATE_SHORT : XSD_DATE_LONG);
+		sb.append(shortIsDefault ? SHORT_NAME : LONG_NAME);
 		return sb.toString();
 	}
 
@@ -128,7 +133,7 @@ public final class XsdDate extends XsdAnySimpleType {
 		StringBuilder sb = new StringBuilder("\"");
 		sb.append(val);
 		sb.append("\"^^");
-    sb.append(shortIsDefault ? XSD_DATE_SHORT : XSD_DATE_LONG);
+    sb.append(shortIsDefault ? SHORT_NAME : LONG_NAME);
 		return sb.toString();
 	}
 

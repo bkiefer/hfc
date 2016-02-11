@@ -7,8 +7,13 @@ package de.dfki.lt.hfc.types;
  * @version Fri Jan 29 19:28:31 CET 2016
  */
 public final class XsdDouble extends XsdAnySimpleType {
+  public final static String NAME = "double";
+
+  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
+  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
+
   static {
-    registerConstructor(XsdDouble.class, XSD_DOUBLE_SHORT, XSD_DOUBLE_LONG);
+    registerConstructor(XsdDouble.class, SHORT_NAME, LONG_NAME);
   }
 
 	public double value;
@@ -30,9 +35,9 @@ public final class XsdDouble extends XsdAnySimpleType {
 
 	/**
 	 * depending on shortIsDefault, either the suffix
-	 *   de.dfki.lt.hfc.Namespace.XSD_DOUBLE_SHORT
+	 *   de.dfki.lt.hfc.Namespace.SHORT_NAME
 	 * or
-	 *   de.dfki.lt.hfc.Namespace.XSD_DOUBLE_LONG
+	 *   de.dfki.lt.hfc.Namespace.LONG_NAME
 	 * is used
 	 */
 	public String toString(boolean shortIsDefault) {
@@ -47,9 +52,9 @@ public final class XsdDouble extends XsdAnySimpleType {
 		sb.append(val);
 		sb.append("\"^^");
 		if (shortIsDefault)
-			sb.append(XSD_DOUBLE_SHORT);
+			sb.append(SHORT_NAME);
 		else
-			sb.append(XSD_DOUBLE_LONG);
+			sb.append(LONG_NAME);
 		return sb.toString();
 	}
 

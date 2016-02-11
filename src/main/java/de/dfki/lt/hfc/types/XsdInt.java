@@ -6,9 +6,13 @@ package de.dfki.lt.hfc.types;
  * @version Fri Jan 29 19:30:23 CET 2016
  */
 public final class XsdInt extends XsdAnySimpleType {
+  public final static String NAME = "int";
+
+  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
+  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
 
   static {
-    registerConstructor(XsdInt.class, XSD_INT_SHORT, XSD_INT_LONG);
+    registerConstructor(XsdInt.class, SHORT_NAME, LONG_NAME);
   }
 
 	public int value;
@@ -30,9 +34,9 @@ public final class XsdInt extends XsdAnySimpleType {
 
 	/**
 	 * depending on shortIsDefault, either the suffix
-	 *   de.dfki.lt.hfc.Namespace.XSD_INT_SHORT
+	 *   de.dfki.lt.hfc.Namespace.SHORT_NAME
 	 * or
-	 *   de.dfki.lt.hfc.Namespace.XSD_INT_LONG
+	 *   de.dfki.lt.hfc.Namespace.LONG_NAME
 	 * is used
 	 */
 	public String toString(boolean shortIsDefault) {
@@ -47,9 +51,9 @@ public final class XsdInt extends XsdAnySimpleType {
 		sb.append(val);
 		sb.append("\"^^");
 		if (shortIsDefault)
-			sb.append(XSD_INT_SHORT);
+			sb.append(SHORT_NAME);
 		else
-			sb.append(XSD_INT_LONG);
+			sb.append(LONG_NAME);
 		return sb.toString();
 	}
 

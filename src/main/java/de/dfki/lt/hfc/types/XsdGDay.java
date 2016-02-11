@@ -14,9 +14,13 @@ package de.dfki.lt.hfc.types;
  * @version Fri Jan 29 19:10:24 CET 2016
  */
 public final class XsdGDay extends XsdAnySimpleType {
+  public final static String NAME = "gDay";
+
+  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
+  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
 
   static {
-    registerConstructor(XsdGDay.class, XSD_GDAY_SHORT, XSD_GDAY_LONG);
+    registerConstructor(XsdGDay.class, SHORT_NAME, LONG_NAME);
   }
 
   /**
@@ -43,13 +47,13 @@ public final class XsdGDay extends XsdAnySimpleType {
 
 	/**
 	 * depending on shortIsDefault, either the suffix
-	 *   de.dfki.lt.hfc.Namespace.XSD_GDAY_SHORT
+	 *   de.dfki.lt.hfc.Namespace.SHORT_NAME
 	 * or
-	 *   de.dfki.lt.hfc.Namespace.XSD_GDAY_LONG
+	 *   de.dfki.lt.hfc.Namespace.LONG_NAME
 	 * is used
 	 */
 	public String toString(boolean shortIsDefault) {
-		final String tail = "\"^^" + (shortIsDefault ? XSD_GDAY_SHORT : XSD_GDAY_LONG);
+		final String tail = "\"^^" + (shortIsDefault ? SHORT_NAME : LONG_NAME);
 		StringBuilder sb = new StringBuilder("\"---");
 		if (this.day >= 10)
 			sb.append(this.day);
@@ -66,9 +70,9 @@ public final class XsdGDay extends XsdAnySimpleType {
 		sb.append(val);
 		sb.append("\"^^");
 		if (shortIsDefault)
-			sb.append(XSD_GDAY_SHORT);
+			sb.append(SHORT_NAME);
 		else
-			sb.append(XSD_GDAY_LONG);
+			sb.append(LONG_NAME);
 		return sb.toString();
 	}
 

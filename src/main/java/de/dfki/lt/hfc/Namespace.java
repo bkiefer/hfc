@@ -1,11 +1,9 @@
 package de.dfki.lt.hfc;
 
 import java.io.*;
-import java.util.*;
-import java.lang.reflect.Constructor;
 import java.nio.file.Files;
-
-import de.dfki.lt.hfc.types.XsdAnySimpleType;
+import java.util.HashMap;
+import java.util.StringTokenizer;
 
 /**
  * Namespace implements a bidirectional mapping between strings, given by
@@ -277,7 +275,7 @@ public final class Namespace {
 	 * @throws IOException
 	 */
 	public void readNamespaces(final BufferedReader br) throws WrongFormatException, IOException {
-    String line, first, second;
+    String line;
     StringTokenizer st;
 		int noOfNamespaces = 0;
     int noOfTypes = 0;
@@ -285,7 +283,8 @@ public final class Namespace {
     //   0 : no directive read
     //   1 : SHORT_TO_LONG
     //   2 : TYPE_TO_CLASS
-    int sectionNo = 0;  // no directive so far
+    int sectionNo = 1;  // no directive so far
+    // BK: set to one to be compatible with old version
     // the class object for the class String which is used to specify the unary XSD type constructor (string arg)
     while ((line = br.readLine()) != null) {
       line = line.trim();
@@ -309,8 +308,8 @@ public final class Namespace {
       else if (sectionNo == 2) {
         /* TODO: obsolete, we should go back to the namespace only files
         st = new StringTokenizer(line);
-        first = "<" + st.nextToken() + ">";  // add the angle brackets
-        second = st.nextToken();
+        String first = "<" + st.nextToken() + ">";  // add the angle brackets
+        String second = st.nextToken();
         try {
           @SuppressWarnings("rawtypes")
           Class clazz = Class.forName(Namespace.TYPE_PATH + second);

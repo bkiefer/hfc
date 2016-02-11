@@ -1,16 +1,12 @@
 package de.dfki.lt.hfc;
 
-import static org.junit.Assert.*;
+import static de.dfki.lt.hfc.TestBindingTableIterator.check;
+import static de.dfki.lt.hfc.TestBindingTableIterator.printNext;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-
-import de.dfki.lt.hfc.BindingTable.BindingTableIterator;
-
-import static de.dfki.lt.hfc.TestBindingTableIterator.*;
 
 public class TestLGetLatest {
   static ForwardChainer fc;

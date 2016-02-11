@@ -25,9 +25,13 @@ package de.dfki.lt.hfc.types;
  * @version Fri Jan 29 19:35:14 CET 2016
  */
 public final class XsdMonetary extends XsdAnySimpleType {
+  public final static String NAME = "monetary";
+
+  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
+  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
 
   static {
-    registerConstructor(XsdMonetary.class, XSD_MONETARY_SHORT, XSD_MONETARY_LONG);
+    registerConstructor(XsdMonetary.class, SHORT_NAME, LONG_NAME);
   }
 
 	/**
@@ -78,9 +82,9 @@ public final class XsdMonetary extends XsdAnySimpleType {
 
 	/**
 	 * depending on shortIsDefault, either the suffix
-	 *   de.dfki.lt.hfc.Namespace.XSD_MONETARY_SHORT
+	 *   de.dfki.lt.hfc.Namespace.SHORT_NAME
 	 * or
-	 *   de.dfki.lt.hfc.Namespace.XSD_MONETARY_LONG
+	 *   de.dfki.lt.hfc.Namespace.LONG_NAME
 	 * is used;
 	 * note that toString() does NOT check whether the internal
 	 * description is well-formed; e.g., we do not check whether
@@ -92,9 +96,9 @@ public final class XsdMonetary extends XsdAnySimpleType {
 		sb.append(this.currency);
 		sb.append("\"^^");
 		if (shortIsDefault)
-			sb.append(XSD_MONETARY_SHORT);
+			sb.append(SHORT_NAME);
 		else
-			sb.append(XSD_MONETARY_LONG);
+			sb.append(LONG_NAME);
 		return sb.toString();
 	}
 
@@ -106,9 +110,9 @@ public final class XsdMonetary extends XsdAnySimpleType {
 		sb.append(val);
 		sb.append("\"^^");
 		if (shortIsDefault)
-			sb.append(XSD_MONETARY_SHORT);
+			sb.append(SHORT_NAME);
 		else
-			sb.append(XSD_MONETARY_LONG);
+			sb.append(LONG_NAME);
 		return sb.toString();
 	}
 

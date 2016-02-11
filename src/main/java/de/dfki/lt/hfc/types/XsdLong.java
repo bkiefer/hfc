@@ -1,7 +1,5 @@
 package de.dfki.lt.hfc.types;
 
-import de.dfki.lt.hfc.TupleStore;
-
 /**
  * note: currently XsdLong is *not* a superclass of (derived from) XsdInt,
  * as the XSD type tree indicates!
@@ -12,9 +10,13 @@ import de.dfki.lt.hfc.TupleStore;
  * @version Fri Jan 29 19:32:15 CET 2016
  */
 public final class XsdLong extends XsdAnySimpleType {
+  public final static String NAME = "long";
+
+  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
+  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
 
   static {
-    registerConstructor(XsdLong.class, XSD_LONG_SHORT, XSD_LONG_LONG);
+    registerConstructor(XsdLong.class, SHORT_NAME, LONG_NAME);
   }
 
 	public long value;
@@ -36,9 +38,9 @@ public final class XsdLong extends XsdAnySimpleType {
 
 	/**
 	 * depending on shortIsDefault, either the suffix
-	 *   de.dfki.lt.hfc.Namespace.XSD_LONG_SHORT
+	 *   de.dfki.lt.hfc.Namespace.SHORT_NAME
 	 * or
-	 *   de.dfki.lt.hfc.Namespace.XSD_LONG_LONG
+	 *   de.dfki.lt.hfc.Namespace.LONG_NAME
 	 * is used
 	 */
 	public String toString(boolean shortIsDefault) {
@@ -53,9 +55,9 @@ public final class XsdLong extends XsdAnySimpleType {
 		sb.append(val);
 		sb.append("\"^^");
 		if (shortIsDefault)
-			sb.append(XSD_LONG_SHORT);
+			sb.append(SHORT_NAME);
 		else
-			sb.append(XSD_LONG_LONG);
+			sb.append(LONG_NAME);
 		return sb.toString();
 	}
 

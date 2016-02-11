@@ -6,9 +6,13 @@ package de.dfki.lt.hfc.types;
  * @version Fri Jan 29 19:38:30 CET 2016
  */
 public final class XsdString extends XsdAnySimpleType {
+  public final static String NAME = "string";
+
+  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
+  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
 
   static {
-    registerConstructor(XsdString.class, XSD_STRING_SHORT, XSD_STRING_LONG);
+    registerConstructor(XsdString.class, SHORT_NAME, LONG_NAME);
   }
 
 	public String value;
@@ -54,9 +58,9 @@ public final class XsdString extends XsdAnySimpleType {
 
 	/**
 	 * depending on shortIsDefault, either the suffix
-	 *   de.dfki.lt.hfc.Namespace.XSD_STRING_SHORT
+	 *   de.dfki.lt.hfc.Namespace.SHORT_NAME
 	 * or
-	 *   de.dfki.lt.hfc.Namespace.XSD_STRING_LONG
+	 *   de.dfki.lt.hfc.Namespace.LONG_NAME
 	 * is used;
 	 * shortIsDefault is ignored in case a language tag is available
 	 */
@@ -71,9 +75,9 @@ public final class XsdString extends XsdAnySimpleType {
 		else {
 			sb.append("^^");
 			if (shortIsDefault)
-				sb.append(XSD_STRING_SHORT);
+				sb.append(SHORT_NAME);
 			else
-				sb.append(XSD_STRING_LONG);
+				sb.append(LONG_NAME);
 		}
 		return sb.toString();
 	}
@@ -86,9 +90,9 @@ public final class XsdString extends XsdAnySimpleType {
 		sb.append(val);
 		sb.append("\"^^");
 		if (shortIsDefault)
-			sb.append(XSD_STRING_SHORT);
+			sb.append(SHORT_NAME);
 		else
-			sb.append(XSD_STRING_LONG);
+			sb.append(LONG_NAME);
 		return sb.toString();
 	}
 

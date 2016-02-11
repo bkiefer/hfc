@@ -7,9 +7,13 @@ package de.dfki.lt.hfc.types;
  * @version Fri Jan 29 19:29:19 CET 2016
  */
 public final class XsdFloat extends XsdAnySimpleType {
+  public final static String NAME = "float";
+
+  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
+  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
 
   static {
-    registerConstructor(XsdFloat.class, XSD_FLOAT_SHORT, XSD_FLOAT_LONG);
+    registerConstructor(XsdFloat.class, SHORT_NAME, LONG_NAME);
   }
 
   public float value;
@@ -31,9 +35,9 @@ public final class XsdFloat extends XsdAnySimpleType {
 
 	/**
 	 * depending on shortIsDefault, either the suffix
-	 *   XSD_FLOAT_SHORT
+	 *   SHORT_NAME
 	 * or
-	 *   XSD_FLOAT_LONG
+	 *   LONG_NAME
 	 * is used
 	 */
 	public String toString(boolean shortIsDefault) {
@@ -48,9 +52,9 @@ public final class XsdFloat extends XsdAnySimpleType {
 		sb.append(val);
 		sb.append("\"^^");
 		if (shortIsDefault)
-			sb.append(XSD_FLOAT_SHORT);
+			sb.append(SHORT_NAME);
 		else
-			sb.append(XSD_FLOAT_LONG);
+			sb.append(LONG_NAME);
 		return sb.toString();
 	}
 

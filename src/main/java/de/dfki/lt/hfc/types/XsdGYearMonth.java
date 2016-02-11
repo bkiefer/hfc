@@ -12,10 +12,14 @@ package de.dfki.lt.hfc.types;
  * @version Fri Jan 29 19:20:53 CET 2016
  */
 public final class XsdGYearMonth extends XsdAnySimpleType {
+  public final static String NAME = "gYearMonth";
+
+  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
+  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
 
   static {
     registerConstructor(XsdGYearMonth.class,
-        XSD_GYEARMONTH_SHORT, XSD_GYEARMONTH_LONG);
+        SHORT_NAME, LONG_NAME);
   }
 
 	/**
@@ -71,13 +75,13 @@ public final class XsdGYearMonth extends XsdAnySimpleType {
 
 	/**
 	 * depending on shortIsDefault, either the suffix
-	 *   de.dfki.lt.hfc.Namespace.XSD_GYEARMONTH_SHORT
+	 *   de.dfki.lt.hfc.Namespace.SHORT_NAME
 	 * or
-	 *   de.dfki.lt.hfc.Namespace.XSD_GYEARMONTH_LONG
+	 *   de.dfki.lt.hfc.Namespace.LONG_NAME
 	 * is used
 	 */
 	public String toString(boolean shortIsDefault) {
-		final String tail = "\"^^" + (shortIsDefault ? XSD_GYEARMONTH_SHORT : XSD_GYEARMONTH_LONG);
+		final String tail = "\"^^" + (shortIsDefault ? SHORT_NAME : LONG_NAME);
 		StringBuilder sb = new StringBuilder("\"");
 		if (! this.sign)
 			sb.append('-');
@@ -105,9 +109,9 @@ public final class XsdGYearMonth extends XsdAnySimpleType {
 		sb.append(val);
 		sb.append("\"^^");
 		if (shortIsDefault)
-			sb.append(XSD_GYEARMONTH_SHORT);
+			sb.append(SHORT_NAME);
 		else
-			sb.append(XSD_GYEARMONTH_LONG);
+			sb.append(LONG_NAME);
 		return sb.toString();
 	}
 

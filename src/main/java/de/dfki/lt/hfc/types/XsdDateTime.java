@@ -21,8 +21,13 @@ package de.dfki.lt.hfc.types;
  * @version Fri Jan 29 19:02:02 CET 2016
  */
 public final class XsdDateTime extends XsdAnySimpleType {
+  public final static String NAME = "dateTime";
+
+  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
+  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
+
   static {
-    registerConstructor(XsdDateTime.class, XSD_DATETIME_SHORT, XSD_DATETIME_LONG);
+    registerConstructor(XsdDateTime.class, SHORT_NAME, LONG_NAME);
   }
 
 	/**
@@ -108,9 +113,9 @@ public final class XsdDateTime extends XsdAnySimpleType {
 
 	/**
 	 * depending on shortIsDefault, either the suffix
-	 *   de.dfki.lt.hfc.XSD_DATETIME_SHORT
+	 *   de.dfki.lt.hfc.SHORT_NAME
 	 * or
-	 *   de.dfki.lt.hfc.XSD_DATETIME_LONG
+	 *   de.dfki.lt.hfc.LONG_NAME
 	 * is used;
 	 * note that toString() does NOT check whether the internal
 	 * description is well-formed; e.g., we do not check whether
@@ -118,7 +123,7 @@ public final class XsdDateTime extends XsdAnySimpleType {
 	 * (= February)
 	 */
 	public String toString(boolean shortIsDefault) {
-		final String tail = "\"^^" + (shortIsDefault ? XSD_DATETIME_SHORT : XSD_DATETIME_LONG);
+		final String tail = "\"^^" + (shortIsDefault ? SHORT_NAME : LONG_NAME);
 		StringBuilder sb = new StringBuilder("\"");
 		if (! this.sign)
 			sb.append('-');
@@ -166,9 +171,9 @@ public final class XsdDateTime extends XsdAnySimpleType {
 		sb.append(val);
 		sb.append("\"^^");
 		if (shortIsDefault)
-			sb.append(XSD_DATETIME_SHORT);
+			sb.append(SHORT_NAME);
 		else
-			sb.append(XSD_DATETIME_LONG);
+			sb.append(LONG_NAME);
 		return sb.toString();
 	}
 

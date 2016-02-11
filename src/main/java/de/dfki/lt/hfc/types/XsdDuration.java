@@ -21,9 +21,13 @@ package de.dfki.lt.hfc.types;
  * @version Fri Jan 29 19:09:59 CET 2016
  */
 public final class XsdDuration extends XsdAnySimpleType {
+  public final static String NAME = "duration";
+
+  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
+  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
 
   static {
-    registerConstructor(XsdDuration.class, XSD_DURATION_SHORT, XSD_DURATION_LONG);
+    registerConstructor(XsdDuration.class, SHORT_NAME, LONG_NAME);
   }
 
 	/**
@@ -127,14 +131,14 @@ public final class XsdDuration extends XsdAnySimpleType {
 
 	/**
 	 * depending on shortIsDefault, either the suffix
-	 *   de.dfki.lt.hfc.Namespace.XSD_DURATION_SHORT
+	 *   de.dfki.lt.hfc.Namespace.SHORT_NAME
 	 * or
-	 *   de.dfki.lt.hfc.Namespace.XSD_DURATION_LONG
+	 *   de.dfki.lt.hfc.Namespace.LONG_NAME
 	 * is used;
 	 * format is: "[+|-]PnYnMnDTnHnMnS"
 	 */
 	public String toString(boolean shortIsDefault) {
-		final String tail = "\"^^" + (shortIsDefault ? XSD_DURATION_SHORT : XSD_DURATION_LONG);
+		final String tail = "\"^^" + (shortIsDefault ? SHORT_NAME : LONG_NAME);
 		StringBuilder sb = new StringBuilder("\"");
 		if (! this.sign)
 			sb.append('-');
@@ -167,9 +171,9 @@ public final class XsdDuration extends XsdAnySimpleType {
 		sb.append(val);
 		sb.append("\"^^");
 		if (shortIsDefault)
-			sb.append(XSD_DURATION_SHORT);
+			sb.append(SHORT_NAME);
 		else
-			sb.append(XSD_DURATION_LONG);
+			sb.append(LONG_NAME);
 		return sb.toString();
 	}
 

@@ -1428,9 +1428,9 @@ public final class TupleStore {
 		if (bareAtom) {
 			// complete type in order to recognize duplicates (perhaps output a message?)
 			if (Namespace.shortIsDefault)
-				sb.append("^^").append(XsdAnySimpleType.XSD_STRING_SHORT);
+				sb.append("^^").append(XsdString.SHORT_NAME);
 			else
-				sb.append("^^").append(XsdAnySimpleType.XSD_STRING_LONG);
+				sb.append("^^").append(XsdString.LONG_NAME);
 		}
 		token = sb.toString();
 		tuple.add(token);

@@ -6,9 +6,13 @@ package de.dfki.lt.hfc.types;
  * @version Fri Jan 29 18:42:17 CET 2016
  */
 public final class XsdBoolean extends XsdAnySimpleType {
+  public final static String NAME = "boolean";
+
+  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
+  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
 
   static {
-    registerConstructor(XsdBoolean.class, XSD_BOOLEAN_SHORT, XSD_BOOLEAN_LONG);
+    registerConstructor(XsdBoolean.class, SHORT_NAME, LONG_NAME);
   }
 
   public boolean value;
@@ -30,9 +34,9 @@ public final class XsdBoolean extends XsdAnySimpleType {
 
 	/**
 	 * depending on shortIsDefault, either the suffix
-	 *   de.dfki.lt.hfc.XSD_BOOLEAN_SHORT
+	 *   de.dfki.lt.hfc.SHORT_NAME
 	 * or
-	 *   de.dfki.lt.hfc.XSD_BOOLEAN_LONG
+	 *   de.dfki.lt.hfc.LONG_NAME
 	 * is used
 	 */
 	public String toString(boolean shortIsDefault) {
@@ -47,9 +51,9 @@ public final class XsdBoolean extends XsdAnySimpleType {
 		sb.append(val);
 		sb.append("\"^^");
 		if (shortIsDefault)
-			sb.append(XSD_BOOLEAN_SHORT);
+			sb.append(SHORT_NAME);
 		else
-			sb.append(XSD_BOOLEAN_LONG);
+			sb.append(LONG_NAME);
 		return sb.toString();
 	}
 

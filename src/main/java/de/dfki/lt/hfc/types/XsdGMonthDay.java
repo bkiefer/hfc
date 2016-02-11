@@ -17,10 +17,15 @@ package de.dfki.lt.hfc.types;
  * @version Fri Jan 29 19:15:31 CET 2016
  */
 public final class XsdGMonthDay extends XsdAnySimpleType {
+  public final static String NAME = "gMonthDay";
+
+  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
+  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
+
 
   static {
     registerConstructor(XsdGMonthDay.class,
-        XSD_GMONTHDAY_SHORT, XSD_GMONTHDAY_LONG);
+        SHORT_NAME, LONG_NAME);
   }
 
 	/**
@@ -50,9 +55,9 @@ public final class XsdGMonthDay extends XsdAnySimpleType {
 
 	/**
 	 * depending on shortIsDefault, either the suffix
-	 *   XSD_GMONTHDAY_SHORT
+	 *   SHORT_NAME
 	 * or
-	 *   XSD_GMONTHDAY_LONG
+	 *   LONG_NAME
 	 * is used;
 	 * note that toString() does NOT check whether the internal
 	 * description is well-formed; e.g., we do not check whether
@@ -60,7 +65,7 @@ public final class XsdGMonthDay extends XsdAnySimpleType {
 	 * (= February)
 	 */
 	public String toString(boolean shortIsDefault) {
-		final String tail = "\"^^" + (shortIsDefault ? XSD_GMONTHDAY_SHORT : XSD_GMONTHDAY_LONG);
+		final String tail = "\"^^" + (shortIsDefault ? SHORT_NAME : LONG_NAME);
 		StringBuilder sb = new StringBuilder("\"--");
 		if (this.month >= 10)
 			sb.append(this.month);
@@ -82,9 +87,9 @@ public final class XsdGMonthDay extends XsdAnySimpleType {
 		sb.append(val);
 		sb.append("\"^^");
 		if (shortIsDefault)
-			sb.append(XSD_GMONTHDAY_SHORT);
+			sb.append(SHORT_NAME);
 		else
-			sb.append(XSD_GMONTHDAY_LONG);
+			sb.append(LONG_NAME);
 		return sb.toString();
 	}
 
