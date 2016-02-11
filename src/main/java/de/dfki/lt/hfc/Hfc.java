@@ -21,6 +21,16 @@ public class Hfc {
     _tupleStore.namespace.readNamespaces(nameSpaceReader);
   }
 
+  public void readNamespaces(File namespace)
+      throws WrongFormatException, IOException {
+    readNamespaces(Files.newBufferedReader(namespace.toPath(),
+        Charset.forName(TupleStore.INPUT_CHARACTER_ENCODING)));
+  }
+
+  public void addNamespace(String shortForm, String longForm) {
+    _tupleStore.namespace.putForm(shortForm, longForm);
+  }
+
   public void readTuples(BufferedReader tupleReader)
       throws WrongFormatException, IOException {
     _tupleStore.readTuples(tupleReader);
@@ -30,12 +40,6 @@ public class Hfc {
       throws WrongFormatException, IOException {
     _tupleStore.namespace.readNamespaces(nameSpaceReader);
     _tupleStore.readTuples(tupleReader);
-  }
-
-  public void readNamespaces(File namespace)
-      throws WrongFormatException, IOException {
-    readNamespaces(Files.newBufferedReader(namespace.toPath(),
-        Charset.forName(TupleStore.INPUT_CHARACTER_ENCODING)));
   }
 
   public void readTuples(File tuples, File namespace)
@@ -52,13 +56,6 @@ public class Hfc {
         Charset.forName(TupleStore.INPUT_CHARACTER_ENCODING)));
   }
 
-  public void readRules(File rules) throws IOException {
-    if (_forwardChainer == null) {
-      RuleStore store = new RuleStore(_tupleStore, rules.getAbsolutePath());
-      _forwardChainer = new ForwardChainer(_tupleStore, store);
-    }
-  }
-
   public int addTuples(List<List<String>> rows) throws WrongFormatException {
     int result = 0;
     int rowNo = 0;
@@ -68,6 +65,13 @@ public class Hfc {
       }
     }
     return result;
+  }
+
+  public void readRules(File rules) throws IOException {
+    if (_forwardChainer == null) {
+      RuleStore store = new RuleStore(_tupleStore, rules.getAbsolutePath());
+      _forwardChainer = new ForwardChainer(_tupleStore, store);
+    }
   }
 
   public BindingTable executeQuery(String query) throws QueryParseException {
