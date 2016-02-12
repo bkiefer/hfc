@@ -890,6 +890,8 @@ public final class TupleStore {
 	 * uses putObject() to generate new ints in case the string argument is
 	 * brand new, or retrieves the already generated int in case the string
 	 * argument has already been seen
+   *
+   * TODO: LONG TO SHORT MAPPINGS MUST HAVE BEEN DONE BEFOREHAND
 	 */
 	public int[] internalizeTuple(ArrayList<String> stringTuple) {
 		int[] intTuple = new int[stringTuple.size()];
@@ -907,6 +909,8 @@ public final class TupleStore {
    * uses putObject() to generate new ints in case the string argument is
    * brand new, or retrieves the already generated int in case the string
    * argument has already been seen
+   *
+   * TODO: LONG TO SHORT MAPPINGS MUST HAVE BEEN DONE BEFOREHAND
    */
   public int[] internalizeTuple(List<String> stringTuple) {
     int[] intTuple = new int[stringTuple.size()];
@@ -922,6 +926,8 @@ public final class TupleStore {
 	 * uses putObject() to generate new ints in case the string argument is
 	 * brand new, or retrieves the already generated int in case the string
 	 * argument has already been seen
+	 *
+	 * TODO: LONG TO SHORT MAPPINGS MUST HAVE BEEN DONE BEFOREHAND
 	 */
 	public int[] internalizeTuple(String[] stringTuple) {
 		int[] intTuple = new int[stringTuple.length];
@@ -940,6 +946,8 @@ public final class TupleStore {
 	 * this method is used when an external tuple file is read in;
 	 * lineNo refers to the line number in the file that is read in
 	 *
+   * TODO: LONG TO SHORT MAPPINGS MUST HAVE BEEN DONE BEFOREHAND
+   *
 	 * @return null iff the tuple representation is illegal OR the tuple is
 	 *         already contained in the tuple store
 	 * @return the int[] representation of parameter stringTuple, otherwise
@@ -962,10 +970,12 @@ public final class TupleStore {
 
   /**
    * addTuple() assumes a textual tuple representation after tokenization
-   * (an array list of strings);
+   * (an array list of strings),
    * the bidirectional mapping is established and the index is updated;
    * this method is used when an external tuple file is read in;
    * lineNo refers to the line number in the file that is read in
+   *
+   * TODO: LONG TO SHORT MAPPINGS MUST HAVE BEEN DONE BEFOREHAND
    *
    * @return null iff the tuple representation is illegal OR the tuple is
    *         already contained in the tuple store
@@ -989,6 +999,8 @@ public final class TupleStore {
 
   /**
 	 * addTuple(String[]) performs the internalization and then calls addTuple(int[])
+   *
+   * TODO: LONG TO SHORT MAPPINGS MUST HAVE BEEN DONE BEFOREHAND
 	 */
 	public boolean addTuple(String[] stringTuple) {
 		return addTuple(internalizeTuple(stringTuple));

@@ -7,7 +7,7 @@
 
   <groupId>de.dfki.lt.hfc</groupId>
   <artifactId>hfc</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <inceptionYear>2015</inceptionYear>
@@ -29,7 +29,6 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>2.10.3</version>
         <executions>
@@ -41,9 +40,11 @@
           </execution>
         </executions>
         <configuration>
+          <failOnError>false</failOnError>
         </configuration>
       </plugin>
 
+      <!-- THIS WORKED BUT IS NO LONGER NEEDED
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
         <executions>
@@ -69,6 +70,32 @@
                 <include>**/*</include>
               </includes>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>-->
+
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.6</version>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <!-- explicitly define maven-deploy-plugin after other to force
+             exec order -->
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>2.8.2</version>
+        <executions>
+          <execution>
+            <id>deploy</id>
+            <phase>deploy</phase>
+            <goals>
+              <goal>deploy</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
@@ -115,4 +142,25 @@
 
   </dependencies>
 
+  <repositories>
+    <repository>
+      <id>BSNSOFT</id>
+      <name>BSNSOFT</name>
+      <url>http://www.bsnsoft.de/nexus/content/groups/public/</url>
+    </repository>
+  </repositories>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>BSNSOFT</id>
+      <name>BSNSOFT</name>
+      <url>http://www.bsnsoft.de/nexus/content/repositories/snapshots/</url>
+    </snapshotRepository>
+
+    <repository>
+      <id>BSNSOFT</id>
+      <name>BSNSOFT</name>
+      <url>http://www.bsnsoft.de/nexus/content/repositories/releases/</url>
+    </repository>
+  </distributionManagement>
 </project>
