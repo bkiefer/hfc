@@ -13,7 +13,7 @@ import de.dfki.lt.hfc.BindingTable.BindingTableIterator;
 public class TestUtils {
   private static final File testResourceDir = new File("src/test/data/");
   private static final File resourceDir = new File("src/resources/");
-  private static final File tmpDir = new File(".");
+  private static final File tmpDir = new File("/tmp");
 
   public static String getResource(String name) {
     // System.out.println(new File(".").getAbsolutePath());
