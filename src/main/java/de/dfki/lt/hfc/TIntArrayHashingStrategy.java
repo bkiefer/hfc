@@ -1,20 +1,22 @@
 package de.dfki.lt.hfc;
 
-import gnu.trove.*;
+import gnu.trove.strategy.*;
 
 /**
  * implements a specific hashing and equals strategy for int[] that are used to
  * represent tuples in the tuple store, the rule store, and the forward chainer;
  * NOTE: the positions array must always be SORTED in ascending order to guarantee
  *       compatible hash codes!!!
- * 
+ *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
  * @version Wed Jun 24 14:36:20 CEST 2009
  */
-public final class TIntArrayHashingStrategy implements TObjectHashingStrategy<int[]> {
+public final class TIntArrayHashingStrategy implements HashingStrategy<int[]> {
 
-	/**
+  private static final long serialVersionUID = -8625381498456211500L;
+
+  /**
 	 * when assigned the null value, all positions of the int array(s) are employed
 	 * in the execution of computeHashCode() and equals();
 	 * when assigned an int array, only the values of the array, interpreted as
@@ -23,21 +25,21 @@ public final class TIntArrayHashingStrategy implements TObjectHashingStrategy<in
 	 *       compatible hash codes!!!
 	 */
 	protected int[] positions;
-	
+
 	/**
 	 * assigns the null value to this.positions
 	 */
 	public TIntArrayHashingStrategy() {
 		this.positions = null;
 	}
-	
+
 	/**
 	 * should be used during initialization, given an int array of positions
 	 */
 	public TIntArrayHashingStrategy(int[] positions) {
 		this.positions = positions;
 	}
-		
+
 	/**
 	 * I borrowed this code from the String class of Sun's implementation for hashCode();
 	 * the hash code of tuple t of length n is computed as
@@ -60,7 +62,7 @@ public final class TIntArrayHashingStrategy implements TObjectHashingStrategy<in
 		}
 		return hash;
 	}
-	
+
 	/**
 	 * two tuples are equal iff they are pairwise equal, using == on ints;
 	 * I do not check whether array1 or array2 equals the null value;
@@ -88,5 +90,5 @@ public final class TIntArrayHashingStrategy implements TObjectHashingStrategy<in
 		}
 		return true;
 	}
-	
+
 }

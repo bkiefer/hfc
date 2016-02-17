@@ -25,7 +25,15 @@ package de.dfki.lt.hfc.types;
  * @version Fri Jan 29 19:35:14 CET 2016
  */
 public final class XsdMonetary extends XsdAnySimpleType {
-	
+  public final static String NAME = "monetary";
+
+  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
+  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
+
+  static {
+    registerConstructor(XsdMonetary.class, SHORT_NAME, LONG_NAME);
+  }
+
 	/**
 	 * some useful constants
 	 */
@@ -34,23 +42,23 @@ public final class XsdMonetary extends XsdAnySimpleType {
 	public static final String CNY = "CNY";  // Chinese Yuan
 
 	public static final String JPY = "JPY";  // Japanese Yen
-	
+
 	public static final String EUR = "EUR";  // European Euro
-	
+
 	public static final String GBP = "GBP";  // British Pound Sterling
 
 	public static final String RUB = "RUB";  // Russian Rouble
-	
+
 	/**
 	 * the amount part of monetary
 	 */
 	public double amount;
-	
+
 	/**
 	 * the currency part of monetary
 	 */
 	public String currency;
-	
+
 	/**
 	 *
 	 */
@@ -58,26 +66,25 @@ public final class XsdMonetary extends XsdAnySimpleType {
 		this.amount = amount;
 		this.currency = currency;
 	}
-	
+
 	/**
 	 * @param monetary a _fully_ specified monetary expression
 	 */
 	public XsdMonetary(String monetary) {
 		// get rid of "^^<xsd:Monetary>" and leading & trailing '"' chars
-		final int index = monetary.lastIndexOf('^');
-		monetary = monetary.substring(1, index - 2);
+		monetary = extractValue(monetary);
 		final int length = monetary.length();
 		// amount
 		this.amount = Double.parseDouble(monetary.substring(0, length - 3));
 		// currency
 		this.currency = monetary.substring(length - 3);
 	}
-	
+
 	/**
 	 * depending on shortIsDefault, either the suffix
-	 *   de.dfki.lt.hfc.Namespace.XSD_MONETARY_SHORT
+	 *   de.dfki.lt.hfc.Namespace.SHORT_NAME
 	 * or
-	 *   de.dfki.lt.hfc.Namespace.XSD_MONETARY_LONG
+	 *   de.dfki.lt.hfc.Namespace.LONG_NAME
 	 * is used;
 	 * note that toString() does NOT check whether the internal
 	 * description is well-formed; e.g., we do not check whether
@@ -89,12 +96,12 @@ public final class XsdMonetary extends XsdAnySimpleType {
 		sb.append(this.currency);
 		sb.append("\"^^");
 		if (shortIsDefault)
-			sb.append(de.dfki.lt.hfc.Namespace.XSD_MONETARY_SHORT);
+			sb.append(SHORT_NAME);
 		else
-			sb.append(de.dfki.lt.hfc.Namespace.XSD_MONETARY_LONG);
+			sb.append(LONG_NAME);
 		return sb.toString();
 	}
-	
+
 	/**
 	 * binary version is given the value directly
 	 */
@@ -103,12 +110,12 @@ public final class XsdMonetary extends XsdAnySimpleType {
 		sb.append(val);
 		sb.append("\"^^");
 		if (shortIsDefault)
-			sb.append(de.dfki.lt.hfc.Namespace.XSD_MONETARY_SHORT);
+			sb.append(SHORT_NAME);
 		else
-			sb.append(de.dfki.lt.hfc.Namespace.XSD_MONETARY_LONG);
+			sb.append(LONG_NAME);
 		return sb.toString();
 	}
-	
+
 	/**
 	 * generates a string representation from the internal fields, but omits
 	 * the XSD type specification
@@ -116,29 +123,12 @@ public final class XsdMonetary extends XsdAnySimpleType {
 	public String toName() {
 		return Double.toString(this.amount) + this.currency;
 	}
-	
+
   /**
    * there exists no Java counterpart, so return this object
    */
   public Object toJava() {
     return this;
-  }
-  
-	/**
-   * for test purposes only
-   */
-  public static void main(String[] args) {
-    XsdMonetary mon = new XsdMonetary("\"42USD\"^^<xsd:monetary>");
-    System.out.println(mon.amount);
-    System.out.println(mon.currency);
-    System.out.println(mon.toString(true));
-    System.out.println(mon.toString(false));
-    System.out.println();
-    mon = new XsdMonetary(4.31, "EUR");
-    System.out.println(mon.toString(true));
-    System.out.println(mon.toName());
-    System.out.println(mon.toString(true));
-    System.out.println(mon.toString(false));
   }
 
 }

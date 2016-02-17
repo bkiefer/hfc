@@ -14,39 +14,46 @@ package de.dfki.lt.hfc.types;
  * @version Fri Jan 29 19:11:19 CET 2016
  */
 public final class XsdGMonth extends XsdAnySimpleType {
-	
-	/**
+  public final static String NAME = "gMonth";
+
+  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
+  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
+
+  static {
+    registerConstructor(XsdGMonth.class, SHORT_NAME, LONG_NAME);
+  }
+
+  /**
 	 * I do NOT check whether 01 <= month <= 12
 	 */
 	public int month;
-	
+
 	/**
 	 *
 	 */
 	public XsdGMonth(int month) {
 		this.month = month;
 	}
-	
+
 	/**
 	 * @param time a _fully_ specified XSD gMonth expression
 	 */
 	public XsdGMonth(String time) {
 		// get rid of "^^<xsd:gMonth>" and leading & trailing '"' chars
-		int index = time.lastIndexOf('^');
-		time = time.substring(1, index - 2);
+		time = extractValue(time);
 		// month
 		this.month = Integer.parseInt(time.substring(2));
 	}
-	
+
 	/**
 	 * depending on shortIsDefault, either the suffix
-	 *   de.dfki.lt.hfc.Namespace.XSD_GMONTH_SHORT
+	 *   SHORT_NAME
 	 * or
-	 *   de.dfki.lt.hfc.Namespace.XSD_GMONTH_LONG
+	 *   LONG_NAME
 	 * is used
 	 */
 	public String toString(boolean shortIsDefault) {
-		final String tail = "\"^^" + (shortIsDefault ? de.dfki.lt.hfc.Namespace.XSD_GMONTH_SHORT : de.dfki.lt.hfc.Namespace.XSD_GMONTH_LONG);
+		final String tail = "\"^^" + (shortIsDefault ? SHORT_NAME : LONG_NAME);
 		StringBuilder sb = new StringBuilder("\"--");
 		if (this.month >= 10)
 			sb.append(this.month);
@@ -54,7 +61,7 @@ public final class XsdGMonth extends XsdAnySimpleType {
 			sb.append("0").append(this.month);
 		return sb.append(tail).toString();
 	}
-	
+
 	/**
 	 * binary version is given the value directly
 	 */
@@ -63,23 +70,12 @@ public final class XsdGMonth extends XsdAnySimpleType {
 		sb.append(val);
 		sb.append("\"^^");
 		if (shortIsDefault)
-			sb.append(de.dfki.lt.hfc.Namespace.XSD_GMONTH_SHORT);
+			sb.append(SHORT_NAME);
 		else
-			sb.append(de.dfki.lt.hfc.Namespace.XSD_GMONTH_LONG);
+			sb.append(LONG_NAME);
 		return sb.toString();
 	}
-	
-	/**
-	 * generates a string representation from the internal fields, but omits
-	 * the XSD type specification
-	 */
-	public String toName() {
-		// get rid of "^^<xsd:gMonth>"
-		String time = toString(de.dfki.lt.hfc.Namespace.shortIsDefault);
-		int index = time.lastIndexOf('^');
-		return time.substring(1, index - 2);
-	}
-  
+
   /**
    * even though there exist a java.util.Date and java.util.GregorianCalendar
    * class, these classes do not perfectly fit the intention behind XsdGMonth
@@ -88,21 +84,5 @@ public final class XsdGMonth extends XsdAnySimpleType {
   public Object toJava() {
     return this;
   }
-	
-  /**
-   * for test purposes only
-   */
-  public static void main(String[] args) {
-    XsdGMonth xt = new XsdGMonth("\"--03\"^^<xsd:gMonth>");
-    System.out.println(xt.month);
-    System.out.println(xt.toString(true));
-    System.out.println(xt.toString(false));
-    System.out.println();
-    xt = new XsdGMonth(1);
-    System.out.println(xt.toString(true));
-    System.out.println(xt.toName());
-    System.out.println(xt.toString(true));
-    System.out.println(xt.toString(false));
-  }
-	
+
 }

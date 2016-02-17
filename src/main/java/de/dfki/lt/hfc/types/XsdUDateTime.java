@@ -34,28 +34,37 @@ package de.dfki.lt.hfc.types;
  * @version Fri Jan 29 19:22:44 CET 2016
  */
 public final class XsdUDateTime extends XsdAnySimpleType {
-	
+  public final static String NAME = "uDateTime";
+
+  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
+  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
+
+  static {
+    registerConstructor(XsdUDateTime.class,
+        SHORT_NAME, LONG_NAME);
+  }
+
 	/**
 	 * these fields are all of type int
 	 */
 	public int year, month, day, hour, minute;
-	
+
 	/**
 	 * second is the only field that is of type float in order to
 	 * represent parts of a second
 	 */
 	public float second;
-	
+
 	/**
 	 *
 	 */
 	public static final int UNDERSPECIFIED = -1;
-	
+
 	/**
 	 *
 	 */
 	public static final int UNSPECIFIED = -2;
-	
+
 	/**
 	 * a value equals to XsdUDateTime.UNDERSPECIFIED indicates that the information is
 	 * (currently) not known;
@@ -77,7 +86,7 @@ public final class XsdUDateTime extends XsdAnySimpleType {
 		this.minute = minute;
 		this.second = second;
 	}
-	
+
 	/**
 	 * note that '?' characters indicate that a specific field is underspecified;
 	 * as a further extension, XsdUDateTime objects need not be specified down to
@@ -96,8 +105,7 @@ public final class XsdUDateTime extends XsdAnySimpleType {
 	 */
 	public XsdUDateTime(String time) {
 		// get rid of "^^<xsd:uDateTime>" and leading & trailing '"' chars
-		int index = time.lastIndexOf('^');
-		time = time.substring(1, index - 2);
+		time = extractValue(time);
 		int length = time.length();
 		String field;
 		field = time.substring(0, 4);
@@ -146,7 +154,7 @@ public final class XsdUDateTime extends XsdAnySimpleType {
 			this.minute = XsdUDateTime.UNSPECIFIED;
 			this.second = XsdUDateTime.UNSPECIFIED;
 			return;
-		}		
+		}
 		field = time.substring(14, 16);
 		if (field.equals("??"))
 			this.minute = XsdUDateTime.UNDERSPECIFIED;
@@ -162,7 +170,7 @@ public final class XsdUDateTime extends XsdAnySimpleType {
 		else
 			this.second = Float.parseFloat(field);
 	}
-	
+
 	/**
 	 * @return true iff parameter field is underspecified,
 	 * internally represented by value -1;
@@ -171,11 +179,11 @@ public final class XsdUDateTime extends XsdAnySimpleType {
 	public static boolean isUnderspecified(int field) {
 		return (field == -1);
 	}
-	
+
 	public static boolean isUnderspecified(float field) {
 		return (field == -1.0);
 	}
-	
+
 	/**
 	 * @return true iff parameter field is unspecified,
 	 * internally represented by value -2;
@@ -184,16 +192,16 @@ public final class XsdUDateTime extends XsdAnySimpleType {
 	public static boolean isUnspecified(int field) {
 		return (field == -2);
 	}
-	
+
 	public static boolean isUnspecified(float field) {
 		return (field == -2.0);
 	}
-	
+
 	/**
 	 * depending on shortIsDefault, either the suffix
-	 *   de.dfki.lt.hfc.Namespace.XSD_UDATETIME_SHORT
+	 *   de.dfki.lt.hfc.Namespace.SHORT_NAME
 	 * or
-	 *   de.dfki.lt.hfc.Namespace.XSD_UDATETIME_LONG
+	 *   de.dfki.lt.hfc.Namespace.LONG_NAME
 	 * is used;
 	 * note that toString() does NOT check whether the internal
 	 * description is well-formed; e.g., we do not check whether
@@ -201,8 +209,7 @@ public final class XsdUDateTime extends XsdAnySimpleType {
 	 * (= February)
 	 */
 	public String toString(boolean shortIsDefault) {
-		final String tail = "\"^^" + (shortIsDefault ? de.dfki.lt.hfc.Namespace.XSD_UDATETIME_SHORT : de.dfki.lt.hfc.Namespace.XSD_UDATETIME_LONG);
-		String field;
+		final String tail = "\"^^" + (shortIsDefault ? SHORT_NAME : LONG_NAME);
 		StringBuilder sb = new StringBuilder("\"");
 		if (this.year >= 1000)
 			sb.append(this.year);
@@ -273,7 +280,7 @@ public final class XsdUDateTime extends XsdAnySimpleType {
 		// (even underspecified) down to seconds
 		return sb.append(tail).toString();
 	}
-	
+
 	/**
 	 * binary version is given the value directly
 	 */
@@ -282,23 +289,12 @@ public final class XsdUDateTime extends XsdAnySimpleType {
 		sb.append(val);
 		sb.append("\"^^");
 		if (shortIsDefault)
-			sb.append(de.dfki.lt.hfc.Namespace.XSD_UDATETIME_SHORT);
+			sb.append(SHORT_NAME);
 		else
-			sb.append(de.dfki.lt.hfc.Namespace.XSD_UDATETIME_LONG);
+			sb.append(LONG_NAME);
 		return sb.toString();
 	}
-	
-	/**
-	 * generates a string representation from the internal fields, but omits
-	 * the XSD type specification
-	 */
-	public String toName() {
-		// get rid of "^^<xsd:uDateTime>"
-		String time = toString(de.dfki.lt.hfc.Namespace.shortIsDefault);
-		int index = time.lastIndexOf('^');
-		return time.substring(1, index - 2);
-	}
-  
+
   /**
    * even though there exist a java.util.Date and java.util.GregorianCalendar
    * class, these classes do not perfectly fit the intention behind XsdUDateTime
@@ -308,21 +304,4 @@ public final class XsdUDateTime extends XsdAnySimpleType {
     return this;
   }
 
-	/**
-   * for test purposes only
-   */
-  public static void main(String[] args) {
-    // an instance within the fourth day of a month in 2000
-    XsdUDateTime xt = new XsdUDateTime("\"2000-??-04T??:??:??.???\"^^<xsd:uDateTime>");
-    System.out.println(xt.hour);
-    System.out.println(xt.second);
-    System.out.println(xt.toString(true));
-    System.out.println(xt.toString(false));
-    System.out.println();
-    // an instance within the 12th Jan 2009
-    xt = new XsdUDateTime(2009, 1, 12, -1, -1, -1F);
-    System.out.println(xt.toString(true));
-    System.out.println(xt.toString(false));
-  }
-	
 }

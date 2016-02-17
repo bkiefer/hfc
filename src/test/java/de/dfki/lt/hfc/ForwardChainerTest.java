@@ -11,7 +11,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import gnu.trove.THashSet;
+import gnu.trove.set.hash.*;
 
 public class ForwardChainerTest {
 
@@ -154,7 +154,7 @@ public class ForwardChainerTest {
     String tupleFile = getResource("default.nt");
     String ruleFile = getResource("default.eqred.rdl");
     ForwardChainer fc = new ForwardChainer(tupleFile, ruleFile);
-    assertEquals(54, fc.nextBlankNode());
+    assertEquals(53, fc.nextBlankNode());
     assertTrue(fc.nextBlankNode() > 0);
   }
 
@@ -260,7 +260,7 @@ public class ForwardChainerTest {
   @Test
   public void testcomputeClosure2() throws FileNotFoundException, WrongFormatException, IOException {
     //test method computeClosure(Set<int[]> newTuples, int noOfIterations, boolean cleanUpRepository)
-    Set<int[]> newTuples = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
+    Set<int[]> newTuples = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     int noOfIterations = 2;
     boolean cleanUpRepository = true;
     Namespace namespace = new Namespace(getResource("default.ns"));
@@ -285,7 +285,7 @@ public class ForwardChainerTest {
         noOfAtoms, noOfTuples, tupleFile, ruleFile, namespaceFile);
     assertEquals(fc1.computeClosure(newTuples, noOfIterations, cleanUpRepository), false);
     //newTuples not empty:
-    Set<int[]> newTuplesfull = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
+    Set<int[]> newTuplesfull = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     int[] toadd = new int[2];
     toadd[0] = 0;
     toadd[1] = 1;
@@ -298,7 +298,7 @@ public class ForwardChainerTest {
   @Test
   public void testcomputeClosure3() throws FileNotFoundException, WrongFormatException, IOException {
     //test method computeClosure(Set<int[]> newTuples)
-    Set<int[]> newTuples = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
+    Set<int[]> newTuples = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     int noOfCores = 1;
     boolean verboseF = false;
     boolean rdfCheck = true;

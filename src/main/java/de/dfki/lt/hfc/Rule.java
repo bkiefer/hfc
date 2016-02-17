@@ -1,7 +1,7 @@
 package de.dfki.lt.hfc;
 
 import java.util.*;
-import gnu.trove.*;
+import gnu.trove.set.hash.*;
 
 /**
  * a Rule object consists of an antecedent and a consequent;
@@ -27,20 +27,20 @@ public class Rule {
 	 *
 	 * NOTE: a priority value less or equal 0 switches off rule execution
 	 *       in the forward chainer
-	 * @see de.dfki.lt.hfc.ForwardChainer#noOfCores	 
+	 * @see de.dfki.lt.hfc.ForwardChainer#noOfCores
 	 */
 	protected int priority = Integer.MAX_VALUE;
-	
+
 	/**
 	 * the name of a rule, mainly used for debugging purposes
 	 */
 	protected String name;
-	
+
 	/**
 	 * the internal representation of the antecedent of a rule
 	 */
 	protected int[][] ante;
-	
+
 	/**
 	 * the internal representation of the consequent of a rule
 	 */
@@ -50,13 +50,13 @@ public class Rule {
 	 * the set of ALL (local) rule variables
 	 */
 	protected HashSet<Integer> properVariables;
-	
+
 	/**
 	 * LHS variables that will only occur once are refered to as don't cares;
 	 * no binding during the matching phase is needed
 	 */
 	protected HashSet<Integer> dontCareVariables;
-	
+
 	/**
 	 * proper RHS-only variables (does NOT contain any blank node vars)
 	 */
@@ -69,7 +69,7 @@ public class Rule {
 	 * (inside the same rule) refer to the same newly introduced individual
 	 */
 	protected HashSet<Integer> blankNodeVariables;
-	
+
 	/**
 	 * represents a mapping from relational ids to their functional counterparts;
 	 * note that relational variables in tests and actions might even be complex,
@@ -78,7 +78,7 @@ public class Rule {
 	 *   id(??(var1 ... varN)) -> [id(var1), ..., id(?varN)]
 	 */
 	protected HashMap<Integer, ArrayList<Integer>> relIdToFunIds;
-	
+
 	/**
 	 * a list of Integer objects, either representing variables (< 0) or
 	 * URIs/XSD atoms (> 0);
@@ -87,36 +87,36 @@ public class Rule {
 	 * objects stand in the inequality relation
 	 */
 	protected ArrayList<Integer> inEqConstraints = new ArrayList<Integer>();
-	
+
 	/**
 	 * an internal representation of the predicates occuring in the @test section
 	 * of a rule
 	 */
 	protected ArrayList<Predicate> tests = new ArrayList<Predicate>();
-	
+
 	/**
 	 * an internal representation of the functions occuring in the @action section
 	 * of a rule
 	 */
 	protected ArrayList<Function> actions = new ArrayList<Function>();
-	
+
 	/**
 	 * during the local matching phase, we partially detect (as a consequence
 	 * of local matching) whether rules are applicable w.r.t. the set of tuples
 	 */
 	protected boolean isApplicable = true;
-	
+
 	/**
 	 * an array of "local" binding tables for each clause of the antecedent of the rule
 	 */
 	protected Table[] localQueryBindings;
-	
+
 	/**
 	 * an array of int arrays (elements are called key) that is used to share local
 	 * query bindings across structurally-equivalent clauses, even across rules
 	 */
 	protected int[][] keys;
-	
+
 	/**
 	 * an array of clusters, encoding which LHS clauses will go together, as well as
 	 * which in-eqs are applicable;
@@ -124,19 +124,19 @@ public class Rule {
 	 * the local clauses belonging to a cluster
 	 */
 	protected Cluster[] clusters;
-	
+
 	/**
 	 * a cluster encoding _the_ LHS binding table, originating from taking the Cartesian
 	 * Product of the set of all independent LHS clusters
-	 * 
+	 *
 	 */
 	protected Cluster megaCluster;
-	
+
 	/**
 	 * contains the set of all tuples that are generated within an iteration by this rule
 	 */
-	protected Set<int[]> output = new THashSet<int[]>(ForwardChainer.DEFAULT_HASHING_STRATEGY);
-	
+	protected Set<int[]> output = new TCustomHashSet<int[]>(ForwardChainer.DEFAULT_HASHING_STRATEGY);
+
 	/**
 	 * a pointer to the tuple store; useful to have for later decoding of int arguments
 	 */
@@ -146,13 +146,13 @@ public class Rule {
 	 * a pointer to the rule store; useful to work with several rule systems at the same time
 	 */
 	protected RuleStore rstore;
-		
+
 	/**
 	 *
 	 */
 	protected Rule() {
 	}
-	
+
 	/**
 	 * copy contructor for exclusive use in copyRuleStore()
 	 */
@@ -188,7 +188,7 @@ public class Rule {
 		this.megaCluster = new Cluster(rule.megaCluster, tstore);
 		// note: empty output field is constructed by field's init form (which is correct!)
 	}
-	
+
 	/**
 	 *
 	 */
@@ -199,7 +199,7 @@ public class Rule {
 		this.tstore = tstore;
 		this.rstore= rstore;
 	}
-	
+
 	/**
 	 *
 	 */
@@ -220,7 +220,7 @@ public class Rule {
 	public void setAntecedent(int[][] ante) {
 		this.ante = ante;
 	}
-	
+
 	/**
 	 *
 	 */
@@ -230,14 +230,14 @@ public class Rule {
 			anteArray[i] = anteList.get(i);
 		this.ante = anteArray;
 	}
-	
+
 	/**
 	 * returns the internal representation of the antecedent of a rule
 	 */
 	public int[][] getAntecedent() {
 		return this.ante;
 	}
-	
+
 	/**
 	 * returns the ith clause of the antecedent of a rule;
 	 * no checks are performed whether index i is valid
@@ -252,7 +252,7 @@ public class Rule {
 	public void setConsequent(int[][] cons) {
 		this.cons = cons;
 	}
-	
+
 	/**
 	 *
 	 */
@@ -262,14 +262,14 @@ public class Rule {
 			consArray[i] = consList.get(i);
 		this.cons = consArray;
 	}
-	
+
 	/**
 	 * returns the internal representation of the consequent of a rule
 	 */
 	public int[][] getConsequent() {
 		return this.cons;
 	}
-	
+
 	/**
 	 * returns the ith clause of the consequent of a rule;
 	 * no checks are performed whether index i is valid
@@ -277,14 +277,14 @@ public class Rule {
 	public int[] getConsequent(int i) {
 		return this.cons[i];
 	}
-	
+
 	/**
 	 *
 	 */
 	public void setTupleStore(TupleStore tstore) {
 		this.tstore = tstore;
 	}
-	
+
 	/**
 	 * returns a reference to the TupleStore object, used for decoding by the
 	 * toString() method
@@ -292,14 +292,14 @@ public class Rule {
 	public TupleStore getTupleStore() {
 		return this.tstore;
 	}
-	
+
 	/**
 	 *
 	 */
 	public void setRuleStore(RuleStore rstore) {
 		this.rstore = rstore;
-	}	
-	
+	}
+
 	/**
 	 * returns a reference to _this_ RuleStore object
 	 */
@@ -314,7 +314,7 @@ public class Rule {
 	public String toString() {
 		return toString(this.tstore);
 	}
-	
+
 	/**
 	 * use this method if tuple store field has NOT been set for _this_ tuple
 	 * NOTE: printer is incomplete as it misses general tests and actions
@@ -335,7 +335,7 @@ public class Rule {
 			sb.append("\n");
 		}
 		// NOTE: general tests and actions are not printed at the moment
-		return sb.toString();		
+		return sb.toString();
 	}
-	
+
 }

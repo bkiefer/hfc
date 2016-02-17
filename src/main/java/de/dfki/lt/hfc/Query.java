@@ -171,7 +171,10 @@ public class Query {
     //if (internalizeWhere(whereClauses, patterns, nameToId, idToName) == null)
     //	return null;
     // note that we _no_ longer make this distinction for easier external API use !
-    internalizeWhere(whereClauses, patterns, nameToId, idToName);
+		// TODO: THIS CHANGE RESULTED IN A NULLPOINTEREXCEPTION AT MAKEDISTINCTANDPROJECT LATER
+		// IN CASE THIS CALL RETURNS NULL
+		if (null == internalizeWhere(whereClauses, patterns, nameToId, idToName))
+		  return new BindingTable();
     // now that mappings have been established, internalize FILTER conditions;
 		// note: all filter vars are definitely contained in found vars at this point
 		ArrayList<Integer> varvarIneqs = null;

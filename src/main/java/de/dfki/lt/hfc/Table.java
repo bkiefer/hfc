@@ -1,24 +1,24 @@
 package de.dfki.lt.hfc;
 
 import java.util.*;
-import gnu.trove.*;
+import gnu.trove.set.hash.*;
 
 /**
  * an auxiliary class that hides query/binding tables (sets of tuples: Set<int[]>)
  * and so-called "delta", subsets of the tables, encoding only the new information
  * from the last iteration step
- * 
+ *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
  * @version Thu Jan 14 14:57:24 CET 2010
  */
 class Table {
-	
+
 	/**
 	 *
 	 */
 	protected HashSet<Integer> properVariables;
-	
+
 	/**
 	 *
 	 */
@@ -30,23 +30,23 @@ class Table {
 	 * this needs to be checked separately!
 	 */
 	protected HashMap<Integer, ArrayList<Integer>> nameToPos;
-	
+
 	/**
 	 * is used during global clause matching using joins;
 	 * only takes the first occurrence of a variable into account
 	 */
 	protected TreeMap<Integer, Integer> nameToPosProper;
-	
+
 	/**
 	 *
 	 */
 	protected HashMap<Integer, Integer> posToName;
-	
+
 	/**
 	 * hide table, delta, and generation in a proxy to allow clause-resharing, even across rules
 	 */
 	protected Proxy proxy;
-	
+
 	/**
 	 *
 	 */
@@ -56,9 +56,9 @@ class Table {
 		this.nameToPos = new HashMap<Integer, ArrayList<Integer>>();
 		this.nameToPosProper = new TreeMap<Integer, Integer>();
 		this.posToName = new HashMap<Integer, Integer>();
-		this.proxy = new Proxy(new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY),
-													 new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY),
-													 new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY),
+		this.proxy = new Proxy(new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY),
+													 new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY),
+													 new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY),
 													 null, null, null, null);
 	}
 
@@ -76,7 +76,7 @@ class Table {
 		this.posToName = oldTable.posToName;
 		this.proxy = newProxy;
 	}
-	
+
 	/**
 	 * only for the use in TupleStore.query()
 	 */
@@ -93,7 +93,7 @@ class Table {
 		for (Integer name : nameToPos.keySet())
 			nameToPosProper.put(name, nameToPos.get(name).get(0));
 	}
-	
+
 	/**
 	 *
 	 */
@@ -112,7 +112,7 @@ class Table {
 		this.posToName = posToName;
 		this.proxy = new Proxy(table, old, delta, null, null, null, null);
 	}
-	
+
 	/**
 	 *
 	 */
@@ -129,118 +129,118 @@ class Table {
 		this.posToName = posToName;
 		this.proxy = proxy;
 	}
-	
+
 	/**
 	 *
 	 */
 	protected Set<int[]> getTable() {
 		return this.proxy.table;
 	}
-	
+
 	/**
 	 *
 	 */
 	protected void setTable(Set<int[]> table) {
 		this.proxy.table = table;
 	}
-	
+
 	/**
 	 *
 	 */
 	protected Set<int[]> getOld() {
 		return this.proxy.old;
 	}
-	
+
 	/**
 	 *
 	 */
 	protected void setOld(Set<int[]> old) {
 		this.proxy.old = old;
-	}	
-	
+	}
+
 	/**
 	 *
 	 */
 	protected Set<int[]> getDelta() {
 		return this.proxy.delta;
 	}
-	
+
 	/**
 	 *
 	 */
 	protected void setDelta(Set<int[]> delta) {
 		this.proxy.delta = delta;
 	}
-	
+
 	/**
 	 *
 	 */
 	protected int getGeneration() {
 		return this.proxy.generation;
 	}
-	
+
 	/**
 	 *
 	 */
 	protected void setGeneration(int generation) {
 		this.proxy.generation = generation;
 	}
-	
+
 	/**
 	 *
 	 */
 	protected int[][] getEqualPositions() {
 		return this.proxy.equalPositions;
 	}
-	
+
 	/**
 	 *
 	 */
 	protected void setEqualPositions(int[][] equalPositions) {
 		this.proxy.equalPositions = equalPositions;
 	}
-	
+
 	/**
 	 *
 	 */
 	protected int[] getProperPositions() {
 		return this.proxy.properPositions;
 	}
-	
+
 	/**
 	 *
 	 */
 	protected void setProperPositions(int[] properPositions) {
 		this.proxy.properPositions = properPositions;
 	}
-	
+
 	/**
 	 *
 	 */
 	protected int[] getRelevantPositions() {
 		return this.proxy.relevantPositions;
 	}
-	
+
 	/**
 	 *
 	 */
 	protected void setRelevantPositions(int[] relevantPositions) {
 		this.proxy.relevantPositions = relevantPositions;
 	}
-	
-	
+
+
 	/**
 	 *
 	 */
 	protected TIntArrayHashingStrategy getStrategy() {
 		return this.proxy.strategy;
 	}
-	
+
 	/**
 	 *
 	 */
 	protected void setStrategy(TIntArrayHashingStrategy strategy) {
 		this.proxy.strategy = strategy;
 	}
-	
+
 }

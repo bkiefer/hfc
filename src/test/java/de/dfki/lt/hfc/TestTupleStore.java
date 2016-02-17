@@ -1,12 +1,13 @@
 package de.dfki.lt.hfc;
 
+import static de.dfki.lt.hfc.TestUtils.getResource;
+import static de.dfki.lt.hfc.TestUtils.getTempFile;
 import static org.junit.Assert.*;
-
-import static de.dfki.lt.hfc.TestUtils.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.junit.Test;
 
@@ -48,11 +49,6 @@ public class TestTupleStore {
     assertNotNull(tupleconstructor7);
   }
 
-  @Test
-  public void initializeUriMappings() {
-    Namespace.shortIsDefault = false;
-    // nothing is tested, just to cover some fields
-  }
 
   @Test
   public void testprintTuple() {
@@ -227,6 +223,27 @@ public class TestTupleStore {
     tuple[1] = 5;
     assertTrue(objectfortest.addTuple(tuple));
   }
+
+  /* TODO: THIS IS SOME KIND OF ANTI-TEST: THIS DOES NOT WORK. SEE
+   * Hfc.myNormalizeNamespaces
+  @Test
+  public void testaddTuple3() throws WrongFormatException {
+    TupleStore objectfortest = new TupleStore(1, 6);
+    objectfortest.namespace.shortIsDefault = true;
+    String[] in = {
+        "<http://www.dfki.de/lt/onto/pal/rifca.owl>",
+        "<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>",
+        "<http://www.w3.org/2002/07/owl#Ontology>"
+    };
+    String[] exp = {
+        "<http://www.dfki.de/lt/onto/pal/rifca.owl>",
+        "<rdfs:type>",
+        "<owl:Ontology>"
+    };
+    int[] tuple = objectfortest.addTuple(Arrays.asList(in), 0);
+    assertArrayEquals(tuple, objectfortest.addTuple(Arrays.asList(exp), 0));
+  }
+  */
 
   @Test
   public void testgetTuples1() throws FileNotFoundException, WrongFormatException, IOException {

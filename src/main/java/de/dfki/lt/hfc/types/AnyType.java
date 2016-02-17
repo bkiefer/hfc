@@ -28,7 +28,7 @@ public abstract class AnyType {
 	 * XSD atoms
 	 */
 	public abstract String toString(boolean shortIsDefault);
-	
+
 	/**
 	 * contrary to toString(), toName() returns a somewhat `abstracted'
 	 * form of the object, called `name' in order to construct new URIs
@@ -44,8 +44,8 @@ public abstract class AnyType {
 	 *   are replaced by the underscore character '_'
 	 */
 	public abstract String toName();
-  
-  /*
+
+  /**
    * returns an instance of a "corresponding" Java class if there is such a class;
    * for instance
    *   + XsdString -> java.lang.String
@@ -63,5 +63,11 @@ public abstract class AnyType {
    * the return type of this method to be the most general type, viz., java.lang.Object
    */
   public abstract Object toJava();
-	
+
+
+  /**
+   * The default toString method is overridden returning the long representation
+   */
+  public String toString() { return toString(false); }
+
 }

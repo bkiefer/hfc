@@ -21,6 +21,14 @@ package de.dfki.lt.hfc.types;
  * @version Fri Jan 29 19:02:02 CET 2016
  */
 public final class XsdDateTime extends XsdAnySimpleType {
+  public final static String NAME = "dateTime";
+
+  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
+  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
+
+  static {
+    registerConstructor(XsdDateTime.class, SHORT_NAME, LONG_NAME);
+  }
 
 	/**
 	 * - = BC = false
@@ -28,19 +36,19 @@ public final class XsdDateTime extends XsdAnySimpleType {
 	 * in case NO sign is specified, sign defaults to true
 	 */
 	public boolean sign = true;
-	
+
 	/**
 	 * these fields are all of type int;
 	 * I represent the sign in a separate boolean field
 	 */
 	public int year, month, day, hour, minute;
-	
+
 	/**
 	 * second is the only field that is of type float in order to
 	 * represent parts of a second
 	 */
 	public float second;
-	
+
 	/**
 	 *
 	 */
@@ -64,8 +72,8 @@ public final class XsdDateTime extends XsdAnySimpleType {
 		this.hour = hour;
 		this.minute = minute;
 		this.second = second;
-	}	
-	
+	}
+
 	/**
 	 * @param time a _fully_ specified XSD dateTime expression
 	 */
@@ -105,9 +113,9 @@ public final class XsdDateTime extends XsdAnySimpleType {
 
 	/**
 	 * depending on shortIsDefault, either the suffix
-	 *   de.dfki.lt.hfc.Namespace.XSD_DATETIME_SHORT
+	 *   de.dfki.lt.hfc.SHORT_NAME
 	 * or
-	 *   de.dfki.lt.hfc.Namespace.XSD_DATETIME_LONG
+	 *   de.dfki.lt.hfc.LONG_NAME
 	 * is used;
 	 * note that toString() does NOT check whether the internal
 	 * description is well-formed; e.g., we do not check whether
@@ -115,7 +123,7 @@ public final class XsdDateTime extends XsdAnySimpleType {
 	 * (= February)
 	 */
 	public String toString(boolean shortIsDefault) {
-		final String tail = "\"^^" + (shortIsDefault ? de.dfki.lt.hfc.Namespace.XSD_DATETIME_SHORT : de.dfki.lt.hfc.Namespace.XSD_DATETIME_LONG);
+		final String tail = "\"^^" + (shortIsDefault ? SHORT_NAME : LONG_NAME);
 		StringBuilder sb = new StringBuilder("\"");
 		if (! this.sign)
 			sb.append('-');
@@ -154,7 +162,7 @@ public final class XsdDateTime extends XsdAnySimpleType {
 			sb.append("0").append(this.second);
 		return sb.append(tail).toString();
 	}
-	
+
 	/**
 	 * binary version is given the value directly
 	 */
@@ -163,9 +171,9 @@ public final class XsdDateTime extends XsdAnySimpleType {
 		sb.append(val);
 		sb.append("\"^^");
 		if (shortIsDefault)
-			sb.append(de.dfki.lt.hfc.Namespace.XSD_DATETIME_SHORT);
+			sb.append(SHORT_NAME);
 		else
-			sb.append(de.dfki.lt.hfc.Namespace.XSD_DATETIME_LONG);
+			sb.append(LONG_NAME);
 		return sb.toString();
 	}
 
@@ -179,7 +187,7 @@ public final class XsdDateTime extends XsdAnySimpleType {
 		int index = time.lastIndexOf('^');
 		return time.substring(1, index - 2);
 	}
-  
+
   /**
    * even though there exist a java.util.Date and java.util.GregorianCalendar
    * class, these classes do not perfectly fit the intention behind XsdDateTime,
@@ -187,24 +195,6 @@ public final class XsdDateTime extends XsdAnySimpleType {
    */
   public Object toJava() {
     return this;
-  }
-	
-	/**
-   * for test purposes only
-   */
-  public static void main(String[] args) {
-    XsdDateTime xt = new XsdDateTime("\"-12000-03-04T23:00:01.123\"^^<xsd:dateTime>");
-	  System.out.println(xt.year);
-		System.out.println(xt.hour);
-		System.out.println(xt.second);
-		System.out.println(xt.toString(true));
-		System.out.println(xt.toString(false));
-		System.out.println();
-		xt = new XsdDateTime(false, 2009, 1, 12, 1, 0, 3.456F);
-		System.out.println(xt.toString(true));
-		System.out.println(xt.toName());
-		System.out.println(xt.toString(true));
-		System.out.println(xt.toString(false));
   }
 
 }

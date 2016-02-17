@@ -12,20 +12,29 @@ package de.dfki.lt.hfc.types;
  * @version Fri Jan 29 19:20:53 CET 2016
  */
 public final class XsdGYearMonth extends XsdAnySimpleType {
-	
+  public final static String NAME = "gYearMonth";
+
+  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
+  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
+
+  static {
+    registerConstructor(XsdGYearMonth.class,
+        SHORT_NAME, LONG_NAME);
+  }
+
 	/**
 	 * - = BC = false
 	 * + = AD = true
 	 * in case NO sign is specified, sign defaults to true
 	 */
 	public boolean sign = true;
-	
+
 	/**
 	 * these two fields are of type int;
 	 * I represent the sign in a separate boolean field
 	 */
 	public int year, month;
-	
+
 	/**
 	 *
 	 */
@@ -33,7 +42,7 @@ public final class XsdGYearMonth extends XsdAnySimpleType {
 		this.year = year;
 		this.month = month;
 	}
-	
+
 	/**
 	 *
 	 */
@@ -42,14 +51,13 @@ public final class XsdGYearMonth extends XsdAnySimpleType {
 		this.year = year;
 		this.month = month;
 	}
-	
+
 	/**
 	 * @param time a _fully_ specified XSD gYearMonth expression
 	 */
 	public XsdGYearMonth(String time) {
 		// get rid of "^^<xsd:date>" and leading & trailing '"' chars
-		int index = time.lastIndexOf('^');
-		time = time.substring(1, index - 2);
+	  time = extractValue(time);
 		// is there a sign ?
 		if (time.charAt(0) == '+')
 			time = time.substring(1);
@@ -63,17 +71,17 @@ public final class XsdGYearMonth extends XsdAnySimpleType {
 		// month, no time zones allowed
 		this.month = Integer.parseInt(time.substring(pos + 1));
 	}
-	
-	
+
+
 	/**
 	 * depending on shortIsDefault, either the suffix
-	 *   de.dfki.lt.hfc.Namespace.XSD_GYEARMONTH_SHORT
+	 *   de.dfki.lt.hfc.Namespace.SHORT_NAME
 	 * or
-	 *   de.dfki.lt.hfc.Namespace.XSD_GYEARMONTH_LONG
+	 *   de.dfki.lt.hfc.Namespace.LONG_NAME
 	 * is used
 	 */
 	public String toString(boolean shortIsDefault) {
-		final String tail = "\"^^" + (shortIsDefault ? de.dfki.lt.hfc.Namespace.XSD_GYEARMONTH_SHORT : de.dfki.lt.hfc.Namespace.XSD_GYEARMONTH_LONG);
+		final String tail = "\"^^" + (shortIsDefault ? SHORT_NAME : LONG_NAME);
 		StringBuilder sb = new StringBuilder("\"");
 		if (! this.sign)
 			sb.append('-');
@@ -92,7 +100,7 @@ public final class XsdGYearMonth extends XsdAnySimpleType {
 			sb.append("0").append(this.month);
 		return sb.append(tail).toString();
 	}
-	
+
 	/**
 	 * binary version is given the value directly
 	 */
@@ -101,23 +109,12 @@ public final class XsdGYearMonth extends XsdAnySimpleType {
 		sb.append(val);
 		sb.append("\"^^");
 		if (shortIsDefault)
-			sb.append(de.dfki.lt.hfc.Namespace.XSD_GYEARMONTH_SHORT);
+			sb.append(SHORT_NAME);
 		else
-			sb.append(de.dfki.lt.hfc.Namespace.XSD_GYEARMONTH_LONG);
+			sb.append(LONG_NAME);
 		return sb.toString();
 	}
-	
-	/**
-	 * generates a string representation from the internal fields, but omits
-	 * the XSD type specification
-	 */
-	public String toName() {
-		// get rid of "^^<xsd:gYearMonth>"
-		String time = toString(de.dfki.lt.hfc.Namespace.shortIsDefault);
-		int index = time.lastIndexOf('^');
-		return time.substring(1, index - 2);
-	}
-  
+
   /**
    * even though there exist a java.util.Date and java.util.GregorianCalendar
    * class, these classes do not perfectly fit the intention behind XsdGYearMonth
@@ -126,22 +123,5 @@ public final class XsdGYearMonth extends XsdAnySimpleType {
   public Object toJava() {
     return this;
   }
-	
-  /**
-   * for test purposes only
-   */
-  public static void main(String[] args) {
-    XsdGYearMonth xt = new XsdGYearMonth("\"-12000-03\"^^<xsd:gYearMonth>");
-    System.out.println(xt.year);
-    System.out.println(xt.month);
-    System.out.println(xt.toString(true));
-    System.out.println(xt.toString(false));
-    System.out.println();
-    xt = new XsdGYearMonth(2009, 1);
-    System.out.println(xt.toString(true));
-    System.out.println(xt.toName());
-    System.out.println(xt.toString(true));
-    System.out.println(xt.toString(false));
-  }
-	
+
 }

@@ -1,7 +1,7 @@
 package de.dfki.lt.hfc;
 
 import java.util.*;
-import gnu.trove.*;
+import gnu.trove.set.hash.*;
 
 /**
  * @author (C) Hans-Ulrich Krieger
@@ -14,13 +14,13 @@ public class Cluster {
 	 * the binding table for the proper LHS-only variables of the cluster from the current iteration
 	 */
 	protected BindingTable bindingTable = null;
-	
+
 	/**
 	 * instead of reduplicating the nameToPos mapping from bindingTable, we only store the table for
 	 * information from the last iteration
 	 */
 	protected Set<int[]> table = new THashSet<int[]>();
-	
+
 	/**
 	 * insted of reduplicating the nameToPos mapping from bindingTable, we only store the table for
 	 * new information
@@ -32,38 +32,38 @@ public class Cluster {
 	 * information from the old iteration
 	 */
 	protected Set<int[]> old = null;
-	
+
 	/**
 	 * a list of position indices telling the system which LHS clauses will go together for this cluster
 	 */
 	protected ArrayList<Integer> positions;
-	
+
 	/**
 	 * a set of proper variables that are involved in this cluster
 	 */
 	protected HashSet<Integer> variables;
-	
+
 	/**
 	 * applicable var-var ineqs
 	 */
 	protected ArrayList<Integer> varvarIneqs;
-	
+
 	/**
 	 * applicable var-const ineqs
 	 */
 	protected ArrayList<Integer> varconstIneqs;
-	
+
 	/**
 	 * applicable predicates (wo/ in-eqs, of course)
 	 */
 	protected ArrayList<Predicate> tests;
-	
+
 	/**
 	 * init forms of fields are used
 	 */
 	protected Cluster() {
 	}
-	
+
 	/**
 	 * copy constructor for exclusive use in the copy constructor of Rule
 	 */
@@ -89,5 +89,5 @@ public class Cluster {
 		this.varconstIneqs = cluster.varconstIneqs;
 		this.tests = cluster.tests;
 	}
-	
+
 }

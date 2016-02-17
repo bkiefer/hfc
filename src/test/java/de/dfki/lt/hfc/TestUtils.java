@@ -1,6 +1,9 @@
 package de.dfki.lt.hfc;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -29,15 +32,16 @@ public class TestUtils {
   /** Check if expected contains all the rows that are in the BindingTable,
    *  even if there are duplicates
    */
-  public static boolean checkResult(String[][] expected,
+  public static void checkResult(String[][] expected,
       BindingTable bt, String ... vars) {
+    if (vars.length == 0)
+      throw new IllegalArgumentException("Variables list to test may not be empty!");
     try {
       // to make sure there can be multiple equal rows, we erase all rows
       // one by one from the List, which must be empty in the end
-      List<String[]> exp = Arrays.asList(expected);
+      List<String[]> exp = new ArrayList<String[]>(Arrays.asList(expected));
       BindingTableIterator bindIt = bt.iterator(vars);
-      if (bindIt.hasSize() != expected.length)
-        return false; // wrong size
+      assertEquals(expected.length, bindIt.hasSize());
 
       while (bindIt.hasNext()) {
         String[] tuple = bindIt.nextAsString();
@@ -54,9 +58,9 @@ public class TestUtils {
             continue; // take the next row
           }
         }
-        if (! found) return false;
+        assertTrue("Row not found "+Arrays.toString(tuple), found);
       }
-      return exp.isEmpty();
+      assertTrue("Not all expected rows found ", exp.isEmpty());
     }
     catch (BindingTableIteratorException e) {
       throw new RuntimeException(e); // should never happen

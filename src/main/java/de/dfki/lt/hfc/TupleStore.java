@@ -1,14 +1,15 @@
 package de.dfki.lt.hfc;
 
 import java.io.*;
-import java.util.*;
 import java.lang.reflect.Array;
-import java.lang.reflect.Constructor;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.util.*;
 
-import gnu.trove.*;
 import de.dfki.lt.hfc.types.*;
+import gnu.trove.list.array.TIntArrayList;
+import gnu.trove.map.hash.*;
+import gnu.trove.set.hash.*;
 
 /**
  *
@@ -69,7 +70,7 @@ public final class TupleStore {
 	 * the forward chainer
 	 * @see ForwardChainer.enableTupleDeletion()
 	 */
-	protected THashMap<int[], Integer> tupleToGeneration = null;
+	protected TCustomHashMap<int[], Integer> tupleToGeneration = null;
 
 	/**
 	 * @return true iff tuple deletion has been enabled by method ForwardChainer.enableTupleDeletion()
@@ -302,7 +303,7 @@ public final class TupleStore {
 		this.index = (HashMap[])Array.newInstance(HashMap.class, this.maxNoOfArgs);
 		for (int i = 0; i < this.maxNoOfArgs; i++)
 			this.index[i] = new HashMap<Integer, Set<int[]>>();
-		this.allTuples = new THashSet<int[]>(noOfTuples, TupleStore.DEFAULT_HASHING_STRATEGY);
+		this.allTuples = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY, noOfTuples);
 	}
 
 	/**
@@ -476,7 +477,7 @@ public final class TupleStore {
 				if (leftProxy == rightProxy)
 					return;
 				// now choose leftProxy as _the_ proxy
-				final int[] rightElements = this.proxyToUris.get(rightProxy).toNativeArray();
+				final int[] rightElements = this.proxyToUris.get(rightProxy).toArray();
 				for (int e : rightElements) {
 					this.uriToProxy.put(e, leftProxy);
 				}
@@ -718,18 +719,12 @@ public final class TupleStore {
       // now do the `clever' dispatch through mapping the type names to Java
       // class constructors:  @see de.dfki.lt.hfc.Namespace.readNamespaces()
       else {
-        final String type = literal.substring(idx + 1);
-        final Constructor<XsdAnySimpleType> constructor = this.namespace.typeToConstructor.get(type);
-        if (constructor == null)
-          sayItLoud("unknown atomic type: " + type);
-        else {
-          try{
-            this.idToJavaObject.set(id, constructor.newInstance(literal));
-          }
-          catch (Exception e) {
-            sayItLoud("not able to generate instance for (XSD) type " + type);
-            return null;
-          }
+        try {
+          this.idToJavaObject.set(id, XsdAnySimpleType.getXsdObject(literal));
+        }
+        catch (WrongFormatException e) {
+          sayItLoud(e.getMessage());
+          return null;
         }
       }
     }
@@ -895,6 +890,8 @@ public final class TupleStore {
 	 * uses putObject() to generate new ints in case the string argument is
 	 * brand new, or retrieves the already generated int in case the string
 	 * argument has already been seen
+   *
+   * TODO: LONG TO SHORT MAPPINGS MUST HAVE BEEN DONE BEFOREHAND
 	 */
 	public int[] internalizeTuple(ArrayList<String> stringTuple) {
 		int[] intTuple = new int[stringTuple.size()];
@@ -912,6 +909,8 @@ public final class TupleStore {
    * uses putObject() to generate new ints in case the string argument is
    * brand new, or retrieves the already generated int in case the string
    * argument has already been seen
+   *
+   * TODO: LONG TO SHORT MAPPINGS MUST HAVE BEEN DONE BEFOREHAND
    */
   public int[] internalizeTuple(List<String> stringTuple) {
     int[] intTuple = new int[stringTuple.size()];
@@ -927,6 +926,8 @@ public final class TupleStore {
 	 * uses putObject() to generate new ints in case the string argument is
 	 * brand new, or retrieves the already generated int in case the string
 	 * argument has already been seen
+	 *
+	 * TODO: LONG TO SHORT MAPPINGS MUST HAVE BEEN DONE BEFOREHAND
 	 */
 	public int[] internalizeTuple(String[] stringTuple) {
 		int[] intTuple = new int[stringTuple.length];
@@ -945,6 +946,8 @@ public final class TupleStore {
 	 * this method is used when an external tuple file is read in;
 	 * lineNo refers to the line number in the file that is read in
 	 *
+   * TODO: LONG TO SHORT MAPPINGS MUST HAVE BEEN DONE BEFOREHAND
+   *
 	 * @return null iff the tuple representation is illegal OR the tuple is
 	 *         already contained in the tuple store
 	 * @return the int[] representation of parameter stringTuple, otherwise
@@ -967,10 +970,12 @@ public final class TupleStore {
 
   /**
    * addTuple() assumes a textual tuple representation after tokenization
-   * (an array list of strings);
+   * (an array list of strings),
    * the bidirectional mapping is established and the index is updated;
    * this method is used when an external tuple file is read in;
    * lineNo refers to the line number in the file that is read in
+   *
+   * TODO: LONG TO SHORT MAPPINGS MUST HAVE BEEN DONE BEFOREHAND
    *
    * @return null iff the tuple representation is illegal OR the tuple is
    *         already contained in the tuple store
@@ -994,6 +999,8 @@ public final class TupleStore {
 
   /**
 	 * addTuple(String[]) performs the internalization and then calls addTuple(int[])
+   *
+   * TODO: LONG TO SHORT MAPPINGS MUST HAVE BEEN DONE BEFOREHAND
 	 */
 	public boolean addTuple(String[] stringTuple) {
 		return addTuple(internalizeTuple(stringTuple));
@@ -1053,7 +1060,7 @@ public final class TupleStore {
 				ithset = ithmap.get(itharg);
 			else {
 				// if not, create an empty one
-				ithset = new THashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
+				ithset = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
 				ithmap.put(itharg, ithset);
 			}
 			// and finally add tuple to this set
@@ -1266,7 +1273,7 @@ public final class TupleStore {
   }
 
 
-        /**
+  /**
 	 * reads in a 'compressed' tuple store (extension usually "ts") generated by
 	 * writeTupleStore(); usage:
 	 *   Namespace ns = new Namespace("...");
@@ -1290,7 +1297,7 @@ public final class TupleStore {
 				else if (line.startsWith("&id2object"))
 					// also assigns null values for idToJavaObject
 					readIdToObject(br, noOfLines);
-				else if (line.startsWith("&tuples"))
+				else if (line.startsWith("&tuples"))
 					readAllTuples(br, noOfLines);
 				else {
 					System.err.println("\nwrong section name: " + line);
@@ -1433,9 +1440,9 @@ public final class TupleStore {
 		if (bareAtom) {
 			// complete type in order to recognize duplicates (perhaps output a message?)
 			if (Namespace.shortIsDefault)
-				sb.append("^^").append(Namespace.XSD_STRING_SHORT);
+				sb.append("^^").append(XsdString.SHORT_NAME);
 			else
-				sb.append("^^").append(Namespace.XSD_STRING_LONG);
+				sb.append("^^").append(XsdString.LONG_NAME);
 		}
 		token = sb.toString();
 		tuple.add(token);
@@ -1728,7 +1735,7 @@ public final class TupleStore {
 		// do _not_ blow up the set of "right" tuples w.r.t. the input pattern
 		query = result;  // reuse query
 		// use relevant position (and NOT proper), since in-eqs might be applied
-		result = new THashSet<int[]>(new TIntArrayHashingStrategy(table.getRelevantPositions()));
+		result = new TCustomHashSet<int[]>(new TIntArrayHashingStrategy(table.getRelevantPositions()));
 		for (int[] tuple : query) {
 			if (tuple.length == length)
 				result.add(tuple);
@@ -1794,14 +1801,19 @@ public final class TupleStore {
 		copy.namespace = this.namespace;
 		copy.equivalenceClassReduction = this.equivalenceClassReduction;
 		// JavaDoc says clone() returns deep copy in both cases; second clone does not need casting
+		/*
 		copy.uriToProxy = (TIntIntHashMap)this.uriToProxy.clone();
 		copy.proxyToUris = this.proxyToUris.clone();
 		copy.uriToEquivalenceRelation = (TIntIntHashMap)this.uriToEquivalenceRelation.clone();
+		*/
+    copy.uriToProxy = new TIntIntHashMap(this.uriToProxy);
+    copy.proxyToUris = new TIntObjectHashMap<TIntArrayList>(this.proxyToUris);
+    copy.uriToEquivalenceRelation = new TIntIntHashMap(this.uriToEquivalenceRelation);
 		// use copy constructor for objectToId, idToObject, idToJavaObject, and allTuples
 		copy.objectToId = new HashMap<String, Integer>(this.objectToId);
 		copy.idToObject = new ArrayList<String>(this.idToObject);
 		copy.idToJavaObject = new ArrayList<AnyType>(this.idToJavaObject);
-		copy.allTuples = new THashSet<int[]>(this.allTuples, TupleStore.DEFAULT_HASHING_STRATEGY);
+		copy.allTuples = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY, this.allTuples);
 		// operatorRegistry and aggregateRegistry need to be copied (above mappings might be different
 		// for different tuple stores)
 		copy.operatorRegistry = new OperatorRegistry(copy, this.operatorRegistry);
@@ -1837,7 +1849,7 @@ public final class TupleStore {
 			// shallow copy this.index[i], but after that also shallow copy the values of the map
 			copy[i] = new HashMap<Integer, Set<int[]>>(this.index[i]);
 			for (Integer key : copy[i].keySet()) {
-				copy[i].put(key, new THashSet<int[]>(copy[i].get(key), TupleStore.DEFAULT_HASHING_STRATEGY));
+				copy[i].put(key, new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY, copy[i].get(key)));
 			}
 		}
 		return copy;
