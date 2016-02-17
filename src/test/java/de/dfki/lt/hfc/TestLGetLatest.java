@@ -16,9 +16,9 @@ public class TestLGetLatest {
   }
 
 
-  private void printExpected(BindingTable bt) {
+  public static void printExpected(BindingTable bt, TupleStore store) {
     printNext(bt.iterator(),
-        new TestBindingTableIterator.NextAsIntCall(fc.tupleStore));
+        new TestBindingTableIterator.NextAsIntCall(store));
   }
 
   private void checkResult(BindingTable bt, String[][] expected){

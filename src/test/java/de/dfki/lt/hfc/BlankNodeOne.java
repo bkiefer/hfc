@@ -39,7 +39,7 @@ public class BlankNodeOne {
   public static void init() throws Exception {
 
     fc =  new ForwardChainer(4,                                                    // #cores
-        true,                                                 // verbose
+        false,                                                 // verbose
         true,                                                 // RDF Check
         false,                                                // EQ reduction disabled
         3,                                                    // min #args
@@ -66,7 +66,7 @@ public class BlankNodeOne {
 
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    System.out.println(bt); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
+    TestLGetLatest.printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     //checkResult(expected, bt, bt.getVars());
   }
 
