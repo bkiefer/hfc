@@ -1,3 +1,5 @@
+package de.dfki.lt.hfc;
+
 
 import static org.junit.Assert.*;
 
@@ -5,12 +7,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.dfki.lt.hfc.BindingTable;
-import de.dfki.lt.hfc.ForwardChainer;
-import de.dfki.lt.hfc.Query;
-import de.dfki.lt.hfc.QueryParseException;
-import de.dfki.lt.hfc.TestLGetLatest;
-import de.dfki.lt.hfc.TestUtils;
+
 
 import static de.dfki.lt.hfc.TestUtils.checkResult;
 
