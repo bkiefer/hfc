@@ -30,8 +30,6 @@ public class IsNotSubtypeOf {
         );
 
     // compute deductive closure
-
-    //Works until fc.computeClosure();
     fc.computeClosure();
 
   }
