@@ -162,7 +162,7 @@ public final class Namespace {
 	public static final int OWL_EQUIVALENTCLASS_ID = 3;
 
 	public static final String OWL_EQUIVALENTPROPERTY_SHORT = "<owl:equivalentProperty>";
-	public static final String OWL_EQUIVALENTPROPERTY_LONG = "<http://www.w3.org/2002/07/owl#equivalentProperty";
+	public static final String OWL_EQUIVALENTPROPERTY_LONG = "<http://www.w3.org/2002/07/owl#equivalentProperty>";
 	public static final int OWL_EQUIVALENTPROPERTY_ID = 4;
 
 	public static final String OWL_DISJOINTWITH_SHORT = "<owl:disjointWith>";
