@@ -72,7 +72,7 @@ public class TestBindingTableIterator {
   public static class NextAsIntCall implements NextCall<String> {
     private TupleStore _ts;
 
-    NextAsIntCall(TupleStore ts){
+    public NextAsIntCall(TupleStore ts){
       _ts = ts;
     }
 
