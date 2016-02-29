@@ -80,7 +80,8 @@ public abstract class XsdAnySimpleType extends AnyType {
         "XsdString",
         // NOT predefined XSD datatypes: uDateTime, monetary
         "XsdMonetary",
-        "XsdUDateTime"
+        "XsdUDateTime",
+        "XsdGm"
     };
     for (String type : simpleXsdClasses) {
       try {
