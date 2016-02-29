@@ -134,6 +134,12 @@ public final class Namespace {
 
   public static final String XSD_MONETARY_SHORT = "<xsd:monetary>";
 	public static final String XSD_MONETARY_LONG = "<http://www.w3.org/2001/XMLSchema#monetary>";
+  
+  public static final String XSD_GM_SHORT = "<xsd:gm>";
+  public static final String XSD_GM_LONG = "<http://www.w3.org/2001/XMLSchema#gm>";
+  
+  public static final String XSD_KG_SHORT = "<xsd:kg>";
+  public static final String XSD_KG_LONG = "<http://www.w3.org/2001/XMLSchema#kg>";
 
 	// RDF: type
 
