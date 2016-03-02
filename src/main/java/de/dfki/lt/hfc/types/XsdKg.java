@@ -1,39 +1,39 @@
 package de.dfki.lt.hfc.types;
 
 /**
- * The xsd:gm datatype is supposed to encode weight measured in grams
+ * The xsd:kg datatype is supposed to encode weight measured in kilograms
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Mon Feb 29 15:40:22 CET 2016
+ * @version Tue Mar  1 11:37:05 CET 2016
  */
-public final class XsdGm extends XsdAnySimpleType {
+public final class XsdKg extends XsdAnySimpleType {
 
-  public final static String NAME = "gm";
-
+  public final static String NAME = "kg";
+  
   public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
   public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
-
+  
   static {
-    registerConstructor(XsdGm.class, SHORT_NAME, LONG_NAME);
+    registerConstructor(XsdKg.class, SHORT_NAME, LONG_NAME);
   }
-
+  
   public double value;
-
+  
   /**
-   * @param value a Java double representation of weight measured in grams
+   * @param value a Java double representation of weight measured in kilograms
    */
-  public XsdGm(double value) {
+  public XsdKg(double value) {
     this.value = value;
   }
-
+  
   /**
-   * @param value a string, representing weight; e.g., "\"73948.2\"^^<xsd:gm>"
+   * @param value a string, representing weight; e.g., "\"73.2\"^^<xsd:kg>"
    */
-  public XsdGm(String value) {
+  public XsdKg(String value) {
     this.value = Double.parseDouble(extractValue(value));
   }
-
+  
   /**
    * depending on shortIsDefault, either the suffix SHORT_NAME or LONG_NAME is used
    */
@@ -63,18 +63,18 @@ public final class XsdGm extends XsdAnySimpleType {
   }
   
   /**
-   * returns a java.lang.Double container for an HFC XsdGm object
+   * returns a java.lang.Double container for an HFC XsdKg object
    */
   public Object toJava() {
     return this.value;
   }
   
   /**
-   * returns the equivalent of this.value measured in xsd:kg;
-   * multiplication factor is 1/1000
+   * returns the equivalent of this.value measured in xsd:gm;
+   * multiplication factor is 1000
    */
-  public double toKg() {
-    return this.value / 1000.0;
+  public double toGm() {
+    return this.value * 1000.0;
   }
   
 }

@@ -1,12 +1,15 @@
 package de.dfki.lt.hfc.types;
 
 /**
- * The double datatype is patterned after the IEEE double-precision 64-bit floating point type [IEEE 754-1985]
+ * The double datatype is patterned after the IEEE double-precision
+ * 64-bit floating point type [IEEE 754-1985]
+ *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
  * @version Fri Jan 29 19:28:31 CET 2016
  */
 public final class XsdDouble extends XsdAnySimpleType {
+  
   public final static String NAME = "double";
 
   public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
@@ -29,16 +32,11 @@ public final class XsdDouble extends XsdAnySimpleType {
 	 * @param value a string, representing an XSD double, e.g., "\"2.71828\"^^<xsd:double>"
 	 */
 	public XsdDouble(String value) {
-		// get rid of "^^xsd:double" and leading & trailing '"' chars
 		this.value = Double.parseDouble(extractValue(value));
 	}
 
 	/**
-	 * depending on shortIsDefault, either the suffix
-	 *   de.dfki.lt.hfc.Namespace.SHORT_NAME
-	 * or
-	 *   de.dfki.lt.hfc.Namespace.LONG_NAME
-	 * is used
+	 * depending on shortIsDefault, either the suffix SHORT_NAME or LONG_NAME is used
 	 */
 	public String toString(boolean shortIsDefault) {
 		return toString(this.value, shortIsDefault);

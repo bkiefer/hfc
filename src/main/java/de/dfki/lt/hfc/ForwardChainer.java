@@ -21,19 +21,19 @@ import gnu.trove.map.hash.*;
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Mon Feb  1 14:09:47 CET 2016
+ * @version Wed Mar  2 11:26:57 CET 2016
  */
 public final class ForwardChainer {
 
 	/**q
 	 * HFC version number string
 	 */
-	public static final String VERSION = "6.1.15";
+	public static final String VERSION = "6.1.16";
 
 	/**
 	 * HFC info string
 	 */
-	public static final String INFO = "v" + ForwardChainer.VERSION + " (Mon Feb  1 14:09:47 CET 2016)";
+	public static final String INFO = "v" + ForwardChainer.VERSION + " (Wed Mar  2 11:26:57 CET 2016)";
 
 	/**
 	 * a pointer to the tuple store for this forward chainer

@@ -79,9 +79,19 @@ public abstract class XsdAnySimpleType extends AnyType {
       "XsdLong",
       "XsdString",
       // new XSD datatypes
-      "XsdMonetary",
       "XsdUDateTime",
-      "XsdGm"
+      "XsdMonetary",
+      "XsdGm",
+      "XsdKg",
+      "XsdCal",
+      "XsdKg_m2",
+      "XsdMmHg",
+      "XsdMmol_L",
+      "XsdMg_dL",
+      "XsdCm",
+      "XsdM",
+      "Xsd1_min",
+      "XsdIu"
     };
     for (String type : simpleXsdClasses) {
       try {

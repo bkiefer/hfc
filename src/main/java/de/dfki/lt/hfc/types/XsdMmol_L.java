@@ -1,39 +1,40 @@
 package de.dfki.lt.hfc.types;
 
 /**
- * The xsd:gm datatype is supposed to encode weight measured in grams
+ * The xsd:mmol_L datatype is supposed to encode blood sugar level in
+ * millimoles per litre
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Mon Feb 29 15:40:22 CET 2016
+ * @version Tue Mar  1 13:41:15 CET 2016
  */
-public final class XsdGm extends XsdAnySimpleType {
-
-  public final static String NAME = "gm";
-
+public final class XsdMmol_L extends XsdAnySimpleType {
+  
+  public final static String NAME = "mmol_L";
+  
   public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
   public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
-
+  
   static {
-    registerConstructor(XsdGm.class, SHORT_NAME, LONG_NAME);
+    registerConstructor(XsdMmol_L.class, SHORT_NAME, LONG_NAME);
   }
-
+  
   public double value;
-
+  
   /**
-   * @param value a Java double representation of weight measured in grams
+   * @param value a Java double representation of the blood sugar concentration
    */
-  public XsdGm(double value) {
+  public XsdMmol_L(double value) {
     this.value = value;
   }
-
+  
   /**
-   * @param value a string, representing weight; e.g., "\"73948.2\"^^<xsd:gm>"
+   * @param value a string, representing weight; e.g., "\"5.5\"^^<xsd:mmol_L>"
    */
-  public XsdGm(String value) {
+  public XsdMmol_L(String value) {
     this.value = Double.parseDouble(extractValue(value));
   }
-
+  
   /**
    * depending on shortIsDefault, either the suffix SHORT_NAME or LONG_NAME is used
    */
@@ -63,18 +64,18 @@ public final class XsdGm extends XsdAnySimpleType {
   }
   
   /**
-   * returns a java.lang.Double container for an HFC XsdGm object
+   * returns a java.lang.Double container for an HFC XsdMmol_L object
    */
   public Object toJava() {
     return this.value;
   }
   
   /**
-   * returns the equivalent of this.value measured in xsd:kg;
-   * multiplication factor is 1/1000
+   * returns the equivalent of this.value measured in xsd:mg_dL;
+   * multiplication factor is 18
    */
-  public double toKg() {
-    return this.value / 1000.0;
+  public double toMg_dL() {
+    return this.value * 18.0;
   }
-  
+
 }

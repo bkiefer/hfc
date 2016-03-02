@@ -1,39 +1,39 @@
 package de.dfki.lt.hfc.types;
 
 /**
- * The xsd:gm datatype is supposed to encode weight measured in grams
+ * The xsd:min-1 datatype is supposed to encode heart rate measured in 1/min
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Mon Feb 29 15:40:22 CET 2016
+ * @version Wed Mar  2 10:07:54 CET 2016
  */
-public final class XsdGm extends XsdAnySimpleType {
-
-  public final static String NAME = "gm";
-
+public final class Xsd1_min extends XsdAnySimpleType {
+  
+  public final static String NAME = "min-1";
+  
   public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
   public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
-
+  
   static {
-    registerConstructor(XsdGm.class, SHORT_NAME, LONG_NAME);
+    registerConstructor(Xsd1_min.class, SHORT_NAME, LONG_NAME);
   }
-
+  
   public double value;
-
+  
   /**
-   * @param value a Java double representation of weight measured in grams
+   * @param value a Java double representation of the heart rate
    */
-  public XsdGm(double value) {
+  public Xsd1_min(double value) {
     this.value = value;
   }
-
+  
   /**
-   * @param value a string, representing weight; e.g., "\"73948.2\"^^<xsd:gm>"
+   * @param value a string, representing length; e.g., "\"84\"^^<xsd:min-1>"
    */
-  public XsdGm(String value) {
+  public Xsd1_min(String value) {
     this.value = Double.parseDouble(extractValue(value));
   }
-
+  
   /**
    * depending on shortIsDefault, either the suffix SHORT_NAME or LONG_NAME is used
    */
@@ -63,18 +63,10 @@ public final class XsdGm extends XsdAnySimpleType {
   }
   
   /**
-   * returns a java.lang.Double container for an HFC XsdGm object
+   * returns a java.lang.Double container for an HFC Xsd1_min object
    */
   public Object toJava() {
     return this.value;
-  }
-  
-  /**
-   * returns the equivalent of this.value measured in xsd:kg;
-   * multiplication factor is 1/1000
-   */
-  public double toKg() {
-    return this.value / 1000.0;
   }
   
 }
