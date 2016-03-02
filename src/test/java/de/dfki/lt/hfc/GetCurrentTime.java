@@ -5,6 +5,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.dfki.lt.hfc.aggregates.TestLGetLatest;
+
 import static de.dfki.lt.hfc.TestUtils.checkResult;
 
 public class GetCurrentTime {
