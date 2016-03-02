@@ -7,6 +7,8 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.List;
 
+import de.dfki.lt.hfc.types.XsdLong;
+
 public class Hfc {
   private ForwardChainer _forwardChainer;
 
@@ -75,17 +77,33 @@ public class Hfc {
     return s;
   }
 
-  public int addTuples(List<List<String>> rows) throws WrongFormatException {
+  /** Normalize namespaces, and get ids directly to put in the tuples without
+   *  using the hfc internal functions.
+   *
+   *  This is done so i can add the <it>now<it/> time stamp transparently
+   *  TODO: refactor, and make this part of HFC core
+   */
+  public int addTuples(List<List<String>> rows, boolean timeStamp)
+      throws WrongFormatException {
+    int time = -1;
+    int timeslot = 0;
+    if (timeStamp) {
+      time = _tupleStore.putObject(
+          new XsdLong(System.currentTimeMillis()).toString());
+      timeslot = 1;
+    }
     int result = 0;
-    int rowNo = 0;
     for (List<String> row : rows) {
       // TODO: LONG TO SHORT MAPPINGS MUST BE DONE HERE BECAUSE THE ADDTUPLES
       // METHODS DON'T DO THAT, WHICH SIMPLY ISN'T RIGHT IF THEY ARE PUBLIC!
-      String[] tuple = new String[row.size()];
+      int[] tuple = new int[row.size() + timeslot];
       int i = 0;
       for (String s : row) {
-        tuple[i] = myNormalizeNamespaces(s);
+        tuple[i] = _tupleStore.putObject(myNormalizeNamespaces(s));
         ++i;
+      }
+      if (time >= 0) {
+        tuple[i] = time;
       }
       if (_tupleStore.addTuple(tuple)) {
         ++result;

@@ -21,19 +21,19 @@ import gnu.trove.map.hash.*;
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Mon Feb  1 14:09:47 CET 2016
+ * @version Wed Mar  2 11:26:57 CET 2016
  */
 public final class ForwardChainer {
 
 	/**q
 	 * HFC version number string
 	 */
-	public static final String VERSION = "6.1.15";
+	public static final String VERSION = "6.1.16";
 
 	/**
 	 * HFC info string
 	 */
-	public static final String INFO = "v" + ForwardChainer.VERSION + " (Mon Feb  1 14:09:47 CET 2016)";
+	public static final String INFO = "v" + ForwardChainer.VERSION + " (Wed Mar  2 11:26:57 CET 2016)";
 
 	/**
 	 * a pointer to the tuple store for this forward chainer
@@ -1349,7 +1349,7 @@ public final class ForwardChainer {
 	 * adds a collection of tuples to the repository;
 	 * this quasi-synchronized method obtains a lock on this.tupleStore;
 	 * note that the generation counter from TupleStore is incremented by 2 _before_
-	 * the tuples are added in order to distinguish the tuples envolved in this transactions
+	 * the tuples are added in order to distinguish the tuples involved in this transactions
 	 * from `ordinary' tuples that are `only' uploaded;
 	 * note further that this transaction does NOT compute the deductive closure of the repository
 	 * @return true iff the transaction was successful
@@ -1592,12 +1592,15 @@ public final class ForwardChainer {
 	public static void main(String[] args) throws Exception {
 		// for testing the -server option of the JVM:
 		//   time java -server -cp .:../lib/trove-2.1.0.jar -Xms800m -Xmx1200m de/dfki/lt/hfc/ForwardChainer
-		/*
-		 // call THIS with equivalence class reduction DISABLED
-		 ForwardChainer fc =	new ForwardChainer(100000, 500000,
-																					 "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.nt",
-																					 "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.rdl",
-																					 "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.ns");
+		
+    //Namespace.shortIsDefault = false;
+    
+    // call THIS with equivalence class reduction DISABLED
+    /*
+    ForwardChainer fc =	new ForwardChainer(100000, 500000,
+                                           "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.nt",
+                                           "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.rdl",
+                                           "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.ns");
 		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/src/resources/ltworld.jena.nt");
 		fc.computeClosure();
 		fc.shutdown();
@@ -1605,6 +1608,8 @@ public final class ForwardChainer {
 
 		// call THIS with equivalence class reduction ENABLED
 
+    //Namespace.shortIsDefault = false;
+    
 		ForwardChainer fc =	new ForwardChainer(100000, 500000,
 																					 "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.eqred.nt",
 																					 "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.eqred.rdl",
@@ -1613,7 +1618,6 @@ public final class ForwardChainer {
 		fc.computeClosure();
 		fc.computeClosure();
 		fc.shutdown();
-
 
 		/*
 		ForwardChainer fc =	new ForwardChainer(100000, 500000,

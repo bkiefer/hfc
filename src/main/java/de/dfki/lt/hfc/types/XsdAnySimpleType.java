@@ -63,24 +63,35 @@ public abstract class XsdAnySimpleType extends AnyType {
 
   private static void loadSimpleTypes() {
     final String[] simpleXsdClasses = {
-        "XsdAnyURI",
-        "XsdBoolean",
-        "XsdDate",
-        "XsdDateTime",
-        "XsdDouble",
-        "XsdDuration",
-        "XsdFloat",
-        "XsdGDay",
-        "XsdGMonthDay",
-        "XsdGMonth",
-        "XsdGYear",
-        "XsdGYearMonth",
-        "XsdInt",
-        "XsdLong",
-        "XsdString",
-        // NOT predefined XSD datatypes: uDateTime, monetary
-        "XsdMonetary",
-        "XsdUDateTime"
+      "XsdAnyURI",
+      "XsdBoolean",
+      "XsdDate",
+      "XsdDateTime",
+      "XsdDouble",
+      "XsdDuration",
+      "XsdFloat",
+      "XsdGDay",
+      "XsdGMonthDay",
+      "XsdGMonth",
+      "XsdGYear",
+      "XsdGYearMonth",
+      "XsdInt",
+      "XsdLong",
+      "XsdString",
+      // new XSD datatypes
+      "XsdUDateTime",
+      "XsdMonetary",
+      "XsdGm",
+      "XsdKg",
+      "XsdCal",
+      "XsdKg_m2",
+      "XsdMmHg",
+      "XsdMmol_L",
+      "XsdMg_dL",
+      "XsdCm",
+      "XsdM",
+      "Xsd1_min",
+      "XsdIu"
     };
     for (String type : simpleXsdClasses) {
       try {
