@@ -1182,16 +1182,21 @@ public final class TupleStore {
 	 *   <huk> <hasName> _:foo42 .
 	 *   _:foo42 <firstName> "Uli" .
 	 *   _:foo42 <lastName> "Krieger" .
+		*
+		* @param timeStamp a time stamp (a long value) which is attached as a suffix to each
+		*                  tuple found in br;
+		*                  a negative value indicates that _no_ time stamp should be attached
 	 * @throws WrongFormatException
 	 *
 	 */
-	public void readTuples(BufferedReader br) throws IOException, WrongFormatException {
+	public void readTuples(BufferedReader br, long timeStamp) throws IOException, WrongFormatException {
 		String line, token;
-    StringTokenizer st;
+		StringTokenizer st;
 		int noOfTuples = 0, lineNo = 0;
 		ArrayList<String> tuple = new ArrayList<String>();
 		boolean eol = true;
-      while ((line = br.readLine()) != null) {
+		final String xsdTimeStamp = (timeStamp < 0) ? null : XsdLong.toString(timeStamp, true);
+		while ((line = br.readLine()) != null) {
 				// strip of spaces at begin and end of line
 				line = line.trim();
 				++lineNo;
@@ -1226,6 +1231,9 @@ public final class TupleStore {
 					}
 				}
 				if (eol) {
+					// if transaction time is wanted, add it to the back of the tuple
+					if (xsdTimeStamp != null)
+						tuple.add(xsdTimeStamp);
 					// external tuple representation might be misspelled or the tuple is already contained
 					if (addTuple(tuple, lineNo) != null)
 						++noOfTuples;  // everything was fine
@@ -1262,6 +1270,17 @@ public final class TupleStore {
 				System.out.println("  number of all tuples: " + this.allTuples.size() + "\n");
 			}
 		}
+	}
+
+	/**
+		* calls readTuples(br, -1L) = no time stamps attached
+		*
+		* @param br
+		* @throws IOException
+		* @throws WrongFormatException
+		*/
+	public void readTuples(BufferedReader br) throws IOException, WrongFormatException {
+		readTuples(br, -1L);
 	}
 
   public void readTuples(String filename)

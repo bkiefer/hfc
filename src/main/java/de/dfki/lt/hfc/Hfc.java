@@ -10,6 +10,12 @@ import java.util.List;
 import de.dfki.lt.hfc.types.XsdLong;
 
 public class Hfc {
+
+  /**
+   * transaction time time stamp used by Hfc.readTuples(BufferedReader tupleReader)
+   */
+  public long timeStamp = 0L;
+
   private ForwardChainer _forwardChainer;
 
   private TupleStore _tupleStore;
@@ -33,9 +39,18 @@ public class Hfc {
     _tupleStore.namespace.putForm(shortForm, longForm);
   }
 
-  public void readTuples(BufferedReader tupleReader)
+  /**
+   * HUK: this method _now_ calls the binary readTuples() method
+   * from class TupleStore in order to add a further transaction
+   * time argument at the end of the original tuple;
+   *
+   * @param tupleReader
+   * @throws WrongFormatException
+   * @throws IOException
+   */
+  public void readTuples(BufferedReader tupleReader, long timeStamp)
       throws WrongFormatException, IOException {
-    _tupleStore.readTuples(tupleReader);
+    _tupleStore.readTuples(tupleReader, timeStamp);
   }
 
   public void readTuples(BufferedReader tupleReader, BufferedReader nameSpaceReader)
@@ -52,10 +67,18 @@ public class Hfc {
             Charset.forName(TupleStore.INPUT_CHARACTER_ENCODING)));
   }
 
-  public void readTuples(File tuples)
+  /**
+   * HUK: added time stamp argument
+   *
+   * @param tuples
+   * @throws WrongFormatException
+   * @throws IOException
+   */
+  public void readTuples(File tuples, long timeStamp)
       throws WrongFormatException, IOException {
     readTuples(Files.newBufferedReader(tuples.toPath(),
-        Charset.forName(TupleStore.INPUT_CHARACTER_ENCODING)));
+        Charset.forName(TupleStore.INPUT_CHARACTER_ENCODING)),
+            timeStamp);
   }
 
   String myNormalizeNamespaces(String s) {

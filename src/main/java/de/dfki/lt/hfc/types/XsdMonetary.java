@@ -9,7 +9,7 @@ package de.dfki.lt.hfc.types;
  *
  * syntax: <monetary> ::= "<amount><currency>"
  *         <amount>   ::= any (positive/negative) (floating-point) number
- *         <currency> ::+ a three uppercase letter code, as defined by ISO 4217
+ *         <currency> ::= a three uppercase letter code, as defined by ISO 4217
  * note: <amount> and <currency> are written together -- there is NO space left between them
  *
  * examples:
