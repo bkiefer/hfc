@@ -106,8 +106,7 @@ public class Hfc {
    *  This is done so i can add the <it>now<it/> time stamp transparently
    *  TODO: refactor, and make this part of HFC core
    */
-  public int addTuples(List<List<String>> rows, boolean timeStamp)
-      throws WrongFormatException {
+  public int addTuples(List<List<String>> rows, boolean timeStamp) {
     int time = -1;
     int timeslot = 0;
     if (timeStamp) {
