@@ -106,10 +106,10 @@ public class Hfc {
    *  This is done so i can add the <it>now<it/> time stamp transparently
    *  TODO: refactor, and make this part of HFC core
    */
-  public int addTuples(List<List<String>> rows, boolean timeStamp) {
+  public int addTuples(List<List<String>> rows, long timeStamp) {
     int time = -1;
     int timeslot = 0;
-    if (timeStamp) {
+    if (timeStamp >= 0) {
       time = _tupleStore.putObject(
           new XsdLong(System.currentTimeMillis()).toString());
       timeslot = 1;
