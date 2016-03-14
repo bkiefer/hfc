@@ -22,13 +22,14 @@
 #         <owl:equivalentProperty> <rdf:type> <owl:TransitiveProperty> .
 #         <owl:equivalentProperty> <rdf:type> <owl:SymmetricProperty> .
 #
-# NOTE: three axiomatic triples have been added instead:
+# NOTE: three axiomatic triples have been added instead in order to characterize
+#       these URIs as properties:
 #         <owl:equivalentClass> <rdf:type> <rdf:Property> .
 #         <owl:equivalentProperty> <rdf:type> <rdf:Property> .
 #         <owl:sameAs> <rdf:type> <rdf:Property> .
 #
 # @author Hans-Ulrich Krieger
-# @version Mon Jun 20 17:40:21 CEST 2011
+# @version Thu Mar 10 14:27:37 GMT 2016
 #
 
 <rdf:type> <rdf:type> <rdf:Property> .
@@ -70,19 +71,24 @@
 <owl:Nothing> <rdfs:subClassOf> <owl:Thing> .
 <owl:Thing> <owl:disjointWith> <owl:Nothing> .
 
-<xsd:int> <rdf:type> <rdfs:Datatype> .
-<xsd:long> <rdf:type> <rdfs:Datatype> .
-<xsd:float> <rdf:type> <rdfs:Datatype> .
-<xsd:double> <rdf:type> <rdfs:Datatype> .
-<xsd:string> <rdf:type> <rdfs:Datatype> .
+# (some of the) standard XSD datatypes
+# note: HFC has further custom XSD datatype of its own
+<xsd:anySimpleType> <rdf:type> <rdfs:Datatype> .
+<xsd:anyURI> <rdf:type> <rdfs:Datatype> .
 <xsd:boolean> <rdf:type> <rdfs:Datatype> .
 <xsd:date> <rdf:type> <rdfs:Datatype> .
 <xsd:dateTime> <rdf:type> <rdfs:Datatype> .
+<xsd:double> <rdf:type> <rdfs:Datatype> .
+<xsd:duration> <rdf:type> <rdfs:Datatype> .
+<xsd:float> <rdf:type> <rdfs:Datatype> .
+<xsd:gDayr> <rdf:type> <rdfs:Datatype> .
+<xsd:gMonth> <rdf:type> <rdfs:Datatype> .
+<xsd:gMonthDay> <rdf:type> <rdfs:Datatype> .
 <xsd:gYear> <rdf:type> <rdfs:Datatype> .
-<xsd:gMonthYear> <rdf:type> <rdfs:Datatype> .
-<xsd:anyURI> <rdf:type> <rdfs:Datatype> .
-<xsd:monetary> <rdf:type> <rdfs:Datatype> .
-<xsd:uDateTime> <rdf:type> <rdfs:Datatype> .
+<xsd:gYearMonth> <rdf:type> <rdfs:Datatype> .
+<xsd:int> <rdf:type> <rdfs:Datatype> .
+<xsd:long> <rdf:type> <rdfs:Datatype> .
+<xsd:string> <rdf:type> <rdfs:Datatype> .
 
 #<rdfs:Datatype> <rdfs:subClassOf> <rdfs:Class> .
 #<owl:Class> <rdfs:subClassOf> <rdfs:Class> .
