@@ -8,19 +8,26 @@
 # $owl_FunctPropDatatype, since the nature of the object of the triple either
 # leads to a owl:sameAs statement or to the bottom type owl:Nothing;
 #
-# this file is the transaction time extension of default.rdl in that relation
-# instances from the ABox get extended by one further arguments, denoting the
-# transaction time, i.e., the time when the atemporal triple (the relational
+# this file is the polarity + transaction time extension of default.rdl in that
+# relation instances from the ABox are prefixed by a polarity value from the
+ # logic ontology and get extended by one further argument as a suffix, denoting
+# the transaction time, i.e., the time when the atemporal triple (the relational
 # fluent) is entered into the database;
 #
-# NOTE -- IMPORTANT
-#   this rule file should only be used if equivalence class reduction in HFC is
-#   _switched on_
+# NOTE: this rule file should only be used if equivalence class reduction in HFC
+#       is _switched on_
 #
-# NOTE:  NOT FINISHED YET  (only preliminary version)
+# NOTE: we assume that the polarity value is the first element of the quintuple
+#       (position 0), thus the following constants need to be set to the right
+#       value, viz.
+#         TupleStore.SUBJECT_POSITION = 1
+#         TupleStore.PREDICATE_POSITION = 2
+#         TupleStore.OBJECT_POSITION = 3
+#
+# !!!!!!!!!!!!!!!!!!!!!!!!!! VERSION NOT FINISHED YET !!!!!!!!!!!!!!!!!!!!!!!!!!
 #
 # @author Hans-Ulrich Krieger
-# @version Thu Mar 10 16:12:08 GMT 2016
+# @version Tue Mar 15 11:41:04 CET 2016
 #
 
 
@@ -28,13 +35,12 @@
 # not interested that ?s, ?p, and ?o are all of rdf:type rdfs:Resource;
 # only add that ?p is of rdf:type rdf:Property
 $rdf1_rdfs4a_4b+time
-?_s ?p ?_o ?_time
+?_pol ?_s ?p ?_o ?_time
 ->
 ?p <rdf:type> <rdf:Property>
 
 
-# still keep the triple version, since rules might be applicable to information
-# from the TBox
+# still keep the triple version as it applies to information from the TBox
 $rdf1_rdfs4a_4b
 ?_s ?p ?_o
 ->
@@ -46,22 +52,25 @@ $rdf1_rdfs4a_4b
 # time when it is being instantiated (i.e., when the closure computation is called);
 # once this interpretation is chosen, this should be consistent with the time-tagged
 # rules below!
+# I also take over the polarity value from ?pol, even though we it makes perfect
+# sense to only apply this rules to statements headed by <logic:true>
 $rdfs2+time
-?s ?p ?_o ?time
+?pol ?s ?p ?_o ?time
 ?p <rdfs:domain> ?dom
 ->
-?s <rdf:type> ?dom ?time
+?pol ?s <rdf:type> ?dom ?time
 @test
 ?p != <rdf:type>
 
 
 # added second clause -- do not want to time-tag XSD type values
+# comments from $rdfs2+time also aplly here
 $rdfs3+time
-?_s ?p ?o ?time
+?pol ?_s ?p ?o ?time
 ?p <rdf:type> <owl:ObjectProperty>
 ?p <rdfs:range> ?rng
 ->
-?o <rdf:type> ?rng ?time
+?pol ?o <rdf:type> ?rng ?time
 
 
 # NOTE: no longer redundant rule, since generalization using owl:TransitiveProperty
@@ -84,11 +93,12 @@ $rdfs6
 ?p <rdfs:subPropertyOf> ?p
 
 
+# time and polarity is taken over from the antecedent
 $rdfs7+time
-?s ?p ?o ?time
+?pol ?s ?p ?o ?time
 ?p <rdfs:subPropertyOf> ?q
 ->
-?s ?q ?o ?time
+?pol ?s ?q ?o ?time
 @test
 ?p != ?q
 
@@ -103,12 +113,13 @@ $rdfs8_10
 ?c <rdfs:subClassOf> ?c
 
 
-# universal instantiation
+# universal instantiation;
+# time and polarity is taken over from the antecedent
 $rdfs9+time
-?i <rdf:type> ?c ?time
+?pol ?i <rdf:type> ?c ?time
 ?c <rdfs:subClassOf> ?d
 ->
-?i <rdf:type> ?d ?time
+?pol ?i <rdf:type> ?d ?time
 @test
 ?c != ?d
 
@@ -135,11 +146,12 @@ $rdfs11
 # will not fire for our OWL ontologies
 
 
+# time and polarity is taken over from the antecedent
 $owl_invOf+time
-?s ?p ?o ?time
+?pol ?s ?p ?o ?time
 ?p <owl:inverseOf> ?q
 ->
-?o ?q ?s ?time
+?pol ?o ?q ?s ?time
 
 
 $owl_invOfBySymProp
@@ -156,11 +168,12 @@ $owl_SymPropByInverse
 
 # original rule name is: rdfp3;
 # rule was _not_ part of the OWLIM definition (why?)
+# time and polarity is taken over from the antecedent
 $owl_SymmetricProperty+time
 ?p <rdf:type> <owl:SymmetricProperty>
-?s ?p ?o ?time
+?pol ?s ?p ?o ?time
 ->
-?o ?p ?s ?time
+?pol ?o ?p ?s ?time
 
 
 # this rule is totally different from the version implemented for valid time;
