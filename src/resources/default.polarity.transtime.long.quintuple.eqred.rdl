@@ -17,6 +17,14 @@
 # NOTE: this rule file should only be used if equivalence class reduction in HFC
 #       is _switched on_
 #
+# NOTE: information from the TBox & RBox are also represented as quintuples,
+#       given triple
+#         subject predicate object
+#       as follows:
+#         logic:true subject predicate object "0"^^<xsd:long>
+#       make sure that you load the corresponding axiomatic quintuple file
+#         default.polarity.transtime.long.quintuple.eqred.nt
+#
 # NOTE: we assume that the polarity value is the first element of the quintuple
 #       (position 0), thus the following constants need to be set to the right
 #       value, viz.
@@ -33,16 +41,10 @@
 
 # NOTE: $rdf1_rdfs4a_4b (= rdf1 & rdfs4a & rdfs4b) modified;
 # not interested that ?s, ?p, and ?o are all of rdf:type rdfs:Resource;
-# only add that ?p is of rdf:type rdf:Property
+# only add that ?p is of rdf:type rdf:Property;
+# even applies to TBox/RBox information
 $rdf1_rdfs4a_4b+time
 ?_pol ?_s ?p ?_o ?_time
-->
-?p <rdf:type> <rdf:Property>
-
-
-# still keep the triple version as it applies to information from the TBox
-$rdf1_rdfs4a_4b
-?_s ?p ?_o
 ->
 ?p <rdf:type> <rdf:Property>
 
