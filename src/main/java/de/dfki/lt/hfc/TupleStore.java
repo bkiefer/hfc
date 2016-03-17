@@ -1859,7 +1859,8 @@ public final class TupleStore {
 
 	/**
 	 * returns a nearly-deep copy of the index: everything is copied with the notable
-	 * exception of the tuples (the int arrays) at the leaves of the index
+	 * exception of the tuples (the int arrays) at the leaves of the index (as their
+		* content does not change!
 	 */
 	private Map<Integer, Set<int[]>>[] copyIndex() {
 		// the inital creation is taken from the binary constructor
@@ -1880,9 +1881,9 @@ public final class TupleStore {
 	 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	 */
 	public static void main(String[] args) throws Exception {
-		Namespace ns = new Namespace("/Users/krieger/Desktop/Java/HFC/hfc/resources/default.ns");
-		TupleStore ts = new TupleStore(100000, 250000, ns, "/Users/krieger/Desktop/Java/HFC/hfc/resources/default.nt");
-		ts.readTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/ltworld.jena.nt");
+		Namespace ns = new Namespace("/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.ns");
+		TupleStore ts = new TupleStore(100000, 250000, ns, "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.nt");
+		ts.readTuples("/Users/krieger/Desktop/Java/HFC/hfc/src/resources/ltworld.jena.nt");
 		/*
 		long start = System.currentTimeMillis();
 		ts.readTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/ltworld.jena.nt");
