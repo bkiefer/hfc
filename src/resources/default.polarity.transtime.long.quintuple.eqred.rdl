@@ -34,8 +34,8 @@
 #
 # NOTE: the following rules do _not_ have a non-temporal counterpart
 #         + $owl_FunctPropDatatype
-#         +
-#         +
+#         + $inval_FunctProp
+#         + $log_incons
 #         +
 #         +
 #
@@ -239,6 +239,30 @@ ValidInBetween ?x ?p ?y ?time1 ?time2
 ValidInBetween ?x ?p ?z ?time1 ?time2
 @action
 ?time = LMax2 ?time1 ?time2
+
+
+# there is _no_ non-temporal version of this rule in the original rule;
+# if a functional property p in p(x,y)@t1 is "overwritten" by p(x,z)@t2
+# (t1 < t2), we can invalidate p(x,y)@t2
+$inval_FunctProp
+<logic:true> ?p <rdf:type> <owl:FunctionalProperty> "0"^^<xsd:long>
+<logic:true> ?x ?p ?y ?time1
+<logic:true> ?x ?p ?z ?time2
+->
+<logic:false> ?x ?p ?y ?time2
+@test
+?y != ?z
+LLess ?time1 ?time2
+ValidInBetween ?x ?p ?y ?time1 ?time2
+
+
+# there is _no_ non-temporal version of this rule in the original rule;
+#
+$log_incons
+<logic:true> ?x ?p ?y ?time
+<logic:false> ?x ?p ?y ?time
+->
+<logic:error> ?x ?p ?y ?time
 
 
 # holds for both datatype and object properties;
