@@ -34,11 +34,12 @@
 #         <logic:true>
 #       and add suffix
 #         "0"^^<xsd:long>
-#       as the universally-holding transaction time 0 (from the vary beginning)
+#       as the universally-holding transaction time 0 (from the very beginning)
 #
+# !!!!!!!!!!!!!!!!!!!!!!!!!! VERSION NOT FINISHED YET !!!!!!!!!!!!!!!!!!!!!!!!!!
 #
 # @author Hans-Ulrich Krieger
-# @version Thu Mar 10 14:27:37 GMT 2016
+# @version Wed Mar 16 09:47:37 CET 2016
 #
 
 <logic:true> <rdf:type> <rdf:type> <rdf:Property> "0"^^<xsd:long> .
