@@ -230,30 +230,32 @@ $owl_FunctPropDatatype
 <logic:true> ?x ?p ?y ?time1
 <logic:true> ?x ?p ?z ?time2
 ->
-<logic:error> ?x ?p ?y ?time
-<logic:error> ?x ?p ?z ?time
+<logic:error> ?x ?p ?y ?time1
+<logic:error> ?x ?p ?z ?time2
 @test
 ?y != ?z
 ?p != <rdf:type>
 ValidInBetween ?x ?p ?y ?time1 ?time2
 ValidInBetween ?x ?p ?z ?time1 ?time2
-@action
-?time = LMax2 ?time1 ?time2
 
 
 # there is _no_ non-temporal version of this rule in the original rule;
 # if a functional property p in p(x,y)@t1 is "overwritten" by p(x,z)@t2
 # (t1 < t2), we can invalidate p(x,y)@t2
+# in fact, this is not a rule at all as $inval_FunctProp would badly
+# interact with $owlFunctPropObject and $owlFunctPropDatatype above;
+# the reason for this is that we cannot distinguish between tuples that
+# are "added" (further information) and those which "overwrite" information
 $inval_FunctProp
-<logic:true> ?p <rdf:type> <owl:FunctionalProperty> "0"^^<xsd:long>
-<logic:true> ?x ?p ?y ?time1
-<logic:true> ?x ?p ?z ?time2
-->
-<logic:false> ?x ?p ?y ?time2
-@test
-?y != ?z
-LLess ?time1 ?time2
-ValidInBetween ?x ?p ?y ?time1 ?time2
+#<logic:true> ?p <rdf:type> <owl:FunctionalProperty> "0"^^<xsd:long>
+#<logic:true> ?x ?p ?y ?time1
+#<logic:true> ?x ?p ?z ?time2
+#->
+#<logic:false> ?x ?p ?y ?time2
+#@test
+#?y != ?z
+#LLess ?time1 ?time2
+#ValidInBetween ?x ?p ?y ?time1 ?time2
 
 
 # there is _no_ non-temporal version of this rule in the original rule;
