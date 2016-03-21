@@ -53,11 +53,11 @@ public class RdfGraph {
    * @return true iff tuple is not already represented in this RDF graph
    */
   public boolean addToRdfGraph(List<String> tuple) {
-    // final String polarity = tuple.get(?);
+    // final String polarity = tuple.get(?);  // ? = 0
     final String subj = tuple.get(0);  // change to 1 for 5-tuples
     final String pred = tuple.get(1);  // change to 2
     final String obj = tuple.get(2);   // change to 3
-    //final String time = tuple.get(?);
+    //final String time = tuple.get(?);  // ? = 4
     // is subject brand-new ?
     final Literal lsubj = getLiteral(subj);
     final UriProxy usubj;
@@ -106,9 +106,53 @@ public class RdfGraph {
   }
 
   /**
+   * this method assumes that the property is a functional property;
+   * if it is _not_, it overwrites all values (the set);
+   * in case the subject or the predicate for the subject is new, this method
+   * has the same effect as method addToRdfGraph() above and returns false
+   */
+  public boolean overwriteInRdfGraph(List<String> tuple) {
+    boolean success = false;
+    Set<Literal> value = getFromRdfGraph(tuple.get(0), tuple.get(1));
+    if (value == null) {
+      addToRdfGraph(tuple);
+      return false;
+    }
+    value.clear();
+    final String obj = tuple.get(2);
+    Literal lobj = getLiteral(obj);
+    if (lobj == null) {
+      if (TupleStore.isAtom(obj))
+        lobj = new XsdAtomProxy(obj);
+      else
+        // note: blank nodes are also represented via UriProxy
+        lobj = new UriProxy(obj);
+      this.nameToLiteral.put(obj, lobj);
+    }
+    value.add(lobj);
+    return true;
+  }
+
+  /**
+   * @return the set of literals which can be accessed from subject via predicate
+   * @return null if there is no such predicate or even no such subject, or if the
+   *         literal is an XSD atom
+   */
+  public Set<Literal> getFromRdfGraph(String subject, String predicate) {
+    final Literal lit = this.nameToLiteral.get(subject);
+    if (lit == null)
+      return null;
+    if (Literal.isXsdAtom(lit))
+      return null;
+    // contains() via getValues() suffices here as we do _not_ allow for null values
+    return ((UriProxy)(lit)).getValues(predicate);
+  }
+
+  /**
    * removes a tuple from this RDF graph
    *
-   * @return true if tuple is already part of this RDF graph
+   * @return true if tuple is part of this RDF graph
+   * @return false otherwise
    */
   public boolean removeFromRdfGraph(List<String> tuple) {
     // final String polarity = tuple.get(?);
@@ -139,9 +183,8 @@ public class RdfGraph {
     if (values.isEmpty())
       usubj.removeProperty(pred);
     // was this the only property left / the only outgoing edge ?
-    if (usubj.isSingleton())
-      // if so, remove it from the nameToLiteral mapping above
-      this.nameToLiteral.remove(subj);
+    // if so, I'm _not_ allowed to clear the nameToLiteral mapping depending on
+    // this local information as the literal might be accessed by a fifferent path
     return true;
   }
 
@@ -163,6 +206,20 @@ public class RdfGraph {
     for (int i : ituple)
       stuple.add(this.tupleStore.getObject(i));
     return removeFromRdfGraph(stuple);
+  }
+
+  /**
+   * a garbage collector for RDF graphs;
+   * walks over all literals recorded in nameToLiteral and removes all those
+   * literals (URIs) whose predToObject mapping is empty _and_ which are not
+   * accessed by other literals
+   * @return true iff at least one literal has been removed
+   * @return false otherwise
+   *
+   * NOTE: !!!!! NOT IMPLEMENTED YET !!!!!
+   */
+  public boolean gc() {
+    return false;
   }
 
   /**

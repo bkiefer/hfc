@@ -44,14 +44,6 @@ public class UriProxy extends Literal {
   }
 
   /**
-   * is this URI a node with no outgoing edges (brand-new URIs are of
-   * * this type)
-   */
-  public boolean isSingleton() {
-    return this.predToObj.isEmpty();
-  }
-
-  /**
    * returns the value(s) for a given property as a set of literals;
    * if the property is not known, null is returned, thus this method
    * can be used to check whether the property exists (no null values
