@@ -19,6 +19,7 @@ import de.dfki.lt.hfc.types.XsdLong;
  * argument and make it one of the arguments from arg1, ..., argN
  *
  * quadruple example (we duplicate the bsl value to have a relational property):
+ *   <pal:lisa> <rdf:type> <dom:Child> "5544"^^<xsd:long> .
  *   <pal:lisa> <dom:hasLabValue> <pal:labval22> "5544"^^<xsd:long> .
  *   <pal:labval22> <dom:height> "133"^^<xsd:cm> "5544"^^<xsd:long> .
  *   <pal:labval22> <dom:weight> "28.2"^^<xsd:kg> "5544"^^<xsd:long> .
@@ -32,15 +33,15 @@ import de.dfki.lt.hfc.types.XsdLong;
  *   <pal:labval33> <dom:bsl> "165.6"^^<xsd:mg_dL> "5577"^^<xsd:long> .
  *
  * example query from the PAL domain:
- *   SELECT ?prob ?value ?time
+ *   SELECT ?child ?prob ?val ?time
  *   WHERE ?child <rdf:type> <dom:Child> ?ts1 &
  *         ?child <dom:hasLabValue> ?labvalue ?ts2 &
- *         ?labvalue ?prob ?value ?time
- *   AGGREGATE ?measurement ?result ?date = LGetLatestValues ?prop ?value ?time ?time
+ *         ?labvalue ?prob ?val ?time
+ *   AGGREGATE ?measurement ?result ?patient ?date = LGetLatestValues ?prop ?val ?child ?time ?time
  *
  * what we would then like to see is
  *   ?measurement |      ?result         | ?date
- *   --------------------------------------------------------
+ *   --------------------------?A------------------------------
  *      <dom:bmi> | "15.9"^^<xsd:kg_m2>  | "5544"^^<xsd:long>
  *      <dom:bsl> | "9.2"^^<xsd:mmol_L>  | "5577"^^<xsd:long>  // we make dom:bsl a
  *      <dom:bsl> | "165.6"^^<xsd:mg_dL> | "5577"^^<xsd:long>  // relational property
@@ -83,9 +84,10 @@ public final class LGetLatestValues extends AggregationalOperator {
         // we assume time stamps be represented as instances of de.dfki.lt.hfc.types.XsdLong
         final long time1 = ((XsdLong)(getObject(row1[timepos]))).value;
         final long time2 = ((XsdLong)(getObject(row2[timepos]))).value;
+        // ascending order for the properties ...
         final int propcomp = prop1.compareTo(prop2);
         if (propcomp == 0) {
-          // we want a descending, _not_ ascending order
+          // ... but descending order for the time stamps
           return Long.compare(time2, time1);
         }
         else
@@ -99,6 +101,7 @@ public final class LGetLatestValues extends AggregationalOperator {
     int newprop = table[0][proppos];
     int newtime = table[0][timepos];
     int oldprop, oldtime;
+    boolean isNew = true;
     for (int i = 1; i < table.length; ++i) {
       oldprop = newprop;
       oldtime = newtime;
@@ -106,10 +109,13 @@ public final class LGetLatestValues extends AggregationalOperator {
       newtime = table[i][timepos];
       if (newprop != oldprop) {
         resultTable.add(table[i]);
+        isNew = true;
       }
-      else if (newtime == oldtime) {
+      else if ((newtime == oldtime) && isNew) {
         resultTable.add(table[i]);
       }
+      else
+        isNew = false;
     }
     return bt;
   }
