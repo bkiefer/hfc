@@ -23,6 +23,9 @@
 <rdf:object> <rdf:type> <rdf:Property> .
 <rdf:first> <rdf:type> <rdf:Property> .
 <rdf:rest> <rdf:type> <rdf:Property> .
+<rdfs:domain> <rdf:type> <rdf:Property> .
+<rdfs:range> <rdf:type> <rdf:Property> .
+
 <rdf:nil> <rdf:type> <rdf:List> .
 
 <owl:equivalentClass> <rdf:type> <owl:TransitiveProperty> .
