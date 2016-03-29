@@ -7,12 +7,12 @@ import de.dfki.lt.hfc.types.XsdLong;
 
 /**
  * this aggregational operator LGetLatestValues only works for the time-stamped
- * triple case and is supposed to be given a table of the following form
+ * triple case and is supposed to be given a table of the following form:
  *   property value arg1 ... argN timestamp
  * the operator returns information from the latest time-stamped tuples
  *   ?_ property value timestamp
  * note that if property is _not_ functional, there might be several such tuples
- * with the same time stamp, but differing in their value, e.g.,
+ * with the _same_ time stamp, but differing in their value, e.g.,
  *   ?_ prop val1 time
  *   ?_ prop val2 time
  * in case the associated timestamp should also be returned, duplicate the time
@@ -33,21 +33,23 @@ import de.dfki.lt.hfc.types.XsdLong;
  *   <pal:labval33> <dom:bsl> "165.6"^^<xsd:mg_dL> "5577"^^<xsd:long> .
  *
  * example query from the PAL domain:
- *   SELECT ?child ?prob ?val ?time
+ *   SELECT ?child ?prob ?val ?t
  *   WHERE ?child <rdf:type> <dom:Child> ?ts1 &
  *         ?child <dom:hasLabValue> ?labvalue ?ts2 &
- *         ?labvalue ?prob ?val ?time
- *   AGGREGATE ?measurement ?result ?patient ?date = LGetLatestValues ?prop ?val ?child ?time ?time
+ *         ?labvalue ?prob ?val ?
+ *   AGGREGATE ?measurement ?result ?patient ?time = LGetLatestValues ?prop ?val ?child ?t ?t
  *
  * what we would then like to see is
- *   ?measurement |      ?result         | ?date
- *   --------------------------?A------------------------------
- *      <dom:bmi> | "15.9"^^<xsd:kg_m2>  | "5544"^^<xsd:long>
- *      <dom:bsl> | "9.2"^^<xsd:mmol_L>  | "5577"^^<xsd:long>  // we make dom:bsl a
- *      <dom:bsl> | "165.6"^^<xsd:mg_dL> | "5577"^^<xsd:long>  // relational property
- *   <dom:height> | "133"^^<xsd:cm>      | "5544"^^<xsd:long>
- *       <dom:hr> | "75.0"^^<xsd:min-1>  | "5544"^^<xsd:long>
- *   <dom:weight> | "28.6"^^<xsd:kg>     | "5577"^^<xsd:long>
+ *   =============================================================================================
+ *   | ?measurement         | ?result              | ?patient             | ?time                |
+ *   =============================================================================================
+ *   | <dom:bmi>            | "15.9"^^<xsd:kg_m2>  | <pal:lisa>           | "5544"^^<xsd:long>   |
+ *   | <dom:bsl>            | "165.6"^^<xsd:mg_dL> | <pal:lisa>           | "5577"^^<xsd:long>   |
+ *   | <dom:bsl>            | "9.2"^^<xsd:mmol_L>  | <pal:lisa>           | "5577"^^<xsd:long>   |
+ *   | <dom:height>         | "133"^^<xsd:cm>      | <pal:lisa>           | "5544"^^<xsd:long>   |
+ *   | <dom:hr>             | "75.0"^^<xsd:min-1>  | <pal:lisa>           | "5544"^^<xsd:long>   |
+ *   | <dom:weight>         | "28.6"^^<xsd:kg>     | <pal:lisa>           | "5577"^^<xsd:long>   |
+ *   ---------------------------------------------------------------------------------------------
  *
  *
  * @author (C) Hans-Ulrich Krieger
@@ -68,7 +70,7 @@ public final class LGetLatestValues extends AggregationalOperator {
                                              nameToPos,
                                              nameToExternalName,
                                              this.tupleStore);
-        // is args empty? if so, return an _empty_ result table!
+    // is args empty? if so, return an _empty_ result table!
     if (args.table.size() == 0)
       return bt;
     // move from the set representation of the input table to an array for efficient sorting;
@@ -108,13 +110,16 @@ public final class LGetLatestValues extends AggregationalOperator {
       newprop = table[i][proppos];
       newtime = table[i][timepos];
       if (newprop != oldprop) {
+        // change of property
         resultTable.add(table[i]);
         isNew = true;
       }
       else if ((newtime == oldtime) && isNew) {
+        // same property, same time stamp, but different value
         resultTable.add(table[i]);
       }
       else
+        // lower time stamp: nothing to record
         isNew = false;
     }
     return bt;

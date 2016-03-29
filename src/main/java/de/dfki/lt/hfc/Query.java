@@ -833,13 +833,15 @@ public class Query {
 	 */
 
 	public static void main(String[] args) throws Exception {
-		Namespace ns = new Namespace("/Users/krieger/Desktop/Java/HFC/hfc/resources/default.ns");
+		Namespace ns = new Namespace("/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.ns");
 		TupleStore ts = new TupleStore(100000, 250000, ns,
-																	 "/Users/krieger/Desktop/Java/HFC/hfc/resources/default.nt");
+																	 "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.nt");
+		ts.readTuples("/Users/krieger/Desktop/Java/HFC/hfc/src/resources/test.child.labvalues.nt");
 		//ts.readTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/ltworld.nt");
 		Query q = new Query(ts);
 		// different binder vars in aggregates
-		BindingTable bt = q.query("SELECT ?p WHERE ?s ?p ?o AGGREGATE ?number = CountDistinct ?p & ?subject = Identity ?p");
+		//BindingTable bt = q.query("SELECT ?p WHERE ?s ?p ?o AGGREGATE ?number = CountDistinct ?p & ?subject = Identity ?p");
+		BindingTable bt = q.query("SELECT ?child ?prop ?val ?t WHERE ?child <rdf:type> <dom:Child> ?t1 & ?child <dom:hasLabValue> ?lv ?t2 & ?lv ?prop ?val ?t & AGGREGATE ?measurement ?result ?patient ?time = LGetLatestValues ?prop ?val ?child ?t ?t");
 		// same binder vars in aggregates
 		//q.query("SELECT ?o1 ?o2 WHERE ?s1 <value> ?o1 & ?s2 <value> ?o2 FILTER ?s1 != ?s2 & ILess ?o1 ?o2 AGGREGATE ?minmax = Min ?o1 & ?minmax = Max ?o2");
 		System.out.println(bt.toString());
