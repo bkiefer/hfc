@@ -10,14 +10,16 @@ import de.dfki.lt.hfc.types.*;
  *    1 "a string"
  *    2 "a string"^^xsd:string
  *    3 "a string"@en
- *  note that calling the test (via apply below) always returns FunctionalOperator.FALSE
+ *  note that calling the test (via apply below) _always_ returns FunctionalOperator.FALSE
  *  for cases 1 and 2 as _no_ language tag is provided!
- *  note further that we distinguishes between upper and lower case characters and (as far
+ *  note further that we _distinguishes_ between upper and lower case characters and (as far
  *  as I know) that language tags in this settings are always a sequence of two lowercase
- *  characters
+ *  characters (the latter case is _not_ tested)
  *
- *  call this test with
- *   HasLanguageTag string tag
+ *  call this functional operator in queries (FILTER) or rules (@test) with
+ *    HasLanguageTag xsd-string-via-variable language-tag
+ *  concrete example:
+ *    HasLanguageTag ?label "en"
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
