@@ -21,7 +21,7 @@ import java.util.*;
 public class UriProxy extends Literal {
 
   /**
-   * a mapping from properties (strings) onto sets of literals (either
+   * a mapping from properties (strings) onto _sets_ of literals (either
    * URIs or XSD atoms)
    */
   private Map<String, Set<Literal>> predToObj;
@@ -46,8 +46,8 @@ public class UriProxy extends Literal {
   /**
    * returns the value(s) for a given property as a set of literals;
    * if the property is not known, null is returned, thus this method
-   * can be used to check whether the property exists (no null values
-   * allowed)
+   * can be used to check whether the property exists (as null values
+   * are _not_ allowed)
    * @see de.dfki.lt.hfc.Literal
    * @return the set of literals that are connected to this URI node
    */
@@ -60,7 +60,10 @@ public class UriProxy extends Literal {
    * @return false otherwise
    */
   public boolean containsValue(String property, Literal value) {
-    return getValues(property).contains(value);
+    final Set<Literal> values = getValues(property);
+    if (values == null)
+      return false;
+    return values.contains(value);
   }
 
   /**

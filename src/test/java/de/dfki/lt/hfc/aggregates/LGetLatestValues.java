@@ -58,26 +58,6 @@ public class LGetLatestValues {
     }
   }
 
-  /**
-   * for test purposes, I have (currently) switched off the equivalence class reduction
-   *   TupleStore.equivalenceClassReduction == false
-   * and have restricted ourselves to pure RDF triples:
-   *   TupleStore.minNoOfArgs == 3
-   *   TupleStore.maxNoOfArgs == 3
-   * these settings are already defined below in the below constructor !
-   *
-   * note that temporal information is represented through the dafn:happens property, so
-   * that we can restrict ourselved to the standard RDFS & OWL entailment rule set
-   *
-   * compile with
-   *   javac -cp .:../jars/hfc.jar:../lib/trove-2.1.0.jar Template.java
-	 * run with
-	 *   java -server -cp .:../jars/hfc.jar:../lib/trove-2.1.0.jar -Xms800m -Xmx1200m Template
-   *
-   *
-   * @author (C) Hans-Ulrich Krieger
-   * @version Mon Jan  4 10:11:02 CET 2016
-   */
   @BeforeClass
   public static void init() throws Exception {
 
@@ -95,7 +75,7 @@ public class LGetLatestValues {
         getResource("default.ns")                             // namespace file
         );
 
-    // manually-constructed test child data from PAL
+    // manually-constructed child test data from PAL
     //   <pal:lisa> <rdf:type> <dom:Child> "5544"^^<xsd:long> .
     //   <pal:lisa> <dom:hasLabValue> <pal:labval22> "5544"^^<xsd:long> .
     //   <pal:labval22> <dom:height> "133"^^<xsd:cm> "5544"^^<xsd:long> .

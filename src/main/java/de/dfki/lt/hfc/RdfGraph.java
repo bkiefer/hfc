@@ -3,9 +3,9 @@ package de.dfki.lt.hfc;
 import java.util.*;
 
 /**
- * at the moment, the class RdfGraph only works for triples (as RDF indicates);
+ * at the moment, the class RdfGraph only works for triples (as Rdf indicates);
  * it builds up an RDF graph for the triples contained in the tuple store;
- * technically, the graph might be devided into several independent subgraphs,
+ * technically, the graph might be divided into several independent subgraphs,
  * as they need not be connected
  *
  * @author (C) Hans-Ulrich Krieger
@@ -16,12 +16,19 @@ import java.util.*;
 public class RdfGraph {
 
   /**
+   * change these numbers in case you deviate from a triple
+   */
+  public int subjectPosition = 0;
+  public int predicatePosition = 1;
+  public int objectPosition = 2;
+
+  /**
    * a handle to the tuple store to which the tuples belong
    */
   private TupleStore tupleStore;
 
   /**
-   * a mapping from URI and XSD atom names onto instances of the corresponding classes
+   * a mapping from URIs and XSD atom names onto instances of the corresponding classes
    * @see de.dfki.lt.hfc.Literal
    * @see de.dfki.lt.hfc.UriProxy
    * @see de.dfki.lt.hfc.XsdAtomProxy
@@ -48,16 +55,17 @@ public class RdfGraph {
    * wish to have them represented in the RDF graph;
    * this method does _not_ check whether individuals at certain positions
    * are of wrong type, e.g., it does not check for XSD atoms in subject
-   * position; thus this assumes that the data is syntactically correct!
+   * position; thus this method assumes that the data is syntactically
+   * correct!
    *
    * @return true iff tuple is not already represented in this RDF graph
    */
   public boolean addToRdfGraph(List<String> tuple) {
-    // final String polarity = tuple.get(?);  // ? = 0
-    final String subj = tuple.get(0);  // change to 1 for 5-tuples
-    final String pred = tuple.get(1);  // change to 2
-    final String obj = tuple.get(2);   // change to 3
-    //final String time = tuple.get(?);  // ? = 4
+    // final String polarity = tuple.get(?);                // ? = 0
+    final String subj = tuple.get(this.subjectPosition);    // change to 1 for 5-tuples
+    final String pred = tuple.get(this.predicatePosition);  // change to 2
+    final String obj = tuple.get(this.objectPosition);      // change to 3
+    //final String time = tuple.get(?);                     // ? = 4
     // is subject brand-new ?
     final Literal lsubj = getLiteral(subj);
     final UriProxy usubj;
@@ -107,12 +115,11 @@ public class RdfGraph {
 
   /**
    * this method assumes that the property is a functional property;
-   * if it is _not_, it overwrites all values (the set);
+   * if it is _not_, it overwrites _all_ the values (the set);
    * in case the subject or the predicate for the subject is new, this method
    * has the same effect as method addToRdfGraph() above and returns false
    */
   public boolean overwriteInRdfGraph(List<String> tuple) {
-    boolean success = false;
     Set<Literal> value = getFromRdfGraph(tuple.get(0), tuple.get(1));
     if (value == null) {
       addToRdfGraph(tuple);
@@ -139,13 +146,13 @@ public class RdfGraph {
    *         literal is an XSD atom
    */
   public Set<Literal> getFromRdfGraph(String subject, String predicate) {
-    final Literal lit = this.nameToLiteral.get(subject);
-    if (lit == null)
+    final Literal literal = this.nameToLiteral.get(subject);
+    if (literal == null)
       return null;
-    if (Literal.isXsdAtom(lit))
+    if (Literal.isXsdAtom(literal))
       return null;
     // contains() via getValues() suffices here as we do _not_ allow for null values
-    return ((UriProxy)(lit)).getValues(predicate);
+    return ((UriProxy)(literal)).getValues(predicate);
   }
 
   /**
