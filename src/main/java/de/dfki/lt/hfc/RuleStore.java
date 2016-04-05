@@ -1391,7 +1391,7 @@ public final class RuleStore {
 							// check whether ituple is part of antecedent or consequent section
 							if (parseLhs) {
 								// generate a test and add it to list of tests
-								generateTest(tuple, ituple[TupleStore.PREDICATE_POSITION], tests, rule.name);
+								generateTest(tuple, ituple[this.tupleStore.predicatePosition], tests, rule.name);
 								if (this.verbose)
 									System.out.println("  " + rule.name + ": equivalence reduction enforces new LHS test");
 							}
@@ -1399,12 +1399,12 @@ public final class RuleStore {
 								// generate a binder var and an action;
 								// then add triple (?var eqrel ?var) to the consequent of the rule
 								String varname = generateNewVariableName();
-								generateAction(varname, tuple, ituple[TupleStore.PREDICATE_POSITION], actions, rule.name);
+								generateAction(varname, tuple, ituple[this.tupleStore.predicatePosition], actions, rule.name);
 								if (this.verbose)
 									System.out.println("  " + rule.name + ": equivalence reduction enforces new RHS action");
 								final ArrayList<String> eqTriple = new ArrayList<String>();
 								eqTriple.add(varname);
-								eqTriple.add(this.tupleStore.idToObject.get(ituple[TupleStore.PREDICATE_POSITION]));
+								eqTriple.add(this.tupleStore.idToObject.get(ituple[this.tupleStore.predicatePosition]));
 								eqTriple.add(varname);
 								tlist.add(makeTuple(eqTriple));
 							}
@@ -1473,9 +1473,9 @@ public final class RuleStore {
 		}
 		// make subject and object of original tuple arguments of the test;
 		// equivalence relation patterns are _always_ triples
-		sb.append(tuple.get(TupleStore.SUBJECT_POSITION));
+		sb.append(tuple.get(this.tupleStore.subjectPosition));
 		sb.append(" ");
-		sb.append(tuple.get(TupleStore.OBJECT_POSITION));
+		sb.append(tuple.get(this.tupleStore.objectPosition));
 		tests.add(sb.toString());
 	}
 
@@ -1498,9 +1498,9 @@ public final class RuleStore {
 				System.exit(1);
 				break;
 		}
-		sb.append(tuple.get(TupleStore.SUBJECT_POSITION));
+		sb.append(tuple.get(this.tupleStore.subjectPosition));
 		sb.append(" ");
-		sb.append(tuple.get(TupleStore.OBJECT_POSITION));
+		sb.append(tuple.get(this.tupleStore.objectPosition));
 		actions.add(sb.toString());
 	}
 

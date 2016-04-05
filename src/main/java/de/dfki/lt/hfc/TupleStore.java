@@ -116,11 +116,12 @@ public final class TupleStore {
 	 * in case we would move the predicate to the front, predicatePosition must be
 	 * set to 0, subject to 1, and object to 2, even if we would allow for tuples
 	 * of length > 3 (interpret this as "the object, given as a Cartesian product,
-	 * starts at position 2)
+	 * starts at position 2);
+		* other settings would include polarity information, transaction and valid time
 	 */
-	public static final int SUBJECT_POSITION = 0;
-	public static final int PREDICATE_POSITION = 1;
-	public static final int OBJECT_POSITION = 2;
+	public int subjectPosition = 0;
+	public int predicatePosition = 1;
+	public int objectPosition = 2;
 
 	/**
 	 * this setting is used for input encoding in TupleStore
@@ -275,13 +276,16 @@ public final class TupleStore {
 
 	/**
 	 * init form that "outsources" initialization code that needs to be duplicated by the
-	 * binary (that is used be several other constructors) and 8-ary constructor
+	 * binary (that is used be several other constructors) and 10-ary constructor
 	 */
 	private void init(boolean verbose,
 										boolean rdfCheck,
 										boolean eqReduction,
 										int minNoOfArgs,
 										int maxNoOfArgs,
+										int subjectPosition,
+										int predicatePosition,
+										int objectPosition,
 										int noOfAtoms,
 										int noOfTuples) {
 		this.verbose = verbose;
@@ -289,6 +293,9 @@ public final class TupleStore {
 		this.equivalenceClassReduction = eqReduction;
 		this.minNoOfArgs = minNoOfArgs;
 		this.maxNoOfArgs = maxNoOfArgs;
+		this.subjectPosition = subjectPosition;
+		this.predicatePosition = predicatePosition;
+		this.objectPosition = objectPosition;
 		this.objectToId = new HashMap<String, Integer>(noOfAtoms);
 		this.idToObject = new ArrayList<String>(noOfAtoms);
 		this.idToJavaObject = new ArrayList<AnyType>(noOfAtoms);
@@ -376,7 +383,9 @@ public final class TupleStore {
 	 */
 	public TupleStore(int noOfAtoms, int noOfTuples) {
 		init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
-				 this.minNoOfArgs, this.maxNoOfArgs, noOfAtoms, noOfTuples);
+				   this.minNoOfArgs, this.maxNoOfArgs,
+						 this.subjectPosition, this.predicatePosition, this.objectPosition,
+						 noOfAtoms, noOfTuples);
     this.namespace = new Namespace();
 	}
 
@@ -414,7 +423,28 @@ public final class TupleStore {
 										int noOfAtoms, int noOfTuples,
 										Namespace namespace, String tupleFile)
 										    throws FileNotFoundException, IOException, WrongFormatException {
-		init(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs, noOfAtoms, noOfTuples);
+		init(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
+						 this.subjectPosition, this.predicatePosition, this.objectPosition,
+						 noOfAtoms, noOfTuples);
+		this.namespace = namespace;
+		readTuples(tupleFile);
+	}
+
+	/**
+		* more options to fully parameterize the tuple store
+		* @throws IOException
+		* @throws FileNotFoundException
+		* @throws WrongFormatException
+		*/
+	public TupleStore(boolean verbose, boolean rdfCheck, boolean eqReduction,
+																			int minNoOfArgs, int maxNoOfArgs,
+																			int subjectPosition, int predicatePosition, int objectPosition,
+																			int noOfAtoms, int noOfTuples,
+																			Namespace namespace, String tupleFile)
+					throws FileNotFoundException, IOException, WrongFormatException {
+		init(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
+						 subjectPosition, predicatePosition, objectPosition,
+						 noOfAtoms, noOfTuples);
 		this.namespace = namespace;
 		readTuples(tupleFile);
 	}
@@ -519,7 +549,7 @@ public final class TupleStore {
 	 */
 	protected boolean isEquivalenceRelation(int[] tuple) {
 		// perhaps use an int set plus an element test here if more relations are involved
-		final int pred = tuple[TupleStore.PREDICATE_POSITION];
+		final int pred = tuple[this.predicatePosition];
 		return ((pred == Namespace.OWL_SAMEAS_ID) ||
 						(pred == Namespace.OWL_EQUIVALENTCLASS_ID) ||
 						(pred == Namespace.OWL_EQUIVALENTPROPERTY_ID));
@@ -556,17 +586,17 @@ public final class TupleStore {
 		//     if (isEquivalenceRelation(tuple))
 		//	     toBeRemoved.add(tuple);
 		// OR better: use the index (less triples to iterate over)
-		toBeRemoved.addAll(getTuples(TupleStore.PREDICATE_POSITION, Namespace.OWL_SAMEAS_ID));
-		toBeRemoved.addAll(getTuples(TupleStore.PREDICATE_POSITION, Namespace.OWL_EQUIVALENTCLASS_ID));
-		toBeRemoved.addAll(getTuples(TupleStore.PREDICATE_POSITION, Namespace.OWL_EQUIVALENTPROPERTY_ID));
+		toBeRemoved.addAll(getTuples(this.predicatePosition, Namespace.OWL_SAMEAS_ID));
+		toBeRemoved.addAll(getTuples(this.predicatePosition, Namespace.OWL_EQUIVALENTCLASS_ID));
+		toBeRemoved.addAll(getTuples(this.predicatePosition, Namespace.OWL_EQUIVALENTPROPERTY_ID));
 		// remove ER tuples from store (set & index) and update uriToProxy and proxyToUris,
 		// but also record the equivalence relation in which subject and object are related to
 		for (int[] tuple : toBeRemoved) {
 			removeTuple(tuple);
-			addEquivalentElements(tuple[TupleStore.SUBJECT_POSITION], tuple[TupleStore.OBJECT_POSITION]);
+			addEquivalentElements(tuple[this.subjectPosition], tuple[this.objectPosition]);
 			// do we need both entries here since subject position is used as THE proxy
-			this.uriToEquivalenceRelation.put(tuple[TupleStore.SUBJECT_POSITION], tuple[TupleStore.PREDICATE_POSITION]);
-			this.uriToEquivalenceRelation.put(tuple[TupleStore.OBJECT_POSITION], tuple[TupleStore.PREDICATE_POSITION]);
+			this.uriToEquivalenceRelation.put(tuple[this.subjectPosition], tuple[this.predicatePosition]);
+			this.uriToEquivalenceRelation.put(tuple[this.objectPosition], tuple[this.predicatePosition]);
 		}
 		// iterate over remaining tuples and replace uris by their proxies, if necessary;
 		// do NOT modify tuples in set & index, but instead delete old and add new cleaned-up tuples;

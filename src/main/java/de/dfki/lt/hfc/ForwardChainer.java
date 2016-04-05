@@ -294,6 +294,40 @@ public final class ForwardChainer {
 	}
 
 	/**
+		* more options that will also affect namespace, tuple store, and rule store
+		* @throws IOException
+		* @throws WrongFormatException
+		* @throws FileNotFoundException
+		*/
+	public ForwardChainer(int noOfCores,
+																							boolean verbose,
+																							boolean rdfCheck,
+																							boolean eqReduction,
+																							int minNoOfArgs,
+																							int maxNoOfArgs,
+																							int subjectPosition,
+																							int predicatePosition,
+																							int objectPosition,
+																							int noOfAtoms,
+																							int noOfTuples,
+																							String tupleFile,
+																							String ruleFile,
+																							String namespaceFile)
+					throws FileNotFoundException, WrongFormatException, IOException {
+		this(noOfCores, verbose);
+		this.noOfAtoms = noOfAtoms;
+		this.noOfTuples = noOfTuples;
+		Namespace namespace = new Namespace(namespaceFile, verbose);
+		this.tupleStore = new TupleStore(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
+						                             subjectPosition, predicatePosition, objectPosition,
+						                             this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
+		this.ruleStore = new RuleStore(verbose, rdfCheck, minNoOfArgs, maxNoOfArgs,
+						this.tupleStore, ruleFile);
+		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
+		this.noOfTasks = this.ruleStore.allRules.size();
+	}
+
+	/**
 	 * slightly less options as before, but namespace, tuple store, and rule store have already
 	 * been created
 	 */

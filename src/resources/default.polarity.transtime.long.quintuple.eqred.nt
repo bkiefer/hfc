@@ -28,15 +28,14 @@
 #         <owl:equivalentProperty> <rdf:type> <rdf:Property> .
 #         <owl:sameAs> <rdf:type> <rdf:Property> .
 #
-# NOTE: this is the polarity and transaction time extension of file
+# NOTE: this is the _polarity_ and _transaction time_ extension of file
 #         default.eqred.nt
 #       in that we prefix triples from this file by polarity
 #         <logic:true>
 #       and add suffix
 #         "0"^^<xsd:long>
-#       as the universally-holding transaction time 0 (from the very beginning)
+#       as the universally-holding transaction time 0 ("from the very beginning")
 #
-# !!!!!!!!!!!!!!!!!!!!!!!!!! VERSION NOT FINISHED YET !!!!!!!!!!!!!!!!!!!!!!!!!!
 #
 # @author Hans-Ulrich Krieger
 # @version Wed Mar 16 09:47:37 CET 2016
@@ -82,7 +81,7 @@
 <logic:true> <owl:Thing> <owl:disjointWith> <owl:Nothing> "0"^^<xsd:long> .
 
 # (some of the) standard XSD datatypes
-# note: HFC has further custom XSD datatype of its own
+# note: HFC has further _custom_ XSD datatype of its own
 <logic:true> <xsd:anySimpleType> <rdf:type> <rdfs:Datatype> "0"^^<xsd:long> .
 <logic:true> <xsd:anyURI> <rdf:type> <rdfs:Datatype> "0"^^<xsd:long> .
 <logic:true> <xsd:boolean> <rdf:type> <rdfs:Datatype> "0"^^<xsd:long> .
@@ -91,7 +90,7 @@
 <logic:true> <xsd:double> <rdf:type> <rdfs:Datatype> "0"^^<xsd:long> .
 <logic:true> <xsd:duration> <rdf:type> <rdfs:Datatype> "0"^^<xsd:long> .
 <logic:true> <xsd:float> <rdf:type> <rdfs:Datatype> "0"^^<xsd:long> .
-<logic:true> <xsd:gDayr> <rdf:type> <rdfs:Datatype> "0"^^<xsd:long> .
+<logic:true> <xsd:gDay> <rdf:type> <rdfs:Datatype> "0"^^<xsd:long> .
 <logic:true> <xsd:gMonth> <rdf:type> <rdfs:Datatype> "0"^^<xsd:long> .
 <logic:true> <xsd:gMonthDay> <rdf:type> <rdfs:Datatype> "0"^^<xsd:long> .
 <logic:true> <xsd:gYear> <rdf:type> <rdfs:Datatype> "0"^^<xsd:long> .
