@@ -37,29 +37,29 @@ public final class ValidInBetween extends FunctionalOperator {
    */
   public int apply(int[] args) {
     final int length = args.length;
-    final long time1 = ((XsdLong)(getObject(args[length - 2]))).value;
-    final long time2 = ((XsdLong)(getObject(args[length - 1]))).value;
-    // ask for polarity false
+    // ask for tuples with polarity false
     Set<int[]> result = ask(0, this.falseId);
     Set<int[]> query;
-    // perform successive intersections
+    // perform successive intersections with result
     for (int i = 0; i < (args.length - 2); i++) {
       query = ask(i + 1, args[i]);
       result = Calc.intersection(result, query);
       if (result.isEmpty())
-        // _no_ tuples with prefix "<logic:false> subj pred obj obj2"
+        // _no_ tuples with prefix "<logic:false> subj pred obj obj2 ..." found
         return FunctionalOperator.TRUE;
     }
     // at least tuples with prefix "<logic:false> subj pred obj obj2" exist;
     // so now check whether their time stamps are between time1 and time2
     long time;
+    final long time1 = ((XsdLong)(getObject(args[length - 2]))).value;
+    final long time2 = ((XsdLong)(getObject(args[length - 1]))).value;
     for (int[] tuple: result) {
-      // time is the last argument of tuple
+      // time is the last argument of a tuple
       time = ((XsdLong)(getObject(tuple[length - 1]))).value;
-      if ((Long.min(time1, time2) <= time) &&
-          (time <= Long.max(time1, time2)))
+      if ((Long.min(time1, time2) <= time) && (time <= Long.max(time1, time2)))
         return FunctionalOperator.FALSE;
     }
+    // no invalidated tuple matches input specification
     return FunctionalOperator.TRUE;
   }
 
