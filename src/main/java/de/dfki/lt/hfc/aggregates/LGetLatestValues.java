@@ -33,10 +33,10 @@ import de.dfki.lt.hfc.types.XsdLong;
  *   <pal:labval33> <dom:bsl> "165.6"^^<xsd:mg_dL> "5577"^^<xsd:long> .
  *
  * example query from the PAL domain:
- *   SELECT ?child ?prob ?val ?t
+ *   SELECT ?child ?prop ?val ?t
  *   WHERE ?child <rdf:type> <dom:Child> ?ts1 &
  *         ?child <dom:hasLabValue> ?labvalue ?ts2 &
- *         ?labvalue ?prob ?val ?
+ *         ?labvalue ?prop ?val ?t
  *   AGGREGATE ?measurement ?result ?patient ?time = LGetLatestValues ?prop ?val ?child ?t ?t
  *
  * what we would then like to see is

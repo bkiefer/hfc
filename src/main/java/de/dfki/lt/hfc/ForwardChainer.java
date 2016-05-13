@@ -1642,7 +1642,7 @@ public final class ForwardChainer {
 
 		// call THIS with equivalence class reduction ENABLED
 
-    //Namespace.shortIsDefault = false;
+		//Namespace.shortIsDefault = false;
     
 		ForwardChainer fc =	new ForwardChainer(100000, 500000,
 																					 "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.eqred.nt",
@@ -1650,7 +1650,10 @@ public final class ForwardChainer {
 																					 "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.ns");
 		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/src/resources/ltworld.jena.nt");
 		fc.computeClosure();
-		fc.computeClosure();
+		Query q = new Query(fc.tupleStore);
+		// different binder vars in aggregates
+		BindingTable bt = q.query("SELECT DISTINCT ?p WHERE ?s ?p ?o FILTER ?p != <rdf:type> AGGREGATE ?number = Count ?p & ?subject = Identity ?p");
+		System.out.println(bt);
 		fc.shutdown();
 
 		/*
