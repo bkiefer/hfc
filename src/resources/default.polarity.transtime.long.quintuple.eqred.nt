@@ -1,4 +1,6 @@
 #
+# OUTDATED COMMENT, BUT STILL USEFUL TO SEE HOW THINGS EVOLVED
+# ------------------------------------------------------------
 # the below axiomatic triples can be found in ter Horst papers
 #   Herman J. ter Horst (2004). Extending the RDFS Entailment Lemma. Proceedings ISWC.
 #   Herman J. ter Horst (2005). Combining RDF and Part of OWL with Rules: Semantics,
@@ -13,8 +15,8 @@
 # soundness of the entailed triples;
 # I have also added a few extensions to the set of axioms
 #
-# NOTE: six axiomatic triples have been removed for the
-#       equivalence class reduction, viz.,
+# NOTE: six axiomatic triples have been removed when equivalence class reduction is
+#       turned on, viz.,
 #         <owl:sameAs> <rdf:type> <owl:TransitiveProperty> .
 #         <owl:sameAs> <rdf:type> <owl:SymmetricProperty> .
 #         <owl:equivalentClass> <rdf:type> <owl:TransitiveProperty> .
@@ -23,22 +25,21 @@
 #         <owl:equivalentProperty> <rdf:type> <owl:SymmetricProperty> .
 #
 # NOTE: three axiomatic triples have been added instead in order to characterize
-#       these URIs as properties:
+#       these URIs as general properties:
 #         <owl:equivalentClass> <rdf:type> <rdf:Property> .
 #         <owl:equivalentProperty> <rdf:type> <rdf:Property> .
 #         <owl:sameAs> <rdf:type> <rdf:Property> .
 #
-# NOTE: this is the _polarity_ and _transaction time_ extension of file
-#         default.eqred.nt
+# NOTE: this is the _polarity_ & _transaction time_ extension of file default.eqred.nt
 #       in that we prefix triples from this file by polarity
 #         <logic:true>
 #       and add suffix
 #         "0"^^<xsd:long>
-#       as the universally-holding transaction time 0 ("from the very beginning")
+#       as the universally-holding transaction time 0 ("from the very beginning of time")
 #
 #
 # @author Hans-Ulrich Krieger
-# @version Wed Mar 16 09:47:37 CET 2016
+# @version Fri May 13 16:46:56 CEST 2016
 #
 
 <logic:true> <rdf:type> <rdf:type> <rdf:Property> "0"^^<xsd:long> .

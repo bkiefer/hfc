@@ -840,7 +840,7 @@ public class Query {
 		ts.readTuples("/Users/krieger/Desktop/Java/HFC/hfc/src/resources/ltworld.jena.nt");
 		Query q = new Query(ts);
 		// different binder vars in aggregates
-		BindingTable bt = q.query("SELECT ?p WHERE ?s ?p ?o AGGREGATE ?number = CountDistinct ?p & ?subject = Identity ?p");
+		BindingTable bt = q.query("SELECT DISTINCT ?p WHERE ?s ?p ?o AGGREGATE ?number = Count ?p & ?subject = Identity ?p");
 		//BindingTable bt = q.query("SELECT ?child ?prop ?val ?t WHERE ?child <rdf:type> <dom:Child> ?t1 & ?child <dom:hasLabValue> ?lv ?t2 & ?lv ?prop ?val ?t & AGGREGATE ?measurement ?result ?patient ?time = LGetLatestValues ?prop ?val ?child ?t ?t");
 		// same binder vars in aggregates
 		//q.query("SELECT ?o1 ?o2 WHERE ?s1 <value> ?o1 & ?s2 <value> ?o2 FILTER ?s1 != ?s2 & ILess ?o1 ?o2 AGGREGATE ?minmax = Min ?o1 & ?minmax = Max ?o2");
