@@ -213,7 +213,7 @@ public final class TupleStore {
 	/**
 	 * a namespace object used to expand short form namespaces into full forms
 	 */
-	protected Namespace namespace;
+	public Namespace namespace;
 
 	/**
 	 * used during input, when URIs, blank nodes, or XSD atoms are replaced by their IDs (ints)
@@ -1628,7 +1628,7 @@ public final class TupleStore {
 			// distinguish between URIs vs. XSD atoms or blank nodes
 			literal = getObject(tuple[i]);
 			if (TupleStore.isAtom(literal) || TupleStore.isBlankNode(literal))
-				sb.append(literal + " ");
+				sb.append(literal.replace("xsd:", this.namespace.getLongForm("xsd")) + " ");
 			else
 				// a URI
 				sb.append(this.namespace.expandUri(literal) + " ");

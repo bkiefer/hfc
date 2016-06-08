@@ -126,13 +126,13 @@ public final class Namespace {
 	 * translation table for establishing mappings between short and long form
 	 * namespace strings
 	 */
-	protected HashMap<String, String> shortToLong = new HashMap<String, String>();
+	public HashMap<String, String> shortToLong = new HashMap<String, String>();
 
 	/**
 	 * translation table for establishing mappings between long and short form
 	 * namespace strings
 	 */
-	protected HashMap<String, String> longToShort = new HashMap<String, String>();
+	public HashMap<String, String> longToShort = new HashMap<String, String>();
 
   /**
    * a mapping between XSD type specifiers and Java classes representing these types in HFC
