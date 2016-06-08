@@ -75,8 +75,6 @@
 <xsd:gDay> <rdf:type> <rdfs:Datatype> .
 <xsd:duration> <rdf:type> <rdfs:Datatype> .
 <xsd:anyURI> <rdf:type> <rdfs:Datatype> .
-<xsd:monetary> <rdf:type> <rdfs:Datatype> .
-<xsd:uDateTime> <rdf:type> <rdfs:Datatype> .
 
 #<rdfs:Datatype> <rdfs:subClassOf> <rdfs:Class> .
 #<owl:Class> <rdfs:subClassOf> <rdfs:Class> .

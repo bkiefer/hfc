@@ -1,0 +1,33 @@
+#
+# this is the information needed for the PAL diabetes domain
+#
+
+# short to long namespace name mappings: use &short2long directive
+
+&short2long
+dial http://www.dfki.de/lt/onto/common/dialogue.owl#
+dom http://www.dfki.de/lt/onto/pal/domain.owl#
+goal http://www.dfki.de/lt/onto/pal/dmgoals.owl#
+logic http://www.dfki.de/lt/onto/common/logic.owl#
+pal http://www.dfki.de/lt/onto/pal/pal.owl#
+sem http://www.dfki.de/lt/onto/pal/semantics.owl#
+time http://www.dfki.de/lt/onto/common/time.owl#
+upp http://www.dfki.de/lt/onto/common/upper.owl#
+
+
+# short namespace type URIs to HFC classes: use &type2class directive
+# note: all (custom) type classes should be put in package
+#       de.dfki.lt.hfc.types
+
+&type2class
+xsd:min-1 Xsd1_min
+xsd:cal XsdCal
+xsd:cm XsdCm
+xsd:gm XsdGm
+xsd:iu XsdIu
+xsd:kg XsdKg
+xsd:kg_m2 XsdKg_m2
+xsd:m XsdM
+xsd:mg_dL XsdMg_dL
+xsd:mmHg XsdMmHg
+xsd:mmol_L XsdMmol_L

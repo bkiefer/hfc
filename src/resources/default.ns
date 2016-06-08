@@ -28,5 +28,3 @@ xsd:gYearMonth  XsdGYearMonth
 xsd:gMonth  XsdGMonth
 xsd:gMonthDay  XsdGMonthDay
 xsd:gDay  XsdGDay
-xsd:uDateTime  XsdUDateTime
-xsd:monetary  XsdMonetary
