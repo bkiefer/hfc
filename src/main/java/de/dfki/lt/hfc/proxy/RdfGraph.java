@@ -1,5 +1,7 @@
-package de.dfki.lt.hfc;
+package de.dfki.lt.hfc.proxy;
 
+import de.dfki.lt.hfc.TupleStore;
+import de.dfki.lt.hfc.Namespace;
 import java.util.*;
 
 /**
@@ -29,9 +31,9 @@ public class RdfGraph {
 
   /**
    * a mapping from URIs and XSD atom names onto instances of the corresponding classes
-   * @see de.dfki.lt.hfc.Literal
-   * @see de.dfki.lt.hfc.UriProxy
-   * @see de.dfki.lt.hfc.XsdAtomProxy
+   * @see de.dfki.lt.hfc.proxy.Literal
+   * @see de.dfki.lt.hfc.proxy.UriProxy
+   * @see de.dfki.lt.hfc.proxy.XsdAtomProxy
    */
   private Map<String, Literal> nameToLiteral;
 

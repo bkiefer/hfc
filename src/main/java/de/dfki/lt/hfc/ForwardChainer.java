@@ -484,6 +484,51 @@ public final class ForwardChainer {
 		}
 	}
 
+
+	/**
+		* used below to memoize the result of a join of two tables
+		* in complexJoin()
+		*/
+	private class Pair {
+
+		final protected Object first;
+
+		final protected Object second;
+
+		public Pair(Object first, Object second) {
+			this.first = first;
+			this.second = second;
+		}
+
+		/**
+			* make sure that this equals obj by NOT distinguishing between first and second
+			*/
+		public boolean equals(Object obj) {
+			Pair pair = (Pair)obj;
+			if (this.first.equals(pair.first) && this.second.equals(pair.second))
+				return true;
+			else if (this.first.equals(pair.second) && this.second.equals(pair.first))
+				return true;
+			else
+				return false;
+		}
+
+		/**
+			* hash code does not distinguish between first and second arg of a pair, thus
+			* adds the hashes of first and second:
+			*   IF p.first == x && p.second == y &&
+			*      q.first == y && q.second == x
+			*   THEN p.hashCode() == q.hashCode()
+			*/
+		public int hashCode() {
+			return first.hashCode() + second.hashCode();
+		}
+
+	}
+
+
+
+
 	/**
 	 * does the recursive job for executeGlobalMatch();
 	 * recursively takes the union of the continuation of complexJoin() for both delta and old at

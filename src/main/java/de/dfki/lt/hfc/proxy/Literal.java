@@ -1,4 +1,4 @@
-package de.dfki.lt.hfc;
+package de.dfki.lt.hfc.proxy;
 
 /**
  * this abstract class is the superclass of both UriProxy and XsdAtomProxy;

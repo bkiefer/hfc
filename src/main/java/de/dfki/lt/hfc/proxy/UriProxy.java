@@ -1,4 +1,4 @@
-package de.dfki.lt.hfc;
+package de.dfki.lt.hfc.proxy;
 
 import java.util.*;
 
@@ -11,7 +11,7 @@ import java.util.*;
  * a map;
  * NOTE: we also use this class to represent blank nodes
  *
- * @see de.dfki.lt.hfc.Literal
+ * @see de.dfki.lt.hfc.proxy.Literal
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
@@ -48,7 +48,7 @@ public class UriProxy extends Literal {
    * if the property is not known, null is returned, thus this method
    * can be used to check whether the property exists (as null values
    * are _not_ allowed)
-   * @see de.dfki.lt.hfc.Literal
+   * @see de.dfki.lt.hfc.proxy.Literal
    * @return the set of literals that are connected to this URI node
    */
   public Set<Literal> getValues(String property) {

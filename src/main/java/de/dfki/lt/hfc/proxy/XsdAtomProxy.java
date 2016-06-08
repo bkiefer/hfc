@@ -1,4 +1,4 @@
-package de.dfki.lt.hfc;
+package de.dfki.lt.hfc.proxy;
 
 import java.util.*;
 
@@ -6,7 +6,7 @@ import java.util.*;
  * the class XsdAtomProxy inherits the field name from its abstract
  * superclass Literal
  *
- * @see de.dfki.lt.hfc.Literal
+ * @see de.dfki.lt.hfc.proxy.Literal
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5

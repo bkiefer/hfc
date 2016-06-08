@@ -1397,7 +1397,7 @@ public final class RuleStore {
 							}
 							else {
 								// generate a binder var and an action;
-								// then add triple (?var eqrel ?var) to the consequent of the rule
+								// then add reflexive triple (?var eqrel ?var) to the consequent of the rule
 								String varname = generateNewVariableName();
 								generateAction(varname, tuple, ituple[this.tupleStore.predicatePosition], actions, rule.name);
 								if (this.verbose)
@@ -1420,7 +1420,7 @@ public final class RuleStore {
 						}
 					}
 					else {
-						// no equivalence class reduction computated
+						// no equivalence class reduction computed
 						tlist.add(makeTuple(tuple));
 					}
 				}
