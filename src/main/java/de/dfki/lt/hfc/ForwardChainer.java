@@ -1047,9 +1047,14 @@ public final class ForwardChainer {
 	 * @throws WrongFormatException
 	 * @see TupleStore.readTuples()
 	 */
-	public void uploadTuples(String filename)
-	    throws FileNotFoundException, IOException, WrongFormatException {
+	public void uploadTuples(String filename) throws FileNotFoundException, IOException, WrongFormatException {
 		this.tupleStore.readTuples(filename);
+	}
+
+
+	public void uploadTuples(String filename, String front, String... backs)
+					throws FileNotFoundException, IOException, WrongFormatException {
+		this.tupleStore.readTuples(filename, front, backs);
 	}
 
 	/**

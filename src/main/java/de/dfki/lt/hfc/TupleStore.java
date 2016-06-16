@@ -1126,6 +1126,42 @@ public final class TupleStore {
 	}
 
 	/**
+		* a method that extends a tuple, given as a ArrayList<String>, by further
+		* arguments: <it>one</it> in front and <it>several</it> afterwards;
+		* use <it>null</it> as a value for <it>front</it> to signal that there is
+		* <it>no</it> front element and an <it>empty array</it> that there are no
+		* <it>back</it> elements;
+		* this method is particularly useful for extending tuples with a notion of
+		* valid time, transaction time, or gradation/modal operators
+		* @return the new extended <it>internalized</it> tuple (an int array)
+		*/
+	public int[] extendTupleInternally(ArrayList<String> in, String front, String... backs) {
+		// make sure to set etuple directly to the right size
+		ArrayList<String> etuple = new ArrayList<String>(in.size() + backs.length + (front == null ? 0 : 1));
+		if (front != null)
+			etuple.add(front);
+		etuple.addAll(in);
+		for (String back : backs)
+			etuple.add(back);
+		return internalizeTuple(etuple);
+	}
+
+	/**
+		* similar to extendTupleInternal(), but does not internalize the extended tuple
+		* @return the new extended tuple
+		*/
+	public ArrayList<String> extendTupleExternally(ArrayList<String> in, String front, String... backs) {
+		// make sure to set etuple directly to the right size
+		ArrayList<String> etuple = new ArrayList<String>(in.size() + backs.length + (front == null ? 0 : 1));
+		if (front != null)
+			etuple.add(front);
+		etuple.addAll(in);
+		for (String back : backs)
+			etuple.add(back);
+		return etuple;
+	}
+
+	/**
 	 * readTuples() reads in a sequence of tuples from a text file;
 	 * tuples must be finished in a _single_ line, constrained by the following
 	 * side conditions:
@@ -1160,19 +1196,19 @@ public final class TupleStore {
 	 *   _:foo42 <firstName> "Uli" .
 	 *   _:foo42 <lastName> "Krieger" .
 		*
-		* @param timeStamp a time stamp (a long value) which is attached as a suffix to each
-		*                  tuple found in br;
-		*                  a negative value indicates that _no_ time stamp should be attached
+		* @param br
+		* @param front
+		* @param backs
+		* @throws IOException
 	 * @throws WrongFormatException
 	 *
 	 */
-	public void readTuples(BufferedReader br, long timeStamp) throws IOException, WrongFormatException {
+	public void readTuples(BufferedReader br, String front, String... backs) throws IOException, WrongFormatException {
 		String line, token;
 		StringTokenizer st;
 		int noOfTuples = 0, lineNo = 0;
 		ArrayList<String> tuple = new ArrayList<String>();
 		boolean eol = true;
-		final String xsdTimeStamp = (timeStamp < 0) ? null : XsdLong.toString(timeStamp, true);
 		while ((line = br.readLine()) != null) {
 				// strip of spaces at begin and end of line
 				line = line.trim();
@@ -1208,9 +1244,8 @@ public final class TupleStore {
 					}
 				}
 				if (eol) {
-					// if transaction time is wanted, add it to the back of the tuple
-					if (xsdTimeStamp != null)
-						tuple.add(xsdTimeStamp);
+					// now add one potenetial front element and further potential back elements
+					tuple = extendTupleExternally(tuple, front, backs);
 					// external tuple representation might be misspelled or the tuple is already contained
 					if (addTuple(tuple, lineNo) != null)
 						++noOfTuples;  // everything was fine
@@ -1250,24 +1285,60 @@ public final class TupleStore {
 	}
 
 	/**
-		* calls readTuples(br, -1L) = no time stamps attached
+		* this version of readTuples() adds one back element, viz., a time stamp given
+		* as a Java long and represented by an XSD long
+		*
+		* @param br
+		* @param timeStamp
+		* @throws IOException
+		* @throws WrongFormatException
+   */
+	public void readTuples(BufferedReader br, long timeStamp) throws IOException, WrongFormatException {
+		// construct an HFC XSD long for the Java long
+		readTuples(br, null, XsdLong.toString(timeStamp, true));
+	}
+
+	/**
+		* read in tuples from a buffered reader
 		*
 		* @param br
 		* @throws IOException
 		* @throws WrongFormatException
 		*/
 	public void readTuples(BufferedReader br) throws IOException, WrongFormatException {
-		readTuples(br, -1L);
+		readTuples(br, null);
 	}
 
-  public void readTuples(String filename)
-    throws IOException, WrongFormatException {
+	/**
+		* read in the tuple file and add potential front and back elements to every tuple
+		*
+		* @param filename
+		* @throws FileNotFoundException
+		* @throws IOException
+		* @throws WrongFormatException
+		*/
+  public void readTuples(String filename) throws FileNotFoundException, IOException, WrongFormatException {
     if (this.verbose)
       System.out.println("\n  reading tuples from " + filename + " ...");
     readTuples(Files.newBufferedReader(new File(filename).toPath(),
         Charset.forName(TupleStore.INPUT_CHARACTER_ENCODING)));
   }
 
+	/**
+		* read in the tuple file as it is
+		*
+		* @param filename
+		* @throws FileNotFoundException
+		* @throws IOException
+		* @throws WrongFormatException
+		*/
+	public void readTuples(String filename, String front, String... backs)
+					throws FileNotFoundException, IOException, WrongFormatException {
+		if (this.verbose)
+			System.out.println("\n  reading tuples from " + filename + " ...");
+		readTuples(Files.newBufferedReader(new File(filename).toPath(),
+						Charset.forName(TupleStore.INPUT_CHARACTER_ENCODING)), front, backs);
+	}
 
   /**
 	 * reads in a 'compressed' tuple store (extension usually "ts") generated by
@@ -1850,42 +1921,6 @@ public final class TupleStore {
 			}
 		}
 		return copy;
-	}
-
-	/**
-		* a method that extends a tuple, given as a List<String>, by further
-		* arguments: <it>one</it> in front and <it>several</it> afterwards;
-		* use <it>null</it> as a value for <it>front</it> to signal that there is
-		* <it>no</it> front element and an <it>empty array</it> that there are no
-		* <it>back</it> elements;
-		* this method is particularly useful for extending tuples with a notion of
-		* valid time, transaction time, or gradation/modal operators
-		* @return the new extended <it>internalized</it> tuple (an int array)
-		*/
-	public int[] extendTupleInternally(List<String> in, String front, String... backs) {
-		// make sure to set etuple directly to the right size
-		ArrayList<String> etuple = new ArrayList<String>(in.size() + backs.length + (front == null ? 0 : 1));
-		if (front != null)
-			etuple.add(front);
-		etuple.addAll(in);
-		for (String back : backs)
-			etuple.add(back);
-		return internalizeTuple(etuple);
-	}
-
-	/**
-		* similar to extendTupleInternal(), but does not internalize the extended tuple
-		* @return the new extended tuple
-		*/
-	public List<String> extendTupleExternally(List<String> in, String front, String... backs) {
-		// make sure to set etuple directly to the right size
-		ArrayList<String> etuple = new ArrayList<String>(in.size() + backs.length + (front == null ? 0 : 1));
-		if (front != null)
-			etuple.add(front);
-		etuple.addAll(in);
-		for (String back : backs)
-			etuple.add(back);
-		return etuple;
 	}
 
 	/**
