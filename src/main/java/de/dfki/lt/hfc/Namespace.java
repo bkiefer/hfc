@@ -201,14 +201,14 @@ public final class Namespace {
 	}
 
 	/**
-	 * normalizeNamespace() takes a URI (without '<' and '>') and normalizes the
+	 * normalizeNamespaceUri() takes a URI (without '<' and '>') and normalizes the
 	 * namespace depending on global Namespace.shortIsDefault;
-	 * if shortIsDefault == true, normalizeNamespace() tries to replace long forms
+	 * if shortIsDefault == true, normalizeNamespaceUri() tries to replace long forms
 	 * by their short forms;
-	 * if shortIsDefault == false, normalizeNamespace() tries to replace short forms
+	 * if shortIsDefault == false, normalizeNamespaceUri() tries to replace short forms
 	 * by their long forms
 	 */
-	public String normalizeNamespace(String uri) {
+	public String normalizeNamespaceUri(String uri) {
 		if (Namespace.shortIsDefault) {
 			// read characters until we find a '#'
 			int pos = uri.indexOf("#");
@@ -219,7 +219,7 @@ public final class Namespace {
 			String suffix = uri.substring(pos + 1);
 			String expansion = getShortForm(prefix);
 			if (expansion == null)
-				// there is no namespace maping
+				// there is no namespace mapping
 				return uri;
 			else
 				return expansion + ":" + suffix;
@@ -239,6 +239,30 @@ public final class Namespace {
 			else
 				return expansion + suffix;
 		}
+	}
+
+	/**
+		* normalizeNamespace() not only normalizes the the namespace name of an URI,
+		* but also looks at the type specification of an XSD atom (again, a URI);
+		* thanks Bernd
+		*/
+	public String normalizeNamespace(String s) {
+		switch (s.charAt(0)) {
+			case '<' :
+				return '<'
+								+ normalizeNamespaceUri(
+								s.substring(1, s.length() - 1))
+								+ '>';
+			case '"' :
+				// Atom, possibly with long xsd type spec
+				int pos = s.lastIndexOf('^');
+				if (pos > 0 && s.charAt(pos - 1) == '^') {
+					return s.substring(0, pos + 2)
+									+ normalizeNamespaceUri(s.substring(pos + 2, s.length() - 1))
+									+ '>';
+				}
+		}
+		return s;
 	}
 
 	/**

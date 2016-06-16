@@ -840,10 +840,10 @@ public final class TupleStore {
 		// is tuple RDF compliant
 		if (rdfCheck) {
 			// check for valid first arg
-			if ((stringTuple.size() > 0) && (TupleStore.isAtom(stringTuple.get(0))))
+			if ((stringTuple.size() > 0) && (TupleStore.isAtom(stringTuple.get(this.subjectPosition))))
 				return sayItLoud(lineNo, ": first arg is an atom");
 			// check for valid second arg
-			if ((stringTuple.size() > 1) && (!TupleStore.isUri(stringTuple.get(1))))
+			if ((stringTuple.size() > 1) && (!TupleStore.isUri(stringTuple.get(this.predicatePosition))))
 				return sayItLoud(lineNo, ": second arg is not an URI");
 		}
 		return true;
@@ -925,31 +925,10 @@ public final class TupleStore {
 	 */
 	public int[] internalizeTuple(ArrayList<String> stringTuple) {
 		int[] intTuple = new int[stringTuple.size()];
-		int id;
-		for (int i = 0; i < stringTuple.size(); i++) {
-			id  = putObject(stringTuple.get(i));
-			intTuple[i] = id;
-		}
+		for (int i = 0; i < stringTuple.size(); i++)
+			intTuple[i] = putObject(stringTuple.get(i));
 		return intTuple;
 	}
-
-  /**
-   * internalizeTuple() maps array lists of strings to int arrays of unique
-   * ints;
-   * uses putObject() to generate new ints in case the string argument is
-   * brand new, or retrieves the already generated int in case the string
-   * argument has already been seen
-   *
-   * TODO: LONG TO SHORT MAPPINGS MUST HAVE BEEN DONE BEFOREHAND
-   */
-  public int[] internalizeTuple(List<String> stringTuple) {
-    int[] intTuple = new int[stringTuple.size()];
-    int i = 0;
-    for (String s : stringTuple) {
-      intTuple[i++] = putObject(s);
-    }
-    return intTuple;
-  }
 
 	/**
 	 * internalizeTuple() maps string arrays to int arrays of unique ints;
@@ -961,11 +940,8 @@ public final class TupleStore {
 	 */
 	public int[] internalizeTuple(String[] stringTuple) {
 		int[] intTuple = new int[stringTuple.length];
-		int id;
-		for (int i = 0; i < stringTuple.length; i++) {
-			id  = putObject(stringTuple[i]);
-			intTuple[i] = id;
-		}
+		for (int i = 0; i < stringTuple.length; i++)
+			intTuple[i] = putObject(stringTuple[i]);
 		return intTuple;
 	}
 
@@ -976,8 +952,8 @@ public final class TupleStore {
 	 * this method is used when an external tuple file is read in;
 	 * lineNo refers to the line number in the file that is read in
 	 *
-   * TODO: LONG TO SHORT MAPPINGS MUST HAVE BEEN DONE BEFOREHAND
-   *
+		* TODO: LONG TO SHORT MAPPINGS MUST HAVE BEEN DONE BEFOREHAND
+  *
 	 * @return null iff the tuple representation is illegal OR the tuple is
 	 *         already contained in the tuple store
 	 * @return the int[] representation of parameter stringTuple, otherwise
@@ -998,37 +974,8 @@ public final class TupleStore {
 		}
 	}
 
-  /**
-   * addTuple() assumes a textual tuple representation after tokenization
-   * (an array list of strings),
-   * the bidirectional mapping is established and the index is updated;
-   * this method is used when an external tuple file is read in;
-   * lineNo refers to the line number in the file that is read in
-   *
-   * TODO: LONG TO SHORT MAPPINGS MUST HAVE BEEN DONE BEFOREHAND
-   *
-   * @return null iff the tuple representation is illegal OR the tuple is
-   *         already contained in the tuple store
-   * @return the int[] representation of parameter stringTuple, otherwise
-   * @throws WrongFormatException
-   */
-  protected int[] addTuple (List<String> stringTuple, int lineNo)
-      throws WrongFormatException {
-    // check whether external representation is valid for a ground tuple
-    if (!isValidTuple(stringTuple, lineNo))
-        return null;
-    // internalize tuple
-    int[] intTuple = internalizeTuple(stringTuple);
-    if (addTuple(intTuple))
-      return intTuple;
-    else {
-      sayItLoud(lineNo, ": tuple specified twice");
-      return null;
-    }
-  }
-
-  /**
-	 * addTuple(String[]) performs the internalization and then calls addTuple(int[])
+	/**
+		 * addTuple(String[]) performs the internalization and then calls addTuple(int[])
    *
    * TODO: LONG TO SHORT MAPPINGS MUST HAVE BEEN DONE BEFOREHAND
 	 */
@@ -1426,7 +1373,7 @@ public final class TupleStore {
 				break;
 			else
 				// normalize the namespace
-				sb.append(this.namespace.normalizeNamespace(token));
+				sb.append(this.namespace.normalizeNamespaceUri(token));
 		}
 		token = sb.append(">").toString();
 		tuple.add(token);
@@ -1482,7 +1429,7 @@ public final class TupleStore {
 				bareAtom = false;
 				if (!(token.equals("^^") || token.equals("<") || token.equals(">")))
 					// normalize namespace
-					token = this.namespace.normalizeNamespace(token);
+					token = this.namespace.normalizeNamespaceUri(token);
 				sb.append(token);
 			}
 		}
@@ -1903,6 +1850,42 @@ public final class TupleStore {
 			}
 		}
 		return copy;
+	}
+
+	/**
+		* a method that extends a tuple, given as a List<String>, by further
+		* arguments: <it>one</it> in front and <it>several</it> afterwards;
+		* use <it>null</it> as a value for <it>front</it> to signal that there is
+		* <it>no</it> front element and an <it>empty array</it> that there are no
+		* <it>back</it> elements;
+		* this method is particularly useful for extending tuples with a notion of
+		* valid time, transaction time, or gradation/modal operators
+		* @return the new extended <it>internalized</it> tuple (an int array)
+		*/
+	public int[] extendTupleInternally(List<String> in, String front, String... backs) {
+		// make sure to set etuple directly to the right size
+		ArrayList<String> etuple = new ArrayList<String>(in.size() + backs.length + (front == null ? 0 : 1));
+		if (front != null)
+			etuple.add(front);
+		etuple.addAll(in);
+		for (String back : backs)
+			etuple.add(back);
+		return internalizeTuple(etuple);
+	}
+
+	/**
+		* similar to extendTupleInternal(), but does not internalize the extended tuple
+		* @return the new extended tuple
+		*/
+	public List<String> extendTupleExternally(List<String> in, String front, String... backs) {
+		// make sure to set etuple directly to the right size
+		ArrayList<String> etuple = new ArrayList<String>(in.size() + backs.length + (front == null ? 0 : 1));
+		if (front != null)
+			etuple.add(front);
+		etuple.addAll(in);
+		for (String back : backs)
+			etuple.add(back);
+		return etuple;
 	}
 
 	/**

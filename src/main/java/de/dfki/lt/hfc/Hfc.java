@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 
 import de.dfki.lt.hfc.types.XsdLong;
@@ -85,7 +86,7 @@ public class Hfc {
     switch (s.charAt(0)) {
     case '<' :
       return '<'
-          + _tupleStore.namespace.normalizeNamespace(
+          + _tupleStore.namespace.normalizeNamespaceUri(
               s.substring(1, s.length() - 1))
           + '>';
     case '"' :
@@ -93,7 +94,7 @@ public class Hfc {
       int pos = s.lastIndexOf('^');
       if (pos > 0 && s.charAt(pos - 1) == '^') {
         return s.substring(0, pos + 2)
-            + _tupleStore.namespace.normalizeNamespace(s.substring(pos + 2, s.length() - 1))
+            + _tupleStore.namespace.normalizeNamespaceUri(s.substring(pos + 2, s.length() - 1))
             + '>';
       }
     }
@@ -143,6 +144,9 @@ public class Hfc {
 
   public BindingTable executeQuery(String query) throws QueryParseException {
     Query q = new Query(_tupleStore);
+    // do we want to generate a new Query object for each call of query() (is not needed)?
+    // yes, as executeQuery is used in hfc-db by class HfcDbHandler in method selectQuery();
+    // otherwise, we would need to synchronize a class-based Query object here
     BindingTable bt = q.query(query);
     return bt;
   }
