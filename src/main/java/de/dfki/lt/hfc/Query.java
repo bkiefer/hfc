@@ -341,8 +341,15 @@ public class Query {
 			// break if (optional) AGGREGATE is found
 			else if (token.toUpperCase().equals("AGGREGATE"))
 				break;
-			else  // a predicate symbol--I do not check whether this is a legal Java class name
+			else { // a predicate symbol
+				// check whether this is a legal Java class name
+				try {
+					Class.forName("de.dfki.lt.hfc.operators." + token);
+				} catch (ClassNotFoundException var8) {
+					throw new QueryParseException(token + " is not a valid constraint.");
+				}
 				constraint.add(token);
+			}
 		}
 		// since last clause is usually not followed by the '&' character,
 		// we need to check this by testing whether constraint is not empty
@@ -375,9 +382,15 @@ public class Query {
 				aggregateClauses.add(aggregate);
 				aggregate = new ArrayList<String>();
 			}
-			// an aggregate symbol--I do not check whether this is a legal Java class name
-			else
+			else { // an aggregate symbol
+				//I do not check whether this is a legal Java class name
+				try {
+					Class.forName("de.dfki.lt.hfc.aggregates." + token);
+				} catch (ClassNotFoundException var7) {
+					throw new QueryParseException(token + " is not a valid aggregate operator.");
+				}
 				aggregate.add(token);
+			}
 		}
 		if (! aggregate.isEmpty())
 			aggregateClauses.add(aggregate);
