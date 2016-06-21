@@ -40,7 +40,7 @@ public final class XsdGm extends XsdAnySimpleType {
   public String toString(boolean shortIsDefault) {
     return toString(this.value, shortIsDefault);
   }
-  
+
   /**
    * binary version is given the value directly
    */
@@ -54,21 +54,21 @@ public final class XsdGm extends XsdAnySimpleType {
       sb.append(LONG_NAME);
     return sb.toString();
   }
-  
+
   /**
    * turn double value into a string
    */
   public String toName() {
     return Double.toString(this.value);
   }
-  
+
   /**
    * returns a java.lang.Double container for an HFC XsdGm object
    */
   public Object toJava() {
     return this.value;
   }
-  
+
   /**
    * returns the equivalent of this.value measured in xsd:kg;
    * multiplication factor is 1/1000
@@ -76,5 +76,5 @@ public final class XsdGm extends XsdAnySimpleType {
   public double toKg() {
     return this.value / 1000.0;
   }
-  
+
 }

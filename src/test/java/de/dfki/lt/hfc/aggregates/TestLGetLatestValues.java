@@ -30,7 +30,7 @@ import de.dfki.lt.hfc.*;
  * @since JDK 1.5
  * @version Wed Mar 23 16:49:29 CET 2016
  */
-public class LGetLatestValues {
+public class TestLGetLatestValues {
   static ForwardChainer fc;
 
   public static String getResource(String name) {
