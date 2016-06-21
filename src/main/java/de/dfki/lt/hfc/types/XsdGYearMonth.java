@@ -19,7 +19,7 @@ public final class XsdGYearMonth extends XsdAnySimpleType {
 
   static {
     registerConstructor(XsdGYearMonth.class,
-        SHORT_NAME, LONG_NAME);
+        null, SHORT_NAME, LONG_NAME);
   }
 
 	/**

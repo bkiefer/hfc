@@ -31,7 +31,7 @@ public final class XsdMonetary extends XsdAnySimpleType {
   public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
 
   static {
-    registerConstructor(XsdMonetary.class, SHORT_NAME, LONG_NAME);
+    registerConstructor(XsdMonetary.class, null, SHORT_NAME, LONG_NAME);
   }
 
 	/**

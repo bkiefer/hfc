@@ -12,7 +12,7 @@ public final class XsdString extends XsdAnySimpleType {
   public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
 
   static {
-    registerConstructor(XsdString.class, SHORT_NAME, LONG_NAME);
+    registerConstructor(XsdString.class, String.class, SHORT_NAME, LONG_NAME);
   }
 
 	public String value;
@@ -31,8 +31,13 @@ public final class XsdString extends XsdAnySimpleType {
 			final int length = value.length();
 			if (index == -1) {
 				// no language tag
-				this.value = value.substring(1, length - 1);
-				this.languageTag = null;
+			  if (this.value.charAt(0) == '"' &&
+			      this.value.charAt(this.value.length() - 1) == '"') {
+			    this.value = value.substring(1, length - 1);
+			  } else {
+			    this.value = value;
+			  }
+			  this.languageTag = null;
 			}
 			else {
 				// there is a language tag

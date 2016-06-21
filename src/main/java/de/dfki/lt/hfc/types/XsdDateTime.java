@@ -27,7 +27,7 @@ public final class XsdDateTime extends XsdAnySimpleType {
   public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
 
   static {
-    registerConstructor(XsdDateTime.class, SHORT_NAME, LONG_NAME);
+    registerConstructor(XsdDateTime.class, null, SHORT_NAME, LONG_NAME);
   }
 
 	/**

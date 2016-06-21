@@ -15,7 +15,7 @@ public final class XsdCm extends XsdAnySimpleType {
   public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
   
   static {
-    registerConstructor(XsdCm.class, SHORT_NAME, LONG_NAME);
+    registerConstructor(XsdCm.class, null, SHORT_NAME, LONG_NAME);
   }
   
   public double value;

@@ -9,14 +9,14 @@ package de.dfki.lt.hfc.types;
  * @version Fri Jan 29 19:28:31 CET 2016
  */
 public final class XsdDouble extends XsdAnySimpleType {
-  
+
   public final static String NAME = "double";
 
   public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
   public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
 
   static {
-    registerConstructor(XsdDouble.class, SHORT_NAME, LONG_NAME);
+    registerConstructor(XsdDouble.class, double.class, SHORT_NAME, LONG_NAME);
   }
 
 	public double value;

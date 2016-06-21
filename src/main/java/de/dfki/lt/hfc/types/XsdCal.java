@@ -15,7 +15,7 @@ public final class XsdCal extends XsdAnySimpleType {
   public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
   
   static {
-    registerConstructor(XsdCal.class, SHORT_NAME, LONG_NAME);
+    registerConstructor(XsdCal.class, null, SHORT_NAME, LONG_NAME);
   }
   
   public double value;

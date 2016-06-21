@@ -41,7 +41,7 @@ public final class XsdUDateTime extends XsdAnySimpleType {
 
   static {
     registerConstructor(XsdUDateTime.class,
-        SHORT_NAME, LONG_NAME);
+        null, SHORT_NAME, LONG_NAME);
   }
 
 	/**

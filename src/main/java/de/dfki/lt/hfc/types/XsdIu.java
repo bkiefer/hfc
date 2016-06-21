@@ -16,7 +16,7 @@ public final class XsdIu extends XsdAnySimpleType {
   public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
   
   static {
-  registerConstructor(XsdIu.class, SHORT_NAME, LONG_NAME);
+  registerConstructor(XsdIu.class, null, SHORT_NAME, LONG_NAME);
   }
 
   public double value;

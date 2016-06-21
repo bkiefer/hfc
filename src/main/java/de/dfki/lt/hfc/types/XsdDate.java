@@ -26,7 +26,7 @@ public final class XsdDate extends XsdAnySimpleType {
 
 
   static {
-    registerConstructor(XsdDate.class, SHORT_NAME, LONG_NAME);
+    registerConstructor(XsdDate.class, null, SHORT_NAME, LONG_NAME);
   }
 
 	/**

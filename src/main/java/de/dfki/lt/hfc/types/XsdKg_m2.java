@@ -15,7 +15,7 @@ public final class XsdKg_m2 extends XsdAnySimpleType {
   public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
   
   static {
-    registerConstructor(XsdKg_m2.class, SHORT_NAME, LONG_NAME);
+    registerConstructor(XsdKg_m2.class, null, SHORT_NAME, LONG_NAME);
   }
   
   public double value;

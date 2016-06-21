@@ -20,7 +20,7 @@ public final class XsdGMonth extends XsdAnySimpleType {
   public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
 
   static {
-    registerConstructor(XsdGMonth.class, SHORT_NAME, LONG_NAME);
+    registerConstructor(XsdGMonth.class, null, SHORT_NAME, LONG_NAME);
   }
 
   /**

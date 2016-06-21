@@ -19,10 +19,12 @@ import de.dfki.lt.hfc.WrongFormatException;
  * @since JDK 1.5
  * @version Wed Fri Jan 29 16:35:17 CET 2016
  */
+@SuppressWarnings("rawtypes")
 public abstract class XsdAnySimpleType extends AnyType {
 
   static {
     typeToConstructor = new HashMap<String, Constructor<XsdAnySimpleType>>();
+    javaToConstructor = new HashMap<Class, Constructor<XsdAnySimpleType>>();
     loadSimpleTypes();
   }
 
@@ -44,6 +46,14 @@ public abstract class XsdAnySimpleType extends AnyType {
    */
   private static final
   HashMap<String, Constructor<XsdAnySimpleType>> typeToConstructor;
+
+  /**
+   * A hash map mapping from string representations of simple xsd types to
+   * constructors of subclasses of XsdAnySimpleType, to be able to construct
+   * them with the factory method getXsdObject
+   */
+  private static final
+  HashMap<Class, Constructor<XsdAnySimpleType>> javaToConstructor;
 
   // only purpose is to separate the XSD types from uris and blank nodes
 
@@ -109,14 +119,20 @@ public abstract class XsdAnySimpleType extends AnyType {
    * by the factory method getXsdObject
    *
    * @param clazz      The class object of some XsdAnySimpleType type
+   * @param javaClass TODO
    * @param forms      The short and long form of the type tag
    */
   @SuppressWarnings({ "unchecked", "rawtypes" })
-  protected static void registerConstructor(Class clazz, String ... forms) {
+  protected static void registerConstructor(Class clazz, Class javaClass, String ... forms) {
     try {
       Constructor<XsdAnySimpleType> constructor =
           clazz.getConstructor(String.class);
       for (String s : forms) typeToConstructor.put(s, constructor);
+      if (javaClass != null) {
+        Constructor<XsdAnySimpleType> javaConstructor =
+            clazz.getConstructor(javaClass);
+        javaToConstructor.put(clazz, javaConstructor);
+      }
     }
     catch (Exception e) {  // should never happen
       throw new RuntimeException(e);
@@ -155,6 +171,19 @@ public abstract class XsdAnySimpleType extends AnyType {
     }
   }
 
+  public static XsdAnySimpleType getXsdFromJava(Object o) throws WrongFormatException {
+    final Constructor<XsdAnySimpleType> constructor =
+        javaToConstructor.get(o.getClass());
+    if (constructor == null)
+      throw new WrongFormatException("No conversion for: " + o.getClass());
+    try {
+      return constructor.newInstance(o);
+    }
+    catch (Exception e) {
+      throw new WrongFormatException(
+          "XSD to Java class mapping fails for type " + o.getClass(), e);
+    }
+  }
 
   /**
    * generates a string representation from the internal fields, but omits

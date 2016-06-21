@@ -15,7 +15,7 @@ public final class Xsd1_min extends XsdAnySimpleType {
   public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
   
   static {
-    registerConstructor(Xsd1_min.class, SHORT_NAME, LONG_NAME);
+    registerConstructor(Xsd1_min.class, null, SHORT_NAME, LONG_NAME);
   }
   
   public double value;

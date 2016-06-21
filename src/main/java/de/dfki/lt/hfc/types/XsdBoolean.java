@@ -12,7 +12,7 @@ public final class XsdBoolean extends XsdAnySimpleType {
   public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
 
   static {
-    registerConstructor(XsdBoolean.class, SHORT_NAME, LONG_NAME);
+    registerConstructor(XsdBoolean.class, boolean.class, SHORT_NAME, LONG_NAME);
   }
 
   public boolean value;

@@ -25,7 +25,7 @@ public final class XsdGMonthDay extends XsdAnySimpleType {
 
   static {
     registerConstructor(XsdGMonthDay.class,
-        SHORT_NAME, LONG_NAME);
+        null, SHORT_NAME, LONG_NAME);
   }
 
 	/**
