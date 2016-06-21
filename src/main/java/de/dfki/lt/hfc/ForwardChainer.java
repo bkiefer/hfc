@@ -1676,9 +1676,9 @@ public final class ForwardChainer {
 	public static void main(String[] args) throws Exception {
 		// for testing the -server option of the JVM:
 		//   time java -server -cp .:../lib/trove-2.1.0.jar -Xms800m -Xmx1200m de/dfki/lt/hfc/ForwardChainer
-		
+
     //Namespace.shortIsDefault = false;
-    
+
     // call THIS with equivalence class reduction DISABLED
     /*
     ForwardChainer fc =	new ForwardChainer(100000, 500000,
@@ -1693,7 +1693,7 @@ public final class ForwardChainer {
 		// call THIS with equivalence class reduction ENABLED
 
 		//Namespace.shortIsDefault = false;
-    
+
 		ForwardChainer fc =	new ForwardChainer(100000, 500000,
 																					 "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.eqred.nt",
 																					 "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.eqred.rdl",
