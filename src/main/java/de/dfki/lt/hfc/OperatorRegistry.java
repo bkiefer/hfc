@@ -16,7 +16,7 @@ import java.lang.reflect.*;
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Tue Mar 12 13:42:06 CET 2013
+ * @version Wed Jun 22 15:20:51 CEST 2016
  */
 public final class OperatorRegistry {
 	
@@ -132,12 +132,9 @@ public final class OperatorRegistry {
 			return op;
 		}
 		catch (Exception e) {
-			if (OperatorRegistry.EXIT_WHEN_REGISTRATION_FAILS) {
-				System.out.println("  registering operator " + className + " fails: no such corresponding Java class");
+			System.out.println("  registering operator " + className + " fails: no such corresponding Java class");
+			if (OperatorRegistry.EXIT_WHEN_REGISTRATION_FAILS)
 				System.exit(1);
-			}
-			else
-				System.out.println("  registering operator " + className + " fails: no such corresponding Java class");
 			return null;
 		}
 	}

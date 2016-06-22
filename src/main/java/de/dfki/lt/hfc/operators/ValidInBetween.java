@@ -8,27 +8,18 @@ import java.util.Set;
 
 /**
  * call this test with
- *   ValidInBetween subj pred obj obj2 ... time1 time2
+ *   ValidInBetween subj pred obj obj2 ... objN time1 time2
  *
  * @return FunctionalOperator.TRUE iff there is _no_ tuple
- *           <logic:false> subj pred obj obj2 ... time
+ *           <logic:false> subj pred obj obj2 ... objN time
  *         such that min(time1, time2) <= time <= max(time1, time2)
  * @return FunctionalOperator.FALSE otherwise
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Thu Mar 17 15:25:31 CET 2016
+ * @version Wed Jun 22 15:20:51 CEST 2016
  */
 public final class ValidInBetween extends FunctionalOperator {
-
-  /**
-   * we make the assumption that the value for polarity FALSE is given
-   * by some URI from a _logic_ ontology;
-   * we use instance <http://www.dfki.de/lt/onto/common/logic.owl#false>
-   * for this at the moment and assume that short namespace name "logic"
-   * refers to /http://www.dfki.de/lt/onto/common/logic.owl#
-   */
-  final int falseId = getId("<logic:false>");
 
   /**
    * note that his functional operator assumes that the temporal
@@ -37,8 +28,14 @@ public final class ValidInBetween extends FunctionalOperator {
    */
   public int apply(int[] args) {
     final int length = args.length;
+    // we make the assumption that the value for polarity FALSE is given
+    // by some URI from a _logic_ ontology;
+    // we use instance <http://www.dfki.de/lt/onto/common/logic.owl#false>
+    // for this at the moment and assume that short namespace name "logic"
+    // refers to /http://www.dfki.de/lt/onto/common/logic.owl#
+    final int falseId = getId("<logic:false>");
     // ask for tuples with polarity false
-    Set<int[]> result = ask(0, this.falseId);
+    Set<int[]> result = ask(0, falseId);
     Set<int[]> query;
     // perform successive intersections with result
     for (int i = 0; i < (args.length - 2); i++) {

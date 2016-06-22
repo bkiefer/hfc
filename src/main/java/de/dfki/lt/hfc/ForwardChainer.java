@@ -21,19 +21,19 @@ import gnu.trove.map.hash.*;
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Wed Mar  2 11:26:57 CET 2016
+ * @version Wed Jun 22 15:20:51 CEST 2016
  */
 public final class ForwardChainer {
 
 	/**q
 	 * HFC version number string
 	 */
-	public static final String VERSION = "6.1.16";
+	public static final String VERSION = "6.2.0";
 
 	/**
 	 * HFC info string
 	 */
-	public static final String INFO = "v" + ForwardChainer.VERSION + " (Wed Mar  2 11:26:57 CET 2016)";
+	public static final String INFO = "v" + ForwardChainer.VERSION + " (Wed Jun 22 15:20:51 CEST 2016)";
 
 	/**
 	 * a pointer to the tuple store for this forward chainer
@@ -256,7 +256,7 @@ public final class ForwardChainer {
 	public ForwardChainer(TupleStore tupleStore, RuleStore ruleStore) {
 		this();
 		this.noOfAtoms = 100000;
-	  this.noOfTuples = 500000;
+		this.noOfTuples = 500000;
 		this.tupleStore = tupleStore;
 		this.ruleStore = ruleStore;
 		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
