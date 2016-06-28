@@ -1,7 +1,6 @@
 package de.dfki.lt.hfc.aggregates;
 
-import static de.dfki.lt.hfc.TestBindingTableIterator.check;
-import static de.dfki.lt.hfc.TestBindingTableIterator.printNext;
+import static de.dfki.lt.hfc.TestUtils.*;
 import static org.junit.Assert.assertEquals;
 
 import java.io.FileNotFoundException;
@@ -37,26 +36,6 @@ public class TestLGetLatestValues {
     return TestUtils.getTestResource("LGetLatestValues", name);
   }
 
-
-  public static void printExpected(BindingTable bt, TupleStore store) {
-    printNext(bt.iterator(),
-        new TestBindingTableIterator.NextAsIntCall(store));
-  }
-
-  private static void checkResult(BindingTable bt, String[][] expected){
-    check(bt.iterator(), expected,
-        new TestBindingTableIterator.NextAsIntCall(fc.tupleStore));
-  }
-
-  public static void checkResult(ForwardChainer fc, BindingTable bt, String[][] expected, String ... vars){
-    try {
-      check(bt.iterator(vars), expected,
-          new TestBindingTableIterator.NextAsIntCall(fc.tupleStore));
-    } catch (BindingTableIteratorException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-  }
 
   @BeforeClass
   public static void init() throws Exception {
@@ -117,7 +96,13 @@ public class TestLGetLatestValues {
     //         ?labvalue ?prob ?val ?
     //   AGGREGATE ?measurement ?result ?patient ?time = LGetLatestValues ?prop ?val ?child ?t ?t
 
-    BindingTable bt = q.query("SELECT ?child ?prop ?val ?t WHERE ?child <rdf:type> <dom:Child> ?t1 & ?child <dom:hasLabValue> ?lv ?t2 & ?lv ?prop ?val ?t & AGGREGATE ?measurement ?result ?patient ?time = LGetLatestValues ?prop ?val ?child ?t ?t");
+    BindingTable bt = q.query("SELECT ?child ?prop ?val ?t "
+        + "WHERE ?child <rdf:type> <dom:Child> ?t1 "
+        + "& ?child <dom:hasLabValue> ?lv ?t2 "
+        + "& ?lv ?prop ?val ?t "
+        + "AGGREGATE ?measurement ?result ?patient ?time = LGetLatestValues ?prop ?val ?child ?t ?t");
+
+    printExpected(bt, fc.tupleStore);
 
     //   =============================================================================================
     //   | ?measurement         | ?result              | ?patient             | ?time                |
@@ -130,7 +115,7 @@ public class TestLGetLatestValues {
     //   | <dom:weight>         | "28.6"^^<xsd:kg>     | <pal:lisa>           | "5577"^^<xsd:long>   |
     //   ---------------------------------------------------------------------------------------------
 
-    checkResult(bt, expected);
+    checkResult(fc, bt, expected, "?measurement", "?result", "?patient", "?time");
   }
 
 }
