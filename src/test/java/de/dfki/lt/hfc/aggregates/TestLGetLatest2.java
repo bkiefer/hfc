@@ -1,6 +1,6 @@
 package de.dfki.lt.hfc.aggregates;
 
-import static de.dfki.lt.hfc.aggregates.TestLGetLatest.checkResult;
+import static de.dfki.lt.hfc.TestUtils.checkResult;
 import static de.dfki.lt.hfc.aggregates.TestLGetLatest.getResource;
 import static org.junit.Assert.assertEquals;
 

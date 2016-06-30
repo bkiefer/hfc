@@ -6,10 +6,6 @@ import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.After;
@@ -37,91 +33,6 @@ public class TestBindingTableIterator {
     ts = null;
     q = null;
   }
-
-  public interface NextCall<T> {
-    public T[] next(BindingTableIterator it);
-  }
-
-  public static class NextAsStringCall implements NextCall<String> {
-    public String[] next(BindingTableIterator it) {
-      return it.nextAsString();
-    }
-  }
-
-  public static class NextAsHfcCall implements NextCall<String> {
-    public String[] next(BindingTableIterator it) {
-      AnyType[] in = it.nextAsHfcType();
-      String[] res = new String[in.length];
-      int i = 0;
-      for (AnyType a : in) res[i++] = a.toName();
-      return res;
-    }
-  }
-
-  public static class NextAsObjectCall implements NextCall<Object> {
-    public Object[] next(BindingTableIterator it) {
-      Object[] in = it.nextAsJavaObject();
-      Object[] res = new Object[in.length];
-      int i = 0;
-      for (Object a : in)
-        res[i++] = ((a instanceof AnyType) ? ((AnyType)a).toName() : a);
-      return res;
-    }
-  }
-
-  public static class NextAsIntCall implements NextCall<String> {
-    private TupleStore _ts;
-
-    public NextAsIntCall(TupleStore ts){
-      _ts = ts;
-    }
-
-    public String[] next(BindingTableIterator it) {
-      int[] in = it.next();
-      String[] res = new String[in.length];
-      int i = 0;
-      for (int sym : in) {
-        String name = _ts.getObject(sym);
-        res[i++] = name;
-      }
-      return res;
-    }
-  }
-
-  public static <T> void printNext(BindingTableIterator it, NextCall<T> nc) {
-    while (it.hasNext()) {
-      T[] next = nc.next(it);
-      System.out.print("{ \"");
-      for (int i = 0; i < next.length; i++) {
-        System.out.print(next[i].toString() + "\"");
-        if (i < next.length - 1) {
-          System.out.print(", \"");
-        }
-      }
-      System.out.println(" },");
-    }
-  }
-
-  public static <T> void check(BindingTableIterator it, T[][] expected,
-      NextCall<T> nc) {
-    List<T[]> ee = new ArrayList<T[]>(Arrays.asList(expected));
-
-    while (it.hasNext()) {
-      T[]next = nc.next(it);
-      boolean found = false;
-      for (Iterator<T[]> eit = ee.iterator(); eit.hasNext();) {
-        if (Arrays.equals(next, eit.next())) {
-          eit.remove();
-          found = true;
-          break;
-        }
-      }
-      assertTrue(Arrays.toString(next), found);
-    }
-
-    assertTrue(ee.isEmpty());
-  }
-
 
   @Test
   public void test11() throws QueryParseException, BindingTableIteratorException {
@@ -366,18 +277,6 @@ public class TestBindingTableIterator {
     String[][] expected = {
         { "\"4\"^^<xsd:int>", "<rdf:type>" },
         { "\"4\"^^<xsd:int>", "<rdf:type>" },
-        { "\"4\"^^<xsd:int>", "<rdfs:subClassOf>" },
-        { "\"4\"^^<xsd:int>", "<rdf:type>" },
-        { "\"4\"^^<xsd:int>", "<rdf:type>" },
-        { "\"4\"^^<xsd:int>", "<rdf:type>" },
-        { "\"4\"^^<xsd:int>", "<rdfs:subClassOf>" },
-        { "\"4\"^^<xsd:int>", "<rdf:type>" },
-        { "\"4\"^^<xsd:int>", "<rdf:type>" },
-        { "\"4\"^^<xsd:int>", "<rdf:type>" },
-        { "\"4\"^^<xsd:int>", "<rdf:type>" },
-        { "\"4\"^^<xsd:int>", "<rdf:type>" },
-        { "\"4\"^^<xsd:int>", "<rdf:type>" },
-        { "\"4\"^^<xsd:int>", "<rdf:type>" },
         { "\"4\"^^<xsd:int>", "<rdf:type>" },
         { "\"4\"^^<xsd:int>", "<rdf:type>" },
         { "\"4\"^^<xsd:int>", "<rdf:type>" },
@@ -388,6 +287,18 @@ public class TestBindingTableIterator {
         { "\"4\"^^<xsd:int>", "<rdfs:subClassOf>" },
         { "\"4\"^^<xsd:int>", "<rdf:type>" },
         { "\"4\"^^<xsd:int>", "<rdf:type>" },
+        { "\"4\"^^<xsd:int>", "<rdf:type>" },
+        { "\"4\"^^<xsd:int>", "<rdf:type>" },
+        { "\"4\"^^<xsd:int>", "<rdf:type>" },
+        { "\"4\"^^<xsd:int>", "<rdf:type>" },
+        { "\"4\"^^<xsd:int>", "<rdfs:subClassOf>" },
+        { "\"4\"^^<xsd:int>", "<rdfs:subPropertyOf>" },
+        { "\"4\"^^<xsd:int>", "<rdf:type>" },
+        { "\"4\"^^<xsd:int>", "<rdf:type>" },
+        { "\"4\"^^<xsd:int>", "<rdf:type>" },
+        { "\"4\"^^<xsd:int>", "<rdf:type>" },
+        { "\"4\"^^<xsd:int>", "<rdf:type>" },
+        { "\"4\"^^<xsd:int>", "<rdfs:subClassOf>" },
         { "\"4\"^^<xsd:int>", "<owl:disjointWith>" },
         { "\"4\"^^<xsd:int>", "<rdf:type>" },
         { "\"4\"^^<xsd:int>", "<rdf:type>" },
@@ -395,92 +306,92 @@ public class TestBindingTableIterator {
         { "\"4\"^^<xsd:int>", "<rdfs:subClassOf>" },
         { "\"4\"^^<xsd:int>", "<rdf:type>" },
         { "\"4\"^^<xsd:int>", "<rdf:type>" },
-        { "\"4\"^^<xsd:int>", "<rdfs:subClassOf>" },
-        { "\"4\"^^<xsd:int>", "<rdf:type>" },
-        { "\"4\"^^<xsd:int>", "<rdf:type>" },
         { "\"4\"^^<xsd:int>", "<rdf:type>" },
         { "\"4\"^^<xsd:int>", "<rdfs:subClassOf>" },
-        { "\"4\"^^<xsd:int>", "<rdf:type>" },
-        { "\"4\"^^<xsd:int>", "<rdf:type>" },
-        { "\"4\"^^<xsd:int>", "<rdf:type>" },
         { "\"4\"^^<xsd:int>", "<rdf:type>" },
         { "\"4\"^^<xsd:int>", "<rdfs:subPropertyOf>" },
         { "\"4\"^^<xsd:int>", "<rdf:type>" },
-        { "\"4\"^^<xsd:int>", "<rdf:type>" },
-        { "\"4\"^^<xsd:int>", "<rdfs:subPropertyOf>" },
-        { "\"4\"^^<xsd:int>", "<rdf:type>" },
-        { "\"4\"^^<xsd:int>", "<rdf:type>" },
         { "\"4\"^^<xsd:int>", "<rdfs:subClassOf>" },
+        { "\"4\"^^<xsd:int>", "<rdfs:subClassOf>" },
+        { "\"4\"^^<xsd:int>", "<rdf:type>" },
+        { "\"4\"^^<xsd:int>", "<rdf:type>" },
+        { "\"4\"^^<xsd:int>", "<rdf:type>" },
+        { "\"4\"^^<xsd:int>", "<rdf:type>" },
+        { "\"4\"^^<xsd:int>", "<rdf:type>" },
+        { "\"4\"^^<xsd:int>", "<rdf:type>" },
+        { "\"4\"^^<xsd:int>", "<rdf:type>" },
         { "\"4\"^^<xsd:int>", "<rdfs:subClassOf>" },
     };
     BindingTable bt = q.query("SELECT ?p WHERE ?s ?p ?o AGGREGATE ?number = CountDistinct ?p & ?subject = Identity ?p");
     BindingTableIterator it = bt.iterator("?number", "?subject");
-    // printNext(it, new NextAsStringCall());
+    //printNext(it, new NextAsStringCall());
     check(it, expected, new NextAsStringCall());
   }
 
   @Test
   public void testAsObject() throws QueryParseException, BindingTableIteratorException {
     Object[][] expected = {
-        { 4, "rdfs:subClassOf" },
         { 4, "rdf:type" },
         { 4, "rdf:type" },
-        { 4, "rdf:type" },
-        { 4, "rdf:type" },
-        { 4, "rdf:type" },
-        { 4, "rdf:type" },
-        { 4, "rdf:type" },
-        { 4, "rdf:type" },
-        { 4, "rdf:type" },
-        { 4, "rdf:type" },
-        { 4, "rdf:type" },
-        { 4, "rdf:type" },
-        { 4, "rdf:type" },
-        { 4, "rdf:type" },
-        { 4, "rdf:type" },
-        { 4, "rdf:type" },
-        { 4, "rdf:type" },
-        { 4, "rdfs:subClassOf" },
         { 4, "rdf:type" },
         { 4, "rdf:type" },
         { 4, "rdfs:subPropertyOf" },
+        { 4, "rdf:type" },
         { 4, "rdfs:subClassOf" },
+        { 4, "rdfs:subPropertyOf" },
+        { 4, "rdf:type" },
+        { 4, "rdf:type" },
+        { 4, "rdf:type" },
+        { 4, "rdfs:subClassOf" },
+        { 4, "rdf:type" },
+        { 4, "rdf:type" },
+        { 4, "rdfs:subClassOf" },
+        { 4, "rdf:type" },
+        { 4, "rdf:type" },
+        { 4, "rdf:type" },
+        { 4, "rdfs:subClassOf" },
+        { 4, "rdf:type" },
+        { 4, "rdf:type" },
+        { 4, "rdf:type" },
+        { 4, "rdfs:subClassOf" },
+        { 4, "rdf:type" },
+        { 4, "rdf:type" },
+        { 4, "rdf:type" },
+        { 4, "rdfs:subClassOf" },
+        { 4, "rdf:type" },
+        { 4, "rdf:type" },
+        { 4, "rdf:type" },
+        { 4, "rdf:type" },
+        { 4, "rdf:type" },
+        { 4, "rdf:type" },
+        { 4, "rdf:type" },
+        { 4, "rdfs:subClassOf" },
+        { 4, "rdf:type" },
+        { 4, "rdf:type" },
+        { 4, "rdf:type" },
+        { 4, "rdf:type" },
+        { 4, "rdf:type" },
+        { 4, "rdfs:subClassOf" },
+        { 4, "rdf:type" },
+        { 4, "rdf:type" },
+        { 4, "rdf:type" },
+        { 4, "rdf:type" },
         { 4, "owl:disjointWith" },
-        { 4, "rdf:type" },
-        { 4, "rdf:type" },
-        { 4, "rdf:type" },
-        { 4, "rdf:type" },
-        { 4, "rdf:type" },
-        { 4, "rdfs:subClassOf" },
-        { 4, "rdf:type" },
-        { 4, "rdf:type" },
-        { 4, "rdf:type" },
-        { 4, "rdf:type" },
-        { 4, "rdf:type" },
-        { 4, "rdfs:subClassOf" },
-        { 4, "rdfs:subClassOf" },
-        { 4, "rdfs:subClassOf" },
-        { 4, "rdf:type" },
-        { 4, "rdfs:subPropertyOf" },
-        { 4, "rdf:type" },
-        { 4, "rdfs:subClassOf" },
-        { 4, "rdf:type" },
-        { 4, "rdf:type" },
-        { 4, "rdf:type" },
-        { 4, "rdf:type" },
-        { 4, "rdf:type" },
-        { 4, "rdf:type" },
     };
 
     BindingTable bt = q.query("SELECT ?p WHERE ?s ?p ?o AGGREGATE ?number = CountDistinct ?p & ?subject = Identity ?p");
     BindingTableIterator it = bt.iterator("?number", "?subject");
-    // printNext(it, new NextAsObjectCall());
+    assertEquals(expected.length, bt.size());
     check(it, expected, new NextAsObjectCall());
   }
 
   @Test
   public void test22() throws QueryParseException, BindingTableIteratorException {
     String[][] expected = {
+        { "4", "rdf:type" },
+        { "4", "rdf:type" },
+        { "4", "rdfs:subClassOf" },
+        { "4", "rdf:type" },
         { "4", "rdfs:subClassOf" },
         { "4", "rdf:type" },
         { "4", "rdf:type" },
@@ -491,7 +402,8 @@ public class TestBindingTableIterator {
         { "4", "rdf:type" },
         { "4", "rdf:type" },
         { "4", "rdf:type" },
-        { "4", "rdf:type" },
+        { "4", "rdfs:subClassOf" },
+        { "4", "rdfs:subClassOf" },
         { "4", "rdf:type" },
         { "4", "rdf:type" },
         { "4", "rdf:type" },
@@ -502,30 +414,23 @@ public class TestBindingTableIterator {
         { "4", "rdfs:subClassOf" },
         { "4", "rdf:type" },
         { "4", "rdf:type" },
-        { "4", "rdfs:subPropertyOf" },
+        { "4", "rdf:type" },
+        { "4", "rdf:type" },
+        { "4", "rdf:type" },
+        { "4", "rdf:type" },
+        { "4", "rdf:type" },
+        { "4", "rdfs:subClassOf" },
         { "4", "rdfs:subClassOf" },
         { "4", "owl:disjointWith" },
         { "4", "rdf:type" },
         { "4", "rdf:type" },
         { "4", "rdf:type" },
-        { "4", "rdf:type" },
-        { "4", "rdf:type" },
+        { "4", "rdfs:subPropertyOf" },
         { "4", "rdfs:subClassOf" },
         { "4", "rdf:type" },
         { "4", "rdf:type" },
-        { "4", "rdf:type" },
-        { "4", "rdf:type" },
-        { "4", "rdf:type" },
-        { "4", "rdfs:subClassOf" },
-        { "4", "rdfs:subClassOf" },
-        { "4", "rdfs:subClassOf" },
         { "4", "rdf:type" },
         { "4", "rdfs:subPropertyOf" },
-        { "4", "rdf:type" },
-        { "4", "rdfs:subClassOf" },
-        { "4", "rdf:type" },
-        { "4", "rdf:type" },
-        { "4", "rdf:type" },
         { "4", "rdf:type" },
         { "4", "rdf:type" },
         { "4", "rdf:type" },
@@ -533,64 +438,63 @@ public class TestBindingTableIterator {
 
     BindingTable bt = q.query("SELECT ?p WHERE ?s ?p ?o AGGREGATE ?number = CountDistinct ?p & ?subject = Identity ?p");
     BindingTableIterator it = bt.iterator("?number", "?subject");
-    // printNext(it, new NextAsHfcCall());
+    //printNext(it, new NextAsHfcCall());
     check(it, expected, new NextAsHfcCall());
   }
+
   @Test
   public void test23() throws QueryParseException, BindingTableIteratorException {
     String[][] expected = {
-        { "<rdf:type>" },
-        { "<rdf:type>" },
         { "<rdfs:subClassOf>" },
-        { "<rdf:type>" },
-        { "<rdf:type>" },
-        { "<rdf:type>" },
         { "<rdfs:subClassOf>" },
         { "<rdf:type>" },
         { "<rdf:type>" },
         { "<rdf:type>" },
         { "<rdf:type>" },
-        { "<rdf:type>" },
-        { "<rdf:type>" },
-        { "<rdf:type>" },
-        { "<rdf:type>" },
-        { "<rdf:type>" },
-        { "<rdf:type>" },
-        { "<rdf:type>" },
-        { "<rdf:type>" },
-        { "<rdf:type>" },
-        { "<rdf:type>" },
         { "<rdfs:subClassOf>" },
+        { "<rdfs:subClassOf>" },
+        { "<rdf:type>" },
         { "<rdf:type>" },
         { "<rdf:type>" },
         { "<owl:disjointWith>" },
         { "<rdf:type>" },
         { "<rdf:type>" },
         { "<rdf:type>" },
-        { "<rdfs:subClassOf>" },
+        { "<rdf:type>" },
+        { "<rdf:type>" },
+        { "<rdf:type>" },
+        { "<rdf:type>" },
+        { "<rdf:type>" },
+        { "<rdf:type>" },
+        { "<rdf:type>" },
+        { "<rdf:type>" },
         { "<rdf:type>" },
         { "<rdf:type>" },
         { "<rdfs:subClassOf>" },
-        { "<rdf:type>" },
-        { "<rdf:type>" },
-        { "<rdf:type>" },
-        { "<rdfs:subClassOf>" },
-        { "<rdf:type>" },
-        { "<rdf:type>" },
-        { "<rdf:type>" },
-        { "<rdf:type>" },
         { "<rdfs:subPropertyOf>" },
         { "<rdf:type>" },
         { "<rdf:type>" },
+        { "<rdf:type>" },
+        { "<rdf:type>" },
+        { "<rdf:type>" },
+        { "<rdf:type>" },
+        { "<rdf:type>" },
+        { "<rdf:type>" },
+        { "<rdfs:subClassOf>" },
+        { "<rdf:type>" },
+        { "<rdf:type>" },
+        { "<rdf:type>" },
+        { "<rdf:type>" },
+        { "<rdfs:subClassOf>" },
         { "<rdfs:subPropertyOf>" },
         { "<rdf:type>" },
+        { "<rdfs:subClassOf>" },
         { "<rdf:type>" },
-        { "<rdfs:subClassOf>" },
-        { "<rdfs:subClassOf>" },
+        { "<rdf:type>" },
     };
     BindingTable bt = q.query("SELECT ?p WHERE ?s ?p ?o AGGREGATE ?number = CountDistinct ?p & ?subject = Identity ?p");
     BindingTableIterator it = bt.iterator("?subject");
-    // printNext(it, new NextAsStringCall());
+    //printNext(it, new NextAsStringCall());
     check(it, expected, new NextAsStringCall());
   }
 
