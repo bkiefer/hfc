@@ -1051,7 +1051,19 @@ public final class ForwardChainer {
 		this.tupleStore.readTuples(filename);
 	}
 
-
+	/**
+	 * read in tuples stored in a file with name filename;
+	 * tuples that are goind to be read in are extended by at most one front element front
+	 * and potentially many back elements back;
+	 * use null as a value for front to indicate that there is no front element, and an
+	 * empty String array that there are no back elements
+	 * @param filename
+	 * @param front
+	 * @param backs
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws WrongFormatException
+   */
 	public void uploadTuples(String filename, String front, String... backs)
 					throws FileNotFoundException, IOException, WrongFormatException {
 		this.tupleStore.readTuples(filename, front, backs);

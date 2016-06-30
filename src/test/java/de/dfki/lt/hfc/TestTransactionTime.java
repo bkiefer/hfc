@@ -11,7 +11,8 @@ import static org.junit.Assert.assertEquals;
  * an extended RDF setting;
  * for this, we employ quintuples of the following form:
  *   polarity subject predicate object timestamp
- * polarity takes (singleton) instances from the "logic" ontology, viz.,
+ * polarity takes the following singleton instances from the "logic" ontology
+ * (there are others as well), viz.,
  *   logic:dontknow, logic:true, logic:false, and logic:error
  *
  *
@@ -38,26 +39,27 @@ public class TestTransactionTime {
 
   @BeforeClass
   public static void init() throws Exception {
-    fc =	new ForwardChainer(4,                                                   // #cores
-            true,                                                                // verbose
-            true,                                                                // RDF Check
-            true,                                                                // EQ reduction enabled
-            5,                                                                   // min #args
-            5,                                                                   // max #args
-            1,                                                                   // subject position
-            2,                                                                   // predicate position
-            3,                                                                   // object position
-            10000,                                                               // #atoms
-            50000,                                                              // #tuples
-            getResource("default.polarity.transtime.long.quintuple.eqred.nt"),   // initial tuple file (5-tuples)
-            getResource("default.polarity.transtime.long.quintuple.eqred.rdl"),  // initial rule file
-            getResource("default.ns")                                            // initial namespace file
-    );
+    fc =	new ForwardChainer(
+      4,                                                                   // #cores
+      true,                                                                // verbose
+      true,                                                                // RDF Check
+      true,                                                                // EQ reduction enabled
+      5,                                                                   // min #args
+      5,                                                                   // max #args
+      1,                                                                   // subject position
+      2,                                                                   // predicate position
+      3,                                                                   // object position
+      10000,                                                               // #atoms
+      50000,                                                               // #tuples
+      getResource("default.polarity.transtime.long.quintuple.eqred.nt"),   // initial tuple file (5-tuples)
+      getResource("default.polarity.transtime.long.quintuple.eqred.rdl"),  // initial rule file, (5-tuples)
+      getResource("default.ns")                                            // initial namespace file
+      );
     // further PAL-specific namespaces (short-to-long mappings, XSD DTs-to-Java class mappings)
     fc.uploadNamespaces(getResource("pal.ns"));
     // further PAL-specific tuples (special XSD DT)
-    fc.uploadTuples(getResource("pal.polarity.transtime.long.quintuple.eqred.nt"));  // 5-tuples
-    // further PAL-specific tuples (inidividual sub-ontologies)
+    fc.uploadTuples(getResource("pal.polarity.transtime.long.quintuple.eqred.nt"));  // already 5-tuples
+    // further PAL-specific triples from the inidividual sub-ontologies: make them 5-tuples
     for (String file : new String[] {
             "dialogue.nt",
             "dmgoals.nt",
@@ -68,10 +70,8 @@ public class TestTransactionTime {
             "time.nt",
             "upper.nt"})
       fc.uploadTuples(getResource(file), TRUE, TIME);  // transform triples into quintuples
-    // further rules (empty now)
+    // further rules (currently empty)
     fc.uploadRules(getResource("pal.polarity.transtime.long.quintuple.eqred.rdl"));
-
-    fc.ruleStore.writeRules(getResource("all-rules.rdl"));
   }
 
   @AfterClass

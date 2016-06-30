@@ -6,7 +6,7 @@ import de.dfki.lt.hfc.types.Uri;
 import de.dfki.lt.hfc.types.XsdLong;
 
 /**
- * this aggregational operator LGetLatestValues only works for the time-stamped
+ * the aggregational operator LGetLatestValues only works for the time-stamped
  * triple case and is supposed to be given a table of the following form:
  *   property value arg1 ... argN timestamp
  * the operator returns information from the latest time-stamped tuples

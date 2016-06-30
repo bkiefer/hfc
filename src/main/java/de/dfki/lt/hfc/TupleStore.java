@@ -1148,30 +1148,16 @@ public final class TupleStore {
 
 	/**
 		* a method that extends a tuple, given as a ArrayList<String>, by further
-		* arguments: <it>one</it> in front and <it>several</it> afterwards;
+		* arguments: at most <it>one</it> in front and <it>several</it> following
+	  * the original tuple;
 		* use <it>null</it> as a value for <it>front</it> to signal that there is
 		* <it>no</it> front element and an <it>empty array</it> that there are no
 		* <it>back</it> elements;
 		* this method is particularly useful for extending tuples with a notion of
 		* valid time, transaction time, or gradation/modal operators
-		* @return the new extended <it>internalized</it> tuple (an int array)
-		*/
-	public int[] extendTupleInternally(ArrayList<String> in, String front, String... backs) {
-		// make sure to set etuple directly to the right size
-		ArrayList<String> etuple = new ArrayList<String>(in.size() + backs.length + (front == null ? 0 : 1));
-		if (front != null)
-			etuple.add(front);
-		etuple.addAll(in);
-		for (String back : backs)
-			etuple.add(back);
-		return internalizeTuple(etuple);
-	}
-
-	/**
-		* similar to extendTupleInternal(), but does not internalize the extended tuple
 		* @return the new extended tuple
 		*/
-	public ArrayList<String> extendTupleExternally(ArrayList<String> in, String front, String... backs) {
+	protected ArrayList<String> extendTupleExternally(ArrayList<String> in, String front, String... backs) {
 		// make sure to set etuple directly to the right size
 		ArrayList<String> etuple = new ArrayList<String>(in.size() + backs.length + (front == null ? 0 : 1));
 		if (front != null)
@@ -1180,6 +1166,14 @@ public final class TupleStore {
 		for (String back : backs)
 			etuple.add(back);
 		return etuple;
+	}
+
+	/**
+		* similar to extendTupleExternally(), but the extended tuple is furthermore internalized
+		* @return the new extended tuple, an int array
+		*/
+	public int[] extendTupleInternally(ArrayList<String> in, String front, String... backs) {
+		return internalizeTuple(extendTupleExternally(in, front, backs));
 	}
 
 	/**
@@ -1203,10 +1197,13 @@ public final class TupleStore {
 	 *   Jan Grant & Dave Beckett: RDF Test Cases, 10 Feb 2004.
 	 *   http://www.w3.org/TR/rdf-testcases/
 	 *
-	 * note: if equivalence class reduction is switched on, the cleanup mechanism
+	 * NOTE: if equivalence class reduction is switched on, the cleanup mechanism
 	 *       is always applied AFTER the whole file is read in, but not each time
 	 *       an equivalence relation instance is detected! (more efficient at the
 	 *       very end)
+	 *
+	 * NOTE: tuples can be extended by at most one front element and several back
+	 *       elements
 	 *
 	 * example
 	 *   <huk> <rdf:type> <Person> .
@@ -1218,8 +1215,8 @@ public final class TupleStore {
 	 *   _:foo42 <lastName> "Krieger" .
 		*
 		* @param br
-		* @param front
-		* @param backs
+		* @param front use null to indicate that there is no front element
+		* @param backs use an empty String array that there are no back elements
 		* @throws IOException
 	 * @throws WrongFormatException
 	 *
@@ -1265,7 +1262,7 @@ public final class TupleStore {
 					}
 				}
 				if (eol) {
-					// now add one potenetial front element and further potential back elements
+					// now add one potential front element and further potential back elements
 					tuple = extendTupleExternally(tuple, front, backs);
 					// external tuple representation might be misspelled or the tuple is already contained
 					if (addTuple(tuple, lineNo) != null)
@@ -1331,7 +1328,7 @@ public final class TupleStore {
 	}
 
 	/**
-		* read in the tuple file and add potential front and back elements to every tuple
+		* read in the tuple file as it is
 		*
 		* @param filename
 		* @throws FileNotFoundException
@@ -1346,7 +1343,7 @@ public final class TupleStore {
   }
 
 	/**
-		* read in the tuple file as it is
+		* read in the tuple file and add potential front and back elements to every tuple
 		*
 		* @param filename
 		* @throws FileNotFoundException

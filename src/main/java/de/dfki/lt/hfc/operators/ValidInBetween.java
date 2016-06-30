@@ -36,6 +36,11 @@ public final class ValidInBetween extends FunctionalOperator {
     final int falseId = getId("<logic:false>");
     // ask for tuples with polarity false
     Set<int[]> result = ask(0, falseId);
+    // look for early success
+    if (result.isEmpty())
+      // _no_ tuples with prefix "<logic:false>  ..." found
+      return FunctionalOperator.TRUE;
+    // tuples headed by <logic:false> will undergo successive intersections
     Set<int[]> query;
     // perform successive intersections with result
     for (int i = 0; i < (args.length - 2); i++) {

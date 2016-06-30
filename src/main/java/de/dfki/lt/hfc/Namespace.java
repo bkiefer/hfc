@@ -302,7 +302,7 @@ public final class Namespace {
     String line;
     StringTokenizer st;
 		int noOfNamespaces = 0;
-    int noOfTypes = 0;
+    // int noOfTypes = 0;  // no longer necessary
     // section number:
     //   0 : no directive read
     //   1 : SHORT_TO_LONG
@@ -364,7 +364,7 @@ public final class Namespace {
     }
     if (this.verbose) {
 			System.out.println("\n  read " + noOfNamespaces + " namespace mappings");
-      System.out.println("  read " + noOfTypes + " type mappings");
+      //System.out.println("  read " + noOfTypes + " type mappings");  // no longer necessary
     }
 	}
 
