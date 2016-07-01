@@ -32,21 +32,21 @@
 #
 # ********* N E W **********
 #
-# NOTE: this is the _polarity_ & _transaction time_ extension of default.eqred.nt
-#       in that we prefix triples from this file by polarity
+# NOTE: this is the _polarity_ & _transaction time_ extension of default.eqred.nt;
+#       for transaction time, we prefix triples from this file by polarity
 #         <logic:true>
-#       and add suffix
+#       indicating that the statement is true and add suffix
 #         "0"^^<xsd:long>
 #       as the universally-holding transaction time 0 ("from the very beginning of
 #       time");
-#       transaction time is supposed to take long natural numbers to represent UNIX
+#       transaction time is supposed to take _long_ natural numbers to represent UNIX
 #       epoch time;
 #       as a consequence (but also consciously chosen), time thus becomes discrete,
 #       so the immediate time point following t would be t+1
 #
 #
 # @author Hans-Ulrich Krieger
-# @version Tue Jun  7 10:59:00 CEST 2016
+# @version Fri Jul  1 10:34:42 CEST 2016
 #
 
 <logic:true> <rdf:type> <rdf:type> <rdf:Property> "0"^^<xsd:long> .
@@ -82,13 +82,13 @@
 
 <logic:true> <owl:differentFrom> <rdf:type> <owl:SymmetricProperty> "0"^^<xsd:long> .
 
-# I have added the four below triples
+# I have added the four below triples, dealing with top and bottom
 <logic:true> <owl:Thing> <rdf:type> <owl:Class> "0"^^<xsd:long> .
 <logic:true> <owl:Nothing> <rdf:type> <owl:Class> "0"^^<xsd:long> .
 <logic:true> <owl:Nothing> <rdfs:subClassOf> <owl:Thing> "0"^^<xsd:long> .
 <logic:true> <owl:Thing> <owl:disjointWith> <owl:Nothing> "0"^^<xsd:long> .
 
-# standard XSD datatypes, implemented in HFC
+# _standard_ XSD datatypes, implemented in HFC at the moment
 # note: HFC has further _custom_ XSD datatype of its own
 <logic:true> <xsd:anySimpleType> <rdf:type> <rdfs:Datatype> "0"^^<xsd:long> .
 <logic:true> <xsd:anyURI> <rdf:type> <rdfs:Datatype> "0"^^<xsd:long> .

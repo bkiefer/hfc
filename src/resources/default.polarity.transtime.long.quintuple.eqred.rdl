@@ -8,11 +8,12 @@
 # $owl_FunctPropDatatype, since the nature of the object of the triple either
 # leads to an owl:sameAs statement or the negation of two statements;
 #
+# ================================== N E W =======================================
 # this file is the polarity + transaction time extension of default.rdl in that
-# relation instances from the ABox are prefixed by a polarity value from the
-# logic ontology and get extended by one further argument as a suffix, denoting
-# the transaction time, i.e., the time when the atemporal triple (the relational
-# fluent) is entered into the database;
+# relation instances are prefixed by a polarity value from the logic ontology and
+# get extended by one further argument as a suffix, denoting the transaction time,
+# i.e., the time when the atemporal triple (the relational fluent) is entered into
+# the database;
 #
 # NOTE: this rule file should only be used if equivalence class reduction in HFC
 #       is _switched on_
@@ -47,12 +48,12 @@
 #
 #
 # @author  Hans-Ulrich Krieger
-# @version Mon Apr  4 13:26:07 CEST 2016
+# @version Fri Jul  1 10:41:49 CEST 2016
 #
 
 
 # NOTE: $rdf1_rdfs4a_4b (= rdf1 & rdfs4a & rdfs4b) modified;
-# not interested that ?s, ?p, and ?o are all of type rdfs:Resource;
+# not interested in that ?s, ?p, and ?o are all of type rdfs:Resource;
 # only add that ?p is of type rdf:Property;
 # this rule even applies to TBox/RBox information
 $rdf1_rdfs4a_4b
@@ -61,8 +62,8 @@ $rdf1_rdfs4a_4b
 <logic:true> ?p <rdf:type> <rdf:Property> "0"^^<xsd:long>
 
 
-# this version TAKES OVER the time from the antecedent to the consequent;
-# on optional version would interpret the time of the consequent triple as the
+# this version TAKES OVER the time of the 1st clause from the antecedent to the consequent;
+# on _optional_ version would interpret the time of the consequent triple as the
 # time when it is being instantiated (i.e., when the closure computation is called);
 # once this interpretation is chosen, this should be consistent with the time-tagged
 # rules below!
@@ -75,7 +76,8 @@ $rdfs2
 ?p != <rdf:type>
 
 
-# added second clause -- do not want to time-tag XSD type values
+# I added second clause -- I do NOT want to time-tag XSD type values explicitly in a
+# separate statement, as the values themselves carry their type (via "^^<an XSD type>";
 # comments from $rdfs2+time also apply here
 $rdfs3
 ?pol ?_s ?p ?o ?time
@@ -85,20 +87,23 @@ $rdfs3
 ?pol ?o <rdf:type> ?rng ?time
 
 
-# NOTE: no longer redundant rule, since generalization using owl:TransitiveProperty
-#       is now extended by temporal information and solely used for transitive
-#       non-builtin properties
-$rdfs5
-<logic:true> ?p <rdfs:subPropertyOf> ?q "0"^^<xsd:long>
-<logic:true> ?q <rdfs:subPropertyOf> ?r "0"^^<xsd:long>
-->
-<logic:true> ?p <rdfs:subPropertyOf> ?r "0"^^<xsd:long>
-@test
-?p != ?q
-?p != ?r
-?q != ?r
+# this semantically-redundant rule is subsumed by the more general (and slightly more
+# complex) rule $owl_transitive_property, dealing with transitive properties;
+# NOTE: outcommenting this rule requires that rdfs:subPropertyOf is classified as being
+# of type owl:TransitiveProperty!
+# @see rdfs11 for a similar rule, dealing with rdfs:subClassOf
+#$rdfs5
+#<logic:true> ?p <rdfs:subPropertyOf> ?q "0"^^<xsd:long>
+#<logic:true> ?q <rdfs:subPropertyOf> ?r "0"^^<xsd:long>
+#->
+#<logic:true> ?p <rdfs:subPropertyOf> ?r "0"^^<xsd:long>
+#@test
+#?p != ?q
+#?p != ?r
+#?q != ?r
 
 
+# RBox-only rule
 $rdfs6
 <logic:true> ?p <rdf:type> <rdf:Property> "0"^^<xsd:long>
 ->
@@ -115,16 +120,16 @@ $rdfs7
 ?p != ?q
 
 
-# replaced rdfs:Class by owl:Class (or we add a further axiom that owl:Class is a
-# subclass of rdfs:Class);
-# NOTE: this rule only implements rdfs10 (not that ?c is a subclass of rdfs:Resource)
+# I replaced rdfs:Class by owl:Class (or we add a further axiom that owl:Class is a
+# subclass of rdfs:Class) as we currently do not need rdfs:Class;
+# NOTE: this rule only implements rdfs10, but not that ?c is a subclass of rdfs:Resource
 $rdfs8_10
 <logic:true> ?c <rdf:type> <owl:Class> "0"^^<xsd:long>
 ->
 <logic:true> ?c <rdfs:subClassOf> ?c "0"^^<xsd:long>
 
 
-# universal instantiation;
+# logic would call this universal instantiation;
 # time and polarity is taken over from the antecedent
 $rdfs9
 ?pol ?i <rdf:type> ?c ?time
@@ -135,18 +140,20 @@ $rdfs9
 ?c != ?d
 
 
-# NOTE: no longer redundant rule, since generalization using owl:TransitiveProperty
-#       is now extended by temporal information and solely used for transitive
-#       custom properties
-$rdfs11
-<logic:true> ?c <rdfs:subClassOf> ?d "0"^^<xsd:long>
-<logic:true> ?d <rdfs:subClassOf> ?e "0"^^<xsd:long>
-->
-<logic:true> ?c <rdfs:subClassOf> ?e "0"^^<xsd:long>
-@test
-?c != ?d
-?c != ?e
-?d != ?e
+# this semantically-redundant rule is subsumed by the more general (and slightly more
+# complex) rule $owl_transitive_property, dealing with transitive properties;
+# NOTE: outcommenting this rule requires that rdfs:subClassOf is classified as being of
+# type owl:TransitiveProperty!
+# @see rdfs5 for a similar rule, dealing with rdfs:subPropertyOf
+#$rdfs11
+#<logic:true> ?c <rdfs:subClassOf> ?d "0"^^<xsd:long>
+#<logic:true> ?d <rdfs:subClassOf> ?e "0"^^<xsd:long>
+#->
+#<logic:true> ?c <rdfs:subClassOf> ?e "0"^^<xsd:long>
+#@test
+#?c != ?d
+#?c != ?e
+#?d != ?e
 
 
 # NOTE: $rdfs12 omitted -- deals with rdfs:member;
@@ -193,7 +200,7 @@ $owl_symmetric_property
 # returns FunctionalOperator.TRUE (= true) iff there is _no_ quintuple
 #   <logic:false> subj pred obj time
 # such that min(time1, time2) <= time <= max(time1, time2);
-# return FunctionalOperator.FALSE, otherwise
+# returns FunctionalOperator.FALSE, otherwise
 $owl_transitive_property
 <logic:true> ?p <rdf:type> <owl:TransitiveProperty> "0"^^<xsd:long>
 <logic:true> ?x ?p ?y ?time1
@@ -209,8 +216,15 @@ ValidInBetween ?y ?p ?z ?time1 ?time2
 ?time = LMax2 ?time1 ?time2
 
 
+# the original rule from the OWL-Horst rule set did _not_ require that
+# ?p is an owl:ObjectProperty (below find the rule for owl:DatatypeProperty);
 # from a single observation, we derive the identity of ?y and ?z from
-# the very beginning (time = 0 in the consequent)
+# the very beginning (time = 0 in the consequent);
+# there are other possible interpretations for assigning time a value
+# in the consequent, e.g.,
+#   * take min(time1, time2)
+#   * take the _earliest_ time when either ?y or ?z was mentioned (that
+#     needs to be updated potentially)
 $owl_functional_object_property
 <logic:true> ?p <rdf:type> <owl:FunctionalProperty> "0"^^<xsd:long>
 <logic:true> ?p <rdf:type> <owl:ObjectProperty> "0"^^<xsd:long>
@@ -220,16 +234,16 @@ $owl_functional_object_property
 <logic:true> ?y <owl:sameAs> ?z "0"^^<xsd:long>
 @test
 ?y != ?z
-?p != <rdf:type>
 ValidInBetween ?x ?p ?y ?time1 ?time2
 ValidInBetween ?x ?p ?z ?time1 ?time2
 
 
-# there is _no_ non-temporal version of this rule in the original rule set;
+# there is _no_ non-temporal version of this rule in the original OWL-Horst
+# rule set;
 # note that this rule is a kind of _integrity_ constraint, deriving that
-# seriously wrong things had happened, viz., logical inconsistency (see the
-# description of test ValidInBetween above)
-$owl_functional_datatype_property
+# seriously wrong things had happened, viz., a logical inconsistency (see
+# the description of the test ValidInBetween above)
+$integrity_functional_datatype_property
 <logic:true> ?p <rdf:type> <owl:FunctionalProperty> "0"^^<xsd:long>
 <logic:true> ?p <rdf:type> <owl:DatatypeProperty> "0"^^<xsd:long>
 <logic:true> ?x ?p ?y ?time1
@@ -239,7 +253,6 @@ $owl_functional_datatype_property
 <logic:error> ?x ?p ?z ?time2
 @test
 ?y != ?z
-?p != <rdf:type>
 ValidInBetween ?x ?p ?y ?time1 ?time2
 ValidInBetween ?x ?p ?z ?time1 ?time2
 
@@ -247,7 +260,7 @@ ValidInBetween ?x ?p ?z ?time1 ?time2
 # there is _no_ non-temporal version of this rule in the original rule;
 # if a functional property p for p(x,y)@t1 is "overwritten" by p(x,z)@t2
 # (t1 < t2), we can invalidate p(x,y)@t2 by marking it as _false_
-$invalidate_functional_property
+$invalidate_functional_relation_instance
 <logic:true> ?p <rdf:type> <owl:FunctionalProperty> "0"^^<xsd:long>
 <logic:true> ?x ?p ?y ?time1
 <logic:true> ?x ?p ?z ?time2
@@ -259,8 +272,11 @@ LLess ?time1 ?time2
 ValidInBetween ?x ?p ?y ?time1 ?time2
 
 
-# there is _no_ non-temporal version of this rule in the original rule set
-$logical_inconsistency
+# there is _no_ non-temporal version of this rule in the original rule set;
+# note that this rule is valid only for both statements being declared valid
+# at the _same_ time t1 = t2: in case t1 < t2 or t1 > t2, we are not allowed
+# to derive an inconsistency
+$integrity_logical_inconsistency
 <logic:true> ?x ?p ?y ?time
 <logic:false> ?x ?p ?y ?time
 ->
@@ -268,7 +284,7 @@ $logical_inconsistency
 
 
 # polarity/transaction time extension of an integrity constraint for OWL
-$disjoint_with_type_type
+$integrity_disjoint_with_type_type
 <logic:true> ?s <owl:disjointWith> ?t "0"^^<xsd:long>
 <logic:true> ?i <rdf:type> ?s ?time1
 <logic:true> ?i <rdf:type> ?t ?time2
@@ -304,7 +320,6 @@ $owl_InvFunctProp
 <logic:true> ?y <owl:sameAs> ?z "0"^^<xsd:long>
 @test
 ?y != ?z
-?p != <rdf:type>
 ValidInBetween ?y ?p ?x ?time1 ?time2
 ValidInBetween ?z ?p ?x ?time1 ?time2
 
