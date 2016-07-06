@@ -300,19 +300,19 @@ public final class ForwardChainer {
 		* @throws FileNotFoundException
 		*/
 	public ForwardChainer(int noOfCores,
-																							boolean verbose,
-																							boolean rdfCheck,
-																							boolean eqReduction,
-																							int minNoOfArgs,
-																							int maxNoOfArgs,
-																							int subjectPosition,
-																							int predicatePosition,
-																							int objectPosition,
-																							int noOfAtoms,
-																							int noOfTuples,
-																							String tupleFile,
-																							String ruleFile,
-																							String namespaceFile)
+												boolean verbose,
+												boolean rdfCheck,
+												boolean eqReduction,
+												int minNoOfArgs,
+												int maxNoOfArgs,
+												int subjectPosition,
+												int predicatePosition,
+												int objectPosition,
+												int noOfAtoms,
+												int noOfTuples,
+												String tupleFile,
+												String ruleFile,
+												String namespaceFile)
 					throws FileNotFoundException, WrongFormatException, IOException {
 		this(noOfCores, verbose);
 		this.noOfAtoms = noOfAtoms;

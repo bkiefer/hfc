@@ -125,17 +125,17 @@ public final class TupleStore {
 
 	/**
 	 * this setting is used for input encoding in TupleStore
-	 * @see TupleStore.OUTPUT_CHARACTER_ENCODING
-	 * @see Interactive.OUTPUT_CHARACTER_ENCODING
+	 * @see TupleStore.outputCharacterEncoding
+	 * @see Interactive.outputCharacterEncoding
 	 */
-	public static final String INPUT_CHARACTER_ENCODING = "UTF-8";
+	public String inputCharacterEncoding = "UTF-8";
 
 	/**
 	 * this setting is used for output encoding in TupleStore
-	 * @see TupleStore.INPUT_CHARACTER_ENCODING
-	 * @see Interactive.OUTPUT_CHARACTER_ENCODING
+	 * @see TupleStore.inputCharacterEncoding
+	 * @see Interactive.outputCharacterEncoding
 	 */
-	public static final String OUTPUT_CHARACTER_ENCODING = "UTF-8";
+	public String outputCharacterEncoding = "UTF-8";
 
 	/**
 	 * a mapping from the internal representation of URIs (ints) to their
@@ -1339,7 +1339,7 @@ public final class TupleStore {
     if (this.verbose)
       System.out.println("\n  reading tuples from " + filename + " ...");
     readTuples(Files.newBufferedReader(new File(filename).toPath(),
-        Charset.forName(TupleStore.INPUT_CHARACTER_ENCODING)));
+        Charset.forName(this.inputCharacterEncoding)));
   }
 
 	/**
@@ -1355,7 +1355,7 @@ public final class TupleStore {
 		if (this.verbose)
 			System.out.println("\n  reading tuples from " + filename + " ...");
 		readTuples(Files.newBufferedReader(new File(filename).toPath(),
-						Charset.forName(TupleStore.INPUT_CHARACTER_ENCODING)), front, backs);
+						Charset.forName(this.inputCharacterEncoding)), front, backs);
 	}
 
   /**
@@ -1373,7 +1373,7 @@ public final class TupleStore {
 		int noOfTuples = 0, lineNo = 0;
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filename),
-																																	 TupleStore.INPUT_CHARACTER_ENCODING));
+				this.inputCharacterEncoding));
 			int noOfLines;
       while ((line = br.readLine()) != null) {
 				noOfLines = Integer.parseInt(line.substring(line.indexOf(' ') + 1));
@@ -1568,7 +1568,7 @@ public final class TupleStore {
 			System.out.println("  writing tuples to " + filename + " ...");
 		try {
 			PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(filename),
-																															TupleStore.OUTPUT_CHARACTER_ENCODING));
+																															this.outputCharacterEncoding));
 			for (int[] tuple : collection)
 				pw.println(toString(tuple));
 			pw.flush();
@@ -1589,7 +1589,7 @@ public final class TupleStore {
 			System.out.println("  writing tuples to " + filename + " ...");
 		try {
 			PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(filename),
-																															TupleStore.OUTPUT_CHARACTER_ENCODING));
+																															this.outputCharacterEncoding));
 			for (int[] tuple : this.allTuples)
 				pw.println(toExpandedString(tuple));
 			pw.flush();
@@ -1612,7 +1612,7 @@ public final class TupleStore {
 			System.out.println("  writing tuple store to " + filename + " ...");
 		try {
 			PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(filename),
-																															TupleStore.OUTPUT_CHARACTER_ENCODING));
+																															this.outputCharacterEncoding));
 			// dump objectToId (null -> 0 given by constructor is overwritten by exactly the same mapping)
 			pw.println("&object2id " + this.objectToId.size());
 			for (Map.Entry<String, Integer> entry : this.objectToId.entrySet())

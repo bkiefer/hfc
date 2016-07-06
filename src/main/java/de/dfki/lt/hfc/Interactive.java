@@ -50,10 +50,10 @@ public class Interactive {
 
 	/**
 	 * this setting is used for output encoding in Interactive
-	 * @see TupleStore.INPUT_CHARACTER_ENCODING
-	 * @see TupleStore.OUTPUT_CHARACTER_ENCODING
+	 * @see TupleStore.inputCharacterEncoding
+	 * @see TupleStore.outputCharacterEncoding
 	 */
-	public static final String OUTPUT_CHARACTER_ENCODING = "UTF-8";
+	public String outputCharacterEncoding = "UTF-8";
 
 	/**
 	 * JLine's console reader
@@ -155,7 +155,7 @@ public class Interactive {
 	protected void readEvalPrint(InputStream in) {
 		try {
 			this.consoleReader = new ConsoleReader(in, new OutputStreamWriter(System.out));
-			this.queryOutput = new PrintStream(System.out, true, Interactive.OUTPUT_CHARACTER_ENCODING);
+			this.queryOutput = new PrintStream(System.out, true, this.outputCharacterEncoding);
 			readEvalPrintLoop();
 		}
 		catch (Exception e) {

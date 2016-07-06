@@ -5,8 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 
 import de.dfki.lt.hfc.types.XsdLong;
 
@@ -25,6 +25,12 @@ public class Hfc {
     _tupleStore = new TupleStore(new Namespace());
   }
 
+  // customize HFC, i.e., namespace, tuple store, rule store, and forward chainer
+  // via key-value pairs from parameter settings which affect fields in these objects
+  public void customizeHfc(HashMap<String, String> settings) {
+
+  }
+
   public void readNamespaces(BufferedReader nameSpaceReader)
       throws WrongFormatException, IOException {
     _tupleStore.namespace.readNamespaces(nameSpaceReader);
@@ -33,7 +39,7 @@ public class Hfc {
   public void readNamespaces(File namespace)
       throws WrongFormatException, IOException {
     readNamespaces(Files.newBufferedReader(namespace.toPath(),
-        Charset.forName(TupleStore.INPUT_CHARACTER_ENCODING)));
+        Charset.forName(_tupleStore.inputCharacterEncoding)));
   }
 
   public void addNamespace(String shortForm, String longForm) {
@@ -63,9 +69,9 @@ public class Hfc {
   public void readTuples(File tuples, File namespace)
       throws WrongFormatException, IOException {
     readTuples(Files.newBufferedReader(tuples.toPath(),
-        Charset.forName(TupleStore.INPUT_CHARACTER_ENCODING)),
+        Charset.forName(_tupleStore.inputCharacterEncoding)),
         Files.newBufferedReader(namespace.toPath(),
-            Charset.forName(TupleStore.INPUT_CHARACTER_ENCODING)));
+            Charset.forName(_tupleStore.inputCharacterEncoding)));
   }
 
   /**
@@ -78,7 +84,7 @@ public class Hfc {
   public void readTuples(File tuples, long timeStamp)
       throws WrongFormatException, IOException {
     readTuples(Files.newBufferedReader(tuples.toPath(),
-        Charset.forName(TupleStore.INPUT_CHARACTER_ENCODING)),
+        Charset.forName(_tupleStore.inputCharacterEncoding)),
             timeStamp);
   }
 
