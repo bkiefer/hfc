@@ -21,19 +21,19 @@ import gnu.trove.map.hash.*;
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Wed Jun 22 15:20:51 CEST 2016
+ * @version Fri Jul  8 15:36:17 CEST 2016
  */
 public final class ForwardChainer {
 
 	/**q
 	 * HFC version number string
 	 */
-	public static final String VERSION = "6.2.0";
+	public static final String VERSION = "6.3.0";
 
 	/**
 	 * HFC info string
 	 */
-	public static final String INFO = "v" + ForwardChainer.VERSION + " (Wed Jun 22 15:20:51 CEST 2016)";
+	public static final String INFO = "v" + ForwardChainer.VERSION + " (Fri Jul  8 15:36:17 CEST 2016)";
 
 	/**
 	 * a pointer to the tuple store for this forward chainer
@@ -124,7 +124,7 @@ public final class ForwardChainer {
 	 * specifies the number of tasks (= #rules) that are executed within a single
 	 * iteration; will be assigned a value when constructor is executed
 	 */
-	private int noOfTasks;
+	protected int noOfTasks;
 
 	/**
 	 * container to gather the rule threads
@@ -170,7 +170,7 @@ public final class ForwardChainer {
 	}
 
 	/**
-	 * used by copyForwardChainer()
+	 * only used by copyForwardChainer() -- that's why it is private
 	 */
 	private ForwardChainer(int noOfCores, boolean verbose) {
 		this.noOfCores = noOfCores;
@@ -255,8 +255,6 @@ public final class ForwardChainer {
 	 */
 	public ForwardChainer(TupleStore tupleStore, RuleStore ruleStore) {
 		this();
-		this.noOfAtoms = 100000;
-		this.noOfTuples = 500000;
 		this.tupleStore = tupleStore;
 		this.ruleStore = ruleStore;
 		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);

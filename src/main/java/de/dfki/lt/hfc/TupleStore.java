@@ -182,7 +182,7 @@ public final class TupleStore {
 	 * a similar variable exists in class RuleStore
 	 * @see #exitOnError
 	 */
-	private boolean verbose = true;
+	public boolean verbose = true;
 
 	/**
 	 * when tuples are read in, this variable decides whether tuples are compliant with
@@ -274,6 +274,21 @@ public final class TupleStore {
 	 */
 	protected AggregateRegistry aggregateRegistry = new AggregateRegistry(this);
 
+
+	/**
+	 * noOfAtoms initializes internal data structures in TupleStore with a predefined size;
+	 * making a good guess how many atoms will be employed in an application avoid re-sizing
+	 * and copying
+	 */
+	public int noOfAtoms = 100000;
+
+	/**
+	 * noOfTuples initializes internal data structures in TupleStore with a predefined size;
+	 * making a good guess how many atoms will be employed in an application avoid re-sizing
+	 * and copying
+	 */
+	public int noOfTuples = 500000;
+
 	/**
 	 * init form that "outsources" initialization code that needs to be duplicated by the
 	 * binary (that is used be several other constructors) and 10-ary constructor
@@ -288,6 +303,8 @@ public final class TupleStore {
 										int objectPosition,
 										int noOfAtoms,
 										int noOfTuples) {
+		this.noOfAtoms = noOfAtoms;
+		this.noOfTuples = noOfTuples;
 		this.verbose = verbose;
 		this.rdfCheck = rdfCheck;
 		this.equivalenceClassReduction = eqReduction;
@@ -852,6 +869,7 @@ public final class TupleStore {
 	 */
 	public boolean isValidTuple(List<String> stringTuple, int lineNo)
 	    throws WrongFormatException {
+		System.out.println(stringTuple.size() + " " + this.minNoOfArgs + " " + this.maxNoOfArgs);
 		// check against min length
 		if (stringTuple.size() < this.minNoOfArgs)
 			return sayItLoud(lineNo, ": tuple too short");

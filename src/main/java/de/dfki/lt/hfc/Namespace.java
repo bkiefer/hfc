@@ -135,20 +135,28 @@ public final class Namespace {
 	public HashMap<String, String> longToShort = new HashMap<String, String>();
 
   /**
-   * a mapping between XSD type specifiers and Java classes representing these types in HFC
-   * Now in XsdAnySimpleType, where it belongs.
+   * a mapping between XSD type specifiers and Java classes representing these types
+	 * in HFC; now in XsdAnySimpleType, where it belongs
    */
   //protected HashMap<String, Constructor<XsdAnySimpleType>> typeToConstructor = new HashMap<String, Constructor<XsdAnySimpleType>>();
 
 	/**
-	 * creates a default namespace, consisting only of mappings for RDF, RDFS, and OWL (1.0)
+	 * creates an empty namespace object, i.e., NO namespaces for XSD, RDF, RDFS, OWL are
+	 * defined; in case you would like to automatically pre-define namespaces for this, use
+	 * unary constructor Namespace(boolean verbose)
 	 */
-	public Namespace() {
+	public Namespace() {	}
+
+	/**
+	 * creates a namespace, consisting of mappings for XSD, RDF, RDFS, and OWL (1.0)
+	 */
+	public Namespace(boolean verbose) {
+		this.verbose = verbose;
 		putForm(Namespace.XSD_SHORT, Namespace.XSD_LONG);
 		putForm(Namespace.RDF_SHORT, Namespace.RDF_LONG);
 		putForm(Namespace.RDFS_SHORT, Namespace.RDFS_LONG);
 		putForm(Namespace.OWL_SHORT, Namespace.OWL_LONG);
-		if (this.verbose)
+		if (verbose)
 			System.out.println("\n  defining default namespace for XSD, RDF, RDFS, and OWL ...");
 	}
 
