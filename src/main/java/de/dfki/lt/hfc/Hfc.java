@@ -139,18 +139,9 @@ public class Hfc {
     _namespace.putForm(shortForm, longForm);
   }
 
-  /**
-   * HUK: this method _now_ calls the binary readTuples() method
-   * from class TupleStore in order to add a further transaction
-   * time argument at the end of the original tuple;
-   *
-   * @param tupleReader
-   * @throws WrongFormatException
-   * @throws IOException
-   */
-  public void readTuples(BufferedReader tupleReader, long timeStamp)
+  public void readTuples(BufferedReader tupleReader)
       throws WrongFormatException, IOException {
-    _tupleStore.readTuples(tupleReader, timeStamp);
+    _tupleStore.readTuples(tupleReader);
   }
 
   public void readTuples(BufferedReader tupleReader, BufferedReader nameSpaceReader)
@@ -167,18 +158,10 @@ public class Hfc {
             Charset.forName(_tupleStore.inputCharacterEncoding)));
   }
 
-  /**
-   * HUK: added time stamp argument
-   *
-   * @param tuples
-   * @throws WrongFormatException
-   * @throws IOException
-   */
-  public void readTuples(File tuples, long timeStamp)
+  public void readTuples(File tuples)
       throws WrongFormatException, IOException {
     readTuples(Files.newBufferedReader(tuples.toPath(),
-        Charset.forName(_tupleStore.inputCharacterEncoding)),
-            timeStamp);
+        Charset.forName(_tupleStore.inputCharacterEncoding)));
   }
 
   String myNormalizeNamespaces(String s) {

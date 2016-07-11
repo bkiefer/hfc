@@ -869,7 +869,6 @@ public final class TupleStore {
 	 */
 	public boolean isValidTuple(List<String> stringTuple, int lineNo)
 	    throws WrongFormatException {
-		System.out.println(stringTuple.size() + " " + this.minNoOfArgs + " " + this.maxNoOfArgs);
 		// check against min length
 		if (stringTuple.size() < this.minNoOfArgs)
 			return sayItLoud(lineNo, ": tuple too short");
@@ -1175,9 +1174,9 @@ public final class TupleStore {
 		* valid time, transaction time, or gradation/modal operators
 		* @return the new extended tuple
 		*/
-	protected ArrayList<String> extendTupleExternally(ArrayList<String> in, String front, String... backs) {
+	protected ArrayList<String> extendTupleExternally(final ArrayList<String> in, final String front, final String... backs) {
 		// make sure to set etuple directly to the right size
-		ArrayList<String> etuple = new ArrayList<String>(in.size() + backs.length + (front == null ? 0 : 1));
+		ArrayList<String> etuple = new ArrayList<String>(in.size() + (front == null ? 0 : 1) + backs.length);
 		if (front != null)
 			etuple.add(front);
 		etuple.addAll(in);
@@ -1280,8 +1279,11 @@ public final class TupleStore {
 					}
 				}
 				if (eol) {
-					// now add one potential front element and further potential back elements
-					tuple = extendTupleExternally(tuple, front, backs);
+					// now add one potential front element and further potential back elements;
+					// but check whether (front == null) & (backs.length == 0) in order to avoid a
+					// useless copy of 'tuple'
+					if ((front != null) || (backs.length != 0))
+						tuple = extendTupleExternally(tuple, front, backs);
 					// external tuple representation might be misspelled or the tuple is already contained
 					if (addTuple(tuple, lineNo) != null)
 						++noOfTuples;  // everything was fine
