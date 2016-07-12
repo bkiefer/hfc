@@ -159,7 +159,7 @@ public class TestUtils {
         new NextAsIntCall(fc.tupleStore));
   }
 
-  public static void checkResult(ForwardChainer fc, BindingTable bt, String[][] expected, String ... vars){
+  public static void checkResult(ForwardChainer fc, BindingTable bt, String[][] expected, String ... vars) {
     try {
       check(bt.iterator(vars), expected,
           new NextAsIntCall(fc.tupleStore));

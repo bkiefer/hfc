@@ -53,8 +53,8 @@ public class TriplesWithoutTimeToQuintuplesWithTime {
 			while (end < start) {
 				end = makeRandom(MAX_INT);
 			}
-			tuple[3] = ts.putObject(XsdInt.toString(start, Namespace.shortIsDefault));
-			tuple[4] = ts.putObject(XsdInt.toString(end, Namespace.shortIsDefault));
+			tuple[3] = ts.putObject(XsdInt.toString(start, fc.tupleStore.namespace.shortIsDefault));
+			tuple[4] = ts.putObject(XsdInt.toString(end, fc.tupleStore.namespace.shortIsDefault));
 			newTuples.add(tuple);
 		}
 

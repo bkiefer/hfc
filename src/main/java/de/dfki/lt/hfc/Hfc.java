@@ -29,24 +29,25 @@ public class Hfc {
    * in the Namespace, TupleStore, RuleStore, and ForwardChainer objects;
    * here, we are also assigning DEFAULT values which are used in case they are not specified
    * in the settings map;
-   * the DEFAULT settings basically address the RDF triple case without equivalence class reduction;
+   * the DEFAULT settings basically address the RDF triple case without equivalence class reduction
    */
-  protected int noOfCores = 2;
-  protected boolean gc = false;
-  protected boolean verbose = true;
-  protected boolean rdfCheck = true;
-  protected boolean equivalenceClassReduction = false;
-  protected boolean cleanUpRepository = true;
-  protected int noOfIterations = Integer.MAX_VALUE;
-  protected int minNoOfArgs = 3;
-  protected int maxNoOfArgs = 3;
-  protected int subjectPosition = 0;
-  protected int predicatePosition = 1;
-  protected int objectPosition = 2;
-  protected int noOfAtoms = 10000;
-  protected int noOfTuples = 100000;
   protected String characterEncoding = "UTF-8";
-  protected String persistencyFile = "/tmp/tuples.nt";
+  protected boolean cleanUpRepository = true;
+  protected boolean equivalenceClassReduction = false;
+  protected boolean gc = false;
+  protected int maxNoOfArgs = 3;
+  protected int minNoOfArgs = 3;
+  protected int noOfAtoms = 10000;
+  protected int noOfCores = 2;
+  protected int noOfIterations = Integer.MAX_VALUE;  // aprox. complete materialization
+  protected int noOfTuples = 100000;
+  protected int objectPosition = 2;
+  protected String persistencyFile = "/tmp/tuples.nt";  // not used at the moment
+  protected int predicatePosition = 1;
+  protected boolean rdfCheck = true;
+  protected boolean shortIsDefault = true;
+  protected int subjectPosition = 0;
+  protected boolean verbose = true;
 
   /**
    * transaction time time stamp used by Hfc.readTuples(BufferedReader tupleReader)
@@ -67,43 +68,72 @@ public class Hfc {
   // the fields for the rule store and forward chainer are assigned values
   // the first time rules are uploaded to HFC
   public void customizeHfc(Map<String, String> settings) {
-    System.out.println(settings);
-    // make the settings available via protected fields in this class
-    if (settings.containsKey("NO_OF_CORES"))
-      this.noOfCores = Integer.parseInt(settings.get("NO_OF_CORES"));
-    if (settings.containsKey("GARBAGE_COLLECTION"))
-      this.gc = Boolean.parseBoolean(settings.get("GARBAGE_COLLECTION"));
-    if (settings.containsKey("VERBOSE"));
-      this.verbose = Boolean.parseBoolean(settings.get("VERBOSE"));
-    if (settings.containsKey("RDF_CHECK"))
-      this.rdfCheck = Boolean.parseBoolean(settings.get("RDF_CHECK"));
-    if (settings.containsKey("EQUIVALENCE_REDUCTION"))
-      this.equivalenceClassReduction = Boolean.parseBoolean(settings.get("EQUIVALENCE_REDUCTION"));
-    if (settings.containsKey("CLEAN_UP_REPOSITORY"))
-      this.cleanUpRepository = Boolean.parseBoolean(settings.get("CLEAN_UP_REPOSITORY"));
-    if (settings.containsKey("NO_OF_ITERATIONS"))
-      this.noOfIterations = Integer.parseInt(settings.get("NO_OF_ITERATIONS"));
-    if (settings.containsKey("MIN_NO_OF_ARGS"))
-      this.minNoOfArgs = Integer.parseInt(settings.get("MIN_NO_OF_ARGS"));
-    if (settings.containsKey("MAX_NO_OF_ARGS"))
-      this.maxNoOfArgs = Integer.parseInt(settings.get("MAX_NO_OF_ARGS"));
-    if (settings.containsKey("SUBJECT_POSITION"))
-      this.subjectPosition = Integer.parseInt(settings.get("SUBJECT_POSITION"));
-    if (settings.containsKey("PREDICATE_POSITION"))
-      this.predicatePosition = Integer.parseInt(settings.get("PREDICATE_POSITION"));
-    if (settings.containsKey("OBJECT_POSITION"))
-      this.objectPosition = Integer.parseInt(settings.get("OBJECT_POSITION"));
-    if (settings.containsKey("NO_OF_ATOMS"))
-      this.noOfAtoms = Integer.parseInt(settings.get("NO_OF_ATOMS"));
-    if (settings.containsKey("NO_OF_TUPLES"))
-      this.noOfTuples = Integer.parseInt(settings.get("NO_OF_TUPLES"));
-    if (settings.containsKey("CHAR_ENCODING"))
-      this.characterEncoding = settings.get("CHAR_ENCODING");
-    if (settings.containsKey("PERSISTENCY_FILE"))
-      this.persistencyFile = settings.get("PERSISTENCY_FILE");
-    // as _namespace is already bound in the constructor, set "verbose" to the right value, if available
+    System.out.println("HFC settings: " + settings);
+    // make the settings available via protected fields in this class;
+    // alphabetical order:
+    for (Map.Entry<String, String> pair : settings.entrySet()) {
+      switch (pair.getKey()) {
+        case "CHARACTER_ENCODING" :
+          this.characterEncoding = pair.getValue();
+          break;
+        case "CLEAN_UP_REPOSITORY" :
+          this.cleanUpRepository = Boolean.parseBoolean(pair.getValue());
+          break;
+        case "EQUIVALENCE_REDUCTION" :
+          this.equivalenceClassReduction = Boolean.parseBoolean(pair.getValue());
+          break;
+        case "GARBAGE_COLLECTION" :
+          this.gc = Boolean.parseBoolean(pair.getValue());
+          break;
+        case "MAX_NO_OF_ARGS" :
+          this.maxNoOfArgs = Integer.parseInt(pair.getValue());
+          break;
+        case "MIN_NO_OF_ARGS" :
+          this.minNoOfArgs = Integer.parseInt(pair.getValue());
+          break;
+        case "NO_OF_ATOMS" :
+          this.noOfAtoms = Integer.parseInt(pair.getValue());
+          break;
+        case "NO_OF_CORES" :
+          this.noOfCores = Integer.parseInt(pair.getValue());
+          break;
+        case "NO_OF_ITERATIONS" :
+          this.noOfIterations = Integer.parseInt(pair.getValue());
+          break;
+        case "NO_OF_TUPLES" :
+          this.noOfTuples = Integer.parseInt(pair.getValue());
+          break;
+        case "OBJECT_POSITION" :
+          this.objectPosition = Integer.parseInt(pair.getValue());
+          break;
+        case "PERSISTENCY_FILE" :
+          this.persistencyFile = pair.getValue();
+          break;
+        case "PREDICATE_POSITION" :
+          this.predicatePosition = Integer.parseInt(pair.getValue());
+          break;
+        case "RDF_CHECK" :
+          this.rdfCheck = Boolean.parseBoolean(pair.getValue());
+          break;
+        case "SHORT_IS_DEFAULT" :
+          this.shortIsDefault = Boolean.parseBoolean(pair.getValue());
+          break;
+        case "SUBJECT_POSITION" :
+          this.subjectPosition = Integer.parseInt(pair.getValue());
+          break;
+        case "VERBOSE" :
+          this.verbose = Boolean.parseBoolean(pair.getValue());
+          break;
+        default :
+          if (this.verbose)
+            System.out.println("  unknown setting option: " + pair.getKey());
+          break;
+      }
+    }
+    // _namespace already bound in constructor
     _namespace.verbose = this.verbose;
-    // as _tupleStore is already bound in the constructor, set all the public fields of the tuple store
+    _namespace.shortIsDefault = this.shortIsDefault;
+    // _tupleStore already bound in constructor
     _tupleStore.verbose = this.verbose;
     _tupleStore.rdfCheck = this.rdfCheck;
     _tupleStore.equivalenceClassReduction = this.equivalenceClassReduction;
@@ -184,37 +214,55 @@ public class Hfc {
   }
 
   /** Normalize namespaces, and get ids directly to put in the tuples without
-   *  using the hfc internal functions.
+   *  using the hfc internal functions
+   *
+   * @param rows the table that contains the tuples to add to the storage
+   * @param front the potentially-empty (== null) front element
+   * @param backs arbitrary-many back elements (or an empty array)
    *
    *  This is done so i can add the <it>now<it/> time stamp transparently
    *  TODO: refactor, and make this part of HFC core
    */
-  public int addTuples(List<List<String>> rows, long timeStamp) {
-    int time = -1;
-    int timeslot = 0;
-    if (timeStamp >= 0) {
-      time = _tupleStore.putObject(
-          new XsdLong(System.currentTimeMillis()).toString());
-      timeslot = 1;
+  public int addTuples(List<List<String>> rows, String front, String... backs) {
+    // normalize namespaces for front and backs
+    int frontId = -1;    // Java wants an initial value
+    if (front != null)
+      frontId = _tupleStore.putObject(myNormalizeNamespaces(front));
+    int[] backIds = new int[backs.length];
+    if (backs.length != 0) {
+      for (int i = 0; i < backs.length; ++i)
+        backIds[i] = _tupleStore.putObject(myNormalizeNamespaces(backs[i]));
     }
-    int result = 0;
+    // (front == null) means _no_ front element
+    final int frontLength = (front == null) ? 0 : 1;
+    final int backLength = backs.length;
+    int[] tuple;
+    int noOfTuples = 0;
+    // extend and add tuples, given by parameters rows, and front and backs
     for (List<String> row : rows) {
       // TODO: LONG TO SHORT MAPPINGS MUST BE DONE HERE BECAUSE THE ADDTUPLES
       // METHODS DON'T DO THAT, WHICH SIMPLY ISN'T RIGHT IF THEY ARE PUBLIC!
-      int[] tuple = new int[row.size() + timeslot];
+      tuple = new int[row.size() + frontLength + backLength];
       int i = 0;
-      for (String s : row) {
-        tuple[i] = _tupleStore.putObject(myNormalizeNamespaces(s));
-        ++i;
+      // front element
+      if (front != null) {
+        tuple[0] = frontId;
+        i = 1;
       }
-      if (time >= 0) {
-        tuple[i] = time;
+      // table row
+      for (String s : row) {
+        tuple[i++] = _tupleStore.putObject(myNormalizeNamespaces(s));
+      }
+      // back elements
+      if (backs.length != 0) {
+        for (int j = 0; j < backs.length; ++j)
+          tuple[i++] = backIds[j];
       }
       if (_tupleStore.addTuple(tuple)) {
-        ++result;
+        ++noOfTuples;
       }
     }
-    return result;
+    return noOfTuples;
   }
 
   /**

@@ -346,7 +346,7 @@ public final class TupleStore {
 		this.idToObject.add(Namespace.UNBOUND);
 		this.idToJavaObject.add(null);
 		// maybe make this more flexible by moving this information to a file
-		if (Namespace.shortIsDefault) {
+		if (this.namespace.shortIsDefault) {
 			this.objectToId.put(Namespace.RDFS_SUBCLASSOF_SHORT, Namespace.RDFS_SUBCLASSOF_ID);
 			this.idToObject.add(Namespace.RDFS_SUBCLASSOF_SHORT);
 			this.idToJavaObject.add(null);
@@ -399,19 +399,22 @@ public final class TupleStore {
    * note: assigns an empty Namespace object to this.namespace
 	 */
 	public TupleStore(int noOfAtoms, int noOfTuples) {
+		this.namespace = new Namespace();
 		init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
 				   this.minNoOfArgs, this.maxNoOfArgs,
 						 this.subjectPosition, this.predicatePosition, this.objectPosition,
 						 noOfAtoms, noOfTuples);
-    this.namespace = new Namespace();
 	}
 
 	/**
 	 * extends the binary constructor with the ability to read in a namespace
 	 */
 	public TupleStore(int noOfAtoms, int noOfTuples, Namespace namespace) {
-		this(noOfAtoms, noOfTuples);
 		this.namespace = namespace;
+		init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
+			this.minNoOfArgs, this.maxNoOfArgs,
+			this.subjectPosition, this.predicatePosition, this.objectPosition,
+			noOfAtoms, noOfTuples);
 	}
 
 	/**
@@ -424,8 +427,11 @@ public final class TupleStore {
 	 */
 	public TupleStore(int noOfAtoms, int noOfTuples, Namespace namespace, String tupleFile)
 	    throws FileNotFoundException, IOException, WrongFormatException {
-		this(noOfAtoms, noOfTuples);
 		this.namespace = namespace;
+		init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
+			this.minNoOfArgs, this.maxNoOfArgs,
+			this.subjectPosition, this.predicatePosition, this.objectPosition,
+			noOfAtoms, noOfTuples);
 		readTuples(tupleFile);
 	}
 
@@ -440,10 +446,10 @@ public final class TupleStore {
 										int noOfAtoms, int noOfTuples,
 										Namespace namespace, String tupleFile)
 										    throws FileNotFoundException, IOException, WrongFormatException {
-		init(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
-						 this.subjectPosition, this.predicatePosition, this.objectPosition,
-						 noOfAtoms, noOfTuples);
 		this.namespace = namespace;
+		init(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
+			this.subjectPosition, this.predicatePosition, this.objectPosition,
+			noOfAtoms, noOfTuples);
 		readTuples(tupleFile);
 	}
 
@@ -459,10 +465,10 @@ public final class TupleStore {
 																			int noOfAtoms, int noOfTuples,
 																			Namespace namespace, String tupleFile)
 					throws FileNotFoundException, IOException, WrongFormatException {
-		init(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
-						 subjectPosition, predicatePosition, objectPosition,
-						 noOfAtoms, noOfTuples);
 		this.namespace = namespace;
+		init(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
+			subjectPosition, predicatePosition, objectPosition,
+			noOfAtoms, noOfTuples);
 		readTuples(tupleFile);
 	}
 
@@ -470,8 +476,11 @@ public final class TupleStore {
 	 * assumes a default of 100,000 atoms and 500,000 tuples
 	 */
 	public TupleStore(Namespace namespace) {
-		this(100000, 500000);
 		this.namespace = namespace;
+		init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
+			this.minNoOfArgs, this.maxNoOfArgs,
+			this.subjectPosition, this.predicatePosition, this.objectPosition,
+			100000, 500000);
 	}
 
 	/**
@@ -482,8 +491,7 @@ public final class TupleStore {
 	 */
 	public TupleStore(Namespace namespace, String tupleFile)
 	    throws FileNotFoundException, IOException, WrongFormatException {
-		this(100000, 500000);
-		this.namespace = namespace;
+		this(namespace);
 		readTuples(tupleFile);
 	}
 
@@ -1544,7 +1552,7 @@ public final class TupleStore {
 		}
 		if (bareAtom) {
 			// complete type in order to recognize duplicates (perhaps output a message?)
-			if (Namespace.shortIsDefault)
+			if (this.namespace.shortIsDefault)
 				sb.append("^^").append(XsdString.SHORT_NAME);
 			else
 				sb.append("^^").append(XsdString.LONG_NAME);

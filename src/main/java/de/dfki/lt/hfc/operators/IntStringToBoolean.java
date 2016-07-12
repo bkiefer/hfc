@@ -30,7 +30,7 @@ public final class IntStringToBoolean extends FunctionalOperator {
 	public int apply(int[] args) {
 		String str = ((XsdString)getObject(args[0])).value;
 		XsdBoolean b = new XsdBoolean(Integer.parseInt(str) == 0 ? false : true);
-		return registerObject(b.toString(de.dfki.lt.hfc.Namespace.shortIsDefault), b);
+		return registerObject(b.toString(this.tupleStore.namespace.shortIsDefault), b);
 	}
 	
 }

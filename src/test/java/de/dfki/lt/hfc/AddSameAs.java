@@ -14,11 +14,11 @@ import de.dfki.lt.hfc.*;
 
 /**
  * NOTE: in order to perform the measurements properly, it is important to set the
- *       right flag in class TupleStore, viz.,
- *         equivalenceClassReduction
+ *       right flag in class TupleStore, viz., equivalenceClassReduction
  */
 public class AddSameAs {
 
+  // shortIsDefault no longer a static field in class Namespace
   public static ForwardChainer getFwChainer(boolean eqRed)
       throws FileNotFoundException, WrongFormatException, IOException {
     ForwardChainer fc = new ForwardChainer(16,
@@ -33,48 +33,48 @@ public class AddSameAs {
 
 	@Test
 	public void sameAsTestShortDefault() throws Exception {
-    boolean save = Namespace.shortIsDefault;
-    Namespace.shortIsDefault = true;
+    //boolean save = Namespace.shortIsDefault;  // NO LONGER A STATIC FIELD
+    //Namespace.shortIsDefault = true;
     ForwardChainer fc =	getFwChainer(true);
 		assertEquals(511046, fc.tupleStore.allTuples.size());
 		fc.shutdownNoExit();
-    Namespace.shortIsDefault = save;
+    //Namespace.shortIsDefault = save;
 	}
 
   @Test
   public void sameAsTestLongDefault() throws Exception {
-    boolean save = Namespace.shortIsDefault;
-    Namespace.shortIsDefault = false;
+    //boolean save = Namespace.shortIsDefault;
+    //Namespace.shortIsDefault = false;
     ForwardChainer fc = getFwChainer(true);
     // TODO: THIS IS WRONG: THE NUMBERS MUST BE EQUAL
     assertEquals(511046, fc.tupleStore.allTuples.size());
     fc.shutdownNoExit();
 
-    Namespace.shortIsDefault = save;
+    //Namespace.shortIsDefault = save;
   }
 
   @Test
   public void sameAsTestNoEqRedShortDefault() throws Exception {
-    boolean save = Namespace.shortIsDefault;
-    Namespace.shortIsDefault = true;
+    //boolean save = Namespace.shortIsDefault;
+    //Namespace.shortIsDefault = true;
 
     ForwardChainer fc = getFwChainer(false);
     assertEquals(548144, fc.tupleStore.allTuples.size());
     fc.shutdownNoExit();
 
-    Namespace.shortIsDefault = save;
+    //Namespace.shortIsDefault = save;
   }
 
   @Test
   public void sameAsTestNoEqRedLongDefault() throws Exception {
-    boolean save = Namespace.shortIsDefault;
-    Namespace.shortIsDefault = false;
+    //boolean save = Namespace.shortIsDefault;
+    //Namespace.shortIsDefault = false;
 
     ForwardChainer fc = getFwChainer(false);
     assertEquals(548144, fc.tupleStore.allTuples.size());
     fc.shutdownNoExit();
 
-    Namespace.shortIsDefault = save;
+    //Namespace.shortIsDefault = save;
   }
 
 }

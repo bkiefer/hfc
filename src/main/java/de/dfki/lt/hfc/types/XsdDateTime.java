@@ -183,7 +183,7 @@ public final class XsdDateTime extends XsdAnySimpleType {
 	 */
 	public String toName() {
 		// get rid of "^^<xsd:dateTime>"
-		String time = toString(de.dfki.lt.hfc.Namespace.shortIsDefault);
+		String time = toString(true);  // it doesn't matter here whether long or short form is chosen
 		int index = time.lastIndexOf('^');
 		return time.substring(1, index - 2);
 	}
