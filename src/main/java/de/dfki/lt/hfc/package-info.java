@@ -51,9 +51,11 @@ package de.dfki.lt.hfc;
  * v5.7 all 8 XSD temporal data types implemented
  * v5.8 add/remove transaction functionality
  *
- * v6.0 RDL relational variables ("??" prefix) implemented for @test section   <<<======== WE ARE HERE AT THE MOMENT + minor improvements
- * v6.1 RDL relational variables ("??" prefix) implemented for @action section
- * v6.2 additional entended OWL rule sets, including cardinality restrictions,
+ * v6.0 RDL relational variables ("??" prefix) implemented for @test section
+ * v6.1 a lot of further minor extensions, enabling better usability
+ * v6.2 made equivalence class reduction (cf. v5.1) ready for tuples, including transaction time  <<<======== WE ARE HERE AT THE MOMENT
+ * v6.3 RDL relational variables ("??" prefix) implemented for @action section
+ * v6.4 additional entended OWL rule sets, including cardinality restrictions,
  *      negation, and temporal entailment, using the new RDL descriptive means
  *
  *

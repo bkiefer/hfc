@@ -71,7 +71,7 @@ import gnu.trove.map.hash.*;
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Thu Sep 10 14:22:59 CEST 2015
+ * @version Wed Jun 22 15:20:51 CEST 2016
  */
 public final class RuleStore {
 
@@ -235,7 +235,7 @@ public final class RuleStore {
 		this.verbose = verbose;
 		this.rdfCheck = rdfCheck;
 		this.minNoOfArgs = minNoOfArgs;
-		this.maxNoOfArgs =maxNoOfArgs;
+		this.maxNoOfArgs = maxNoOfArgs;
 		readRules(ruleFile);
 	}
 
@@ -1261,6 +1261,7 @@ public final class RuleStore {
          * @throws IOException
 	 */
 	protected ArrayList<Rule> readRules(BufferedReader br) throws IOException {
+		int minPos, maxPos;
 		String line, token;
     StringTokenizer st;
 		int noOfRules = 0;
@@ -1402,11 +1403,17 @@ public final class RuleStore {
 								generateAction(varname, tuple, ituple[this.tupleStore.predicatePosition], actions, rule.name);
 								if (this.verbose)
 									System.out.println("  " + rule.name + ": equivalence reduction enforces new RHS action");
-								final ArrayList<String> eqTriple = new ArrayList<String>();
-								eqTriple.add(varname);
-								eqTriple.add(this.tupleStore.idToObject.get(ituple[this.tupleStore.predicatePosition]));
-								eqTriple.add(varname);
-								tlist.add(makeTuple(eqTriple));
+								final ArrayList<String> eqTuple = new ArrayList<String>();
+								// I assume the following tuple representation: EITHER [front] s p o [back+] OR [front] p s o [back+]
+								if (this.tupleStore.objectPosition != 2)
+									eqTuple.add(tuple.get(0));  // only one front element
+								eqTuple.add(varname);
+								eqTuple.add(this.tupleStore.idToObject.get(ituple[this.tupleStore.predicatePosition]));
+								eqTuple.add(varname);
+								// same for back elements
+								for (int i = this.tupleStore.objectPosition + 1; i < tuple.size(); i++)
+									eqTuple.add(tuple.get(i));
+								tlist.add(makeTuple(eqTuple));
 							}
 						}
 						else {

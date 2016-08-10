@@ -1,7 +1,6 @@
 package de.dfki.lt.hfc.aggregates;
 
-import static de.dfki.lt.hfc.TestBindingTableIterator.check;
-import static de.dfki.lt.hfc.TestBindingTableIterator.printNext;
+import static de.dfki.lt.hfc.TestUtils.*;
 import static org.junit.Assert.assertEquals;
 
 import java.io.FileNotFoundException;
@@ -18,27 +17,6 @@ public class TestLGetLatest {
 
   public static String getResource(String name) {
     return TestUtils.getTestResource("LGetLatest", name);
-  }
-
-
-  public static void printExpected(BindingTable bt, TupleStore store) {
-    printNext(bt.iterator(),
-        new TestBindingTableIterator.NextAsIntCall(store));
-  }
-
-  private static void checkResult(BindingTable bt, String[][] expected){
-    check(bt.iterator(), expected,
-        new TestBindingTableIterator.NextAsIntCall(fc.tupleStore));
-  }
-
-  public static void checkResult(ForwardChainer fc, BindingTable bt, String[][] expected, String ... vars){
-    try {
-      check(bt.iterator(vars), expected,
-          new TestBindingTableIterator.NextAsIntCall(fc.tupleStore));
-    } catch (BindingTableIteratorException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
   }
 
   /**
@@ -113,7 +91,7 @@ public class TestLGetLatest {
 | <hst:w2>              | "Larry"^^<xsd:string> |
 -------------------------------------------------
      */
-    checkResult(bt, expected);
+    checkResult(fc, bt, expected, "?e", "?n");
   }
 
   @Test
@@ -143,7 +121,7 @@ public class TestLGetLatest {
     System.out.println(bt);
     // TODO call checkresult here, same for the other tests, and remove the
     // println if no longer needed
-    checkResult(bt, expected);
+    checkResult(fc, bt, expected, "?d2", "?d1");
 
   }
 
@@ -172,7 +150,7 @@ public class TestLGetLatest {
     Query q = new Query(fc.tupleStore);
     // 503 is related to DA da3
     BindingTable bt = q.query("SELECT ?d WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> \"503\"^^<xsd:long>");
-    checkResult(bt, expected);
+    checkResult(fc, bt, expected, "?d");
   }
 
   @Test
@@ -194,7 +172,7 @@ public class TestLGetLatest {
     // would also like to return the corresponding DA, but this needs a special custom aggregate
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?t WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t AGGREGATE ?latest = LMax ?t");
-    checkResult(bt, expected);
+    checkResult(fc, bt, expected, "?t");
   }
 
   @Test
@@ -209,7 +187,7 @@ public class TestLGetLatest {
     // "548" = sinceWhen; is known to the tuple store
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?d ?t WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t FILTER LGreaterEqual ?t \"548\"^^<xsd:long>");
-    checkResult(bt, expected);
+    checkResult(fc, bt, expected, "?d", "?t");
   }
 
   @Test
@@ -223,7 +201,7 @@ public class TestLGetLatest {
     // prints: unknown constant in FILTER predicate: "650"^^<xsd:long>
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT * WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t FILTER LGreaterEqual ?t \"650\"^^<xsd:long>");
-    checkResult(bt, expected);
+    checkResult(fc, bt, expected, "?d", "?t");
   }
 
   @Test
@@ -243,7 +221,7 @@ public class TestLGetLatest {
    // "548" = sinceWhen
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?t WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t FILTER LGreaterEqual ?t \"548\"^^<xsd:long>  AGGREGATE ?latest = LMax ?t");
-    checkResult(bt, expected);
+    checkResult(fc, bt, expected, "?t");
   }
 
   @Test
@@ -254,7 +232,7 @@ public class TestLGetLatest {
     // "650" = sinceWhen
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?t WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t FILTER LGreaterEqual ?t \"650\"^^<xsd:long>  AGGREGATE ?latest = LMax ?t");
-    checkResult(bt, expected);
+    checkResult(fc, bt, expected, "?t");
   }
 
   @Test
@@ -275,7 +253,7 @@ public class TestLGetLatest {
     // explicitly exclude the latest candidate "755"
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?t WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t FILTER LGreaterEqual ?t \"650\"^^<xsd:long> & ?t != \"755\"^^<xsd:long>  AGGREGATE ?latest = LMax ?t");
-    checkResult(bt, expected);
+    checkResult(fc, bt, expected, "?t");
   }
 
   @Test
@@ -286,7 +264,7 @@ public class TestLGetLatest {
     // exclude non-existing candidate "1000"
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?t WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t FILTER LGreaterEqual ?t \"650\"^^<xsd:long> & ?t != \"1000\"^^<xsd:long>  AGGREGATE ?latest = LMax ?t");
-    checkResult(bt, expected);
+    checkResult(fc, bt, expected, "?t");
   }
 
   // general form of the aggregate call: ?arg1' ... ?argN' = LGetLatest ?arg1 ... ?argN ?time ?limit
@@ -382,7 +360,7 @@ public class TestLGetLatest {
     // single-valued aggregate
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"548\"^^<xsd:long> AGGREGATE ?dialact = LGetLatest ?da ?t \"3\"^^<xsd:int>");
-    checkResult(fc, bt, expected, "?dialact", "?time");
+    checkResult(fc, bt, expected, "?dialact");
    System.out.println(bt);
   }
 

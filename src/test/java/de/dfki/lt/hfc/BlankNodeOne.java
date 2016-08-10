@@ -6,9 +6,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.dfki.lt.hfc.aggregates.TestLGetLatest;
-
-import static de.dfki.lt.hfc.TestUtils.checkResult;
+import static de.dfki.lt.hfc.TestUtils.*;
 
 public class BlankNodeOne {
   static ForwardChainer fc;
@@ -68,7 +66,7 @@ public class BlankNodeOne {
 
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    TestLGetLatest.printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
+    printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     //checkResult(expected, bt, bt.getVars());
   }
 

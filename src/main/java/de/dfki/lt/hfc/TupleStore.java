@@ -49,7 +49,7 @@ import gnu.trove.set.hash.*;
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Wed Sep 30 15:44:31 CEST 2015
+ * @version Wed Jun 22 15:20:51 CEST 2016
  */
 public final class TupleStore {
 
@@ -627,10 +627,31 @@ public final class TupleStore {
 			}
 			addTupleWithGeneration(newTuple, gennum);
 		}
-		// and finally add reflexive ER proxy pattern (see above)
-		int[] reflexiveTuple;
+		// and finally add reflexive ER proxy pattern (see above), but take care of potential
+		// front and back elements that also need to be taken over
+		int[] newReflexiveTuple;
+		int pos;
 		for (int i : this.proxyToUris.keys()) {
-			addTuple(new int[] {i, this.uriToEquivalenceRelation.get(i), i});
+			for (int[] tuple : toBeRemoved) {
+				if ((tuple[this.subjectPosition] == i) || (tuple[this.objectPosition] == i)) {
+					newReflexiveTuple = new int[tuple.length];
+					pos = 0;
+					// is there a front element in tuple?
+					if (this.objectPosition != 2) {
+						newReflexiveTuple[0] = tuple[0];
+						pos = 1;
+					}
+					// add reflexive EQ relation instance; possible forms: EITHER s p o OR p s o
+					newReflexiveTuple[pos++] = i;
+					newReflexiveTuple[pos++] = this.uriToEquivalenceRelation.get(i);
+					newReflexiveTuple[pos++] = i;
+					for (int j = pos; j < tuple.length; j++) {
+						newReflexiveTuple[j] = tuple[j];
+					}
+					addTuple(newReflexiveTuple);
+					break;
+				}
+			}
 		}
 		return toBeRemoved.size();
 	}
