@@ -289,7 +289,10 @@ public class TestXsdSimpleTypes {
 
   @Test
   public void testString() {
-    XsdString xs = new XsdString("\"hel <lo>\"^^<xsd:string>");
+    XsdString xs = new XsdString("");
+    assertEquals("", xs.toName());
+        
+    xs = new XsdString("\"hel <lo>\"^^<xsd:string>");
     assertEquals("hel__lo_", xs.toName());
 
     xs = new XsdString("\"hello\"^^<xsd:string>");
