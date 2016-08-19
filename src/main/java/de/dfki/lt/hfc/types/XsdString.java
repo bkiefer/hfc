@@ -20,33 +20,37 @@ public final class XsdString extends XsdAnySimpleType {
 	public String languageTag;
 
 	/**
-	 * @param value a string, representing an XSD string, e.g., "\"hello\"",
+	 * @param val a string, representing an XSD string, e.g., "\"hello\"",
 	 *              "\"hello\"@en", or "\"hello\"^^<xsd:string>"
 	 */
-	public XsdString(String value) {
-		int index = value.lastIndexOf('^');
+	public XsdString(String val) {
+    if (val.isEmpty()) {
+      this.value = val;
+      return;
+    }
+		int index = val.lastIndexOf('^');
 		if (index == -1) {
 			// no suffix "^^<xsd:string>"
-			index = value.lastIndexOf('@');
-			final int length = value.length();
+			index = val.lastIndexOf('@');
+			final int length = val.length();
 			if (index == -1) {
 				// no language tag
-			  if (this.value.charAt(0) == '"' &&
-			      this.value.charAt(this.value.length() - 1) == '"') {
-			    this.value = value.substring(1, length - 1);
+			  if (val.charAt(0) == '"' &&
+			      val.charAt(val.length() - 1) == '"') {
+			    this.value = val.substring(1, length - 1);
 			  } else {
-			    this.value = value;
+			    this.value = val;
 			  }
 			  this.languageTag = null;
 			}
 			else {
 				// there is a language tag
-				this.value = value.substring(1, index - 1);
-				this.languageTag = value.substring(index + 1, length);;
+				this.value = val.substring(1, index - 1);
+				this.languageTag = val.substring(index + 1, length);;
 			}
 		}
 		else {
-			this.value = value.substring(1, index - 2);
+			this.value = val.substring(1, index - 2);
 			this.languageTag = null;
 		}
 	}
