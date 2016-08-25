@@ -8,7 +8,7 @@ import java.util.Set;
 
 /**
  * call this test with
- *   ValidInBetween subj pred obj obj2 ... objN time1 time2
+ *   LValidInBetween subj pred obj obj2 ... objN time1 time2
  *
  * @return FunctionalOperator.TRUE iff there is _no_ tuple
  *           <logic:false> subj pred obj obj2 ... objN time
@@ -19,7 +19,7 @@ import java.util.Set;
  * @since JDK 1.5
  * @version Wed Jun 22 15:20:51 CEST 2016
  */
-public final class ValidInBetween extends FunctionalOperator {
+public final class LValidInBetween extends FunctionalOperator {
 
   /**
    * note that his functional operator assumes that the temporal
