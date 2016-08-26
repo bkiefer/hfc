@@ -1,0 +1,4 @@
+xsd  http://www.w3.org/2001/XMLSchema#
+logic http://www.dfki.de/lt/onto/common/logic.owl#
+dom http://www.dfki.de/lt/onto/pal/domain.owl#
+pal http://www.dfki.de/lt/onto/pal/pal.owl#

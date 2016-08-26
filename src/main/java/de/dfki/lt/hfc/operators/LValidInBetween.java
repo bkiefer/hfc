@@ -67,9 +67,9 @@ public final class LValidInBetween extends FunctionalOperator {
     }
     // at least tuples with prefix "<logic:false> subj pred obj obj2" exist;
     // so now check whether their time stamps are between time1 and time2
-    long time;
     final long time1 = ((XsdLong)(getObject(args[length - 2]))).value;
     final long time2 = ((XsdLong)(getObject(args[length - 1]))).value;
+    long time;
     for (int[] tuple: result) {
       // time is the last argument of a tuple
       time = ((XsdLong)(getObject(tuple[length - 1]))).value;

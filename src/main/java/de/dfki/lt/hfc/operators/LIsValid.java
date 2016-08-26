@@ -46,7 +46,7 @@ import java.util.Set;
  *   WHERE <logic:true> subj pred obj ?ts
  *   FILTER LIsValid subj pred obj ?ts
  * we obtain the following values:
- *   ?o = {p2, p3, p1}
+ *   ?o = {p1, p2, p3}
  *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
@@ -76,7 +76,7 @@ public final class LIsValid extends FunctionalOperator {
     // tuples headed by <logic:false> will undergo successive intersections
     Set<int[]> query;
     // perform successive intersections with result (do not consider temporal arg)
-    for (int i = 0; i < (args.length - 2); i++) {
+    for (int i = 0; i < (args.length - 1); i++) {
       query = ask(i + 1, args[i]);
       result = Calc.intersection(result, query);
       if (result.isEmpty())
@@ -89,7 +89,7 @@ public final class LIsValid extends FunctionalOperator {
     long timeprime;
     for (int[] tuple: result) {
       // time is the last argument of a tuple
-      timeprime = ((XsdLong)(getObject(tuple[length - 1]))).value;
+      timeprime = ((XsdLong)(getObject(tuple[length]))).value;
       if (time < timeprime)
         return FunctionalOperator.FALSE;
     }
