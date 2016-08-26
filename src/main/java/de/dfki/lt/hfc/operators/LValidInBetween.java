@@ -7,17 +7,32 @@ import de.dfki.lt.hfc.types.XsdLong;
 import java.util.Set;
 
 /**
- * call this test with
+ * call this test operator with
  *   LValidInBetween subj pred obj obj2 ... objN time1 time2
  *
- * @return FunctionalOperator.TRUE iff there is _no_ tuple
+ * @return FunctionalOperator.TRUE iff there is *no* tuple
  *           <logic:false> subj pred obj obj2 ... objN time
  *         such that min(time1, time2) <= time <= max(time1, time2)
  * @return FunctionalOperator.FALSE otherwise
  *
+ * NOTE: this test is usually employed in temporal entailment rules
+ *       for transaction time, such as
+ *         <logic:true> ?p <rdf:type> <owl:TransitiveProperty> "0"^^<xsd:long>
+ *         <logic:true> ?x ?p ?y ?time1
+ *         <logic:true> ?y ?p ?z ?time2
+ *         ->
+ *         <logic:true> ?x ?p ?z ?time
+ *         @test
+ *         ?x != ?y
+ *         ?y != ?z
+ *         LValidInBetween ?x ?p ?y ?time1 ?time2
+ *         LValidInBetween ?y ?p ?z ?time1 ?time2
+ *         @action
+ *         ?time = LMax2 ?time1 ?time2
+ *
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Wed Jun 22 15:20:51 CEST 2016
+ * @version Thu Aug 25 15:31:48 CEST 2016
  */
 public final class LValidInBetween extends FunctionalOperator {
 
@@ -42,7 +57,7 @@ public final class LValidInBetween extends FunctionalOperator {
       return FunctionalOperator.TRUE;
     // tuples headed by <logic:false> will undergo successive intersections
     Set<int[]> query;
-    // perform successive intersections with result
+    // perform successive intersections with result (do not consider temporal args)
     for (int i = 0; i < (args.length - 2); i++) {
       query = ask(i + 1, args[i]);
       result = Calc.intersection(result, query);
