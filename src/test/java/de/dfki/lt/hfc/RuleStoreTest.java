@@ -23,7 +23,7 @@ public class RuleStoreTest {
   public void testRuleStore1() throws FileNotFoundException, WrongFormatException, IOException {
     //test constructor that takes Namespace namespace, TupleStore tupleStore, String ruleFile
     TupleStore tupleStore = new TupleStore(2, 3);
-    String ruleFile = new String(getResource("default.test.rdl"));
+    String ruleFile = new String(getTestResource("default.test.rdl"));
     RuleStore rs2 = new RuleStore(tupleStore, ruleFile);
     assertNotNull(rs2);
   }
@@ -33,7 +33,7 @@ public class RuleStoreTest {
     /*test constructor that takes RuleStore(boolean verbose, boolean rdfCheck, int minNoOfArgs, int maxNoOfArgs,
     Namespace namespace, TupleStore tupleStore, String ruleFile)*/
     TupleStore tupleStore = new TupleStore(2, 4);
-    String ruleFile = new String(getResource("default.test.rdl"));
+    String ruleFile = new String(getTestResource("default.test.rdl"));
     RuleStore rs3 = new RuleStore(true, true, 2, 3, tupleStore, ruleFile);
     assertNotNull(rs3);
     RuleStore rs4 = new RuleStore(false, true, 2, 5, tupleStore, ruleFile);
@@ -72,9 +72,9 @@ public class RuleStoreTest {
   public void testisValidTuple() throws FileNotFoundException, WrongFormatException, IOException {
     ArrayList<String> stringTuple = new ArrayList<String>();
     stringTuple.add("a");
-    Namespace namespace = new Namespace(getResource("default.ns"));
+    Namespace namespace = new Namespace(getTestResource("default.ns"));
     TupleStore tupleStore = new TupleStore(1, 2);
-    String ruleFile = new String(getResource("default.test.rdl"));
+    String ruleFile = new String(getTestResource("default.test.rdl"));
     //RuleStore rs = new RuleStore(true, true, 0, 0, tupleStore, ruleFile);
     //RuleStore rs = new RuleStore(tupleStore);
     //rs.isValidTuple(stringTuple);
@@ -83,7 +83,7 @@ public class RuleStoreTest {
   @Test
   public void testwriteRules() throws FileNotFoundException, WrongFormatException, IOException {
     TupleStore tupleStore = new TupleStore(2, 4);
-    String ruleFile = new String(getResource("default.test.rdl"));
+    String ruleFile = new String(getTestResource("default.test.rdl"));
     RuleStore rstest = new RuleStore(true, true, 2, 3, tupleStore, ruleFile);
     rstest.writeRules(getTempFile("fileRules"));
     // TODO: this test is nonsense, it tests if the string is empty, which is
@@ -99,9 +99,9 @@ public class RuleStoreTest {
 
   @Test
   public void testcopyRuleStore() throws FileNotFoundException, WrongFormatException, IOException {
-    Namespace namespace = new Namespace(getResource("default.ns"));
+    Namespace namespace = new Namespace(getTestResource("default.ns"));
     //TupleStore tupleStore = new TupleStore(2, 4);
-    TupleStore ts = new TupleStore(true, true, true, 2, 5, 4, 2, namespace, getResource("default.nt"));
+    TupleStore ts = new TupleStore(true, true, true, 2, 5, 4, 2, namespace, getTestResource("default.nt"));
     RuleStore rs = new RuleStore(ts);
     rs.copyRuleStore(ts);
     // TODO: this test is nonsense, it tests that the two rule stores are not

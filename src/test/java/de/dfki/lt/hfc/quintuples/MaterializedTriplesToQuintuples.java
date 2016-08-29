@@ -1,13 +1,16 @@
-package de.dfki.lt.hfc;
+package de.dfki.lt.hfc.quintuples;
 
 import static de.dfki.lt.hfc.TestUtils.*;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import de.dfki.lt.hfc.*;
+import de.dfki.lt.hfc.ForwardChainer;
+import de.dfki.lt.hfc.Namespace;
+import de.dfki.lt.hfc.TupleStore;
 import de.dfki.lt.hfc.types.XsdInt;
 
-import static de.dfki.lt.hfc.TestUtils.getResource;
+import static de.dfki.lt.hfc.TestUtils.getTestResource;
 
 import org.junit.Test;
 
@@ -43,12 +46,12 @@ public class MaterializedTriplesToQuintuples {
         3, //int maxNoOfArgs,
         100000, //int noOfAtoms,
         500000, //int noOfTuples,
-        getResource("default.eqred.nt"),
-        getResource("default.eqred.rdl"),
-        getResource("default.ns"));
-	    fc.uploadTuples(getResource("ltworld.jena.nt"));
+        getTestResource("default.eqred.nt"),
+        getTestResource("default.eqred.rdl"),
+        getTestResource("default.ns"));
+	    fc.uploadTuples(getTestResource("ltworld.jena.nt"));
 	    fc.computeClosure();
-	    tuples = fc.tupleStore.allTuples.size();
+	    tuples = fc.tupleStore.getAllTuples().size();
 	    fc.tupleStore.writeTuples(IN_FILE);
 	    fc.shutdownNoExit();
 	  }
@@ -62,9 +65,9 @@ public class MaterializedTriplesToQuintuples {
         100000, //int noOfAtoms,
         500000, //int noOfTuples,
         IN_FILE,
-        getResource("default.eqred.rdl"),
-        getResource("default.ns"));
-    int tuples2 = fc2.tupleStore.allTuples.size();
+        getTestResource("default.eqred.rdl"),
+        getTestResource("default.ns"));
+    int tuples2 = fc2.tupleStore.getAllTuples().size();
     fc2.shutdownNoExit();
     assertEquals(tuples, tuples2);
   }
@@ -83,10 +86,10 @@ public class MaterializedTriplesToQuintuples {
         3, //int maxNoOfArgs,
         100000, //int noOfAtoms,
         500000, //int noOfTuples,
-        getResource("default.eqred.nt"),
-        getResource("default.eqred.rdl"),
-        getResource("default.ns"));
-      fc.uploadTuples(getResource("ltworld.jena.nt"));
+        getTestResource("default.eqred.nt"),
+        getTestResource("default.eqred.rdl"),
+        getTestResource("default.ns"));
+      fc.uploadTuples(getTestResource("ltworld.jena.nt"));
       fc.computeClosure();
       fc.tupleStore.writeTuples(IN_FILE);
       fc.shutdownNoExit();
@@ -101,8 +104,8 @@ public class MaterializedTriplesToQuintuples {
 																					 NO_OF_ATOMS,
 																					 NO_OF_TUPLES,
 																					 IN_FILE,
-																					 getResource("default.eqred.rdl"),
-																					 getResource("default.ns"));
+																					 getTestResource("default.eqred.rdl"),
+																					 getTestResource("default.ns"));
 
 		TupleStore ts = fc.tupleStore;
 		int start, end;
@@ -123,7 +126,7 @@ public class MaterializedTriplesToQuintuples {
 			tuple[4] = ts.putObject(XsdInt.toString(end, Namespace.shortIsDefault));
 			newTuples.add(tuple);
 		}
-		int tuples = ts.allTuples.size();
+		int tuples = ts.getAllTuples().size();
 		ts.writeTuples(newTuples, OUT_FILE);
 
 		fc =  new ForwardChainer(2,      // noOfCores
@@ -135,10 +138,10 @@ public class MaterializedTriplesToQuintuples {
         NO_OF_ATOMS,
         NO_OF_TUPLES,
         OUT_FILE,
-        getResource("default.eqred.rdl"),
-        getResource("default.ns"));
+        getTestResource("default.eqred.rdl"),
+        getTestResource("default.ns"));
 
-		assertEquals(tuples, fc.tupleStore.allTuples.size());
+		assertEquals(tuples, fc.tupleStore.getAllTuples().size());
 
 		fc.shutdownNoExit();
 	}

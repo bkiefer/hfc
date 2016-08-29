@@ -31,6 +31,7 @@ public class AggregateRegistryTest {
 		BindingTable bt = new BindingTable(table1, nameToPos, nameToExternalName);
 		//what object to call evaluate on?
 		//?.evaluate("class", bt, nameToPos, nameToExternalName);
+    // TODO: ADD A TEST!
 	}
 
 }

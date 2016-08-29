@@ -1,8 +1,10 @@
-package de.dfki.lt.hfc;
+package de.dfki.lt.hfc.runnable;
 
+import de.dfki.lt.hfc.ForwardChainer;
+import de.dfki.lt.hfc.TupleStore;
 import java.util.ArrayList;
 
-import static de.dfki.lt.hfc.TestUtils.*;
+import static de.dfki.lt.hfc.runnable.Utils.*;
 
 public class QuintuplesToNaryRelations {
 

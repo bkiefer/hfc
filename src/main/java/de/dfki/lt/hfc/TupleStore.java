@@ -1077,7 +1077,7 @@ public final class TupleStore {
 	public Set<int[]> getTuples(int pos, int obj) {
 		final Set<int[]> result = this.index[pos].get(obj);
 		if (result == null)
-			return new THashSet<int[]>();
+			return Collections.emptySet();
 		else
 			return result;
 	}
@@ -1091,7 +1091,7 @@ public final class TupleStore {
 	public Set<int[]> getTuples(int pos, String obj) {
 		final Set<int[]> result = this.index[pos].get(this.objectToId.get(obj));
 		if (result == null)
-			return new THashSet<int[]>();
+			return Collections.emptySet();
 		else
 			return result;
 	}

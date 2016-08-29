@@ -1,12 +1,13 @@
-package de.dfki.lt.hfc;
+package de.dfki.lt.hfc.runnable;
 
+import de.dfki.lt.hfc.TupleStore;
 import java.util.*;
 
 /**
  * the test class for HFC
  */
 public class Test {
-	
+
 	/**
 	 * to measure 100,000,000 triple and 10,000,000 uris/atoms
 	 *   time java -server -cp .:trove-2.0.4.jar -Xms15000m -Xmx26000m de/dfki/lt/hfc/TupleStore 10000000 100000000
@@ -41,10 +42,10 @@ public class Test {
 		}
 		System.out.println();
 		int no = Integer.parseInt(args[2]);
-		System.out.println(args[2] + " in subject position: " + (ts.index[0].get(no) == null ? 0 : ts.index[0].get(no).size()) + " times");
-		System.out.println(args[2] + " in predicate position: " + (ts.index[1].get(no) == null ? 0 : ts.index[1].get(no).size()) + " times");
-		System.out.println(args[2] + " in object position: " + (ts.index[2].get(no) == null ? 0 : ts.index[2].get(no).size()) + " times");
+		System.out.println(args[2] + " in subject position: " + ts.getTuples(0, no).size() + " times");
+		System.out.println(args[2] + " in predicate position: " + ts.getTuples(1, no) .size() + " times");
+		System.out.println(args[2] + " in object position: " + ts.getTuples(2, no).size() + " times");
 		System.out.println();
 	}
-	
+
 }

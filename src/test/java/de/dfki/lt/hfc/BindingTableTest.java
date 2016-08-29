@@ -1,6 +1,6 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.TestUtils.getResource;
+import static de.dfki.lt.hfc.TestUtils.getTestResource;
 import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
@@ -154,9 +154,9 @@ public class BindingTableTest {
     nameToPos.put(1, 1);
     Map<Integer, String> nameToExternalName = new TreeMap<Integer, String>();
     nameToExternalName.put(1, "value");
-    Namespace namespace = new Namespace(getResource("default.ns"));
+    Namespace namespace = new Namespace(getTestResource("default.ns"));
     TupleStore ts = new TupleStore(true, true, true, 2, 5, 4, 2, namespace,
-        getResource("default.nt"));
+        getTestResource("default.nt"));
     BindingTable bt = new BindingTable(table, nameToPos, nameToExternalName, ts);
     //System.out.println("IF expand set to TRUE " + bt.toString(true));
     assertEquals(bt.toString(true).substring(6, 11), "value");
@@ -172,9 +172,9 @@ public class BindingTableTest {
     nameToPos.put(1, 1);
     Map<Integer, String> nameToExternalName = new TreeMap<Integer, String>();
     nameToExternalName.put(1, "val");
-    Namespace namespace = new Namespace(getResource("default.ns"));
+    Namespace namespace = new Namespace(getTestResource("default.ns"));
     TupleStore ts = new TupleStore(true, true, true, 2, 5, 4, 2, namespace,
-        getResource("default.nt"));
+        getTestResource("default.nt"));
     BindingTable bt = new BindingTable(table, nameToPos, nameToExternalName, ts);
     //System.out.println("IF expand set to FALSE, maxLength to 3 " + bt.toString(3, false));
     assertEquals(bt.toString(3, false).substring(10, 13), "val");
@@ -184,7 +184,7 @@ public class BindingTableTest {
     assertEquals(bt.toString(5, false).substring(12, 15), "val");
     //
     TupleStore objfortest = new TupleStore(true, true, true, 2, 5, 4, 2, namespace,
-        getResource("default.nt"));
+        getTestResource("default.nt"));
     int[] tuple = new int[3];
     tuple[0] = 2;
     tuple[1] = 2;
@@ -228,7 +228,7 @@ public class BindingTableTest {
 
   @Test
   public void testVarsFilterStar() throws QueryParseException, FileNotFoundException, WrongFormatException, IOException {
-    TupleStore ts = new TupleStore(new Namespace(getResource("default.ns")));
+    TupleStore ts = new TupleStore(new Namespace(getTestResource("default.ns")));
     Query q = new Query(ts);
     String[] t = { "<rdf:a>", "<rdf:type>", "<rdf:b>" };
     ts.addTuple(t);
@@ -249,7 +249,7 @@ public class BindingTableTest {
 
   @Test
   public void testVarsFilter() throws QueryParseException, FileNotFoundException, WrongFormatException, IOException {
-    TupleStore ts = new TupleStore(new Namespace(getResource("default.ns")));
+    TupleStore ts = new TupleStore(new Namespace(getTestResource("default.ns")));
     Query q = new Query(ts);
     String[] t = { "<rdf:a>", "<rdf:type>", "<rdf:b>" };
     ts.addTuple(t);
@@ -270,7 +270,7 @@ public class BindingTableTest {
 
   @Test
   public void testVarsAggregate() throws QueryParseException, FileNotFoundException, WrongFormatException, IOException {
-    TupleStore ts = new TupleStore(new Namespace(getResource("default.ns")));
+    TupleStore ts = new TupleStore(new Namespace(getTestResource("default.ns")));
     Query q = new Query(ts);
     String[] t = { "<rdf:a>", "<rdf:type>", "<rdf:b>" };
     ts.addTuple(t);
@@ -295,7 +295,7 @@ public class BindingTableTest {
 
   @Test
   public void testVarsAggregateStar() throws QueryParseException, FileNotFoundException, WrongFormatException, IOException {
-    TupleStore ts = new TupleStore(new Namespace(getResource("default.ns")));
+    TupleStore ts = new TupleStore(new Namespace(getTestResource("default.ns")));
     Query q = new Query(ts);
     String[] t = { "<rdf:a>", "<rdf:type>", "<rdf:b>" };
     ts.addTuple(t);

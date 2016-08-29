@@ -1,6 +1,6 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.TestUtils.getResource;
+import static de.dfki.lt.hfc.TestUtils.getTestResource;
 import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;

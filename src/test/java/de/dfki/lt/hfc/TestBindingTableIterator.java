@@ -22,8 +22,8 @@ public class TestBindingTableIterator {
 
   @Before
   public void setup() throws FileNotFoundException, IOException, WrongFormatException {
-    ns = new Namespace(getResource("default.ns"), false);
-    ts = new TupleStore(100000, 250000, ns, getResource("default.nt"));
+    ns = new Namespace(getTestResource("default.ns"), false);
+    ts = new TupleStore(100000, 250000, ns, getTestResource("default.nt"));
     q = new Query(ts);
   }
 

@@ -1,6 +1,6 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.TestUtils.getResource;
+import static de.dfki.lt.hfc.TestUtils.getTestResource;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -16,7 +16,7 @@ public class RuleComparatorTest {
   //TODO
   public void testRuleComparator() throws FileNotFoundException, WrongFormatException, IOException {
     //test method compare(Rule rule1, Rule rule2)
-    Namespace namespace = new Namespace(getResource("default.ns"));
+    Namespace namespace = new Namespace(getTestResource("default.ns"));
     TupleStore ts = new TupleStore(1, 3, namespace);
     RuleStore rs = new RuleStore(ts);
     int[][] ante = new int[1][2];

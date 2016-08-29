@@ -7,9 +7,6 @@ import static de.dfki.lt.hfc.TestUtils.*;
 import org.junit.Test;
 
 import java.io.*;
-import java.nio.file.Paths;
-import java.util.*;
-import de.dfki.lt.hfc.*;
 
 
 /**
@@ -23,10 +20,10 @@ public class AddSameAs {
       throws FileNotFoundException, WrongFormatException, IOException {
     ForwardChainer fc = new ForwardChainer(16,
         false, false, eqRed, 3, 5, 100000, 500000,
-        getResource(eqRed ? "default.eqred.nt" : "default.nt"),
-        getResource(eqRed ? "default.eqred.rdl" : "default.rdl"),
-        getResource("default.sameAs.test.ns"));
-    fc.uploadTuples(getResource("ltworld.jena.nt"));
+        getTestResource(eqRed ? "default.eqred.nt" : "default.nt"),
+        getTestResource(eqRed ? "default.eqred.rdl" : "default.rdl"),
+        getTestResource("default.sameAs.test.ns"));
+    fc.uploadTuples(getTestResource("ltworld.jena.nt"));
     fc.computeClosure();
     return fc;
   }

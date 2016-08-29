@@ -1,6 +1,7 @@
-package de.dfki.lt.hfc;
+package de.dfki.lt.hfc.runnable;
 
 import de.dfki.lt.hfc.*;
+import de.dfki.lt.hfc.ForwardChainer;
 
 public class MaterializeTimedQuintuples {
 

@@ -1,6 +1,6 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.TestUtils.getResource;
+import static de.dfki.lt.hfc.TestUtils.getTestResource;
 import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
@@ -20,8 +20,8 @@ public class QueryTest {
   @Test
   public void testQuery1() throws FileNotFoundException, IOException, WrongFormatException{
     //test constructor Query(ForwardChainer fc)
-    String tupleFile = getResource("default.nt");
-    String ruleFile = getResource("default.eqred.rdl");
+    String tupleFile = getTestResource("default.nt");
+    String ruleFile = getTestResource("default.eqred.rdl");
     ForwardChainer fc = new ForwardChainer(tupleFile, ruleFile);
     Query query = new Query(fc);
     assertNotNull(query);
@@ -29,8 +29,8 @@ public class QueryTest {
   @Test
   public void testquery() throws FileNotFoundException, IOException, WrongFormatException, QueryParseException{
   //test method public BindingTable query(String query)
-    Namespace namespace = new Namespace(getResource("default.ns"));
-    TupleStore ts = new TupleStore(true, true, true, 2, 5, 4, 2, namespace, getResource("default.nt"));
+    Namespace namespace = new Namespace(getTestResource("default.ns"));
+    TupleStore ts = new TupleStore(true, true, true, 2, 5, 4, 2, namespace, getTestResource("default.nt"));
     Query obj = new Query(ts);
     assertTrue(obj.query("SELECT ?p WHERE ?s ?p ?o AGGREGATE ?number = CountDistinct ?p & ?subject = Identity ?p") instanceof BindingTable);
   }

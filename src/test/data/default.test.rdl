@@ -1,0 +1,41 @@
+#
+# this simulates OWLIM's owl-horst_partialRDFS_builtin.pie rule file that builds
+# on the rule semantics for OWL as published by ter Horst which is based on Hayes'
+# work for axiomatizing RDF Schema;
+# I have split up rule $owl_FunctProp into $owl_FunctPropObject and
+# $owl_FunctPropDatatype, since the nature of the object of the triple either
+# leads to a owl:sameAs statement or to the bottom type owl:Nothing;
+#
+# NOTE: this file should only be used with HFC when the Boolean flag
+#       equivalenceClassReduction in class TupleStore is turned on (default = off);
+#       this file thus does NOT contain the rules copying over information
+#       from subject, predicate, and object position as originally specified by
+#         o $owl_sameAsCopySubj
+#         o $owl_equivalentPropertyCopyPred
+#         o $owl_sameAsCopyObj
+#
+# @see TupleStore.equivalenceClassReduction
+#
+# @author Hans-Ulrich Krieger
+# @version Mon Jul  5 16:29:39 CEST 2010
+#
+
+
+
+$CHECK_TEST
+?s ?p ?o
+->
+?s ?s ?s
+@test
+?p != <rdf:type>
+PrintSize ??(s o)
+?s != ?o
+PrintSize ??(s p) ??p ??(p o)
+
+
+$PRINT_CONTENT
+?s ?p ?o
+->
+<dontcare> <dontcare> <dontcare>
+@test
+PrintContent ??p

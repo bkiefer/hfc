@@ -1,0 +1,56 @@
+
+\begin{document}
+\begin{table}
+\begin{verbatim}
+<query>     ::= <select> <where> [<filter>] [<aggregate>] | ASK <groundtuple>
+<select>    ::= {"SELECT" | "SELECTALL"} ["DISTINCT"] {"*" | <var>^+}
+<var>       ::= "?"{a-zA-Z0-9}^+ | "?_"
+<nwchar>    ::= any NON-whitespace character
+<where>     ::= "WHERE" <tuple> {"&" <tuple>}^*
+<tuple>     ::= <literal>^+
+<gtuple>    ::= <constant>^+
+<literal>   ::= <var> | <constant>
+<constant>  ::= <uri> | <atom>
+<uri>       ::= "<" <nwchar>^+ ">"
+<atom>      ::= "\""  <char>^* "\"" [ "@" <langtag> | "^^" <xsdtype> ]
+<char>      ::= any character, incl. whitespaces, numbers, even '\"'
+<langtag>   ::= "de" | "en" | ...
+<xsdtype>   ::= "<xsd:int>" | "<xsd:long>" | "<xsd:float>" | "<xsd:double>" | "<xsd:dateTime>" |
+                "<xsd:string>" | "<xsd:boolean>" | "<xsd:date>" | "<xsd:gYear>" | "<xsd:gMonthDay>" |
+          "<xsd:gDay>" | "<xsd:gMonth>" | "<xsd:gYearMonth>" | "<xsd:duration>" | "<xsd:anyURI>" | ...
+<filter>    ::= "FILTER" <constr> {"&" <constr>}^*
+<constr>    ::= <ineq> | <predcall>
+<ineq>      ::= <var> "!=" <literal>
+<predcall>  ::= <predicate> <literal>^*
+<predicate> ::= <nwchar>^+
+<aggregate> ::= "AGGREGATE" <funcall> {"&" <funcall>}^*
+<funcall>   ::= <var>^+ "=" <function> <literal>^*
+<function>  ::= <nwchar>^+
+\end{verbatim}
+\caption{BNF for the hfc query syntax}
+\end{table}
+
+\textbf{Notes:}
+\begin{itemize}
+\item The reserved keywords ASK, SELECT, SELECTALL, DISTINCT, WHERE, FILTER, and
+AGGREGATE need \emph{not} be written uppercase.
+
+\item It is required that neither filter predicates nor aggregate functions have the same name as the above reserved keywords
+\item \emph{don't-care} variables should be marked \emph{explicitly} by using
+  exactly the identifier \texttt{?\_}; this is especially important when using
+  \texttt{"*"} in a SELECT;
+
+  example:
+\begin{verbatim}
+  SELECT DISTINCT WHERE ?s <rdf:type> ?_
+  SELECT WHERE ?s <rdf:type> ?o ?_ ?_
+\end{verbatim}
+
+  when restricting the object position without projecting it, we explicitly
+  write down the selected vars:
+\begin{verbatim}
+  SELECT ?s WHERE ?s <rdf:type> ?o ?_ ?_ FILTER ?o != <foo-class>
+\end{verbatim}
+\end{itemize}
+
+\end{document}
