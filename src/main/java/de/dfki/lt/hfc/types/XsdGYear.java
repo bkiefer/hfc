@@ -19,7 +19,7 @@ public final class XsdGYear extends XsdAnySimpleType {
 
 
   static {
-    registerConstructor(XsdGYear.class, null, SHORT_NAME, LONG_NAME);
+    registerConstructor(XsdGYear.class, SHORT_NAME, LONG_NAME);
   }
 
 	/**

@@ -27,7 +27,7 @@ public final class XsdDuration extends XsdAnySimpleType {
   public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
 
   static {
-    registerConstructor(XsdDuration.class, null, SHORT_NAME, LONG_NAME);
+    registerConstructor(XsdDuration.class, SHORT_NAME, LONG_NAME);
   }
 
 	/**

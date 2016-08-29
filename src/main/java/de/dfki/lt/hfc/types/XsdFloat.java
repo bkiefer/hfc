@@ -13,7 +13,7 @@ public final class XsdFloat extends XsdAnySimpleType {
   public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
 
   static {
-    registerConstructor(XsdFloat.class, float.class, SHORT_NAME, LONG_NAME);
+    registerConstructor(XsdFloat.class, SHORT_NAME, LONG_NAME);
   }
 
   public float value;

@@ -20,7 +20,7 @@ public final class XsdAnyURI extends XsdAnySimpleType {
   public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
 
   static {
-    registerConstructor(XsdAnyURI.class, null, SHORT_NAME, LONG_NAME );
+    registerConstructor(XsdAnyURI.class, SHORT_NAME, LONG_NAME );
   }
 
 	public String value;

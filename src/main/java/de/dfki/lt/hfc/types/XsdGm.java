@@ -15,7 +15,7 @@ public final class XsdGm extends XsdAnySimpleType {
   public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
 
   static {
-    registerConstructor(XsdGm.class, null, SHORT_NAME, LONG_NAME);
+    registerConstructor(XsdGm.class, SHORT_NAME, LONG_NAME);
   }
 
   public double value;

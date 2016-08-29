@@ -16,7 +16,7 @@ public final class XsdDouble extends XsdAnySimpleType {
   public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
 
   static {
-    registerConstructor(XsdDouble.class, double.class, SHORT_NAME, LONG_NAME);
+    registerConstructor(XsdDouble.class, SHORT_NAME, LONG_NAME);
   }
 
 	public double value;

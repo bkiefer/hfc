@@ -12,7 +12,7 @@ public final class XsdString extends XsdAnySimpleType {
   public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
 
   static {
-    registerConstructor(XsdString.class, String.class, SHORT_NAME, LONG_NAME);
+    registerConstructor(XsdString.class, SHORT_NAME, LONG_NAME);
   }
 
 	public String value;

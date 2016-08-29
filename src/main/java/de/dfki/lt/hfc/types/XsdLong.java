@@ -16,7 +16,7 @@ public final class XsdLong extends XsdAnySimpleType {
   public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
 
   static {
-    registerConstructor(XsdLong.class, long.class, SHORT_NAME, LONG_NAME);
+    registerConstructor(XsdLong.class, SHORT_NAME, LONG_NAME);
   }
 
 	public long value;
