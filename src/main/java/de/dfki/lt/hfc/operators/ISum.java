@@ -26,7 +26,7 @@ public final class ISum extends FunctionalOperator {
 		for (int j = 1; j < args.length; j++)
 			i = i + ((XsdInt)getObject(args[j])).value;
 		XsdInt I = new XsdInt(i);
-		return registerObject(I.toString(de.dfki.lt.hfc.Namespace.shortIsDefault), I);
+		return registerObject(I.toString(this.tupleStore.namespace.shortIsDefault), I);
 	}
 	
 }

@@ -125,17 +125,17 @@ public final class TupleStore {
 
 	/**
 	 * this setting is used for input encoding in TupleStore
-	 * @see TupleStore.OUTPUT_CHARACTER_ENCODING
-	 * @see Interactive.OUTPUT_CHARACTER_ENCODING
+	 * @see TupleStore.outputCharacterEncoding
+	 * @see Interactive.outputCharacterEncoding
 	 */
-	public static final String INPUT_CHARACTER_ENCODING = "UTF-8";
+	public String inputCharacterEncoding = "UTF-8";
 
 	/**
 	 * this setting is used for output encoding in TupleStore
-	 * @see TupleStore.INPUT_CHARACTER_ENCODING
-	 * @see Interactive.OUTPUT_CHARACTER_ENCODING
+	 * @see TupleStore.inputCharacterEncoding
+	 * @see Interactive.outputCharacterEncoding
 	 */
-	public static final String OUTPUT_CHARACTER_ENCODING = "UTF-8";
+	public String outputCharacterEncoding = "UTF-8";
 
 	/**
 	 * a mapping from the internal representation of URIs (ints) to their
@@ -182,7 +182,7 @@ public final class TupleStore {
 	 * a similar variable exists in class RuleStore
 	 * @see #exitOnError
 	 */
-	private boolean verbose = true;
+	public boolean verbose = true;
 
 	/**
 	 * when tuples are read in, this variable decides whether tuples are compliant with
@@ -274,6 +274,21 @@ public final class TupleStore {
 	 */
 	protected AggregateRegistry aggregateRegistry = new AggregateRegistry(this);
 
+
+	/**
+	 * noOfAtoms initializes internal data structures in TupleStore with a predefined size;
+	 * making a good guess how many atoms will be employed in an application avoid re-sizing
+	 * and copying
+	 */
+	public int noOfAtoms = 100000;
+
+	/**
+	 * noOfTuples initializes internal data structures in TupleStore with a predefined size;
+	 * making a good guess how many atoms will be employed in an application avoid re-sizing
+	 * and copying
+	 */
+	public int noOfTuples = 500000;
+
 	/**
 	 * init form that "outsources" initialization code that needs to be duplicated by the
 	 * binary (that is used be several other constructors) and 10-ary constructor
@@ -288,6 +303,8 @@ public final class TupleStore {
 										int objectPosition,
 										int noOfAtoms,
 										int noOfTuples) {
+		this.noOfAtoms = noOfAtoms;
+		this.noOfTuples = noOfTuples;
 		this.verbose = verbose;
 		this.rdfCheck = rdfCheck;
 		this.equivalenceClassReduction = eqReduction;
@@ -329,7 +346,7 @@ public final class TupleStore {
 		this.idToObject.add(Namespace.UNBOUND);
 		this.idToJavaObject.add(null);
 		// maybe make this more flexible by moving this information to a file
-		if (Namespace.shortIsDefault) {
+		if (this.namespace.shortIsDefault) {
 			this.objectToId.put(Namespace.RDFS_SUBCLASSOF_SHORT, Namespace.RDFS_SUBCLASSOF_ID);
 			this.idToObject.add(Namespace.RDFS_SUBCLASSOF_SHORT);
 			this.idToJavaObject.add(null);
@@ -382,19 +399,22 @@ public final class TupleStore {
    * note: assigns an empty Namespace object to this.namespace
 	 */
 	public TupleStore(int noOfAtoms, int noOfTuples) {
+		this.namespace = new Namespace();
 		init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
 				   this.minNoOfArgs, this.maxNoOfArgs,
 						 this.subjectPosition, this.predicatePosition, this.objectPosition,
 						 noOfAtoms, noOfTuples);
-    this.namespace = new Namespace();
 	}
 
 	/**
 	 * extends the binary constructor with the ability to read in a namespace
 	 */
 	public TupleStore(int noOfAtoms, int noOfTuples, Namespace namespace) {
-		this(noOfAtoms, noOfTuples);
 		this.namespace = namespace;
+		init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
+			this.minNoOfArgs, this.maxNoOfArgs,
+			this.subjectPosition, this.predicatePosition, this.objectPosition,
+			noOfAtoms, noOfTuples);
 	}
 
 	/**
@@ -407,8 +427,11 @@ public final class TupleStore {
 	 */
 	public TupleStore(int noOfAtoms, int noOfTuples, Namespace namespace, String tupleFile)
 	    throws FileNotFoundException, IOException, WrongFormatException {
-		this(noOfAtoms, noOfTuples);
 		this.namespace = namespace;
+		init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
+			this.minNoOfArgs, this.maxNoOfArgs,
+			this.subjectPosition, this.predicatePosition, this.objectPosition,
+			noOfAtoms, noOfTuples);
 		readTuples(tupleFile);
 	}
 
@@ -423,10 +446,10 @@ public final class TupleStore {
 										int noOfAtoms, int noOfTuples,
 										Namespace namespace, String tupleFile)
 										    throws FileNotFoundException, IOException, WrongFormatException {
-		init(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
-						 this.subjectPosition, this.predicatePosition, this.objectPosition,
-						 noOfAtoms, noOfTuples);
 		this.namespace = namespace;
+		init(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
+			this.subjectPosition, this.predicatePosition, this.objectPosition,
+			noOfAtoms, noOfTuples);
 		readTuples(tupleFile);
 	}
 
@@ -442,10 +465,10 @@ public final class TupleStore {
 																			int noOfAtoms, int noOfTuples,
 																			Namespace namespace, String tupleFile)
 					throws FileNotFoundException, IOException, WrongFormatException {
-		init(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
-						 subjectPosition, predicatePosition, objectPosition,
-						 noOfAtoms, noOfTuples);
 		this.namespace = namespace;
+		init(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
+			subjectPosition, predicatePosition, objectPosition,
+			noOfAtoms, noOfTuples);
 		readTuples(tupleFile);
 	}
 
@@ -453,8 +476,11 @@ public final class TupleStore {
 	 * assumes a default of 100,000 atoms and 500,000 tuples
 	 */
 	public TupleStore(Namespace namespace) {
-		this(100000, 500000);
 		this.namespace = namespace;
+		init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
+			this.minNoOfArgs, this.maxNoOfArgs,
+			this.subjectPosition, this.predicatePosition, this.objectPosition,
+			100000, 500000);
 	}
 
 	/**
@@ -465,8 +491,7 @@ public final class TupleStore {
 	 */
 	public TupleStore(Namespace namespace, String tupleFile)
 	    throws FileNotFoundException, IOException, WrongFormatException {
-		this(100000, 500000);
-		this.namespace = namespace;
+		this(namespace);
 		readTuples(tupleFile);
 	}
 
@@ -1148,38 +1173,32 @@ public final class TupleStore {
 
 	/**
 		* a method that extends a tuple, given as a ArrayList<String>, by further
-		* arguments: <it>one</it> in front and <it>several</it> afterwards;
+		* arguments: at most <it>one</it> in front and <it>several</it> following
+	  * the original tuple;
 		* use <it>null</it> as a value for <it>front</it> to signal that there is
 		* <it>no</it> front element and an <it>empty array</it> that there are no
 		* <it>back</it> elements;
 		* this method is particularly useful for extending tuples with a notion of
 		* valid time, transaction time, or gradation/modal operators
-		* @return the new extended <it>internalized</it> tuple (an int array)
-		*/
-	public int[] extendTupleInternally(ArrayList<String> in, String front, String... backs) {
-		// make sure to set etuple directly to the right size
-		ArrayList<String> etuple = new ArrayList<String>(in.size() + backs.length + (front == null ? 0 : 1));
-		if (front != null)
-			etuple.add(front);
-		etuple.addAll(in);
-		for (String back : backs)
-			etuple.add(back);
-		return internalizeTuple(etuple);
-	}
-
-	/**
-		* similar to extendTupleInternal(), but does not internalize the extended tuple
 		* @return the new extended tuple
 		*/
-	public ArrayList<String> extendTupleExternally(ArrayList<String> in, String front, String... backs) {
+	protected ArrayList<String> extendTupleExternally(final ArrayList<String> in, final String front, final String... backs) {
 		// make sure to set etuple directly to the right size
-		ArrayList<String> etuple = new ArrayList<String>(in.size() + backs.length + (front == null ? 0 : 1));
+		ArrayList<String> etuple = new ArrayList<String>(in.size() + (front == null ? 0 : 1) + backs.length);
 		if (front != null)
 			etuple.add(front);
 		etuple.addAll(in);
 		for (String back : backs)
 			etuple.add(back);
 		return etuple;
+	}
+
+	/**
+		* similar to extendTupleExternally(), but the extended tuple is furthermore internalized
+		* @return the new extended tuple, an int array
+		*/
+	public int[] extendTupleInternally(ArrayList<String> in, String front, String... backs) {
+		return internalizeTuple(extendTupleExternally(in, front, backs));
 	}
 
 	/**
@@ -1203,10 +1222,13 @@ public final class TupleStore {
 	 *   Jan Grant & Dave Beckett: RDF Test Cases, 10 Feb 2004.
 	 *   http://www.w3.org/TR/rdf-testcases/
 	 *
-	 * note: if equivalence class reduction is switched on, the cleanup mechanism
+	 * NOTE: if equivalence class reduction is switched on, the cleanup mechanism
 	 *       is always applied AFTER the whole file is read in, but not each time
 	 *       an equivalence relation instance is detected! (more efficient at the
 	 *       very end)
+	 *
+	 * NOTE: tuples can be extended by at most one front element and several back
+	 *       elements
 	 *
 	 * example
 	 *   <huk> <rdf:type> <Person> .
@@ -1218,8 +1240,8 @@ public final class TupleStore {
 	 *   _:foo42 <lastName> "Krieger" .
 		*
 		* @param br
-		* @param front
-		* @param backs
+		* @param front use null to indicate that there is no front element
+		* @param backs use an empty String array that there are no back elements
 		* @throws IOException
 	 * @throws WrongFormatException
 	 *
@@ -1265,8 +1287,11 @@ public final class TupleStore {
 					}
 				}
 				if (eol) {
-					// now add one potenetial front element and further potential back elements
-					tuple = extendTupleExternally(tuple, front, backs);
+					// now add one potential front element and further potential back elements;
+					// but check whether (front == null) & (backs.length == 0) in order to avoid a
+					// useless copy of 'tuple'
+					if ((front != null) || (backs.length != 0))
+						tuple = extendTupleExternally(tuple, front, backs);
 					// external tuple representation might be misspelled or the tuple is already contained
 					if (addTuple(tuple, lineNo) != null)
 						++noOfTuples;  // everything was fine
@@ -1331,7 +1356,7 @@ public final class TupleStore {
 	}
 
 	/**
-		* read in the tuple file and add potential front and back elements to every tuple
+		* read in the tuple file as it is
 		*
 		* @param filename
 		* @throws FileNotFoundException
@@ -1342,11 +1367,11 @@ public final class TupleStore {
     if (this.verbose)
       System.out.println("\n  reading tuples from " + filename + " ...");
     readTuples(Files.newBufferedReader(new File(filename).toPath(),
-        Charset.forName(TupleStore.INPUT_CHARACTER_ENCODING)));
+        Charset.forName(this.inputCharacterEncoding)));
   }
 
 	/**
-		* read in the tuple file as it is
+		* read in the tuple file and add potential front and back elements to every tuple
 		*
 		* @param filename
 		* @throws FileNotFoundException
@@ -1358,7 +1383,7 @@ public final class TupleStore {
 		if (this.verbose)
 			System.out.println("\n  reading tuples from " + filename + " ...");
 		readTuples(Files.newBufferedReader(new File(filename).toPath(),
-						Charset.forName(TupleStore.INPUT_CHARACTER_ENCODING)), front, backs);
+						Charset.forName(this.inputCharacterEncoding)), front, backs);
 	}
 
   /**
@@ -1376,7 +1401,7 @@ public final class TupleStore {
 		int noOfTuples = 0, lineNo = 0;
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filename),
-																																	 TupleStore.INPUT_CHARACTER_ENCODING));
+				this.inputCharacterEncoding));
 			int noOfLines;
       while ((line = br.readLine()) != null) {
 				noOfLines = Integer.parseInt(line.substring(line.indexOf(' ') + 1));
@@ -1527,7 +1552,7 @@ public final class TupleStore {
 		}
 		if (bareAtom) {
 			// complete type in order to recognize duplicates (perhaps output a message?)
-			if (Namespace.shortIsDefault)
+			if (this.namespace.shortIsDefault)
 				sb.append("^^").append(XsdString.SHORT_NAME);
 			else
 				sb.append("^^").append(XsdString.LONG_NAME);
@@ -1571,7 +1596,7 @@ public final class TupleStore {
 			System.out.println("  writing tuples to " + filename + " ...");
 		try {
 			PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(filename),
-																															TupleStore.OUTPUT_CHARACTER_ENCODING));
+																															this.outputCharacterEncoding));
 			for (int[] tuple : collection)
 				pw.println(toString(tuple));
 			pw.flush();
@@ -1592,7 +1617,7 @@ public final class TupleStore {
 			System.out.println("  writing tuples to " + filename + " ...");
 		try {
 			PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(filename),
-																															TupleStore.OUTPUT_CHARACTER_ENCODING));
+																															this.outputCharacterEncoding));
 			for (int[] tuple : this.allTuples)
 				pw.println(toExpandedString(tuple));
 			pw.flush();
@@ -1615,7 +1640,7 @@ public final class TupleStore {
 			System.out.println("  writing tuple store to " + filename + " ...");
 		try {
 			PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(filename),
-																															TupleStore.OUTPUT_CHARACTER_ENCODING));
+																															this.outputCharacterEncoding));
 			// dump objectToId (null -> 0 given by constructor is overwritten by exactly the same mapping)
 			pw.println("&object2id " + this.objectToId.size());
 			for (Map.Entry<String, Integer> entry : this.objectToId.entrySet())

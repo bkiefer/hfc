@@ -6,7 +6,7 @@ import de.dfki.lt.hfc.types.Uri;
 import de.dfki.lt.hfc.types.XsdLong;
 
 /**
- * this aggregational operator LGetLatestValues only works for the time-stamped
+ * the aggregational operator LGetLatestValues only works for the time-stamped
  * triple case and is supposed to be given a table of the following form:
  *   property value arg1 ... argN timestamp
  * the operator returns information from the latest time-stamped tuples
@@ -81,8 +81,8 @@ public final class LGetLatestValues extends AggregationalOperator {
     Arrays.sort(table, new Comparator<int[]>() {
       public int compare(int[] row1, int[] row2) {
         // properties in HFC are lazily represented as instances of de.dfki.lt.hfc.types.Uri
-        final String prop1 = ((Uri)(getObject(row1[proppos]))).value;
-        final String prop2 = ((Uri)(getObject(row2[proppos]))).value;
+        final String prop1 = (getObject(row1[proppos])).toName();
+        final String prop2 = (getObject(row2[proppos])).toName();
         // we assume time stamps be represented as instances of de.dfki.lt.hfc.types.XsdLong
         final long time1 = ((XsdLong)(getObject(row1[timepos]))).value;
         final long time2 = ((XsdLong)(getObject(row2[timepos]))).value;

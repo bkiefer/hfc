@@ -30,7 +30,7 @@ public final class Concatenate extends FunctionalOperator {
 			sb.append(object.value);
 		}
 		object = new XsdString(sb.toString(), null);
-		return registerObject(object.toString(de.dfki.lt.hfc.Namespace.shortIsDefault), object);
+		return registerObject(object.toString(this.tupleStore.namespace.shortIsDefault), object);
 	}
 
 }

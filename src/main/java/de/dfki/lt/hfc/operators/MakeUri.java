@@ -30,7 +30,7 @@ public final class MakeUri extends FunctionalOperator {
 		}
 		sb.append(">");
 		final Uri uri = new Uri(sb.toString());
-		return registerObject(uri.toString(de.dfki.lt.hfc.Namespace.shortIsDefault), uri);
+		return registerObject(uri.toString(this.tupleStore.namespace.shortIsDefault), uri);
 	}
 	
 }

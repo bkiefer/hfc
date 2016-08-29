@@ -180,7 +180,7 @@ public class TestLGetLatest2 {
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct>"
         + " & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"548\"^^<xsd:long>"
         + " AGGREGATE ?dialact = LGetLatest2 ?da ?t \"3\"^^<xsd:int>");
-    checkResult(fc, bt, expected, "?dialact", "?time");
+    checkResult(fc, bt, expected, "?dialact");
    System.out.println(bt);
   }
 

@@ -118,7 +118,8 @@ public abstract class XsdAnySimpleType extends AnyType {
     try {
       Constructor<XsdAnySimpleType> constructor =
           clazz.getConstructor(String.class);
-      for (String s : forms) typeToConstructor.put(s, constructor);
+      for (String s : forms)
+        typeToConstructor.put(s, constructor);
     }
     catch (Exception e) {  // should never happen
       throw new RuntimeException(e);

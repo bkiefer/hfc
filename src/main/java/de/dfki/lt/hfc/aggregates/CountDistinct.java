@@ -47,7 +47,7 @@ public final class CountDistinct extends AggregationalOperator {
 		// count distinct elements
 		XsdInt card = new XsdInt(firstColumnElements.size());
 		// since a table is returned and since we are working with XSD atoms, an XSD int must be constructed
-		int id = registerObject(card.toString(Namespace.shortIsDefault), card);
+		int id = registerObject(card.toString(this.tupleStore.namespace.shortIsDefault), card);
 		// add this XSD int as the only unary tuple to the resulting table
 		bt.table.add(new int[]{id});
 		return bt;

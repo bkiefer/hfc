@@ -19,7 +19,6 @@ public final class PrintSize extends RelationalOperator {
 	 * 
 	 */
 	public BindingTable[] apply(BindingTable[] args) {
-		System.out.print("  de.dfki.lt.hfc.operators.PrintSize: ");
 		for (int i = 0; i < args.length; i++)
 			System.out.print(args[i].table.size() + " ");
 		System.out.println();

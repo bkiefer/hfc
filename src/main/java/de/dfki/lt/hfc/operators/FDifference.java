@@ -24,7 +24,7 @@ public final class FDifference extends FunctionalOperator {
 	public int apply(int[] args) {
 		float f = ((XsdFloat)getObject(args[0])).value - ((XsdFloat)getObject(args[1])).value;
 		XsdFloat F = new XsdFloat(f);
-		return registerObject(F.toString(de.dfki.lt.hfc.Namespace.shortIsDefault), F);
+		return registerObject(F.toString(this.tupleStore.namespace.shortIsDefault), F);
 	}
 	
 }

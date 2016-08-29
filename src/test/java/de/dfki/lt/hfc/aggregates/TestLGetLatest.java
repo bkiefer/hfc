@@ -172,7 +172,7 @@ public class TestLGetLatest {
     // would also like to return the corresponding DA, but this needs a special custom aggregate
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?t WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t AGGREGATE ?latest = LMax ?t");
-    checkResult(fc, bt, expected, "?t");
+    checkResult(fc, bt, expected, "?latest");
   }
 
   @Test
@@ -221,7 +221,7 @@ public class TestLGetLatest {
    // "548" = sinceWhen
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?t WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t FILTER LGreaterEqual ?t \"548\"^^<xsd:long>  AGGREGATE ?latest = LMax ?t");
-    checkResult(fc, bt, expected, "?t");
+    checkResult(fc, bt, expected, "?latest");
   }
 
   @Test
@@ -232,7 +232,7 @@ public class TestLGetLatest {
     // "650" = sinceWhen
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?t WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t FILTER LGreaterEqual ?t \"650\"^^<xsd:long>  AGGREGATE ?latest = LMax ?t");
-    checkResult(fc, bt, expected, "?t");
+    checkResult(fc, bt, expected, "?latest");
   }
 
   @Test
@@ -253,7 +253,7 @@ public class TestLGetLatest {
     // explicitly exclude the latest candidate "755"
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?t WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t FILTER LGreaterEqual ?t \"650\"^^<xsd:long> & ?t != \"755\"^^<xsd:long>  AGGREGATE ?latest = LMax ?t");
-    checkResult(fc, bt, expected, "?t");
+    checkResult(fc, bt, expected, "?latest");
   }
 
   @Test
@@ -264,7 +264,7 @@ public class TestLGetLatest {
     // exclude non-existing candidate "1000"
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?t WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t FILTER LGreaterEqual ?t \"650\"^^<xsd:long> & ?t != \"1000\"^^<xsd:long>  AGGREGATE ?latest = LMax ?t");
-    checkResult(fc, bt, expected, "?t");
+    checkResult(fc, bt, expected, "?latest");
   }
 
   // general form of the aggregate call: ?arg1' ... ?argN' = LGetLatest ?arg1 ... ?argN ?time ?limit

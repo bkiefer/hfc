@@ -110,12 +110,9 @@ public final class Namespace {
 	public static final int OWL_DISJOINTWITH_ID = 5;
 
 	/**
-	 * determines whether short (= true) or long (= false) namespaces are the
-	 * cannonical form;
-	 * perhaps make this field an instance field, if needed later (that's why
-	 * we use camel case to name this field)
+	 * determines whether short (= true) or long (= false) namespaces are the cannonical form
 	 */
-	public static boolean shortIsDefault = true;
+	public boolean shortIsDefault = true;
 
 	/**
 	 * if true, some statistics are printed out
@@ -135,20 +132,31 @@ public final class Namespace {
 	public HashMap<String, String> longToShort = new HashMap<String, String>();
 
   /**
-   * a mapping between XSD type specifiers and Java classes representing these types in HFC
-   * Now in XsdAnySimpleType, where it belongs.
+   * a mapping between XSD type specifiers and Java classes representing these types
+	 * in HFC; now in XsdAnySimpleType, where it belongs
    */
   //protected HashMap<String, Constructor<XsdAnySimpleType>> typeToConstructor = new HashMap<String, Constructor<XsdAnySimpleType>>();
 
 	/**
-	 * creates a default namespace, consisting only of mappings for RDF, RDFS, and OWL (1.0)
+	 * creates a namespace, consisting of mappings for XSD, RDF, RDFS, and OWL (1.0)
 	 */
 	public Namespace() {
 		putForm(Namespace.XSD_SHORT, Namespace.XSD_LONG);
 		putForm(Namespace.RDF_SHORT, Namespace.RDF_LONG);
 		putForm(Namespace.RDFS_SHORT, Namespace.RDFS_LONG);
 		putForm(Namespace.OWL_SHORT, Namespace.OWL_LONG);
-		if (this.verbose)
+	}
+
+	/**
+	 * furthermore sets the verbose level
+	 */
+	public Namespace(boolean verbose) {
+		this.verbose = verbose;
+		putForm(Namespace.XSD_SHORT, Namespace.XSD_LONG);
+		putForm(Namespace.RDF_SHORT, Namespace.RDF_LONG);
+		putForm(Namespace.RDFS_SHORT, Namespace.RDFS_LONG);
+		putForm(Namespace.OWL_SHORT, Namespace.OWL_LONG);
+		if (verbose)
 			System.out.println("\n  defining default namespace for XSD, RDF, RDFS, and OWL ...");
 	}
 
@@ -209,7 +217,7 @@ public final class Namespace {
 	 * by their long forms
 	 */
 	public String normalizeNamespaceUri(String uri) {
-		if (Namespace.shortIsDefault) {
+		if (this.shortIsDefault) {
 			// read characters until we find a '#'
 			int pos = uri.indexOf("#");
 			if (pos == -1)
@@ -267,7 +275,7 @@ public final class Namespace {
 
 	/**
 	 * this method borrows code from normalizeNamespace() above and always tries to fully
-	 * expand the namespace prefix of an URI, even if Namespace.shortIsDefault == true
+	 * expand the namespace prefix of an URI, even if shortIsDefault == true
 	 */
 	public String expandUri(String uri) {
 		int pos = uri.indexOf("://");
@@ -302,7 +310,7 @@ public final class Namespace {
     String line;
     StringTokenizer st;
 		int noOfNamespaces = 0;
-    int noOfTypes = 0;
+    // int noOfTypes = 0;  // no longer necessary
     // section number:
     //   0 : no directive read
     //   1 : SHORT_TO_LONG
@@ -364,7 +372,7 @@ public final class Namespace {
     }
     if (this.verbose) {
 			System.out.println("\n  read " + noOfNamespaces + " namespace mappings");
-      System.out.println("  read " + noOfTypes + " type mappings");
+      //System.out.println("  read " + noOfTypes + " type mappings");  // no longer necessary
     }
 	}
 
@@ -381,7 +389,7 @@ public final class Namespace {
 	/*
 	public static void main(String[] args) {
 		Namespace ns = new Namespace();
-		Namespace.shortIsDefault = false;
+		ns.shortIsDefault = false;
 		String s1 = "owl:Class";
 		String l1 = "http://www.w3.org/2002/07/owl#Class";
 		// unknown short form namespace

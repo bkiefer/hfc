@@ -1,0 +1,7 @@
+<logic:true>  <dom:prof> <dom:treats> <pal:p1> "1"^^<xsd:long> .
+<logic:true>  <dom:prof> <dom:treats> <pal:p2> "2"^^<xsd:long> .
+<logic:false> <dom:prof> <dom:treats> <pal:p1> "3"^^<xsd:long> .
+<logic:true>  <dom:prof> <dom:treats> <pal:p3> "4"^^<xsd:long> .
+<logic:true>  <dom:prof> <dom:treats> <pal:p1> "5"^^<xsd:long> .
+<logic:true>  <dom:prof> <dom:treats> <pal:p4> "6"^^<xsd:long> .
+<logic:false> <dom:prof> <dom:treats> <pal:p4> "7"^^<xsd:long> .
