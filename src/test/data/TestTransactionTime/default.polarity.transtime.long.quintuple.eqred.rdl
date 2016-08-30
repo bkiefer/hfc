@@ -196,7 +196,7 @@ $owl_symmetric_property
 
 # this rule is totally different from the version implemented for valid time;
 # the test
-#   ValidInBetween subj pred obj time1 time2
+#   LValidInBetween subj pred obj time1 time2
 # returns FunctionalOperator.TRUE (= true) iff there is _no_ quintuple
 #   <logic:false> subj pred obj time
 # such that min(time1, time2) <= time <= max(time1, time2);
@@ -210,8 +210,8 @@ $owl_transitive_property
 @test
 ?x != ?y
 ?y != ?z
-ValidInBetween ?x ?p ?y ?time1 ?time2
-ValidInBetween ?y ?p ?z ?time1 ?time2
+LValidInBetween ?x ?p ?y ?time1 ?time2
+LValidInBetween ?y ?p ?z ?time1 ?time2
 @action
 ?time = LMax2 ?time1 ?time2
 
@@ -234,15 +234,15 @@ $owl_functional_object_property
 <logic:true> ?y <owl:sameAs> ?z "0"^^<xsd:long>
 @test
 ?y != ?z
-ValidInBetween ?x ?p ?y ?time1 ?time2
-ValidInBetween ?x ?p ?z ?time1 ?time2
+LValidInBetween ?x ?p ?y ?time1 ?time2
+LValidInBetween ?x ?p ?z ?time1 ?time2
 
 
 # there is _no_ non-temporal version of this rule in the original OWL-Horst
 # rule set;
 # note that this rule is a kind of _integrity_ constraint, deriving that
 # seriously wrong things had happened, viz., a logical inconsistency (see
-# the description of the test ValidInBetween above)
+# the description of the test LValidInBetween above)
 $integrity_functional_datatype_property
 <logic:true> ?p <rdf:type> <owl:FunctionalProperty> "0"^^<xsd:long>
 <logic:true> ?p <rdf:type> <owl:DatatypeProperty> "0"^^<xsd:long>
@@ -253,8 +253,8 @@ $integrity_functional_datatype_property
 <logic:error> ?x ?p ?z ?time2
 @test
 ?y != ?z
-ValidInBetween ?x ?p ?y ?time1 ?time2
-ValidInBetween ?x ?p ?z ?time1 ?time2
+LValidInBetween ?x ?p ?y ?time1 ?time2
+LValidInBetween ?x ?p ?z ?time1 ?time2
 
 
 # there is _no_ non-temporal version of this rule in the original rule;
@@ -269,7 +269,7 @@ $invalidate_functional_relation_instance
 @test
 ?y != ?z
 LLess ?time1 ?time2
-ValidInBetween ?x ?p ?y ?time1 ?time2
+LValidInBetween ?x ?p ?y ?time1 ?time2
 
 
 # there is _no_ non-temporal version of this rule in the original rule set;
@@ -292,8 +292,8 @@ $integrity_disjoint_with_type_type
 <logic:error> ?i <rdf:type> ?s ?time
 <logic:error> ?i <rdf:type> ?t ?time
 @test
-ValidInBetween ?i <rdf:type> ?s ?time1 ?time2
-ValidInBetween ?i <rdf:type> ?t ?time1 ?time2
+LValidInBetween ?i <rdf:type> ?s ?time1 ?time2
+LValidInBetween ?i <rdf:type> ?t ?time1 ?time2
 @action
 ?time = LMax2 ?time1 ?time2
 
@@ -320,8 +320,8 @@ $owl_InvFunctProp
 <logic:true> ?y <owl:sameAs> ?z "0"^^<xsd:long>
 @test
 ?y != ?z
-ValidInBetween ?y ?p ?x ?time1 ?time2
-ValidInBetween ?z ?p ?x ?time1 ?time2
+LValidInBetween ?y ?p ?x ?time1 ?time2
+LValidInBetween ?z ?p ?x ?time1 ?time2
 
 
 $owl_EquivClassBySubClass
@@ -367,8 +367,8 @@ $owl_typeByAllVal
 ->
 <logic:true> ?v <rdf:type> ?y ?time
 @test
-ValidInBetween ?u <rdf:type> ?x ?time1 ?time2
-ValidInBetween ?u ?p ?v ?time1 ?time2
+LValidInBetween ?u <rdf:type> ?x ?time1 ?time2
+LValidInBetween ?u ?p ?v ?time1 ?time2
 @action
 ?time = LMax2 ?time1 ?time2
 
@@ -399,8 +399,8 @@ $owl_typeBySomeVal
 ->
 <logic:true> ?i <rdf:type> ?r ?time
 @test
-ValidInBetween ?q <rdf:type> ?c ?time1 ?time2
-ValidInBetween ?i ?p ?q ?time1 ?time2
+LValidInBetween ?q <rdf:type> ?c ?time1 ?time2
+LValidInBetween ?i ?p ?q ?time1 ?time2
 @action
 ?time = LMax2 ?time1 ?time2
 
@@ -439,7 +439,7 @@ $owl_typeByIntersect_2
 ->
 <logic:true> ?i <rdf:type> ?n ?time
 @test
-ValidInBetween ?i <rdf:type> ?c ?time1 ?time2
-ValidInBetween ?i <rdf:type> ?b ?time1 ?time2
+LValidInBetween ?i <rdf:type> ?c ?time1 ?time2
+LValidInBetween ?i <rdf:type> ?b ?time1 ?time2
 @action
 ?time = LMax2 ?time1 ?time2
