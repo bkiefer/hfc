@@ -126,7 +126,7 @@ public class Configuration {
 		}
 		catch (Exception e) {
 			System.err.println("\nerror while reading configuration file " + configFile);
-			System.exit(1);
+			throw new RuntimeException("FATAL ERROR");
 		}
 	}
 

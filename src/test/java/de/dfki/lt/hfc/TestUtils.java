@@ -31,8 +31,23 @@ public class TestUtils {
     return new File(tmpDir, name).getPath();
   }
 
+  private static String [] neutralizeBlanknodes(String[] in) {
+    in = Arrays.copyOf(in, in.length);
+    for (int i = 0; i < in.length; ++i) {
+      String s = in[i];
+      if (s.startsWith("_:")) {
+        in[i] = "_:";
+      }
+    }
+    return in;
+  }
+
+
   /** Check if expected contains all the rows that are in the BindingTable,
-   *  even if there are duplicates
+   *  even if there are duplicates.
+   *
+   *  CAVEAT: all blank nodes are reduced to "_:", so if you do structural
+   *  tests involving blank nodes, you can NOT use this function.
    */
   public static void checkResult(String[][] expected,
       BindingTable bt, String ... vars) {
@@ -46,18 +61,18 @@ public class TestUtils {
       assertEquals(expected.length, bindIt.hasSize());
 
       while (bindIt.hasNext()) {
-        String[] tuple = bindIt.nextAsString();
+        String[] tuple = neutralizeBlanknodes(bindIt.nextAsString());
         // make sure all tuples from expected are covered: find the right one
         boolean found = false;
         for(Iterator<String[]> expIt = exp.iterator(); expIt.hasNext();) {
-          String[] expectedRow = expIt.next();
+          String[] expectedRow = neutralizeBlanknodes(expIt.next());
           // This does not go into the elements of an array, will only return
           // true if tuple == other, which is never the case
           // if (tuple.equals(other)) {
           if (Arrays.equals(tuple, expectedRow)) {
             expIt.remove();
             found = true;
-            continue; // take the next row
+            break; // take the next row
           }
         }
         assertTrue("Row not found "+Arrays.toString(tuple), found);

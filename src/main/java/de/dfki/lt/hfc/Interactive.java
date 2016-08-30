@@ -384,7 +384,7 @@ public class Interactive {
 		}
 		catch (IOException e) {
 			System.err.println("Error while opening query output file " + filename);
-			System.exit(1);
+			throw new RuntimeException("FATAL ERROR");
 		}
 	}
 
@@ -411,7 +411,7 @@ public class Interactive {
 		}
 		catch (IOException e) {
 			System.err.println("\nerror while reading commands from " + filename);
-			System.exit(1);
+			throw new RuntimeException("FATAL ERROR");
 		}
 	}
 

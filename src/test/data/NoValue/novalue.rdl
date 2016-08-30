@@ -9,6 +9,6 @@
 $test1
 ?s <test:hasName> ?o
 ->
-?s <test:checked>
+?s <test:checked> ?o
 @test
 NoValue * *

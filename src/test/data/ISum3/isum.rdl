@@ -17,6 +17,7 @@ $test
 ?t <test:numberOfEmployees> ?w
 @test
 ?s != ?t
-PrintTrue ?s ?u ?t ?v
+ILess ?v "200000"^^<xsd:int>
+ILess ?u "200000"^^<xsd:int>
 @action
 ?w = ISum ?u ?v

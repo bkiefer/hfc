@@ -17,6 +17,7 @@ public class QueryTest {
     Query query = new Query(tupleStore);
     assertNotNull(query);
   }
+
   @Test
   public void testQuery1() throws FileNotFoundException, IOException, WrongFormatException{
     //test constructor Query(ForwardChainer fc)
@@ -26,6 +27,7 @@ public class QueryTest {
     Query query = new Query(fc);
     assertNotNull(query);
   }
+
   @Test
   public void testquery() throws FileNotFoundException, IOException, WrongFormatException, QueryParseException{
   //test method public BindingTable query(String query)
@@ -34,6 +36,7 @@ public class QueryTest {
     Query obj = new Query(ts);
     assertTrue(obj.query("SELECT ?p WHERE ?s ?p ?o AGGREGATE ?number = CountDistinct ?p & ?subject = Identity ?p") instanceof BindingTable);
   }
+
   @Test
   public void testisPredicate(){
   //test static boolean isPredicate(String literal)

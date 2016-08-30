@@ -323,7 +323,7 @@ public final class RuleStore {
 	private boolean sayItLoud(int lineNo, String message) {
 		if (this.exitOnError) {
 			System.out.println(" FATAL: " + lineNo + message);
-			System.exit(1);
+			throw new RuntimeException("FATAL ERROR");
 		}
 		if (this.verbose)
 			System.out.println(" ERROR(ignored): " + lineNo + message);
@@ -333,7 +333,7 @@ public final class RuleStore {
 	private boolean sayItLoud(String rulename, String message) {
 		if (this.exitOnError) {
 			System.out.println(" FATAL: " + rulename + message);
-			System.exit(1);
+			throw new RuntimeException("FATAL ERROR");
 		}
 		if (this.verbose)
 			System.out.println(" ERROR(ignored): " + rulename + message);
@@ -1474,9 +1474,8 @@ public final class RuleStore {
 			case Namespace.OWL_EQUIVALENTCLASS_ID: sb.append("EquivalentClassTest "); break;
 			case Namespace.OWL_EQUIVALENTPROPERTY_ID: sb.append("EquivalentPropertyTest "); break;
 			default:
-				System.err.println("\nunknown equivalence relation in LHS of rule " + rulename);
-				System.exit(1);
-				break;
+				throw new RuntimeException(
+				    "\nunknown equivalence relation in LHS of rule " + rulename);
 		}
 		// make subject and object of original tuple arguments of the test;
 		// equivalence relation patterns are _always_ triples
@@ -1501,9 +1500,8 @@ public final class RuleStore {
 			case Namespace.OWL_EQUIVALENTCLASS_ID: sb.append("EquivalentClassAction "); break;
 			case Namespace.OWL_EQUIVALENTPROPERTY_ID: sb.append("EquivalentPropertyAction "); break;
 			default:
-				System.err.println("\nunknown equivalence relation in RHS of rule " + rulename);
-				System.exit(1);
-				break;
+			  throw new RuntimeException(
+			      "\nunknown equivalence relation in RHS of rule " + rulename);
 		}
 		sb.append(tuple.get(this.tupleStore.subjectPosition));
 		sb.append(" ");
@@ -1544,7 +1542,7 @@ public final class RuleStore {
 		}
 		catch (IOException e) {
       System.err.println("Error while writing rules to " + filename);
-      System.exit(1);
+      throw new RuntimeException("FATAL ERROR");
     }
 	}
 

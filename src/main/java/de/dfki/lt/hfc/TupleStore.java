@@ -834,7 +834,7 @@ public final class TupleStore {
 	private boolean sayItLoud(int lineNo, String message) throws WrongFormatException {
 		if (this.exitOnError) {
 			System.out.println("  " + lineNo + message);
-			// System.exit(1);
+			// throw new RuntimeException("FATAL ERROR");
 			throw new WrongFormatException("  " + lineNo + message);
 		}
 		if (this.verbose)
@@ -848,7 +848,7 @@ public final class TupleStore {
 	private boolean sayItLoud(String message) {
 		if (this.exitOnError) {
 			System.out.println("  " + message);
-			System.exit(1);
+			throw new RuntimeException("FATAL ERROR");
 		}
 		if (this.verbose)
 			System.out.println("  " + message);
@@ -1414,13 +1414,13 @@ public final class TupleStore {
 					readAllTuples(br, noOfLines);
 				else {
 					System.err.println("\nwrong section name: " + line);
-					System.exit(1);
+					throw new RuntimeException("FATAL ERROR");
 				}
 			}
 		}
 		catch (IOException e) {
 			System.err.println("\nerror while reading tuples from " + filename);
-			System.exit(1);
+			throw new RuntimeException("FATAL ERROR");
 		}
 		System.out.println("\n  read " + noOfTuples + " proper tuples");
 		System.out.println("  overall " + this.allTuples.size() + " unique tuples");
@@ -1604,7 +1604,7 @@ public final class TupleStore {
 		}
 		catch (IOException e) {
 			System.err.println("Error while writing tuples to " + filename);
-			System.exit(1);
+			throw new RuntimeException("FATAL ERROR");
 		}
 	}
 
@@ -1625,7 +1625,7 @@ public final class TupleStore {
 		}
 		catch (IOException e) {
 			System.err.println("Error while writing tuples to " + filename);
-			System.exit(1);
+			throw new RuntimeException("FATAL ERROR");
 		}
 	}
 
@@ -1665,7 +1665,7 @@ public final class TupleStore {
 		}
 		catch (IOException e) {
 			System.err.println("Error while writing tuples to " + filename);
-			System.exit(1);
+			throw new RuntimeException("FATAL ERROR");
 		}
 	}
 
