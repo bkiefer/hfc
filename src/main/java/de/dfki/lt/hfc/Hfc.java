@@ -1,5 +1,6 @@
 package de.dfki.lt.hfc;
 
+import de.dfki.lt.hfc.types.XsdFloat;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -192,6 +193,13 @@ public class Hfc {
       throws WrongFormatException, IOException {
     readTuples(Files.newBufferedReader(tuples.toPath(),
         Charset.forName(_tupleStore.inputCharacterEncoding)));
+  }
+
+  public void readTuples(File tuples, long timestamp)
+      throws WrongFormatException, IOException {
+    _tupleStore.readTuples(Files.newBufferedReader(tuples.toPath(),
+        Charset.forName(_tupleStore.inputCharacterEncoding)),
+        null, new XsdFloat(timestamp).toString());
   }
 
   String myNormalizeNamespaces(String s) {

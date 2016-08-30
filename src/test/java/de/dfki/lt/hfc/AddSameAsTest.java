@@ -33,7 +33,7 @@ public class AddSameAsTest {
     //boolean save = Namespace.shortIsDefault;  // NO LONGER A STATIC FIELD
     //Namespace.shortIsDefault = true;
     ForwardChainer fc =	getFwChainer(true);
-		assertEquals(511046, fc.tupleStore.allTuples.size());
+		assertEquals(511049, fc.tupleStore.allTuples.size());
 		fc.shutdownNoExit();
     //Namespace.shortIsDefault = save;
 	}
@@ -44,7 +44,7 @@ public class AddSameAsTest {
     //Namespace.shortIsDefault = false;
     ForwardChainer fc = getFwChainer(true);
     // TODO: THIS IS WRONG: THE NUMBERS MUST BE EQUAL
-    assertEquals(511046, fc.tupleStore.allTuples.size());
+    assertEquals(511049, fc.tupleStore.allTuples.size());
     fc.shutdownNoExit();
 
     //Namespace.shortIsDefault = save;
@@ -56,7 +56,7 @@ public class AddSameAsTest {
     //Namespace.shortIsDefault = true;
 
     ForwardChainer fc = getFwChainer(false);
-    assertEquals(548144, fc.tupleStore.allTuples.size());
+    assertEquals(548142, fc.tupleStore.allTuples.size());
     fc.shutdownNoExit();
 
     //Namespace.shortIsDefault = save;
@@ -68,7 +68,7 @@ public class AddSameAsTest {
     //Namespace.shortIsDefault = false;
 
     ForwardChainer fc = getFwChainer(false);
-    assertEquals(548144, fc.tupleStore.allTuples.size());
+    assertEquals(548142, fc.tupleStore.allTuples.size());
     fc.shutdownNoExit();
 
     //Namespace.shortIsDefault = save;
