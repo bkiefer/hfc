@@ -291,7 +291,7 @@ public class TestXsdSimpleTypes {
   public void testString() {
     XsdString xs = new XsdString("");
     assertEquals("", xs.toName());
-        
+
     xs = new XsdString("\"hel <lo>\"^^<xsd:string>");
     assertEquals("hel__lo_", xs.toName());
 
@@ -327,6 +327,9 @@ public class TestXsdSimpleTypes {
     assertEquals("en", xs.languageTag);
     assertEquals("\"hello\"@en", xs.toString(true));
     assertEquals("\"hello\"@en", xs.toString(false));
+
+    String res = new XsdString("val").toString(true);
+    assertEquals("\"val\"^^<xsd:string>", res);
   }
 
   @Test
