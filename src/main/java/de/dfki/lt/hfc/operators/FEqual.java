@@ -2,6 +2,7 @@ package de.dfki.lt.hfc.operators;
 
 import de.dfki.lt.hfc.FunctionalOperator;
 import de.dfki.lt.hfc.types.XsdFloat;
+import static java.lang.Math.abs;
 
 /**
  * checks whether the first argument is equal to the second argument;
@@ -23,9 +24,15 @@ public final class FEqual extends FunctionalOperator {
 	 * note that apply() does NOT check whether it is given exactly two arguments
 	 */
 	public int apply(int[] args) {
-		if (Float.compare(((XsdFloat)getObject(args[0])).value,
-		    ((XsdFloat)getObject(args[1])).value) == 0)
-			return FunctionalOperator.TRUE;
+
+    // http://www.ibm.com/developerworks/java/library/j-jtp0114/#N10255
+    // https://en.wikipedia.org/wiki/Machine_epsilon#Values_for_standard_hardware_floating_point_arithmetics
+    float one = ((XsdFloat)getObject(args[0])).value;
+    float two = ((XsdFloat)getObject(args[1])).value;
+    double epsilon = 5.96e-08 * 100;
+//		if (Float.compare(one, two) == 0)
+    if (abs(one/two -1) < epsilon)
+      return FunctionalOperator.TRUE;
 		else
 			return FunctionalOperator.FALSE;
 	}

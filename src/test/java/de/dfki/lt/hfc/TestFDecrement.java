@@ -54,6 +54,6 @@ public final class TestFDecrement {
     ids[0] = fop.apply(ids);
     assertEquals("0.01 --", FunctionalOperator.TRUE, feq.apply(ids));
     nids[0] = fop.apply(nids);
-    assertNotEquals("0.01 --", FunctionalOperator.FALSE, feq.apply(nids));
+    assertEquals("0.01 --", FunctionalOperator.FALSE, feq.apply(nids));
   }
 }
