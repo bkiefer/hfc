@@ -8,25 +8,31 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import de.dfki.lt.hfc.*;
-import de.dfki.lt.hfc.operators.FEqual;;
-
 public final class TestFEqual {
 
   @Test
-  public void testcleanUpTuple() throws FileNotFoundException, WrongFormatException, IOException {
+  public void testcleanUpTuple() throws FileNotFoundException,
+      WrongFormatException, IOException {
+
+    // load Namespace
     Namespace namespace = new Namespace(getTestResource("default.ns"));
+
+    // create TupleStore
     TupleStore store =
         new TupleStore(false, true, true, 2, 5, 4, 2, namespace,
             getTestResource("default.nt"));
+
+    // create example values
     String[] values = { "\"0.01\"^^<xsd:float>", "\"0.02\"^^<xsd:float>" };
 
+    // store values in TupleStore, save integer-key in database
     int[] ids = new int[2];
     int i = 0;
     for (String val : values) {
       ids[i++] = store.putObject(val);
     }
 
+    // create FunctionalOperator
     FunctionalOperator fop =
         (FunctionalOperator)store.operatorRegistry
         .checkAndRegister("de.dfki.lt.hfc.operators.FEqual");
