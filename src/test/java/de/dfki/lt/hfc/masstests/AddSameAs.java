@@ -1,5 +1,7 @@
-package de.dfki.lt.hfc;
+package de.dfki.lt.hfc.masstests;
 
+import de.dfki.lt.hfc.ForwardChainer;
+import de.dfki.lt.hfc.WrongFormatException;
 import static org.junit.Assert.*;
 
 import static de.dfki.lt.hfc.TestUtils.*;
@@ -13,7 +15,7 @@ import java.io.*;
  * NOTE: in order to perform the measurements properly, it is important to set the
  *       right flag in class TupleStore, viz., equivalenceClassReduction
  */
-public class AddSameAsTest {
+public class AddSameAs {
 
   // shortIsDefault no longer a static field in class Namespace
   public static ForwardChainer getFwChainer(boolean eqRed)
@@ -33,7 +35,7 @@ public class AddSameAsTest {
     //boolean save = Namespace.shortIsDefault;  // NO LONGER A STATIC FIELD
     //Namespace.shortIsDefault = true;
     ForwardChainer fc =	getFwChainer(true);
-		assertEquals(511049, fc.tupleStore.allTuples.size());
+		assertEquals(511049, fc.tupleStore.getAllTuples().size());
 		fc.shutdownNoExit();
     //Namespace.shortIsDefault = save;
 	}
@@ -44,7 +46,7 @@ public class AddSameAsTest {
     //Namespace.shortIsDefault = false;
     ForwardChainer fc = getFwChainer(true);
     // TODO: THIS IS WRONG: THE NUMBERS MUST BE EQUAL
-    assertEquals(511049, fc.tupleStore.allTuples.size());
+    assertEquals(511049, fc.tupleStore.getAllTuples().size());
     fc.shutdownNoExit();
 
     //Namespace.shortIsDefault = save;
@@ -56,7 +58,7 @@ public class AddSameAsTest {
     //Namespace.shortIsDefault = true;
 
     ForwardChainer fc = getFwChainer(false);
-    assertEquals(548142, fc.tupleStore.allTuples.size());
+    assertEquals(548142, fc.tupleStore.getAllTuples().size());
     fc.shutdownNoExit();
 
     //Namespace.shortIsDefault = save;
@@ -68,7 +70,7 @@ public class AddSameAsTest {
     //Namespace.shortIsDefault = false;
 
     ForwardChainer fc = getFwChainer(false);
-    assertEquals(548142, fc.tupleStore.allTuples.size());
+    assertEquals(548142, fc.tupleStore.getAllTuples().size());
     fc.shutdownNoExit();
 
     //Namespace.shortIsDefault = save;

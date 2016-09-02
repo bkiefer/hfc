@@ -38,7 +38,7 @@ public class LGetLatestTest {
 
   @Test
   public void test() throws QueryParseException  {
-    // TODO: FIX EXPECTED DATA
+    // TODO: NO VALID TEST, IMPLEMENT IT
 
     String[][] expected = {
 

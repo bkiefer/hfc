@@ -1,8 +1,9 @@
-package de.dfki.lt.hfc;
+package de.dfki.lt.hfc.masstests;
 
 import de.dfki.lt.hfc.*;
+import de.dfki.lt.hfc.ForwardChainer;
 
-public class MaterializeTimedTriplesTest {
+public class MaterializeTimedTriples {
 
 	public static void main(String[] args) throws Exception {
 		// java -server -cp .:../lib/trove-2.1.0.jar -Xms1024m -Xmx4096m de/dfki/lt/hfc/tests/MaterializeTimedTriples

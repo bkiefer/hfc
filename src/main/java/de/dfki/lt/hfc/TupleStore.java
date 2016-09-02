@@ -984,7 +984,7 @@ public final class TupleStore {
 	 *
 	 * TODO: LONG TO SHORT MAPPINGS MUST HAVE BEEN DONE BEFOREHAND
 	 */
-	public int[] internalizeTuple(String[] stringTuple) {
+	public int[] internalizeTuple(String ... stringTuple) {
 		int[] intTuple = new int[stringTuple.length];
 		for (int i = 0; i < stringTuple.length; i++)
 			intTuple[i] = putObject(stringTuple[i]);
