@@ -23,7 +23,8 @@ public final class FEqual extends FunctionalOperator {
 	 * note that apply() does NOT check whether it is given exactly two arguments
 	 */
 	public int apply(int[] args) {
-		if (((XsdFloat)getObject(args[0])).value == ((XsdFloat)getObject(args[1])).value)
+		if (Float.compare(((XsdFloat)getObject(args[0])).value,
+		    ((XsdFloat)getObject(args[1])).value) == 0)
 			return FunctionalOperator.TRUE;
 		else
 			return FunctionalOperator.FALSE;
