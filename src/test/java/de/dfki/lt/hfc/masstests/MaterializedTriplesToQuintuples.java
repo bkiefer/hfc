@@ -1,4 +1,4 @@
-package de.dfki.lt.hfc.quintuples;
+package de.dfki.lt.hfc.masstests;
 
 import static de.dfki.lt.hfc.TestUtils.*;
 import static org.junit.Assert.*;
@@ -15,7 +15,7 @@ import static de.dfki.lt.hfc.TestUtils.getTestResource;
 import org.junit.Test;
 import static de.dfki.lt.hfc.TestUtils.getTestResource;
 
-public class MaterializedTriplesToQuintuplesTest {
+public class MaterializedTriplesToQuintuples {
 
 	private static final int MAX_INT = 1000;
 
