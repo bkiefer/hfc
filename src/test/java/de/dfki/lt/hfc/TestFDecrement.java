@@ -50,7 +50,7 @@ public final class TestFDecrement {
         (FunctionalOperator)store.operatorRegistry
         .checkAndRegister("de.dfki.lt.hfc.operators.FEqual");
 
-    // do decrementation
+    // do operation
     ids[0] = fop.apply(ids);
     assertEquals("0.01 --", FunctionalOperator.TRUE, feq.apply(ids));
     nids[0] = fop.apply(nids);

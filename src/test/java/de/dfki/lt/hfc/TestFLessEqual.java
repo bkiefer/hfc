@@ -38,6 +38,7 @@ public final class TestFLessEqual {
         (FunctionalOperator)store.operatorRegistry
         .checkAndRegister("de.dfki.lt.hfc.operators.FLessEqual");
 
+    // do operation
     assertEquals("0.01 <= 0.02", FunctionalOperator.TRUE, fop.apply(ids));
     ArrayUtils.reverse(ids);
     assertEquals("0.02 <= 0.01", FunctionalOperator.FALSE, fop.apply(ids));

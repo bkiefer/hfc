@@ -50,7 +50,7 @@ public final class TestLIncrement {
         (FunctionalOperator)store.operatorRegistry
         .checkAndRegister("de.dfki.lt.hfc.operators.LEqual");
 
-    // do incrementation
+    // do operation
     ids[0] = fop.apply(ids);
     assertEquals("1++ = 2", FunctionalOperator.TRUE, feq.apply(ids));
     nids[0] = fop.apply(nids);

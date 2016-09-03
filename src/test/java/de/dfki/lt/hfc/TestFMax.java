@@ -46,6 +46,7 @@ public final class TestFMax {
         (FunctionalOperator)store.operatorRegistry
         .checkAndRegister("de.dfki.lt.hfc.operators.FMax");
 
+    // do operation
     int x = fop.apply(ids);
     assertEquals(store.idToJavaObject.get(ids[5]),
         store.idToJavaObject.get(x));

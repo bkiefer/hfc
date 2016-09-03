@@ -37,6 +37,7 @@ public final class TestLEqual {
         (FunctionalOperator)store.operatorRegistry
         .checkAndRegister("de.dfki.lt.hfc.operators.LEqual");
 
+    // do operation
     assertEquals("1 != 2", FunctionalOperator.FALSE, fop.apply(ids));
     ids[1] = ids[0];
     assertEquals("1 == 1", FunctionalOperator.TRUE, fop.apply(ids));

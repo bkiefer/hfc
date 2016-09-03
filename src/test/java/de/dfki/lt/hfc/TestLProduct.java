@@ -62,7 +62,7 @@ public final class TestLProduct {
         (FunctionalOperator)store.operatorRegistry
         .checkAndRegister("de.dfki.lt.hfc.operators.LEqual");
 
-    // do incrementation
+    // do operation
     t_ids[1] = fop.apply(ids);
     assertEquals("100 * 80 = 8000", FunctionalOperator.TRUE, feq.apply(t_ids));
     f_nids[1] = fop.apply(nids);

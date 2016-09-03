@@ -46,6 +46,7 @@ public final class TestFMin {
         (FunctionalOperator)store.operatorRegistry
         .checkAndRegister("de.dfki.lt.hfc.operators.FMin");
 
+    // do operation
     int x = fop.apply(ids);
     assertEquals(store.idToJavaObject.get(ids[2]),
         store.idToJavaObject.get(x));

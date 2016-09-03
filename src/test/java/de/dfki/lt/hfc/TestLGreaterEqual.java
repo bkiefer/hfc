@@ -38,6 +38,7 @@ public final class TestLGreaterEqual {
         (FunctionalOperator)store.operatorRegistry
         .checkAndRegister("de.dfki.lt.hfc.operators.LGreaterEqual");
 
+    // do operation
     assertEquals("1 >= 2", FunctionalOperator.FALSE, fop.apply(ids));
     ArrayUtils.reverse(ids);
     assertEquals("2 >= 1", FunctionalOperator.TRUE, fop.apply(ids));

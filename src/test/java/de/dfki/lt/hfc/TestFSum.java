@@ -62,7 +62,7 @@ public final class TestFSum {
         (FunctionalOperator)store.operatorRegistry
         .checkAndRegister("de.dfki.lt.hfc.operators.FEqual");
 
-    // do incrementation
+    // do operation
     t_ids[1] = fop.apply(ids);
     assertEquals("100.0 + 80.0 = 180.0", FunctionalOperator.TRUE, feq.apply(t_ids));
     f_nids[1] = fop.apply(nids);

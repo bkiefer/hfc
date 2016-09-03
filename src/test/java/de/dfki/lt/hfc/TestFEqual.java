@@ -37,6 +37,7 @@ public final class TestFEqual {
         (FunctionalOperator)store.operatorRegistry
         .checkAndRegister("de.dfki.lt.hfc.operators.FEqual");
 
+    // do operation
     assertEquals(FunctionalOperator.FALSE, fop.apply(ids));
     ids[1] = ids[0];
     assertEquals(FunctionalOperator.TRUE, fop.apply(ids));

@@ -38,6 +38,7 @@ public final class TestFGreaterEqual {
         (FunctionalOperator)store.operatorRegistry
         .checkAndRegister("de.dfki.lt.hfc.operators.FGreaterEqual");
 
+    // do operation
     assertEquals("0.01 >= 0.02", FunctionalOperator.FALSE, fop.apply(ids));
     ArrayUtils.reverse(ids);
     assertEquals("0.02 >= 0.01", FunctionalOperator.TRUE, fop.apply(ids));

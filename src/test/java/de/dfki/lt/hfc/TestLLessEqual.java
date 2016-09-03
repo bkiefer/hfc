@@ -38,6 +38,7 @@ public final class TestLLessEqual {
         (FunctionalOperator)store.operatorRegistry
         .checkAndRegister("de.dfki.lt.hfc.operators.LLessEqual");
 
+    // do operation
     assertEquals("1 <= 2", FunctionalOperator.TRUE, fop.apply(ids));
     ArrayUtils.reverse(ids);
     assertEquals("2 <= 1", FunctionalOperator.FALSE, fop.apply(ids));
