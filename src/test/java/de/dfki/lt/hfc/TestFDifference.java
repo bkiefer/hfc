@@ -66,8 +66,8 @@ public final class TestFDifference {
 
     // do incrementation
     t_ids[1] = fop.apply(ids);
-    assertEquals("0.01 ++", FunctionalOperator.TRUE, feq.apply(t_ids));
+    assertEquals("100.0 - 80.0 = 20.0", FunctionalOperator.TRUE, feq.apply(t_ids));
     f_nids[1] = fop.apply(nids);
-    assertEquals("0.01 ++", FunctionalOperator.FALSE, feq.apply(f_nids));
+    assertEquals("100.0 - 70.0 != 20.0", FunctionalOperator.FALSE, feq.apply(f_nids));
   }
 }
