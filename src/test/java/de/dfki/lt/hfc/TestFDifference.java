@@ -25,12 +25,10 @@ public final class TestFDifference {
     // create example values
     String[] values_true = { "\"100.0\"^^<xsd:float>",
       "\"80.0\"^^<xsd:float>",};
-    String[] values_true_exp = {"\"20.0\"^^<xsd:float>",
-      "\"100.0\"^^<xsd:float>"};
+    String[] values_true_exp = {"\"20.0\"^^<xsd:float>" };
     String[] values_false = { "\"100.0\"^^<xsd:float>",
       "\"70.0\"^^<xsd:float>",};
-    String[] values_false_exp = {"\"20.0\"^^<xsd:float>",
-      "\"100.0\"^^<xsd:float>"};
+    String[] values_false_exp = {"\"20.0\"^^<xsd:float>"};
 
     // store values in TupleStore, save integer-key in database
     int[] ids = new int[2];
