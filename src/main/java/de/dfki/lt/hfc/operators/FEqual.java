@@ -29,8 +29,8 @@ public final class FEqual extends FunctionalOperator {
     // https://en.wikipedia.org/wiki/Machine_epsilon#Values_for_standard_hardware_floating_point_arithmetics
     float one = ((XsdFloat)getObject(args[0])).value;
     float two = ((XsdFloat)getObject(args[1])).value;
+    // recommended value was to small, reason for *100
     double epsilon = 5.96e-08 * 100;
-//		if (Float.compare(one, two) == 0)
     if (abs(one/two -1) < epsilon)
       return FunctionalOperator.TRUE;
 		else
