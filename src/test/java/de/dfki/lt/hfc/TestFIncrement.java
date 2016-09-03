@@ -23,15 +23,21 @@ public final class TestFIncrement {
             getTestResource("default.nt"));
 
     // create example values
-    String[] values = { "\"0.01\"^^<xsd:float>",
-      "\"1.01\"^^<xsd:float>",
-      "\"99.99\"^^<xsd:float>" };
+    String[] values_eq = { "\"0.01\"^^<xsd:float>",
+      "\"1.01\"^^<xsd:float>",};
+    String[] values_neq = { "\"1.01\"^^<xsd:float>",
+      "\"9.01\"^^<xsd:float>",};
 
     // store values in TupleStore, save integer-key in database
-    int[] ids = new int[3];
+    int[] ids = new int[2];
     int i = 0;
-    for (String val : values) {
+    for (String val : values_eq) {
       ids[i++] = store.putObject(val);
+    }
+    int[] nids = new int[2];
+    i = 0;
+    for (String val : values_neq) {
+      nids[i++] = store.putObject(val);
     }
 
     // create FunctionalOperator
@@ -39,7 +45,15 @@ public final class TestFIncrement {
         (FunctionalOperator)store.operatorRegistry
         .checkAndRegister("de.dfki.lt.hfc.operators.FIncrement");
 
-    assertEquals("0.01 ++", ids[1], fop.apply(ids));
-    assertNotEquals("0.01 ++", ids[2], fop.apply(ids));
+    // create FEqual
+    FunctionalOperator feq =
+        (FunctionalOperator)store.operatorRegistry
+        .checkAndRegister("de.dfki.lt.hfc.operators.FEqual");
+
+    // do incrementation
+    ids[0] = fop.apply(ids);
+    assertEquals("0.01 ++", FunctionalOperator.TRUE, feq.apply(ids));
+    nids[0] = fop.apply(nids);
+    assertEquals("0.01 ++", FunctionalOperator.FALSE, feq.apply(nids));
   }
 }
