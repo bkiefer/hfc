@@ -6,16 +6,16 @@ import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import static java.lang.Math.abs;
 import java.util.Date;
 
 import org.junit.Test;
 import static java.lang.Math.abs;
 
 /**
- * tests GetDateTime by comparing the fields of the created XsdDateTime and
- * a manually created Date() object. Milliseconds may be different
- * (100 ms tolerance). May be problematic on slower systems
+ * tests GetDateTime by comparing the fields of the created XsdDateTime and a
+ * manually created Date() object. Milliseconds may be different (100 ms
+ * tolerance). May be problematic on slower systems
+ *
  * @author Christophe Biwer, christophe.biwer@dfki.de
  */
 public final class TestGetDateTime {
