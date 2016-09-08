@@ -5,6 +5,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 /**
  * a first test of our approach towards mimicing transaction time in
@@ -34,7 +35,7 @@ public class TestTransactionTime {
   static String TIME = "\"0\"^^<xsd:long>";
 
   public static String getResource(String name) {
-    return TestUtils.getTestResource("TestTransactionTime", name);
+    return Utils.getTestResource("TestTransactionTime", name);
   }
 
   @BeforeClass

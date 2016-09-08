@@ -4,7 +4,7 @@ import de.dfki.lt.hfc.ForwardChainer;
 import de.dfki.lt.hfc.WrongFormatException;
 import static org.junit.Assert.*;
 
-import static de.dfki.lt.hfc.TestUtils.*;
+import static de.dfki.lt.hfc.Utils.*;
 
 import org.junit.Test;
 

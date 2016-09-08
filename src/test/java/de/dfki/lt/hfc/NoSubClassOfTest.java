@@ -5,13 +5,13 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static de.dfki.lt.hfc.TestUtils.*;
+import static de.dfki.lt.hfc.Utils.*;
 
 public class NoSubClassOfTest {
   static ForwardChainer fc;
 
   private static String getResource(String name) {
-    return TestUtils.getTestResource("NoSubClassOf", name);
+    return Utils.getTestResource("NoSubClassOf", name);
   }
   @BeforeClass
   public static void init() throws Exception {

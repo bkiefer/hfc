@@ -5,14 +5,16 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static de.dfki.lt.hfc.TestUtils.checkResult;
-import static de.dfki.lt.hfc.TestUtils.checkResult;
+import static de.dfki.lt.hfc.Utils.checkResult;
+import static de.dfki.lt.hfc.Utils.checkResult;
+
+
 
 public class ConcatenateFourTest {
   static ForwardChainer fc;
 
   private static String getResource(String name) {
-    return TestUtils.getTestResource("Concatenate4", name);
+    return Utils.getTestResource("Concatenate4", name);
   }
   @BeforeClass
   public static void init() throws Exception {

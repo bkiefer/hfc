@@ -1,6 +1,6 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.TestUtils.getTestResource;
+import static de.dfki.lt.hfc.Utils.getTestResource;
 import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.HashSet;
 
 import org.junit.Test;
+
 
 public class ClauseComparatorTest {
 
