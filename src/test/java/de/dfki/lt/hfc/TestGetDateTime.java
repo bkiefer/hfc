@@ -31,15 +31,8 @@ public final class TestGetDateTime {
         new TupleStore(false, true, true, 2, 5, 4, 2, namespace,
             getTestResource("default.nt"));
 
-    // create example values
-    String[] values = {};
-
-    // store values in TupleStore, save integer-key in database
+    // empty array to be given to function.
     int[] ids = new int[2];
-    int i = 0;
-    for (String val : values) {
-      ids[i++] = store.putObject(val);
-    }
 
     // create FunctionalOperator
     FunctionalOperator fop =
@@ -58,6 +51,6 @@ public final class TestGetDateTime {
     float expSecondsMillisecond = expected.getSeconds() + (float)(expected.getTime() % 1000) / 1000;
     float resSecondsMilliseconds = result.second;
     int diff = (int)(abs(expSecondsMillisecond - resSecondsMilliseconds) * 1000);
-    assertTrue(100 > diff);
+    assertTrue(500 > diff);
   }
 }

@@ -28,15 +28,8 @@ public final class TestGetLongTime {
         new TupleStore(false, true, true, 2, 5, 4, 2, namespace,
             getTestResource("default.nt"));
 
-    // create example values
-    String[] values = {};
-
-    // store values in TupleStore, save integer-key in database
+    // empty array to be given to function.
     int[] ids = new int[2];
-    int i = 0;
-    for (String val : values) {
-      ids[i++] = store.putObject(val);
-    }
 
     // create FunctionalOperator
     FunctionalOperator fop =
