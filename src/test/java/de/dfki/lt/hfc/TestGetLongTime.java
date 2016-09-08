@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import static java.lang.Math.abs;
 
 import org.junit.Test;
 
@@ -40,7 +41,8 @@ public final class TestGetLongTime {
     int temp = fop.apply(ids);
     long expected = System.currentTimeMillis();
     long result = ((XsdLong)store.idToJavaObject.get(temp)).value;
-    assertEquals(0, Long.compare(expected, result));
+    long diff = (abs(expected - result));
+    assertTrue(500 > diff);
 
   }
 }
