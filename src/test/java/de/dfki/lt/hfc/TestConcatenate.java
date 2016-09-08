@@ -37,19 +37,18 @@ public final class TestConcatenate {
     // store values in TupleStore, save integer-key in database
     int[] args = new int[7];
 
-    args[0] = store.putObject((new XsdString("foo")).toString());
-    args[1] = store.putObject((new XsdString("bar")).toString());
-    args[2] = store.putObject((new XsdString("föö")).toString());
-    args[3] = store.putObject((new XsdString("bär")).toString());
+    args[0] = store.putObject((new XsdString("foo")).toString(true));
+    args[1] = store.putObject((new XsdString("bar")).toString(true));
+    args[2] = store.putObject((new XsdString("föö")).toString(true));
+    args[3] = store.putObject((new XsdString("bär")).toString(true));
 
-    args[4] = store.putObject((new XsdString("foobar")).toString());
-
+    args[4] = store.putObject((new XsdString("foobar")).toString(true));
+    args[5] = store.putObject((new XsdString("foobarföö")).toString(true));
+    args[6] = store.putObject((new XsdString("foobarfööbär")).toString(true));
 
     // do operation
-    int temp = fop.apply(new int[]{args[0], args[1]});
-//    assertEquals(args[4], temp);
-//    assertEquals("foobarföö", fop.apply(new int[]{args[0], args[1], args[2]}));
-//    assertEquals("foobarfööbär", fop.apply(new int[]{args[0], args[1], args[2], args[3]}));
-
+    assertEquals(args[4], fop.apply(new int[]{args[0], args[1]}));
+    assertEquals(args[5], fop.apply(new int[]{args[0], args[1], args[2]}));
+    assertEquals(args[6], fop.apply(new int[]{args[0], args[1], args[2], args[3]}));
   }
 }
