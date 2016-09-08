@@ -10,8 +10,6 @@ import java.io.IOException;
 import org.junit.Test;
 
 /**
- * tests GetLongTime by comparing the functions result and a manual
- * System.currentTimeMillis(); could be problematic on slow systems.
  * @author Christophe Biwer, christophe.biwer@dfki.de
  */
 public final class TestDTMin2 {
