@@ -1,7 +1,6 @@
 package de.dfki.lt.hfc;
 
 import static de.dfki.lt.hfc.Utils.*;
-import de.dfki.lt.hfc.types.XsdDateTime;
 import de.dfki.lt.hfc.types.XsdString;
 import static org.junit.Assert.*;
 
