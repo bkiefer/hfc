@@ -1,6 +1,6 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.TestUtils.*;
+import static de.dfki.lt.hfc.Utils.*;
 import de.dfki.lt.hfc.types.XsdDateTime;
 import static org.junit.Assert.*;
 
@@ -10,6 +10,7 @@ import static java.lang.Math.abs;
 import java.util.Date;
 
 import org.junit.Test;
+import static java.lang.Math.abs;
 
 /**
  * tests GetDateTime by comparing the fields of the created XsdDateTime and

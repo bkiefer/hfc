@@ -4,13 +4,14 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static de.dfki.lt.hfc.TestUtils.checkResult;
+import static de.dfki.lt.hfc.Utils.checkResult;
+
 
 public class PrintTrueTest {
   static ForwardChainer fc;
 
   private static String getResource(String name) {
-    return TestUtils.getTestResource("PrintTrue", name);
+    return Utils.getTestResource("PrintTrue", name);
   }
 
   @BeforeClass

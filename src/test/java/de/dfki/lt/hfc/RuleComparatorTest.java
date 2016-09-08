@@ -1,6 +1,6 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.TestUtils.getTestResource;
+import static de.dfki.lt.hfc.Utils.getTestResource;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import org.junit.Test;
+
 
 public class RuleComparatorTest {
 

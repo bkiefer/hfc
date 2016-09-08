@@ -5,14 +5,16 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static de.dfki.lt.hfc.TestUtils.checkResult;
-import static de.dfki.lt.hfc.TestUtils.checkResult;
+import static de.dfki.lt.hfc.Utils.checkResult;
+import static de.dfki.lt.hfc.Utils.checkResult;
+
+
 
 public class LGetLatestTest {
   static ForwardChainer fc;
 
   private static String getResource(String name) {
-    return TestUtils.getTestResource("LGetLatest", name);
+    return Utils.getTestResource("LGetLatest", name);
   }
   @BeforeClass
   public static void init() throws Exception {

@@ -1,15 +1,14 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.TestUtils.getTestResource;
-import static de.dfki.lt.hfc.TestUtils.getTempFile;
+import static de.dfki.lt.hfc.Utils.*;
 import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.junit.Test;
+
 
 public class TestTupleStore {
 

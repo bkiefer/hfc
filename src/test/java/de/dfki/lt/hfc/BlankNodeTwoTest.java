@@ -9,14 +9,16 @@ import org.junit.Test;
 
 
 
-import static de.dfki.lt.hfc.TestUtils.checkResult;
-import static de.dfki.lt.hfc.TestUtils.checkResult;
+import static de.dfki.lt.hfc.Utils.checkResult;
+import static de.dfki.lt.hfc.Utils.checkResult;
+
+
 
 public class BlankNodeTwoTest {
   static ForwardChainer fc;
 
   private static String getResource(String name) {
-    return TestUtils.getTestResource("BlankNode2", name);
+    return Utils.getTestResource("BlankNode2", name);
   }
 
   /**

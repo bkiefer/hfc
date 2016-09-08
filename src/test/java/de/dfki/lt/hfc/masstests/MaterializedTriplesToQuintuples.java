@@ -1,6 +1,6 @@
 package de.dfki.lt.hfc.masstests;
 
-import static de.dfki.lt.hfc.TestUtils.*;
+import static de.dfki.lt.hfc.Utils.*;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -10,10 +10,10 @@ import de.dfki.lt.hfc.Namespace;
 import de.dfki.lt.hfc.TupleStore;
 import de.dfki.lt.hfc.types.XsdInt;
 
-import static de.dfki.lt.hfc.TestUtils.getTestResource;
+import static de.dfki.lt.hfc.Utils.getTestResource;
 
 import org.junit.Test;
-import static de.dfki.lt.hfc.TestUtils.getTestResource;
+
 
 public class MaterializedTriplesToQuintuples {
 

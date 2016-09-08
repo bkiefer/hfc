@@ -8,7 +8,7 @@ import org.junit.Test;
 public class TestLIsValid {
 
   public static String getResource(String name) {
-    return TestUtils.getTestResource("LIsValid", name);
+    return Utils.getTestResource("LIsValid", name);
   }
 
   @Test
@@ -19,7 +19,7 @@ public class TestLIsValid {
     BindingTable bt =
       q.query("SELECT ?o WHERE <logic:true> <dom:prof> <dom:treats> ?o ?ts FILTER LIsValid <dom:prof> <dom:treats> ?o ?ts");
     String[][] expected = { {"<pal:p2>"}, {"<pal:p3>"}, {"<pal:p1>"} };
-    TestUtils.checkResult(expected, bt, bt.getVars());
+    Utils.checkResult(expected, bt, bt.getVars());
   }
 
 }
