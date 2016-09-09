@@ -19,29 +19,29 @@ import java.lang.reflect.*;
  * @version Wed Jun 22 15:20:51 CEST 2016
  */
 public final class OperatorRegistry {
-	
+
 	/**
 	 * all (custom) operators should be put into package de.dfki.lt.hfc.operators
 	 */
 	public static final String OPERATOR_PATH = "de.dfki.lt.hfc.operators.";  // last '.' char is needed
-	
+
 	/**
 	 * if true, register() exits with error code 1 in case registration fails;
 	 * if false, register() returns null in case registration fails
 	 */
 	public static final boolean EXIT_WHEN_REGISTRATION_FAILS = true;
-	
+
   /**
    * the association between a class name and its _singleton_ instance (an operator)
    */
   protected Hashtable<String, Operator> nameToFo;
-	
+
 	/**
 	 * will be set by the unary constructor and is accessible to every instance of a functional or
 	 * relational operator
 	 */
 	private TupleStore tupleStore;
-	
+
 	/**
 	 * the argument to OperatorRegistry() is essential, since the registry will be passed to the
 	 * instance of the specific operator
@@ -50,7 +50,7 @@ public final class OperatorRegistry {
 		this.tupleStore = tupleStore;
 		this.nameToFo = new Hashtable<String, Operator>();
 	}
-	
+
 	/**
 	 * @see de.dfki.lt.hfc.TupleStore.copyTupleStore()
 	 */
@@ -58,7 +58,7 @@ public final class OperatorRegistry {
 		this.tupleStore = tupleStore;
 		this.nameToFo = new Hashtable<String, Operator>(operatorRegistry.nameToFo);
 	}
-	
+
   /**
    * potentially constructs an instance of className by dynamically loading the corresponding class;
 	 * given that instance, the apply() method of its class is called;
@@ -76,7 +76,7 @@ public final class OperatorRegistry {
 			op = register(className);
 		return ((FunctionalOperator)op).apply(args);
   }
-	
+
 	/**
    * evaluate(String className, BindingTable[] args) should only be used for _relational_ operators
    */
@@ -86,7 +86,7 @@ public final class OperatorRegistry {
 			op = register(className);
 		return ((RelationalOperator)op).apply(args);
   }
-	
+
 	/**
    * contrary to evaluate(), this method does NOT check whether the predicate is already
 	 * registered and directly applies the functional operator to its arguments
@@ -95,21 +95,21 @@ public final class OperatorRegistry {
   public int evaluateNoCheck(String className, int[] args) {
 		return ((FunctionalOperator)this.nameToFo.get(className)).apply(args);
   }
-	
+
 	/**
    * evaluate(String className, BindingTable[] args) should only be used for _relational_ operators
    */
 	public BindingTable[] evaluateNoCheck(String className, BindingTable[] args) {
 		return ((RelationalOperator)this.nameToFo.get(className)).apply(args);
   }
-	
+
   /**
    * this version of evaluate() distinguishes between the class name and the package path
    */
   public int evaluate(String className,	String packageName,	int[] args) {
     return evaluate(packageName + className, args);
   }
-	
+
 	/**
    * now something similar for a relational operator
    */
@@ -138,7 +138,7 @@ public final class OperatorRegistry {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * checks whether there has already been an operator registered for the _fully-qualified_
 	 * class name; if so, the operator is returned;
@@ -150,5 +150,5 @@ public final class OperatorRegistry {
 			op = register(className);
 		return op;
 	}
-		
+
 }

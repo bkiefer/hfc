@@ -18,17 +18,17 @@ public final class LSumTest {
     Namespace namespace = new Namespace(getTestResource("default.ns"));
 
     // create TupleStore
-    TupleStore store =
-        new TupleStore(false, true, true, 2, 5, 4, 2, namespace,
+    TupleStore store
+        = new TupleStore(false, true, true, 2, 5, 4, 2, namespace,
             getTestResource("default.nt"));
 
     // create example values
-    String[] values_true = { "\"100\"^^<xsd:long>",
+    String[] values_true = {"\"100\"^^<xsd:long>",
       "\"80\"^^<xsd:long>",};
-    String[] values_true_exp = {"\"180\"^^<xsd:long>" };
-    String[] values_false = { "\"100\"^^<xsd:long>",
+    String[] values_true_exp = {"\"180\"^^<xsd:long>"};
+    String[] values_false = {"\"100\"^^<xsd:long>",
       "\"70\"^^<xsd:long>",};
-    String[] values_false_exp = {"\"180\"^^<xsd:long>" };
+    String[] values_false_exp = {"\"180\"^^<xsd:long>"};
 
     // store values in TupleStore, save integer-key in database
     int[] ids = new int[2];
@@ -53,13 +53,13 @@ public final class LSumTest {
     }
 
     // create FunctionalOperator
-    FunctionalOperator fop =
-        (FunctionalOperator)store.operatorRegistry
+    FunctionalOperator fop
+        = (FunctionalOperator) store.operatorRegistry
         .checkAndRegister("de.dfki.lt.hfc.operators.LSum");
 
     // create FEqual
-    FunctionalOperator feq =
-        (FunctionalOperator)store.operatorRegistry
+    FunctionalOperator feq
+        = (FunctionalOperator) store.operatorRegistry
         .checkAndRegister("de.dfki.lt.hfc.operators.LEqual");
 
     // do operation
