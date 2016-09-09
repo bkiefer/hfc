@@ -1,0 +1,13 @@
+<q> <rdf:type> <owl:DatatypeProperty>
+_:b1 <rdf:type> <owl:Restriction>
+_:b1 <owl:onProperty> <q>
+_:b1 <owl:cardinality> "1"^^<xsd:int>
+<r> <rdf:type> <owl:DatatypeProperty>
+_:b2 <rdf:type> <owl:Restriction>
+_:b2 <owl:onProperty> <r>
+_:b2 <owl:cardinality> "1"^^<xsd:int>
+<foo> <q> "10"^^<xsd:int>
+<foo> <q> "20"^^<xsd:int>
+<foo> <r> "30"^^<xsd:int>
+<bar> <q> "40"^^<xsd:int>
+<bar> <r> "50"^^<xsd:int>

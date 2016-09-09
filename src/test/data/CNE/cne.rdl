@@ -1,0 +1,8 @@
+?p <rdf:type> <owl:DatatypeProperty>
+?r <owl:onProperty> ?p
+?r <owl:cardinality> ?c
+?s ?p ?o
+->
+?s <rdf:type> <owl:Nothing>
+@test
+CardinalityNotEqual ??(s p o) ??(p c)
