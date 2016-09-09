@@ -1,11 +1,11 @@
 package de.dfki.lt.hfc;
 
 import static de.dfki.lt.hfc.Utils.*;
-import de.dfki.lt.hfc.types.BlankNode;
 import de.dfki.lt.hfc.types.XsdString;
 import de.dfki.lt.hfc.types.XsdBoolean;
 import de.dfki.lt.hfc.types.XsdInt;
 import de.dfki.lt.hfc.types.Uri;
+import de.dfki.lt.hfc.types.BlankNode;
 import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
@@ -16,7 +16,7 @@ import org.junit.Test;
 /**
  * @author Christophe Biwer, christophe.biwer@dfki.de
  */
-public final class TestIsUri{
+public final class TestIsBlankNode{
 
   @Test
   public void testcleanUpTuple() throws FileNotFoundException,
@@ -33,7 +33,7 @@ public final class TestIsUri{
     // create FunctionalOperator
     FunctionalOperator fop =
         (FunctionalOperator)store.operatorRegistry
-        .checkAndRegister("de.dfki.lt.hfc.operators.IsUri");
+        .checkAndRegister("de.dfki.lt.hfc.operators.IsBlankNode");
 
     // store values in TupleStore, save integer-key in database
     int[] args = new int[5];
@@ -48,8 +48,7 @@ public final class TestIsUri{
     assertEquals("XsdString 0", FunctionalOperator.FALSE, fop.apply(new int[]{args[0]}));
     assertEquals("XsdInt 1", FunctionalOperator.FALSE, fop.apply(new int[]{args[1]}));
     assertEquals("XsdBoolean false", FunctionalOperator.FALSE, fop.apply(new int[]{args[2]}));
-    assertEquals("Uri <rdf:type>", FunctionalOperator.TRUE, fop.apply(new int[]{args[3]}));
-    assertEquals("BlankNode _:blank", FunctionalOperator.FALSE, fop.apply(new int[]{args[4]}));
-
+    assertEquals("Uri <rdf:type>", FunctionalOperator.FALSE, fop.apply(new int[]{args[3]}));
+    assertEquals("BlankNode _:blank", FunctionalOperator.TRUE, fop.apply(new int[]{args[4]}));
   }
 }
