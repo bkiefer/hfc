@@ -4,10 +4,8 @@ import de.dfki.lt.hfc.FunctionalOperator;
 import de.dfki.lt.hfc.types.XsdString;
 
 /**
- * checks whether the first argument is equal to the second argument;
- * arguments are assumed to be numbers of type URI and String, respectively
- *
- * @return FunctionalOperator.TRUE or FunctionalOperator.FALSE
+ * checks whether the first argument contains the second argument;
+ * arguments are assumed to be strings of type xsd:string
  *
  * @see FunctionalOperator
  *
@@ -19,9 +17,11 @@ public final class SContains extends FunctionalOperator {
 
 	/**
 	 * note that apply() does NOT check at the moment whether the int args
-	 * represent in fact XSD floats;
-	 * note that apply() does NOT check whether it is given exactly two arguments
-	 */
+   * represent in fact XSD strings (and not URIs, XSD ints, etc.);
+   * note that apply() does NOT check whether it is given exactly two arguments
+   *
+   * @return FunctionalOperator.TRUE or FunctionalOperator.FALSE
+   */
 	public int apply(int[] args) {
 		if (getObject(args[0]).toString()
         .contains((String)((XsdString)getObject(args[1])).toJava()))
