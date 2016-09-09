@@ -6,7 +6,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static de.dfki.lt.hfc.Utils.checkResult;
-import static de.dfki.lt.hfc.Utils.checkResult;
 
 
 
@@ -85,7 +84,6 @@ public class IsNotSubtypeOfTest {
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
 
-    //TestLGetLatest.printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     checkResult(expected, bt, bt.getVars());
   }
 
