@@ -44,7 +44,7 @@ public class TransactionTimeTest {
   public static void init() throws Exception {
     fc =	new ForwardChainer(
       4,                                                                   // #cores
-      true,                                                                // verbose
+      false,                                                               // verbose
       true,                                                                // RDF Check
       true,                                                                // EQ reduction enabled
       5,                                                                   // min #args

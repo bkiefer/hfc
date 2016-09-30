@@ -98,7 +98,7 @@ public final class RuleStore {
 	 * a similar variable exists in class TupleStore
 	 * @see #exitOnError
 	 */
-	public boolean verbose = true;
+	public boolean verbose = false;
 
 	/**
 	 * when tuples are read in, this variable decides whether tuples are compliant with

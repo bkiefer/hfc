@@ -16,7 +16,7 @@ public final class IGreaterTest {
       WrongFormatException, IOException {
 
     // load Namespace
-    Namespace namespace = new Namespace(getTestResource("default.ns"));
+    Namespace namespace = new Namespace(getTestResource("default.ns"), false);
 
     // create TupleStore
     TupleStore store =

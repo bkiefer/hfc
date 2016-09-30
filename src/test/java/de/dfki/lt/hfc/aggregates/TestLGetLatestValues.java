@@ -103,7 +103,7 @@ public class TestLGetLatestValues {
         + "& ?lv ?prop ?val ?t "
         + "AGGREGATE ?measurement ?result ?patient ?time = LGetLatestValues ?prop ?val ?child ?t ?t");
 
-    printExpected(bt, fc.tupleStore);
+    // printExpected(bt, fc.tupleStore);
 
     //   =============================================================================================
     //   | ?measurement         | ?result              | ?patient             | ?time                |

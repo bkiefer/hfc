@@ -119,7 +119,7 @@ public class TestLGetLatest {
     };
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT * WHERE ?d1 <rdf:type> <dafn:DialogueAct> & ?d2 <rdf:type> <dafn:DialogueAct> & ?d1 <dafn:follows> ?d2 FILTER ?d1 != ?d2");
-    System.out.println(bt);
+    //System.out.println(bt);
     // TODO call checkresult here, same for the other tests, and remove the
     // println if no longer needed
     checkResult(fc, bt, expected, "?d2", "?d1");
@@ -299,7 +299,7 @@ public class TestLGetLatest {
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long> AGGREGATE ?dialact ?time = LGetLatest ?da ?t ?t \"4\"^^<xsd:int>");
     checkResult(fc, bt, expected, "?dialact", "?time");
-    System.out.println(bt);
+    //System.out.println(bt);
   }
 
   @Test
@@ -312,7 +312,7 @@ public class TestLGetLatest {
    Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long> AGGREGATE ?dialact ?time = LGetLatest ?da ?t ?t \"3\"^^<xsd:int>");
     checkResult(fc, bt, expected, "?dialact", "?time");
-    System.out.println(bt);
+    //System.out.println(bt);
   }
 
   @Test
@@ -324,7 +324,7 @@ public class TestLGetLatest {
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long> AGGREGATE ?dialact ?time = LGetLatest ?da ?t ?t \"2\"^^<xsd:int>");
     checkResult(fc, bt, expected, "?dialact", "?time");
-    System.out.println(bt);
+    //System.out.println(bt);
   }
 
   @Test
@@ -335,7 +335,7 @@ public class TestLGetLatest {
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long> AGGREGATE ?dialact ?time = LGetLatest ?da ?t ?t \"1\"^^<xsd:int>");
     checkResult(fc, bt, expected, "?dialact", "?time");
-   System.out.println(bt);
+    //System.out.println(bt);
   }
 
   @Test
@@ -362,7 +362,7 @@ public class TestLGetLatest {
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"548\"^^<xsd:long> AGGREGATE ?dialact = LGetLatest ?da ?t \"3\"^^<xsd:int>");
     checkResult(fc, bt, expected, "?dialact");
-   System.out.println(bt);
+    //System.out.println(bt);
   }
 
   @Test

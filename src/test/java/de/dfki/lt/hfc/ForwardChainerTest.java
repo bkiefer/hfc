@@ -92,7 +92,7 @@ public class ForwardChainerTest {
     String ruleFile,
     String namespaceFile)*/
     int noOfCores = 1;
-    boolean verboseT = true;
+    boolean verboseT = false;
     boolean verboseF = false;
     boolean rdfCheck = true;
     boolean eqReduction = true;
@@ -103,7 +103,7 @@ public class ForwardChainerTest {
     String tupleFile = getTestResource("default.nt");
     String ruleFile = getTestResource("default.eqred.rdl");
     String namespaceFile = getTestResource("default.ns");
-    ForwardChainer fc = new ForwardChainer(noOfCores, verboseT, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
+    ForwardChainer fc = new ForwardChainer(noOfCores, false, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
         noOfAtoms, noOfTuples, tupleFile, ruleFile, namespaceFile);
     assertNotNull(fc);
     ForwardChainer fc0 = new ForwardChainer(noOfCores, verboseF, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
@@ -124,14 +124,14 @@ public class ForwardChainerTest {
     RuleStore ruleStore
     ) */
     int noOfCores = 2;
-    boolean verboseT = true;
+    boolean verboseT = false;
     boolean verboseF = false;
     int noOfAtoms = 3;
     int noOfTuples = 4;
     Namespace namespace = new Namespace(getTestResource("default.ns"));
     TupleStore tupleStore = new TupleStore(2, 4, namespace);
     RuleStore ruleStore = new RuleStore(tupleStore);
-    ForwardChainer fc = new ForwardChainer(noOfCores, verboseT, noOfAtoms, noOfTuples, tupleStore,
+    ForwardChainer fc = new ForwardChainer(noOfCores, false, noOfAtoms, noOfTuples, tupleStore,
         ruleStore);
     assertNotNull(fc);
     ForwardChainer fc0 = new ForwardChainer(noOfCores, verboseF, noOfAtoms, noOfTuples, tupleStore,
@@ -163,7 +163,7 @@ public class ForwardChainerTest {
   public void testcomputeClosure() throws FileNotFoundException, WrongFormatException, IOException {
     //test method computeClosure(int noOfIterations, boolean cleanUpRepository)
     int noOfCores = 1;
-    boolean verboseT = true;
+    boolean verboseT = false;
     boolean verboseF = false;
     boolean rdfCheck = true;
     boolean eqReduction = true;
@@ -175,7 +175,7 @@ public class ForwardChainerTest {
     String tupleFile = getTestResource("default.nt");
     String ruleFile = getTestResource("default.eqred.rdl");
     String namespaceFile = getTestResource("default.ns");
-    ForwardChainer fcverboseT = new ForwardChainer(noOfCores, verboseT, rdfCheck,eqReduction, minNoOfArgs,
+    ForwardChainer fcverboseT = new ForwardChainer(noOfCores, false, rdfCheck,eqReduction, minNoOfArgs,
         maxNoOfArgs, noOfAtoms, noOfTuples, tupleFile, ruleFile,namespaceFile);
     assertEquals(true, fcverboseT.enableTupleDeletion());
     ForwardChainer fcverboseF = new ForwardChainer(noOfCores, verboseF, rdfCheck,eqReduction, minNoOfArgs,
@@ -216,7 +216,7 @@ public class ForwardChainerTest {
 	//test method addTuplesToRepository(Collection<int[]> tuples)
 	  Collection<int[]> tuples = new THashSet<int[]>();
     int noOfCores = 1;
-    boolean verboseT = true;
+    boolean verboseT = false;
     boolean verboseF = false;
     boolean rdfCheck = true;
     boolean eqReduction = true;
@@ -228,7 +228,7 @@ public class ForwardChainerTest {
     String tupleFile = getTestResource("default.nt");
     String ruleFile = getTestResource("default.eqred.rdl");
     String namespaceFile = getTestResource("default.ns");
-    ForwardChainer fc = new ForwardChainer(noOfCores, verboseT, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
+    ForwardChainer fc = new ForwardChainer(noOfCores, false, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
         noOfAtoms, noOfTuples, tupleFile, ruleFile, namespaceFile);
     assertEquals(fc.computeClosure(1, true), true);
     ForwardChainer fc1 = new ForwardChainer(noOfCores, verboseF, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
@@ -237,13 +237,13 @@ public class ForwardChainerTest {
     assertEquals(fc1.computeClosure(2, false), true);
     //
     Namespace namespace = new Namespace(getTestResource("default.ns"));
-    TupleStore tupleStore = new TupleStore(true, true, true, 2, 5, 4, 2, namespace, getTestResource("default.nt"));
+    TupleStore tupleStore = new TupleStore(false, true, true, 2, 5, 4, 2, namespace, getTestResource("default.nt"));
     RuleStore ruleStore = new RuleStore(tupleStore);
     ForwardChainer fc2 = new ForwardChainer(tupleStore, ruleStore);
     assertEquals(fc2.computeClosure(1, true), false);
     assertEquals(fc2.computeClosure(1, false), false);
     //
-    TupleStore tupleStore1 = new TupleStore(true, true, false, 2, 1, 2, 3, namespace, getTestResource("default.nt"));
+    TupleStore tupleStore1 = new TupleStore(false, true, false, 2, 1, 2, 3, namespace, getTestResource("default.nt"));
     ForwardChainer fc3 = new ForwardChainer(tupleStore1, ruleStore);
     assertEquals(fc3.computeClosure(2, true), false);
   }
@@ -252,7 +252,7 @@ public class ForwardChainerTest {
   public void testcomputeClosure1() throws FileNotFoundException, WrongFormatException, IOException {
     //test method computeClosure() that returns a boolean
     Namespace namespace = new Namespace(getTestResource("default.ns"));
-    TupleStore tupleStore = new TupleStore(true, true, true, 2, 5, 4, 2, namespace, getTestResource("default.nt"));
+    TupleStore tupleStore = new TupleStore(false, true, true, 2, 5, 4, 2, namespace, getTestResource("default.nt"));
     RuleStore ruleStore = new RuleStore(tupleStore);
     ForwardChainer fc2 = new ForwardChainer(tupleStore, ruleStore);
     assertEquals(fc2.computeClosure(), false);
@@ -265,7 +265,7 @@ public class ForwardChainerTest {
     int noOfIterations = 2;
     boolean cleanUpRepository = true;
     Namespace namespace = new Namespace(getTestResource("default.ns"));
-    TupleStore tupleStore = new TupleStore(true, true, true, 2, 5, 4, 2, namespace, getTestResource("default.nt"));
+    TupleStore tupleStore = new TupleStore(false, true, true, 2, 5, 4, 2, namespace, getTestResource("default.nt"));
     RuleStore ruleStore = new RuleStore(tupleStore);
     ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);
     //no tuples were generated, so returns false
@@ -436,7 +436,7 @@ public class ForwardChainerTest {
   public void testshutdown() throws FileNotFoundException, WrongFormatException, IOException {
     //test method shutdown()
     int noOfCores = 1;
-    boolean verboseT = true;
+    boolean verboseT = false;
     boolean verboseF = false;
     boolean rdfCheck = true;
     boolean eqReduction = true;
@@ -460,7 +460,7 @@ public class ForwardChainerTest {
   public void testshutdownNoExit() throws FileNotFoundException, WrongFormatException, IOException {
     //test method shutdownNoExit()
     int noOfCores = 1;
-    boolean verboseT = true;
+    boolean verboseT = false;
     boolean verboseF = false;
     boolean rdfCheck = true;
     boolean eqReduction = true;
@@ -507,7 +507,7 @@ public class ForwardChainerTest {
     ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);
     fc.uncompressIndex();
     //TODO create a test
-    TupleStore tupleconstructor5 = new TupleStore(true, true, true, 2, 5, 4, 2, namespace, getTestResource("default.nt"));
+    TupleStore tupleconstructor5 = new TupleStore(false, true, true, 2, 5, 4, 2, namespace, getTestResource("default.nt"));
     ForwardChainer fc1 = new ForwardChainer(tupleconstructor5, ruleStore);
     fc1.uncompressIndex();
     //TODO create a test
@@ -517,7 +517,7 @@ public class ForwardChainerTest {
   public void testcopyForwardChainer() throws FileNotFoundException, WrongFormatException, IOException {
     //test method copyForwardChainer(int noOfCores, boolean verbose)
     int noOfCores = 1;
-    boolean verboseT = true;
+    boolean verboseT = false;
     boolean verboseF = false;
     boolean rdfCheck = true;
     boolean eqReduction = true;
@@ -539,7 +539,7 @@ public class ForwardChainerTest {
   public void testtupleDeletionEnabled() throws FileNotFoundException, WrongFormatException, IOException {
     //test method tupleDeletionEnabled(), returns a boolean
     int noOfCores = 1;
-    boolean verboseT = true;
+    boolean verboseT = false;
     boolean verboseF = false;
     boolean rdfCheck = true;
     boolean eqReduction = true;

@@ -59,15 +59,35 @@ public class BlankNodeOneTest {
   public void test() throws QueryParseException  {
     // TODO: FIX EXPECTED DATA
     String[][] expected = {
-        { "<hst:da8>", "\"755\"^^<xsd:long>", "\"755\"^^<xsd:long>" },
-        { "<hst:da7>", "\"731\"^^<xsd:long>", "\"731\"^^<xsd:long>" },
-        { "<hst:da6>", "\"686\"^^<xsd:long>", "\"686\"^^<xsd:long>" },
+        { "<test:sri>", "<test:hasName>", "\"SRI\"^^<xsd:string>" },
+        { "<owl:Nothing>", "<rdfs:subClassOf>", "<owl:Thing>" },
+        { "<xsd:int>", "<rdf:type>", "<rdfs:Datatype>" },
+        { "<test:dfki>", "<rdf:type>", "<test:Company>" },
+        { "<test:dfki>", "<test:hasName>", "\"DFKI GmbH\"^^<xsd:string>" },
+        { "<test:dfki>", "<test:hasName>", "\"German Research Center for Artificial Inteligence\"@en" },
+        { "<test:db>", "<test:hasName>", "\"Daimler Benz\"^^<xsd:string>" },
+        { "<test:dfki>", "<test:hasName>", "\"DFKI\"^^<xsd:string>" },
+        { "<xsd:string>", "<rdf:type>", "<rdfs:Datatype>" },
+        { "<owl:Nothing>", "<rdf:type>", "<owl:Class>" },
+        { "<test:dfki>", "<test:hasName>", "\"Deutsches Forschungszentrum für Künstliche Intelligenz\"@de" },
+        { "<owl:Thing>", "<owl:disjointWith>", "<owl:Nothing>" },
+        { "<test:sri>", "<test:hasName>", "\"Stanford Research Institute\"^^<xsd:string>" },
+        { "<test:db>", "<rdf:type>", "<test:Company>" },
+        { "<test:sri>", "<rdf:type>", "<test:Company>" },
+        { "<test:Company>", "<rdfs:subClassOf>", "<owl:Thing>" },
+        { "<test:sri>", "<test:new>", "_:de.dfki.lt.hfc.ForwardChainer@77a567e11" },
+        { "<test:db>", "<test:new>", "_:de.dfki.lt.hfc.ForwardChainer@77a567e12" },
+        { "<owl:Thing>", "<rdf:type>", "<owl:Class>" },
+        { "<test:dfki>", "<test:new>", "_:de.dfki.lt.hfc.ForwardChainer@77a567e10" },
+        //{ "<hst:da8>", "\"755\"^^<xsd:long>", "\"755\"^^<xsd:long>" },
+        //{ "<hst:da7>", "\"731\"^^<xsd:long>", "\"731\"^^<xsd:long>" },
+        //{ "<hst:da6>", "\"686\"^^<xsd:long>", "\"686\"^^<xsd:long>" },
     };
 
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
-    //checkResult(expected, bt, bt.getVars());
+    //printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
+    checkResult(expected, bt, bt.getVars());
   }
 
   @AfterClass

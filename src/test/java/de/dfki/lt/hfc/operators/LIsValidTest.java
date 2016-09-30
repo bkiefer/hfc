@@ -21,8 +21,10 @@ public class LIsValidTest {
   public void testLIsValid()
       throws FileNotFoundException, IOException, WrongFormatException,
       QueryParseException {
-    Namespace ns = new Namespace(getResource("namespaces.ns"));
-    TupleStore ts = new TupleStore(1000, 5000, ns, getResource("tuples.nt"));
+    Namespace ns = new Namespace(getResource("namespaces.ns"), false);
+    TupleStore ts = new TupleStore(1000, 5000, ns);
+    ts.verbose = false;
+    ts.readTuples(getResource("tuples.nt"));
     Query q = new Query(ts);
     BindingTable bt
         = q.query("SELECT ?o WHERE <logic:true> <dom:prof> <dom:treats> "

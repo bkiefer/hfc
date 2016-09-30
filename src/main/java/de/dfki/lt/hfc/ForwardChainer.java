@@ -99,7 +99,7 @@ public final class ForwardChainer {
 	 * a similar variable exists in class RuleStore
 	 * @see #exitOnError
 	 */
-	public boolean verbose = true;
+	public boolean verbose = false;
 
 	/**
 	 * a constant that controls whether the system is terminated in case an invalid
@@ -968,10 +968,12 @@ public final class ForwardChainer {
 		}
 		// possibly cleanup
 		if (this.tupleStore.equivalenceClassReduction && this.cleanUpRepository) {
-			System.out.print("\n  cleaning up repository ... ");
+		  if (this.verbose) { System.out.print("\n  cleaning up repository ... "); }
 			this.tupleStore.cleanUpTupleStore();
-			System.out.println("done");
-			System.out.println("  number of all tuples: " + this.tupleStore.allTuples.size());
+			if (this.verbose) {
+			  System.out.println("done");
+			  System.out.println("  number of all tuples: " + this.tupleStore.allTuples.size());
+			}
 		}
 		// and finally the `answer'
 		if ((noOfAllTuples - this.tupleStore.allTuples.size()) == 0)

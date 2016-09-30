@@ -22,6 +22,13 @@ import gnu.trove.set.hash.*;
 
 public class BindingTableTest {
 
+  private Namespace getNS() throws FileNotFoundException, WrongFormatException, IOException {
+    return new Namespace(getTestResource("default.ns"), false);
+  }
+
+  private TupleStore getTS() throws FileNotFoundException, WrongFormatException, IOException {
+    return new TupleStore(getNS());
+  }
   @Test
   public void testBindingTable() {
     //test constructor BindingTable()
@@ -155,8 +162,8 @@ public class BindingTableTest {
     nameToPos.put(1, 1);
     Map<Integer, String> nameToExternalName = new TreeMap<Integer, String>();
     nameToExternalName.put(1, "value");
-    Namespace namespace = new Namespace(getTestResource("default.ns"));
-    TupleStore ts = new TupleStore(true, true, true, 2, 5, 4, 2, namespace,
+    Namespace namespace = getNS();
+    TupleStore ts = new TupleStore(false, true, true, 2, 5, 4, 2, namespace,
         getTestResource("default.nt"));
     BindingTable bt = new BindingTable(table, nameToPos, nameToExternalName, ts);
     //System.out.println("IF expand set to TRUE " + bt.toString(true));
@@ -173,8 +180,8 @@ public class BindingTableTest {
     nameToPos.put(1, 1);
     Map<Integer, String> nameToExternalName = new TreeMap<Integer, String>();
     nameToExternalName.put(1, "val");
-    Namespace namespace = new Namespace(getTestResource("default.ns"));
-    TupleStore ts = new TupleStore(true, true, true, 2, 5, 4, 2, namespace,
+    Namespace namespace = getNS();
+    TupleStore ts = new TupleStore(false, true, true, 2, 5, 4, 2, namespace,
         getTestResource("default.nt"));
     BindingTable bt = new BindingTable(table, nameToPos, nameToExternalName, ts);
     //System.out.println("IF expand set to FALSE, maxLength to 3 " + bt.toString(3, false));
@@ -184,7 +191,7 @@ public class BindingTableTest {
     assertEquals(bt.toString(0, true).substring(7, 10), "val");
     assertEquals(bt.toString(5, false).substring(12, 15), "val");
     //
-    TupleStore objfortest = new TupleStore(true, true, true, 2, 5, 4, 2, namespace,
+    TupleStore objfortest = new TupleStore(false, true, true, 2, 5, 4, 2, namespace,
         getTestResource("default.nt"));
     int[] tuple = new int[3];
     tuple[0] = 2;
@@ -192,8 +199,8 @@ public class BindingTableTest {
     tuple[2] = 2;
     objfortest.addToIndex(tuple);
     BindingTable bt1 = new BindingTable(table, nameToPos, nameToExternalName, objfortest);
-    System.out.println("for (int[] tuple : this.table) " + bt1.toString(3, false));
-    System.out.println("for (int[] tuple : this.table) " + bt1.toString(6, false));
+    //System.out.println("for (int[] tuple : this.table) " + bt1.toString(3, false));
+    //System.out.println("for (int[] tuple : this.table) " + bt1.toString(6, false));
 
   }
 
@@ -229,7 +236,7 @@ public class BindingTableTest {
 
   @Test
   public void testVarsFilterStar() throws QueryParseException, FileNotFoundException, WrongFormatException, IOException {
-    TupleStore ts = new TupleStore(new Namespace(getTestResource("default.ns")));
+    TupleStore ts = getTS();
     Query q = new Query(ts);
     String[] t = { "<rdf:a>", "<rdf:type>", "<rdf:b>" };
     ts.addTuple(t);
@@ -250,7 +257,7 @@ public class BindingTableTest {
 
   @Test
   public void testVarsFilter() throws QueryParseException, FileNotFoundException, WrongFormatException, IOException {
-    TupleStore ts = new TupleStore(new Namespace(getTestResource("default.ns")));
+    TupleStore ts = getTS();
     Query q = new Query(ts);
     String[] t = { "<rdf:a>", "<rdf:type>", "<rdf:b>" };
     ts.addTuple(t);
@@ -271,7 +278,7 @@ public class BindingTableTest {
 
   @Test
   public void testVarsAggregate() throws QueryParseException, FileNotFoundException, WrongFormatException, IOException {
-    TupleStore ts = new TupleStore(new Namespace(getTestResource("default.ns")));
+    TupleStore ts = getTS();
     Query q = new Query(ts);
     String[] t = { "<rdf:a>", "<rdf:type>", "<rdf:b>" };
     ts.addTuple(t);
@@ -296,7 +303,7 @@ public class BindingTableTest {
 
   @Test
   public void testVarsAggregateStar() throws QueryParseException, FileNotFoundException, WrongFormatException, IOException {
-    TupleStore ts = new TupleStore(new Namespace(getTestResource("default.ns")));
+    TupleStore ts = getTS();
     Query q = new Query(ts);
     String[] t = { "<rdf:a>", "<rdf:type>", "<rdf:b>" };
     ts.addTuple(t);

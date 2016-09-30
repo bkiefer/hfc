@@ -22,9 +22,8 @@ public class QueryTest {
   @Test
   public void testQuery1() throws FileNotFoundException, IOException, WrongFormatException{
     //test constructor Query(ForwardChainer fc)
-    String tupleFile = getTestResource("default.nt");
-    String ruleFile = getTestResource("default.eqred.rdl");
-    ForwardChainer fc = new ForwardChainer(tupleFile, ruleFile);
+    TupleStore ts = new TupleStore(2,4);
+    ForwardChainer fc = new ForwardChainer(1, false, 1000, 1000, ts, new RuleStore(ts));
     Query query = new Query(fc);
     assertNotNull(query);
   }
@@ -32,8 +31,8 @@ public class QueryTest {
   @Test
   public void testquery() throws FileNotFoundException, IOException, WrongFormatException, QueryParseException{
   //test method public BindingTable query(String query)
-    Namespace namespace = new Namespace(getTestResource("default.ns"));
-    TupleStore ts = new TupleStore(true, true, true, 2, 5, 4, 2, namespace, getTestResource("default.nt"));
+    Namespace namespace = new Namespace(getTestResource("default.ns"), false);
+    TupleStore ts = new TupleStore(false, true, true, 2, 5, 4, 2, namespace, getTestResource("default.nt"));
     Query obj = new Query(ts);
     assertTrue(obj.query("SELECT ?p WHERE ?s ?p ?o AGGREGATE ?number = CountDistinct ?p & ?subject = Identity ?p") instanceof BindingTable);
   }

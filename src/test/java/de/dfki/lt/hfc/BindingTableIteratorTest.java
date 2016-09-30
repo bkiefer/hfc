@@ -23,7 +23,9 @@ public class BindingTableIteratorTest {
   @Before
   public void setup() throws FileNotFoundException, IOException, WrongFormatException {
     ns = new Namespace(getTestResource("default.ns"), false);
-    ts = new TupleStore(100000, 250000, ns, getTestResource("default.nt"));
+    ts = new TupleStore(100000, 250000, ns);
+    ts.verbose = false;
+    ts.readTuples(getTestResource("default.nt"));
     q = new Query(ts);
   }
 
@@ -234,7 +236,7 @@ public class BindingTableIteratorTest {
     BindingTable bt = q.query("SELECT * WHERE ?s <rdf:type> ?o FILTER ?o != <rdfs:Datatype>");
     // System.out.println(bt);
     BindingTableIterator it = bt.iterator("?s", "?o", "?s", "?o");
-    System.out.println(it.hasSize());
+    //System.out.println(it.hasSize());
     check(it, expected, new NextAsStringCall());
   }
 

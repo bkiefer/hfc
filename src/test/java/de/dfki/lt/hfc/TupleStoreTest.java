@@ -37,7 +37,7 @@ public class TupleStoreTest {
     // eqReduction, int minNoOfArgs, int maxNoOfArgs,
     // int noOfAtoms, int noOfTuples, Namespace namespace, String tupleFile) is
     // tested
-    TupleStore tupleconstructor5 = new TupleStore(true, true, true, 2, 5, 4, 2, namespace,
+    TupleStore tupleconstructor5 = new TupleStore(false, true, true, 2, 5, 4, 2, namespace,
         getTestResource("default.nt"));
     assertNotNull(tupleconstructor5);
     // constructor TupleStore(Namespace namespace) is tested
@@ -68,7 +68,7 @@ public class TupleStoreTest {
   @Test
   public void testcleanUpTuple() throws FileNotFoundException, WrongFormatException, IOException {
     Namespace namespace = new Namespace(getTestResource("default.ns"));
-    TupleStore objfortest = new TupleStore(true, true, true, 2, 5, 4, 2, namespace,
+    TupleStore objfortest = new TupleStore(false, true, true, 2, 5, 4, 2, namespace,
         getTestResource("default.nt"));
     int[] tuple = new int[3];
     tuple[0] = 2;
@@ -128,12 +128,12 @@ public class TupleStoreTest {
     stringTuple2.add("sfsd");// test for case stringTuple.size > maxNoOfArgs
     assertFalse(objectfortest.isValidTuple(stringTuple2, 1));
     Namespace namespace = new Namespace(getTestResource("default.ns"));
-    TupleStore objecToTestRdfTrue = new TupleStore(true, true, true, 2, 5, 4, 2, namespace,
+    TupleStore objecToTestRdfTrue = new TupleStore(false, true, true, 2, 5, 4, 2, namespace,
         getTestResource("default.nt"));
     // the second boolean argument is rdfCheck
     // test for case where rdfCheck is manipulated
     assertFalse(objecToTestRdfTrue.isValidTuple(stringTuple, 1));
-    TupleStore objecToTestRdfFalse = new TupleStore(true, false, true, 2, 5, 4, 2, namespace,
+    TupleStore objecToTestRdfFalse = new TupleStore(false, false, true, 2, 5, 4, 2, namespace,
         getTestResource("default.nt"));
     assertTrue(objecToTestRdfFalse.isValidTuple(stringTuple, 3));
     // TODO test for case TupleStore.isAtom(stringTuple.get(0)
@@ -460,7 +460,7 @@ public class TupleStoreTest {
   @Test
   public void testcopyTupleStore() throws FileNotFoundException, WrongFormatException, IOException {
     Namespace namespace = new Namespace(getTestResource("default.ns"));
-    TupleStore objectfortest = new TupleStore(true, true, true, 2, 5, 4, 2, namespace,
+    TupleStore objectfortest = new TupleStore(false, true, true, 2, 5, 4, 2, namespace,
         getTestResource("default.nt"));
     objectfortest.copyTupleStore();
     // TODO check these assertions

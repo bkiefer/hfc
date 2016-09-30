@@ -117,7 +117,7 @@ public final class Namespace {
 	/**
 	 * if true, some statistics are printed out
 	 */
-	public boolean verbose = true;
+	public boolean verbose = false;
 
 	/**
 	 * translation table for establishing mappings between short and long form

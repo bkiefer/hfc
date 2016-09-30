@@ -40,12 +40,12 @@ public class ISumThreeTest {
     // TODO: FIX EXPECTED DATA
 
     String[][] expected = {
-    //no table in the output
-
+        //no table in the output
     };
     Query q = new Query(fc.tupleStore);
+    // WILL NEVER TERMINATE.
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
+    //printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     //checkResult(expected, bt, bt.getVars());
   }
 

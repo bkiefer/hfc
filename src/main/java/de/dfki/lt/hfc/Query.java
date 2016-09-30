@@ -43,7 +43,7 @@ public class Query {
    * a constant that controls whether a warning is printed in case "unexpected" things
    * happen; similar variables exists in class TupleStore, RuleStore, and ForwardChainer
    */
-  private boolean verbose = true;
+  private boolean verbose = false;
 
 	/**
 	 * in order to query, we need a tuple store

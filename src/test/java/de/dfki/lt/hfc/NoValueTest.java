@@ -13,7 +13,7 @@ public class NoValueTest {
   private static String getResource(String name) {
     return Utils.getTestResource("NoValue", name);
   }
-  
+
   @BeforeClass
   public static void init() throws Exception {
 
@@ -41,12 +41,36 @@ public class NoValueTest {
     // TODO: FIX EXPECTED DATA
 
     String[][] expected = {
-    //tuple too short
+        //tuple too short
+        { "<test:db>", "<test:checked>", "\"Daimler Benz\"^^<xsd:string>" },
+        { "<owl:Thing>", "<rdf:type>", "<owl:Class>" },
+        { "<owl:Nothing>", "<rdfs:subClassOf>", "<owl:Thing>" },
+        { "<test:dfki>", "<test:hasName>", "\"DFKI\"^^<xsd:string>" },
+        { "<test:sri>", "<test:hasName>", "\"Stanford Research Institute\"^^<xsd:string>" },
+        { "<test:dfki>", "<test:checked>", "\"Deutsches Forschungszentrum für Künstliche Intelligenz\"@de" },
+        { "<test:sri>", "<test:hasName>", "\"SRI\"^^<xsd:string>" },
+        { "<test:db>", "<rdf:type>", "<test:Company>" },
+        { "<owl:Thing>", "<owl:disjointWith>", "<owl:Nothing>" },
+        { "<test:dfki>", "<test:hasName>", "\"German Research Center for Artificial Inteligence\"@en" },
+        { "<xsd:string>", "<rdf:type>", "<rdfs:Datatype>" },
+        { "<test:dfki>", "<test:checked>", "\"DFKI\"^^<xsd:string>" },
+        { "<test:db>", "<test:hasName>", "\"Daimler Benz\"^^<xsd:string>" },
+        { "<owl:Nothing>", "<rdf:type>", "<owl:Class>" },
+        { "<test:dfki>", "<test:checked>", "\"DFKI GmbH\"^^<xsd:string>" },
+        { "<test:dfki>", "<rdf:type>", "<test:Company>" },
+        { "<test:sri>", "<test:checked>", "\"SRI\"^^<xsd:string>" },
+        { "<test:Company>", "<rdfs:subClassOf>", "<owl:Thing>" },
+        { "<test:sri>", "<test:checked>", "\"Stanford Research Institute\"^^<xsd:string>" },
+        { "<xsd:int>", "<rdf:type>", "<rdfs:Datatype>" },
+        { "<test:dfki>", "<test:hasName>", "\"DFKI GmbH\"^^<xsd:string>" },
+        { "<test:dfki>", "<test:checked>", "\"German Research Center for Artificial Inteligence\"@en" },
+        { "<test:dfki>", "<test:hasName>", "\"Deutsches Forschungszentrum für Künstliche Intelligenz\"@de" },
+        { "<test:sri>", "<rdf:type>", "<test:Company>" }
     };
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    Utils.printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
-    //checkResult(expected, bt, bt.getVars());
+    //printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
+    checkResult(expected, bt, bt.getVars());
   }
 
   @AfterClass
