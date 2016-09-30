@@ -27,7 +27,7 @@ public class PrintSizeTest {
   }
 
   private static String getResource(String name) {
-    return Utils.getTestResource("PrintTrue", name);
+    return Utils.getTestResource("PrintSize", name);
   }
 
   @BeforeClass
@@ -41,9 +41,9 @@ public class PrintSizeTest {
         3,                                                    // max #args
         100000,                                               // #atoms
         500000,                                               // #tuples
-        getResource("printtrue.nt"),                            // tuple file
-        getResource("printtrue.rdl"),                           // rule file
-        getResource("printtrue.ns")                             // namespace file
+        getResource("printsize.nt"),                            // tuple file
+        getResource("printsize.rdl"),                           // rule file
+        getResource("printsize.ns")                             // namespace file
         );
 
     // compute deductive closure
