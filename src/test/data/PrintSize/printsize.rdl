@@ -1,0 +1,15 @@
+#
+# N-Triple test file for functional operator PrintTrue
+#
+# 2 new tuples generated
+#
+# @author Hans-Ulrich Krieger
+#
+
+$test
+?s <test:hasName> ?o
+->
+?s <test:new> ?bn
+@test
+?s != <test:db>
+PrintTrue ?s ?o
