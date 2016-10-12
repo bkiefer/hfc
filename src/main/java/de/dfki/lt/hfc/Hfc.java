@@ -48,7 +48,7 @@ public class Hfc {
   protected boolean rdfCheck = true;
   protected boolean shortIsDefault = true;
   protected int subjectPosition = 0;
-  protected boolean verbose = true;
+  protected boolean verbose = false;
 
   /**
    * transaction time time stamp used by Hfc.readTuples(BufferedReader tupleReader)
