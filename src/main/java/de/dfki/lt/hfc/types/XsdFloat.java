@@ -14,6 +14,8 @@ public final class XsdFloat extends XsdAnySimpleType {
 
   static {
     registerConstructor(XsdFloat.class, SHORT_NAME, LONG_NAME);
+    registerConverter(float.class, XsdFloat.class);
+    registerConverter(Float.class, XsdFloat.class);
   }
 
   public float value;
@@ -24,6 +26,13 @@ public final class XsdFloat extends XsdAnySimpleType {
 	public XsdFloat(float value) {
 		this.value = value;
 	}
+
+  /**
+   * @param value a Java float representation of an XSD float
+   */
+  public XsdFloat(Float value) {
+    this.value = value;
+  }
 
 	/**
 	 * @param value a string, representing an XSD float, e.g., "\"3.1415\"^^<xsd:float>"

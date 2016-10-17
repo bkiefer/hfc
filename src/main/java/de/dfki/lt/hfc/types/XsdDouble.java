@@ -17,6 +17,8 @@ public final class XsdDouble extends XsdAnySimpleType {
 
   static {
     registerConstructor(XsdDouble.class, SHORT_NAME, LONG_NAME);
+    registerConverter(double.class, XsdDouble.class);
+    registerConverter(Double.class, XsdDouble.class);
   }
 
 	public double value;
@@ -27,6 +29,13 @@ public final class XsdDouble extends XsdAnySimpleType {
 	public XsdDouble(double value) {
 		this.value = value;
 	}
+
+  /**
+   * @param value a Java double representation of an XSD double
+   */
+  public XsdDouble(Double value) {
+    this.value = value;
+  }
 
 	/**
 	 * @param value a string, representing an XSD double, e.g., "\"2.71828\"^^<xsd:double>"

@@ -24,6 +24,7 @@ public abstract class XsdAnySimpleType extends AnyType {
 
   static {
     typeToConstructor = new HashMap<String, Constructor<XsdAnySimpleType>>();
+    classToConstructor = new HashMap<Class, Constructor<XsdAnySimpleType>>();
     loadSimpleTypes();
   }
 
@@ -46,6 +47,13 @@ public abstract class XsdAnySimpleType extends AnyType {
   private static final
   HashMap<String, Constructor<XsdAnySimpleType>> typeToConstructor;
 
+  /**
+   * A hash map mapping from Java classes to constructors of subclasses of
+   * XsdAnySimpleType, to be able to construct xsd objects from java objects
+   * with the factory method javaToXsd
+   */
+  private static final
+  HashMap<Class, Constructor<XsdAnySimpleType>> classToConstructor;
 
   // only purpose is to separate the XSD types from uris and blank nodes
 
@@ -164,5 +172,38 @@ public abstract class XsdAnySimpleType extends AnyType {
    */
   public String toName() {
     return extractValue(toString(false));
+  }
+
+  /** Register a converter from a java class to a Xsd simple type class */
+  public static void registerConverter(Class clazz, Class xsdClass) {
+    try {
+      Constructor<XsdAnySimpleType> constr = xsdClass.getConstructor(clazz);
+      classToConstructor.put(clazz, constr);
+    }
+    catch (Exception e) {  // should never happen
+      throw new RuntimeException(e);
+    }
+  }
+
+  /**
+   * A factory method to generate the correct AnyType subclass from the given
+   * java object
+   * @throws WrongFormatException in case the type is not known, or the
+   *         constructor<Class> does not exist.
+   */
+  public static XsdAnySimpleType javaToXsd(Object obj)
+      throws WrongFormatException {
+    final Constructor<XsdAnySimpleType> constructor =
+        classToConstructor.get(obj.getClass());
+    if (constructor == null)
+      throw new WrongFormatException("no known converter for object: " + obj);
+
+    try {
+      return constructor.newInstance(obj);
+    }
+    catch (Exception e) {
+      throw new WrongFormatException(
+          "Java to Xsd class mapping fails for object " + obj, e);
+    }
   }
 }

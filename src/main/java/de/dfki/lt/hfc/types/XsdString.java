@@ -13,6 +13,7 @@ public final class XsdString extends XsdAnySimpleType {
 
   static {
     registerConstructor(XsdString.class, SHORT_NAME, LONG_NAME);
+    registerConverter(String.class, XsdString.class);
   }
 
 	public String value;
