@@ -12,7 +12,7 @@ import de.dfki.lt.hfc.types.*;
 public class XsdSimpleTypesTest {
 
   @Test
-  public void testDouble() {
+  public void testDouble() throws WrongFormatException {
     String ds = "\"100.1\"^^<xsd:double>";
 
     assertEquals((double)100.1, new XsdDouble(ds).value, 0.001);
@@ -60,10 +60,9 @@ public class XsdSimpleTypesTest {
   }
 
   @Test
-  public void testBoolean() {
+  public void testBoolean() throws WrongFormatException {
     assertEquals("\"true\"^^<xsd:boolean>", new XsdBoolean(true).toString(true));
-    assertEquals("true",
-        new XsdBoolean("\"true\"^^<xsd:boolean>").toName());
+    assertEquals("true", new XsdBoolean("\"true\"^^<xsd:boolean>").toName());
   }
 
   @Test
@@ -117,7 +116,7 @@ public class XsdSimpleTypesTest {
   }
 
   @Test
-  public void testFloat() {
+  public void testFloat() throws WrongFormatException {
     XsdFloat xf = new XsdFloat("\"3.1415\"^^<xsd:float>");
     assertEquals(3.1415, xf.value, 0.001);
     assertEquals("\"3.1415\"^^<xsd:float>", xf.toString(true));
@@ -412,4 +411,27 @@ public class XsdSimpleTypesTest {
         XsdAnySimpleType.getXsdObject("\"2000-??-04T??:??:??.???\"^^<xsd:uDateTime>").getClass());
   }
 
+  @Test
+  public void testConverter() throws WrongFormatException {
+    assertEquals(new XsdDouble(100.1).toString(),
+        XsdAnySimpleType.javaToXsd(new Double(100.1)).toString());
+    assertEquals(new XsdDouble(100.1).toString(),
+        XsdAnySimpleType.javaToXsd((double)100.1).toString());
+    assertEquals(new XsdBoolean(true).toString(),
+        XsdAnySimpleType.javaToXsd(true).toString());
+    assertEquals(new XsdBoolean(new Boolean(true)).toString(),
+        XsdAnySimpleType.javaToXsd(new Boolean(true)).toString());
+    assertEquals(new XsdFloat(2.71828f).toString(),
+        XsdAnySimpleType.javaToXsd(new Float(2.71828f)).toString());
+    assertEquals(new XsdFloat(2.71828f).toString(),
+        XsdAnySimpleType.javaToXsd(2.71828f).toString());
+    assertEquals(new XsdInt(100).toString(),
+        XsdAnySimpleType.javaToXsd(new Integer(100)).toString());
+    assertEquals(new XsdInt(100).toString(),
+        XsdAnySimpleType.javaToXsd((int)100).toString());
+    assertEquals(new XsdLong(100l).toString(),
+        XsdAnySimpleType.javaToXsd(new Long(100l)).toString());
+    assertEquals(new XsdLong(100l).toString(),
+        XsdAnySimpleType.javaToXsd((long)100l).toString());
+  }
 }
