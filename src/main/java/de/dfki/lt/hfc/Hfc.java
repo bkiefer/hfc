@@ -64,6 +64,10 @@ public class Hfc {
     _tupleStore = new TupleStore(_namespace);
   }
 
+  public void shutdown() {
+    _forwardChainer.shutdownNoExit();
+  }
+
   // customize HFC, i.e., namespace and tuple store via key-value pairs
   // from parameter settings which affect fields in these objects;
   // the fields for the rule store and forward chainer are assigned values
