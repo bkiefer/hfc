@@ -297,6 +297,11 @@ public final class RuleStore {
 		return literal.startsWith("??(");
 	}
 
+	/** Return all rules contained in this rule store */
+	public List<Rule> getAllRules() {
+	  return this.allRules;
+	}
+
 	/**
 	 * obtains the id of the corresponding functional variable, given the relational
 	 * variable name;
