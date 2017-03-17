@@ -48,7 +48,18 @@ public final class LGetLatest2 extends AggregationalOperator {
   public BindingTable apply(BindingTable args,
                             SortedMap<Integer, Integer> nameToPos,
                             Map<Integer, String> nameToExternalName) {
-    // use a linked hash set here to guarantee the "right" iteration ordering
+    return applyInternal(tupleStore, args, nameToPos, nameToExternalName, true);
+  }
+
+  /**
+   * general form of the aggregate call:  ?arg1' ... ?argN' = LGetLatest ?arg1 ... ?argN ?time ?limit
+   */
+  BindingTable applyInternal(TupleStore ts,
+      BindingTable args,
+      SortedMap<Integer, Integer> nameToPos,
+      Map<Integer, String> nameToExternalName,
+      final boolean latest) {    // use a linked hash set here to guarantee the "right" iteration ordering
+    tupleStore = ts;
     final LinkedHashSet<int[]> resultTable = new LinkedHashSet<int[]>();
     final BindingTable bt = new BindingTable(resultTable,
                                              nameToPos,
@@ -67,7 +78,8 @@ public final class LGetLatest2 extends AggregationalOperator {
         final long l1 = ((XsdLong)(getObject(t1[sortColumnNo]))).value;
         final long l2 = ((XsdLong)(getObject(t2[sortColumnNo]))).value;
         // we want a descending, _not_ ascending order
-        return Long.compare(l2, l1);  // an int must be returned, so (l2 - l1) won't work
+        int res = Long.compare(l2, l1);  // an int must be returned, so (l2 - l1) won't work
+        return latest ? res : -res;
       }
     });
     // take the "latest" rows, given by the last argument ?limit (an XSD int)
