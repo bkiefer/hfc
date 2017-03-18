@@ -42,7 +42,7 @@ import de.dfki.lt.hfc.types.XsdLong;
  * @since JDK 1.5
  * @version Thu Jan  7 17:41:55 CET 2016
  */
-public final class LGetFirst2 extends AggregationalOperator {
+public final class LGetFirst2 extends LGetTimestamped2 {
 
   /**
    * general form of the aggregate call:  ?arg1' ... ?argN' = LGetLatest ?arg1 ... ?argN ?time ?limit
@@ -50,7 +50,7 @@ public final class LGetFirst2 extends AggregationalOperator {
   public BindingTable apply(BindingTable args,
                             SortedMap<Integer, Integer> nameToPos,
                             Map<Integer, String> nameToExternalName) {
-    return new LGetLatest2().applyInternal(tupleStore, args, nameToPos, nameToExternalName, false);
+    return applyInternal(tupleStore, args, nameToPos, nameToExternalName, false);
   }
 
 }
