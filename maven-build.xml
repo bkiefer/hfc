@@ -248,7 +248,7 @@
           unless="maven.mode.offline">
     <mkdir dir="${maven.repo.local}"/>
     <mkdir dir="${maven.repo.local}/org/apache/xmlrpc/xmlrpc-client/3.1.3"/>
-    <get src="http://www.bsnsoft.de/nexus/content/groups/public//org/apache/xmlrpc/xmlrpc-client/3.1.3/xmlrpc-client-3.1.3.jar" 
+    <get src="http://www.forschungssoftware.de/nexus/content/groups/public//org/apache/xmlrpc/xmlrpc-client/3.1.3/xmlrpc-client-3.1.3.jar" 
          dest="${maven.repo.local}/org/apache/xmlrpc/xmlrpc-client/3.1.3/xmlrpc-client-3.1.3.jar" 
          usetimestamp="false" 
          ignoreerrors="true"/>
@@ -257,7 +257,7 @@
          usetimestamp="false" 
          ignoreerrors="true"/>
     <mkdir dir="${maven.repo.local}/org/apache/xmlrpc/xmlrpc-common/3.1.3"/>
-    <get src="http://www.bsnsoft.de/nexus/content/groups/public//org/apache/xmlrpc/xmlrpc-common/3.1.3/xmlrpc-common-3.1.3.jar" 
+    <get src="http://www.forschungssoftware.de/nexus/content/groups/public//org/apache/xmlrpc/xmlrpc-common/3.1.3/xmlrpc-common-3.1.3.jar" 
          dest="${maven.repo.local}/org/apache/xmlrpc/xmlrpc-common/3.1.3/xmlrpc-common-3.1.3.jar" 
          usetimestamp="false" 
          ignoreerrors="true"/>
@@ -266,7 +266,7 @@
          usetimestamp="false" 
          ignoreerrors="true"/>
     <mkdir dir="${maven.repo.local}/org/apache/ws/commons/util/ws-commons-util/1.0.2"/>
-    <get src="http://www.bsnsoft.de/nexus/content/groups/public//org/apache/ws/commons/util/ws-commons-util/1.0.2/ws-commons-util-1.0.2.jar" 
+    <get src="http://www.forschungssoftware.de/nexus/content/groups/public//org/apache/ws/commons/util/ws-commons-util/1.0.2/ws-commons-util-1.0.2.jar" 
          dest="${maven.repo.local}/org/apache/ws/commons/util/ws-commons-util/1.0.2/ws-commons-util-1.0.2.jar" 
          usetimestamp="false" 
          ignoreerrors="true"/>
@@ -275,7 +275,7 @@
          usetimestamp="false" 
          ignoreerrors="true"/>
     <mkdir dir="${maven.repo.local}/xml-apis/xml-apis/1.0.b2"/>
-    <get src="http://www.bsnsoft.de/nexus/content/groups/public//xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar" 
+    <get src="http://www.forschungssoftware.de/nexus/content/groups/public//xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar" 
          dest="${maven.repo.local}/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar" 
          usetimestamp="false" 
          ignoreerrors="true"/>
@@ -284,7 +284,7 @@
          usetimestamp="false" 
          ignoreerrors="true"/>
     <mkdir dir="${maven.repo.local}/org/apache/xmlrpc/xmlrpc-server/3.1.3"/>
-    <get src="http://www.bsnsoft.de/nexus/content/groups/public//org/apache/xmlrpc/xmlrpc-server/3.1.3/xmlrpc-server-3.1.3.jar" 
+    <get src="http://www.forschungssoftware.de/nexus/content/groups/public//org/apache/xmlrpc/xmlrpc-server/3.1.3/xmlrpc-server-3.1.3.jar" 
          dest="${maven.repo.local}/org/apache/xmlrpc/xmlrpc-server/3.1.3/xmlrpc-server-3.1.3.jar" 
          usetimestamp="false" 
          ignoreerrors="true"/>
@@ -293,7 +293,7 @@
          usetimestamp="false" 
          ignoreerrors="true"/>
     <mkdir dir="${maven.repo.local}/commons-logging/commons-logging/1.0.2"/>
-    <get src="http://www.bsnsoft.de/nexus/content/groups/public//commons-logging/commons-logging/1.0.2/commons-logging-1.0.2.jar" 
+    <get src="http://www.forschungssoftware.de/nexus/content/groups/public//commons-logging/commons-logging/1.0.2/commons-logging-1.0.2.jar" 
          dest="${maven.repo.local}/commons-logging/commons-logging/1.0.2/commons-logging-1.0.2.jar" 
          usetimestamp="false" 
          ignoreerrors="true"/>
@@ -302,7 +302,7 @@
          usetimestamp="false" 
          ignoreerrors="true"/>
     <mkdir dir="${maven.repo.local}/jline/jline/0.9.5"/>
-    <get src="http://www.bsnsoft.de/nexus/content/groups/public//jline/jline/0.9.5/jline-0.9.5.jar" 
+    <get src="http://www.forschungssoftware.de/nexus/content/groups/public//jline/jline/0.9.5/jline-0.9.5.jar" 
          dest="${maven.repo.local}/jline/jline/0.9.5/jline-0.9.5.jar" 
          usetimestamp="false" 
          ignoreerrors="true"/>
@@ -311,7 +311,7 @@
          usetimestamp="false" 
          ignoreerrors="true"/>
     <mkdir dir="${maven.repo.local}/net/sf/trove4j/trove4j/3.0.3"/>
-    <get src="http://www.bsnsoft.de/nexus/content/groups/public//net/sf/trove4j/trove4j/3.0.3/trove4j-3.0.3.jar" 
+    <get src="http://www.forschungssoftware.de/nexus/content/groups/public//net/sf/trove4j/trove4j/3.0.3/trove4j-3.0.3.jar" 
          dest="${maven.repo.local}/net/sf/trove4j/trove4j/3.0.3/trove4j-3.0.3.jar" 
          usetimestamp="false" 
          ignoreerrors="true"/>
@@ -320,7 +320,7 @@
          usetimestamp="false" 
          ignoreerrors="true"/>
     <mkdir dir="${maven.repo.local}/junit/junit/4.12"/>
-    <get src="http://www.bsnsoft.de/nexus/content/groups/public//junit/junit/4.12/junit-4.12.jar" 
+    <get src="http://www.forschungssoftware.de/nexus/content/groups/public//junit/junit/4.12/junit-4.12.jar" 
          dest="${maven.repo.local}/junit/junit/4.12/junit-4.12.jar" 
          usetimestamp="false" 
          ignoreerrors="true"/>
@@ -329,7 +329,7 @@
          usetimestamp="false" 
          ignoreerrors="true"/>
     <mkdir dir="${maven.repo.local}/org/hamcrest/hamcrest-core/1.3"/>
-    <get src="http://www.bsnsoft.de/nexus/content/groups/public//org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar" 
+    <get src="http://www.forschungssoftware.de/nexus/content/groups/public//org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar" 
          dest="${maven.repo.local}/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar" 
          usetimestamp="false" 
          ignoreerrors="true"/>

@@ -141,6 +141,9 @@ public class Hfc {
     _tupleStore.verbose = this.verbose;
     _tupleStore.rdfCheck = this.rdfCheck;
     _tupleStore.equivalenceClassReduction = this.equivalenceClassReduction;
+    if (_tupleStore.equivalenceClassReduction) {
+      _forwardChainer.cleanUpRepository = true;
+    }
     _tupleStore.minNoOfArgs = this.minNoOfArgs;
     _tupleStore.maxNoOfArgs = this.maxNoOfArgs;
     _tupleStore.subjectPosition = this.subjectPosition;
@@ -224,8 +227,17 @@ public class Hfc {
     return s;
   }
 
+  private int getSymbolId(String symbol) {
+    int id = _tupleStore.putObject(myNormalizeNamespaces(symbol));
+    if (_tupleStore.equivalenceClassReduction) {
+      id = _tupleStore.getProxy(id);
+    }
+    return id;
+  }
+
   /** Normalize namespaces, and get ids directly to put in the tuples without
-   *  using the hfc internal functions
+   *  using the hfc internal functions. Also, honor the equivalence reduction
+   *  by always entering the representative.
    *
    * @param rows the table that contains the tuples to add to the storage
    * @param front the potentially-empty (== null) front element
@@ -238,11 +250,11 @@ public class Hfc {
     // normalize namespaces for front and backs
     int frontId = -1;    // Java wants an initial value
     if (front != null)
-      frontId = _tupleStore.putObject(myNormalizeNamespaces(front));
+      frontId = getSymbolId(front);
     int[] backIds = new int[backs.length];
     if (backs.length != 0) {
       for (int i = 0; i < backs.length; ++i)
-        backIds[i] = _tupleStore.putObject(myNormalizeNamespaces(backs[i]));
+        backIds[i] = getSymbolId(backs[i]);
     }
     // (front == null) means _no_ front element
     final int frontLength = (front == null) ? 0 : 1;
@@ -262,7 +274,7 @@ public class Hfc {
       }
       // table row
       for (String s : row) {
-        tuple[i++] = _tupleStore.putObject(myNormalizeNamespaces(s));
+        tuple[i++] = getSymbolId(s);
       }
       // back elements
       if (backs.length != 0) {
@@ -322,7 +334,10 @@ public class Hfc {
 
   public void computeClosure() {
     if (null != _forwardChainer) {
+      _forwardChainer.cleanUpRepository = true;
       _forwardChainer.computeClosure();
+    } else {
+      _tupleStore.cleanUpTupleStore();
     }
   }
 
