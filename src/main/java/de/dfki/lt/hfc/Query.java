@@ -294,7 +294,7 @@ public class Query {
 			else if (token.equals("\""))
 				this.tupleStore.parseAtom(st, tuple);
 			else if (token.equals("_"))
-				TupleStore.parseBlankNode(st, tuple);
+				this.tupleStore.parseBlankNode(st, tuple);
 			else if (token.equals(" "))  // keep on parsing ...
 				continue;
 			// break if (optional) FILTER or AGGREGATE is found

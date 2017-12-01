@@ -106,7 +106,7 @@ public class TestLGetLatest2 {
         + " & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long>"
         + " AGGREGATE ?dialact ?time = LGetLatest2 ?da ?t ?t \"4\"^^<xsd:int>");
     checkResult(fc, bt, expected, "?dialact", "?time");
-    System.out.println(bt);
+    //System.out.println(bt);
   }
 
   @Test
@@ -121,7 +121,7 @@ public class TestLGetLatest2 {
         + " & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long>"
         + " AGGREGATE ?dialact ?time = LGetLatest2 ?da ?t ?t \"3\"^^<xsd:int>");
     checkResult(fc, bt, expected, "?dialact", "?time");
-    System.out.println(bt);
+    //System.out.println(bt);
   }
 
   @Test
@@ -135,7 +135,7 @@ public class TestLGetLatest2 {
         + " & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long>"
         + " AGGREGATE ?dialact ?time = LGetLatest2 ?da ?t ?t \"2\"^^<xsd:int>");
     checkResult(fc, bt, expected, "?dialact", "?time");
-    System.out.println(bt);
+    //System.out.println(bt);
   }
 
   @Test
@@ -148,7 +148,7 @@ public class TestLGetLatest2 {
         + " & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long>"
         + " AGGREGATE ?dialact ?time = LGetLatest2 ?da ?t ?t \"1\"^^<xsd:int>");
     checkResult(fc, bt, expected, "?dialact", "?time");
-   System.out.println(bt);
+    //System.out.println(bt);
   }
 
   @Test
@@ -181,7 +181,7 @@ public class TestLGetLatest2 {
         + " & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"548\"^^<xsd:long>"
         + " AGGREGATE ?dialact = LGetLatest2 ?da ?t \"3\"^^<xsd:int>");
     checkResult(fc, bt, expected, "?dialact");
-   System.out.println(bt);
+    //System.out.println(bt);
   }
 
   @Test

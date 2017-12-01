@@ -211,6 +211,14 @@ public final class TupleStore {
 	private int currentId = 0;
 
 	/**
+	 * When reading multiple files, blank nodes in different files might have the
+	 * same name. To make it less likely there is a clash of blank node names, we
+	 * use this id generator to append a unique id for each round of reading.
+	 * TODO: this is not 100% safe.
+	 */
+	private String blankNodeSuffix = "000";
+
+	/**
 	 * a namespace object used to expand short form namespaces into full forms
 	 */
 	public Namespace namespace;
@@ -1246,7 +1254,8 @@ public final class TupleStore {
 	 * @throws WrongFormatException
 	 *
 	 */
-	public void readTuples(BufferedReader br, String front, String... backs) throws IOException, WrongFormatException {
+	private void readTuplesReally(BufferedReader br, String front, String... backs)
+	    throws IOException, WrongFormatException {
 		String line, token;
 		StringTokenizer st;
 		int noOfTuples = 0, lineNo = 0;
@@ -1272,7 +1281,7 @@ public final class TupleStore {
 					if (token.equals("<"))
 						parseURI(st, tuple);
 					else if (token.equals("_"))
-						TupleStore.parseBlankNode(st, tuple);
+						parseBlankNode(st, tuple);
 					else if (token.equals("\""))
 						parseAtom(st, tuple);
 					else if (token.equals(" "))  // keep on parsing ...
@@ -1328,6 +1337,16 @@ public final class TupleStore {
 				System.out.println("  number of all tuples: " + this.allTuples.size() + "\n");
 			}
 		}
+	}
+
+	public void readTuples(BufferedReader br, String front, String... backs)
+	    throws IOException, WrongFormatException {
+	  try {
+	    readTuplesReally(br, front, backs);
+	  } finally {
+	    blankNodeSuffix = String.format("%0,3d",
+	        Integer.parseInt(blankNodeSuffix) + 1);
+	  }
 	}
 
 	/**
@@ -1502,11 +1521,12 @@ public final class TupleStore {
 	 * i.e., no whitespaces are allowed inside the name of the blank node;
 	 * since, blank nodes make no reference to a namespace, we make this a static method
 	 */
-	protected static void parseBlankNode (StringTokenizer st, ArrayList<String> tuple) {
+	protected void parseBlankNode (StringTokenizer st, ArrayList<String> tuple) {
 		// the leading '_' char has already been consumed, so consume tokens until we
 		// find the next whitespace char
 		StringBuilder sb = new StringBuilder("_");
 		sb.append(st.nextToken());  // the rest of the blank node
+		sb.append('X').append(blankNodeSuffix);
 		tuple.add(sb.toString());
 	}
 
