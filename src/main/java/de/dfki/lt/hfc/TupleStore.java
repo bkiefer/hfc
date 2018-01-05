@@ -216,7 +216,8 @@ public final class TupleStore {
 	 * use this id generator to append a unique id for each round of reading.
 	 * TODO: this is not 100% safe.
 	 */
-	private String blankNodeSuffix = "000";
+	private int blankNodeSuffixNo = 0;
+	private String blankNodeSuffix = null;
 
 	/**
 	 * a namespace object used to expand short form namespaces into full forms
@@ -1342,10 +1343,11 @@ public final class TupleStore {
 	public void readTuples(BufferedReader br, String front, String... backs)
 	    throws IOException, WrongFormatException {
 	  try {
+	    blankNodeSuffix = String.format("%0,3d", blankNodeSuffixNo);
+	    ++blankNodeSuffixNo;
 	    readTuplesReally(br, front, backs);
 	  } finally {
-	    blankNodeSuffix = String.format("%0,3d",
-	        Integer.parseInt(blankNodeSuffix) + 1);
+	    blankNodeSuffix = null;
 	  }
 	}
 
@@ -1526,7 +1528,7 @@ public final class TupleStore {
 		// find the next whitespace char
 		StringBuilder sb = new StringBuilder("_");
 		sb.append(st.nextToken());  // the rest of the blank node
-		sb.append('X').append(blankNodeSuffix);
+		if (blankNodeSuffix != null) sb.append('X').append(blankNodeSuffix);
 		tuple.add(sb.toString());
 	}
 
