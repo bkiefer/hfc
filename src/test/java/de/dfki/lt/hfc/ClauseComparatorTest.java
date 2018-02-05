@@ -1,14 +1,10 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.Utils.getTestResource;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.HashSet;
 
-import org.junit.Test;
-
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ClauseComparatorTest {
 

@@ -1,34 +1,17 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.Utils.getTestResource;
-import static org.junit.Assert.*;
+import gnu.trove.set.hash.TCustomHashSet;
+import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 
-import org.junit.Test;
-
-import gnu.trove.set.hash.*;
-
+import static de.dfki.lt.hfc.TestUtils.getResource;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BindingTableTest {
 
-  private Namespace getNS() throws FileNotFoundException, WrongFormatException, IOException {
-    return new Namespace(getTestResource("default.ns"), false);
-  }
-
-  private TupleStore getTS() throws FileNotFoundException, WrongFormatException, IOException {
-    return new TupleStore(getNS());
-  }
   @Test
   public void testBindingTable() {
     //test constructor BindingTable()
@@ -116,14 +99,14 @@ public class BindingTableTest {
   @Test
   public void testobtainPosition() {
     //test method testobtainPosition(String externalName)
-    //test for case where the external name is not a valid table heading, -1 is returned
+    //test for case where the external name is not a Valid table heading, -1 is returned
     String externalName = "extname";
     SortedMap<Integer, Integer> nameToPos4 = new TreeMap<Integer, Integer>();
     Map<Integer, String> nameToExternalName4 = new TreeMap<Integer, String>();
     TupleStore ts4 = new TupleStore(1, 2);
     BindingTable objfortest = new BindingTable(nameToPos4, nameToExternalName4, ts4);
     assertEquals(objfortest.obtainPosition(externalName), -1);
-    //test for case where the external name is a valid table heading
+    //test for case where the external name is a Valid table heading
     String ext_name = "value";
     nameToPos4.put(2, 2);
     nameToExternalName4.put(2, "value");
@@ -162,9 +145,9 @@ public class BindingTableTest {
     nameToPos.put(1, 1);
     Map<Integer, String> nameToExternalName = new TreeMap<Integer, String>();
     nameToExternalName.put(1, "value");
-    Namespace namespace = getNS();
-    TupleStore ts = new TupleStore(false, true, true, 2, 5, 4, 2, namespace,
-        getTestResource("default.nt"));
+    Namespace namespace = new Namespace(getResource("default.ns"));
+    TupleStore ts = new TupleStore(true, true, true, 2, 5, 4, 2, namespace,
+        getResource("default.nt"));
     BindingTable bt = new BindingTable(table, nameToPos, nameToExternalName, ts);
     //System.out.println("IF expand set to TRUE " + bt.toString(true));
     assertEquals(bt.toString(true).substring(6, 11), "value");
@@ -180,9 +163,9 @@ public class BindingTableTest {
     nameToPos.put(1, 1);
     Map<Integer, String> nameToExternalName = new TreeMap<Integer, String>();
     nameToExternalName.put(1, "val");
-    Namespace namespace = getNS();
-    TupleStore ts = new TupleStore(false, true, true, 2, 5, 4, 2, namespace,
-        getTestResource("default.nt"));
+    Namespace namespace = new Namespace(getResource("default.ns"));
+    TupleStore ts = new TupleStore(true, true, true, 2, 5, 4, 2, namespace,
+        getResource("default.nt"));
     BindingTable bt = new BindingTable(table, nameToPos, nameToExternalName, ts);
     //System.out.println("IF expand set to FALSE, maxLength to 3 " + bt.toString(3, false));
     assertEquals(bt.toString(3, false).substring(10, 13), "val");
@@ -191,16 +174,16 @@ public class BindingTableTest {
     assertEquals(bt.toString(0, true).substring(7, 10), "val");
     assertEquals(bt.toString(5, false).substring(12, 15), "val");
     //
-    TupleStore objfortest = new TupleStore(false, true, true, 2, 5, 4, 2, namespace,
-        getTestResource("default.nt"));
+    TupleStore objfortest = new TupleStore(true, true, true, 2, 5, 4, 2, namespace,
+        getResource("default.nt"));
     int[] tuple = new int[3];
     tuple[0] = 2;
     tuple[1] = 2;
     tuple[2] = 2;
     objfortest.addToIndex(tuple);
     BindingTable bt1 = new BindingTable(table, nameToPos, nameToExternalName, objfortest);
-    //System.out.println("for (int[] tuple : this.table) " + bt1.toString(3, false));
-    //System.out.println("for (int[] tuple : this.table) " + bt1.toString(6, false));
+    System.out.println("for (int[] tuple : this.table) " + bt1.toString(3, false));
+    System.out.println("for (int[] tuple : this.table) " + bt1.toString(6, false));
 
   }
 
@@ -224,7 +207,7 @@ public class BindingTableTest {
     Set<String> s = new HashSet<String>();
     s.addAll(Arrays.asList(expected));
     assertTrue(s.containsAll(Arrays.asList(vars)));
-    assertEquals(Arrays.toString(expected), expected.length, vars.length);
+    assertEquals( expected.length, vars.length, Arrays.toString(expected));
     /* THIS IS NOT GUARANTEED, BY NO MEANS, THE TABLE CAN BE WIDER THAN THE
      * NUMBER OF VARIABLES
      * TODO: MARK THIS SOMEWHERE
@@ -236,7 +219,7 @@ public class BindingTableTest {
 
   @Test
   public void testVarsFilterStar() throws QueryParseException, FileNotFoundException, WrongFormatException, IOException {
-    TupleStore ts = getTS();
+    TupleStore ts = new TupleStore(new Namespace(getResource("default.ns")));
     Query q = new Query(ts);
     String[] t = { "<rdf:a>", "<rdf:type>", "<rdf:b>" };
     ts.addTuple(t);
@@ -246,7 +229,7 @@ public class BindingTableTest {
     Set<String> s = new HashSet<String>();
     s.addAll(Arrays.asList(expected));
     assertTrue(s.containsAll(Arrays.asList(vars)));
-    assertEquals(Arrays.toString(expected), expected.length, vars.length);
+    assertEquals( expected.length, vars.length,Arrays.toString(expected));
     /* THIS IS NOT GUARANTEED, BY NO MEANS, THE TABLE CAN BE WIDER THAN THE
      * NUMBER OF VARIABLES
     for (int i = 0; i < expected.length; ++i) {
@@ -257,7 +240,7 @@ public class BindingTableTest {
 
   @Test
   public void testVarsFilter() throws QueryParseException, FileNotFoundException, WrongFormatException, IOException {
-    TupleStore ts = getTS();
+    TupleStore ts = new TupleStore(new Namespace(getResource("default.ns")));
     Query q = new Query(ts);
     String[] t = { "<rdf:a>", "<rdf:type>", "<rdf:b>" };
     ts.addTuple(t);
@@ -267,7 +250,7 @@ public class BindingTableTest {
     Set<String> s = new HashSet<String>();
     s.addAll(Arrays.asList(expected));
     assertTrue(s.containsAll(Arrays.asList(vars)));
-    assertEquals(Arrays.toString(expected), expected.length, vars.length);
+    assertEquals( expected.length, vars.length, Arrays.toString(expected));
     /* THIS IS NOT GUARANTEED, BY NO MEANS, THE TABLE CAN BE WIDER THAN THE
      * NUMBER OF VARIABLES
     for (int i = 0; i < expected.length; ++i) {
@@ -278,7 +261,7 @@ public class BindingTableTest {
 
   @Test
   public void testVarsAggregate() throws QueryParseException, FileNotFoundException, WrongFormatException, IOException {
-    TupleStore ts = getTS();
+    TupleStore ts = new TupleStore(new Namespace(getResource("default.ns")));
     Query q = new Query(ts);
     String[] t = { "<rdf:a>", "<rdf:type>", "<rdf:b>" };
     ts.addTuple(t);
@@ -291,8 +274,8 @@ public class BindingTableTest {
     String[] expected = { "?number", "?subject" };
     Set<String> s = new HashSet<String>();
     s.addAll(Arrays.asList(expected));
-    assertTrue(Arrays.toString(expected), s.containsAll(Arrays.asList(vars)));
-    assertEquals(Arrays.toString(expected), expected.length, vars.length);
+    assertTrue( s.containsAll(Arrays.asList(vars)),Arrays.toString(expected));
+    assertEquals( expected.length, vars.length,Arrays.toString(expected));
     /* THIS IS NOT GUARANTEED, BY NO MEANS, THE TABLE CAN BE WIDER THAN THE
      * NUMBER OF VARIABLES
     for (int i = 0; i < expected.length; ++i) {
@@ -303,7 +286,7 @@ public class BindingTableTest {
 
   @Test
   public void testVarsAggregateStar() throws QueryParseException, FileNotFoundException, WrongFormatException, IOException {
-    TupleStore ts = getTS();
+    TupleStore ts = new TupleStore(new Namespace(getResource("default.ns")));
     Query q = new Query(ts);
     String[] t = { "<rdf:a>", "<rdf:type>", "<rdf:b>" };
     ts.addTuple(t);
@@ -312,8 +295,8 @@ public class BindingTableTest {
     String[] expected = { "?number", "?subject" };
     Set<String> s = new HashSet<String>();
     s.addAll(Arrays.asList(expected));
-    assertTrue(Arrays.toString(expected), s.containsAll(Arrays.asList(vars)));
-    assertEquals(Arrays.toString(expected), expected.length, vars.length);
+    assertTrue( s.containsAll(Arrays.asList(vars)),Arrays.toString(expected));
+    assertEquals( expected.length, vars.length);
     /* THIS IS NOT GUARANTEED, BY NO MEANS, THE TABLE CAN BE WIDER THAN THE
      * NUMBER OF VARIABLES
     for (int i = 0; i < expected.length; ++i) {

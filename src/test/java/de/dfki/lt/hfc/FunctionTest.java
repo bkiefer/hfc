@@ -1,10 +1,10 @@
 package de.dfki.lt.hfc;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class FunctionTest {
 
@@ -13,13 +13,11 @@ public class FunctionTest {
     //test Function(int result, String name, ArrayList<Integer> args)
     int result = 2;
     String name = "name";
-    ArrayList<Integer> args = new ArrayList<>();
+    ArrayList<Integer> args = new ArrayList();
     args.add(1);
     Function function = new Function(result, name, args);
     assertNotNull(function);
   }
-
-  /*
   @Test
   public void testconstructor2(){
     //test Function(int result, String name, Operator op, ArrayList<Integer> args)
@@ -31,6 +29,5 @@ public class FunctionTest {
     //could not create Operator object
 
   }
-  */
 
 }

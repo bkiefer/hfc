@@ -1,13 +1,14 @@
 package de.dfki.lt.hfc;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 
 public class PredicateTest {
+
   @Test
   public void testconstructor1(){
     //test constructor Predicate(String name,ArrayList<Integer> args)

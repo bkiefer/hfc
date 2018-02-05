@@ -1,8 +1,8 @@
 package de.dfki.lt.hfc;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class AggregateTest {
 

@@ -1,23 +1,21 @@
 package de.dfki.lt.hfc.aggregates;
 
-import static de.dfki.lt.hfc.Utils.*;
-import static org.junit.Assert.assertEquals;
+import static de.dfki.lt.hfc.TestUtils.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import de.dfki.lt.hfc.*;
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class TestLGetLatest {
   static ForwardChainer fc;
 
   public static String getResource(String name) {
-    return Utils.getTestResource("LGetLatest", name);
+    return TestUtils.getTestResource("LGetLatest", name);
   }
 
   /**
@@ -40,7 +38,7 @@ public class TestLGetLatest {
    * @author (C) Hans-Ulrich Krieger
    * @version Mon Jan  4 10:11:02 CET 2016
    */
-  @BeforeClass
+  @BeforeAll
   public static void init() throws Exception {
 
     fc =	new ForwardChainer(4,                                                    // #cores
@@ -67,7 +65,7 @@ public class TestLGetLatest {
     fc.computeClosure();
   }
 
-  @AfterClass
+  @AfterAll
   public static void finish() {
     fc.shutdownNoExit();
   }
@@ -119,9 +117,6 @@ public class TestLGetLatest {
     };
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT * WHERE ?d1 <rdf:type> <dafn:DialogueAct> & ?d2 <rdf:type> <dafn:DialogueAct> & ?d1 <dafn:follows> ?d2 FILTER ?d1 != ?d2");
-    //System.out.println(bt);
-    // TODO call checkresult here, same for the other tests, and remove the
-    // println if no longer needed
     checkResult(fc, bt, expected, "?d2", "?d1");
 
   }
@@ -299,7 +294,6 @@ public class TestLGetLatest {
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long> AGGREGATE ?dialact ?time = LGetLatest ?da ?t ?t \"4\"^^<xsd:int>");
     checkResult(fc, bt, expected, "?dialact", "?time");
-    //System.out.println(bt);
   }
 
   @Test
@@ -312,7 +306,6 @@ public class TestLGetLatest {
    Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long> AGGREGATE ?dialact ?time = LGetLatest ?da ?t ?t \"3\"^^<xsd:int>");
     checkResult(fc, bt, expected, "?dialact", "?time");
-    //System.out.println(bt);
   }
 
   @Test
@@ -324,7 +317,6 @@ public class TestLGetLatest {
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long> AGGREGATE ?dialact ?time = LGetLatest ?da ?t ?t \"2\"^^<xsd:int>");
     checkResult(fc, bt, expected, "?dialact", "?time");
-    //System.out.println(bt);
   }
 
   @Test
@@ -335,7 +327,6 @@ public class TestLGetLatest {
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long> AGGREGATE ?dialact ?time = LGetLatest ?da ?t ?t \"1\"^^<xsd:int>");
     checkResult(fc, bt, expected, "?dialact", "?time");
-    //System.out.println(bt);
   }
 
   @Test
@@ -362,7 +353,6 @@ public class TestLGetLatest {
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"548\"^^<xsd:long> AGGREGATE ?dialact = LGetLatest ?da ?t \"3\"^^<xsd:int>");
     checkResult(fc, bt, expected, "?dialact");
-    //System.out.println(bt);
   }
 
   @Test
