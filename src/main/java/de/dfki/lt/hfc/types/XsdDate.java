@@ -1,6 +1,6 @@
 package de.dfki.lt.hfc.types;
 
-import java.util.Date;
+import java.util.BitSet;
 
 /**
  * an encoding of the XSD date format "[+|-]yyyy-MM-dd" including negative
@@ -43,15 +43,6 @@ public final class XsdDate extends XsdAnySimpleType {
 	 * I represent the sign in a separate boolean field
 	 */
 	public int year, month, day;
-
-	/**
-	 *
-	 */
-	public XsdDate(Date d) {
-		this.year = d.getYear();
-		this.month = d.getMonth();
-		this.day = d.getDay();
-	}
 
 	/**
 	 *
@@ -156,5 +147,24 @@ public final class XsdDate extends XsdAnySimpleType {
   public Object toJava() {
     return this;
   }
+
+	@Override
+	public int compareTo(Object o) {
+		if(  o instanceof AnyType.MinMaxValue ) {
+			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
+			return minMaxValue.compareTo(this);
+		}
+		if (! (o instanceof  XsdDate)){
+			throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
+		}
+		XsdDate date = (XsdDate) o;
+		int[] comp = new int[]{Integer.compare(this.year,date.year), Integer.compare(this.month, date.month),
+				Integer.compare(this.day, date.day)};
+		for (int r : comp){
+			if (r != 0)
+				return r;
+		}
+		return 0;
+	}
 
 }

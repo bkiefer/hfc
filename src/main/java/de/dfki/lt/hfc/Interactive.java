@@ -233,12 +233,15 @@ public class Interactive {
 	 */
 	private void processSelect(String firstLine) throws IOException, QueryParseException {
 		String line;
+		StringBuilder stringBuilder = new StringBuilder(firstLine);
 		while ((line = this.consoleReader.readLine()).length() != 0) {
-			firstLine = firstLine + " " + line;
+			stringBuilder.append(" ");
+			stringBuilder.append(line);
 		}
+		firstLine = stringBuilder.toString();
 		BindingTable bt = this.query.query(firstLine);
 		if (bt == null) {
-			this.consoleReader.printString("  query contains constants not known to the tuple store");
+			this.consoleReader.printString("  query ontologyContainsTuple constants not known to the tuple store");
 			this.consoleReader.printNewline();
 			return;
 		}
@@ -384,7 +387,7 @@ public class Interactive {
 		}
 		catch (IOException e) {
 			System.err.println("Error while opening query output file " + filename);
-			throw new RuntimeException("FATAL ERROR");
+			System.exit(1);
 		}
 	}
 
@@ -406,12 +409,12 @@ public class Interactive {
 		st.nextToken();
 		String filename = st.nextToken();
 		try {
-			this.consoleReader.setInput(new FileInputStream(filename));
+				this.consoleReader.setInput(new FileInputStream(filename));
 			readEvalPrintLoop();
 		}
 		catch (IOException e) {
 			System.err.println("\nerror while reading commands from " + filename);
-			throw new RuntimeException("FATAL ERROR");
+			System.exit(1);
 		}
 	}
 

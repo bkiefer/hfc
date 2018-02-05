@@ -204,4 +204,23 @@ public final class XsdDuration extends XsdAnySimpleType {
     System.out.println(xt.toString(false));
   }
 
+	@Override
+	public int compareTo(Object o) {
+		if(  o instanceof AnyType.MinMaxValue ) {
+			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
+			return minMaxValue.compareTo(this);
+		}
+		if (! (o instanceof  XsdDuration)){
+			throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
+		}
+		XsdDuration dur = (XsdDuration) o;
+		int[] comp = new int[]{Integer.compare(this.year,dur.year), Integer.compare(this.month, dur.month),
+				Integer.compare(this.day, dur.day), Integer.compare(this.hour, dur.hour),
+				Integer.compare(this.minute,dur.minute), Float.compare(this.second, dur.second)};
+		for (int r : comp){
+			if (r != 0)
+				return r;
+		}
+		return 0;
+	}
 }

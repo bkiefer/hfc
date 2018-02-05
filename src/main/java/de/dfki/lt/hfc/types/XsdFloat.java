@@ -14,8 +14,6 @@ public final class XsdFloat extends XsdAnySimpleType {
 
   static {
     registerConstructor(XsdFloat.class, SHORT_NAME, LONG_NAME);
-    registerConverter(float.class, XsdFloat.class);
-    registerConverter(Float.class, XsdFloat.class);
   }
 
   public float value;
@@ -26,13 +24,6 @@ public final class XsdFloat extends XsdAnySimpleType {
 	public XsdFloat(float value) {
 		this.value = value;
 	}
-
-  /**
-   * @param value a Java float representation of an XSD float
-   */
-  public XsdFloat(Float value) {
-    this.value = value;
-  }
 
 	/**
 	 * @param value a string, representing an XSD float, e.g., "\"3.1415\"^^<xsd:float>"
@@ -80,5 +71,17 @@ public final class XsdFloat extends XsdAnySimpleType {
   public Object toJava() {
     return this.value;
   }
+
+	@Override
+	public int compareTo(Object o) {
+		if(  o instanceof AnyType.MinMaxValue ) {
+			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
+			return minMaxValue.compareTo(this);
+		}
+		if (! (o instanceof  XsdFloat)){
+			throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
+		}
+		return Float.compare(this.value,((XsdFloat) o).value);
+	}
 
 }

@@ -10,9 +10,13 @@ import java.util.Set;
  * call this test operator with
  *   LValidInBetween subj pred obj obj2 ... objN time1 time2
  *
+ * @return FunctionalOperator.TRUE iff there is *no* tuple
+ *           <logic:false> subj pred obj obj2 ... objN time
+ *         such that min(time1, time2) <= time <= max(time1, time2)
+ * @return FunctionalOperator.FALSE otherwise
  *
  * NOTE: this test is usually employed in temporal entailment rules
- *       for transaction time, such as
+ *       for Transaction time, such as
  *         <logic:true> ?p <rdf:type> <owl:TransitiveProperty> "0"^^<xsd:long>
  *         <logic:true> ?x ?p ?y ?time1
  *         <logic:true> ?y ?p ?z ?time2
@@ -36,11 +40,6 @@ public final class LValidInBetween extends FunctionalOperator {
    * note that his functional operator assumes that the temporal
    * parameters are given by the last two arguments (see above)
    * _and_ that they encode xsd:long values !!
-   *
-   * @return FunctionalOperator.TRUE iff there is *no* tuple
-   * <logic:false> subj pred obj obj2 ... objN time such that min(time1, time2)
-   * <= time <= max(time1, time2)
-   * return FunctionalOperator.FALSE otherwise
    */
   public int apply(int[] args) {
     final int length = args.length;

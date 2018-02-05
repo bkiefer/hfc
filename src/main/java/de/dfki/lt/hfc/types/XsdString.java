@@ -13,7 +13,6 @@ public final class XsdString extends XsdAnySimpleType {
 
   static {
     registerConstructor(XsdString.class, SHORT_NAME, LONG_NAME);
-    registerConverter(String.class, XsdString.class);
   }
 
 	public String value;
@@ -21,37 +20,28 @@ public final class XsdString extends XsdAnySimpleType {
 	public String languageTag;
 
 	/**
-	 * @param val a string, representing an XSD string, e.g., "\"hello\"",
+	 * @param value a string, representing an XSD string, e.g., "\"hello\"",
 	 *              "\"hello\"@en", or "\"hello\"^^<xsd:string>"
 	 */
-	public XsdString(String val) {
-    if (val.isEmpty()) {
-      this.value = val;
-      return;
-    }
-		int index = val.lastIndexOf('^');
+	public XsdString(String value) {
+		int index = value.lastIndexOf('^');
 		if (index == -1) {
 			// no suffix "^^<xsd:string>"
-			index = val.lastIndexOf('@');
-			final int length = val.length();
+			index = value.lastIndexOf('@');
+			final int length = value.length();
 			if (index == -1) {
 				// no language tag
-			  if (val.charAt(0) == '"' &&
-			      val.charAt(val.length() - 1) == '"') {
-			    this.value = val.substring(1, length - 1);
-			  } else {
-			    this.value = val;
-			  }
-			  this.languageTag = null;
+				this.value = value.substring(1, length - 1);
+				this.languageTag = null;
 			}
 			else {
 				// there is a language tag
-				this.value = val.substring(1, index - 1);
-				this.languageTag = val.substring(index + 1, length);;
+				this.value = value.substring(1, index - 1);
+				this.languageTag = value.substring(index + 1, length);;
 			}
 		}
 		else {
-			this.value = val.substring(1, index - 2);
+			this.value = value.substring(1, index - 2);
 			this.languageTag = null;
 		}
 	}
@@ -120,5 +110,17 @@ public final class XsdString extends XsdAnySimpleType {
   public Object toJava() {
     return this.value;
   }
+
+	@Override
+	public int compareTo(Object o) {
+		if(  o instanceof AnyType.MinMaxValue ) {
+			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
+			return minMaxValue.compareTo(this);
+		}
+		if (!(o instanceof XsdString)) {
+			throw new IllegalArgumentException("Can't compare " + this.getClass() + " and " + o.getClass());
+		}
+		return this.value.compareTo(((XsdString) o).value);
+	}
 
 }

@@ -58,7 +58,7 @@ public class Rule {
 	protected HashSet<Integer> dontCareVariables;
 
 	/**
-	 * proper RHS-only variables (does NOT contain any blank node vars)
+	 * proper RHS-only variables (does NOT contain any blank node indexToVariable)
 	 */
 	protected HashSet<Integer> rhsVariables;
 
@@ -240,7 +240,7 @@ public class Rule {
 
 	/**
 	 * returns the ith clause of the antecedent of a rule;
-	 * no checks are performed whether index i is valid
+	 * no checks are performed whether index i is Valid
 	 */
 	public int[] getAntecedent(int i) {
 		return this.ante[i];
@@ -272,7 +272,7 @@ public class Rule {
 
 	/**
 	 * returns the ith clause of the consequent of a rule;
-	 * no checks are performed whether index i is valid
+	 * no checks are performed whether index i is Valid
 	 */
 	public int[] getConsequent(int i) {
 		return this.cons[i];

@@ -1,7 +1,5 @@
 package de.dfki.lt.hfc.types;
 
-import java.util.Date;
-
 /**
  * an encoding of the XSD dateTime format "[+|-]yyyy-MM-dd'T'HH:mm:ss.SSS"
  * _without_ time zones;
@@ -30,7 +28,6 @@ public final class XsdDateTime extends XsdAnySimpleType {
 
   static {
     registerConstructor(XsdDateTime.class, SHORT_NAME, LONG_NAME);
-    registerConverter(Date.class, XsdDateTime.class);
   }
 
 	/**
@@ -51,16 +48,6 @@ public final class XsdDateTime extends XsdAnySimpleType {
 	 * represent parts of a second
 	 */
 	public float second;
-
-
-	public XsdDateTime(Date d) {
-	   this.year = d.getYear();
-	   this.month = d.getMonth();
-	   this.day = d.getDay();
-	   this.hour = d.getHours();
-	   this.minute = d.getMinutes();
-	   this.second = d.getSeconds();
-	}
 
 	/**
 	 *
@@ -209,5 +196,26 @@ public final class XsdDateTime extends XsdAnySimpleType {
   public Object toJava() {
     return this;
   }
+
+
+	@Override
+	public int compareTo(Object o) {
+		if(  o instanceof AnyType.MinMaxValue ) {
+			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
+			return minMaxValue.compareTo(this);
+		}
+		if (! (o instanceof  XsdDateTime)){
+			throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
+		}
+		XsdDateTime dateTime = (XsdDateTime) o;
+		int[] comp = new int[]{Integer.compare(this.year,dateTime.year), Integer.compare(this.month, dateTime.month),
+				Integer.compare(this.day, dateTime.day), Integer.compare(this.hour, dateTime.hour),
+				Integer.compare(this.minute,dateTime.minute), Float.compare(this.second, dateTime.second)};
+		for (int r : comp){
+			if (r != 0)
+				return r;
+		}
+		return 0;
+	}
 
 }

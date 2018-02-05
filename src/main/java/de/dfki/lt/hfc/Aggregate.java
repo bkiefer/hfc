@@ -18,7 +18,7 @@ public class Aggregate {
 	public String name;
 	
 	/**
-	 * the binder variable names, different from args vars (= subset of select vars)
+	 * the binder variable names, different from args indexToVariable (= subset of select indexToVariable)
 	 */
 	public String[] vars;
 	
@@ -28,12 +28,12 @@ public class Aggregate {
 	public int[] args;
 	
 	/**
-	 * computed from this.vars
+	 * computed from this.indexToVariable
 	 */
 	public SortedMap<Integer, Integer> nameToPos = new TreeMap<Integer, Integer>();
 	
 	/**
-	 * computed from this.vars
+	 * computed from this.indexToVariable
 	 */
 	protected Map<Integer, String> nameToExternalName = new HashMap<Integer, String>();
 

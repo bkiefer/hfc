@@ -6,6 +6,7 @@ import de.dfki.lt.hfc.types.XsdDateTime;
 /**
  * checks whether the first argument is less than the second argument;
  * arguments are assumed to be of type XsdDateTime;
+ * @return FunctionalOperator.TRUE or FunctionalOperator.FALSE
  *
  * @see FunctionalOperator
  *
@@ -14,14 +15,12 @@ import de.dfki.lt.hfc.types.XsdDateTime;
  * @version Fri May 20 15:49:48 CEST 2011
  */
 public final class DTLess extends FunctionalOperator {
-
+	
 	/**
 	 * note that apply() does NOT check at the moment whether the int args are in fact
 	 * of type XsdDateTime;
 	 * note that apply() does NOT check whether it is given exactly two arguments;
 	 * contrary to XsdUnDateTime, a dateTime object is always _fully_ specified
-   *
-   * @return FunctionalOperator.TRUE or FunctionalOperator.FALSE
 	 */
 	public int apply(int[] args) {
 		XsdDateTime firstArg = (XsdDateTime)getObject(args[0]);
@@ -56,5 +55,5 @@ public final class DTLess extends FunctionalOperator {
 			return FunctionalOperator.TRUE;
 		return FunctionalOperator.FALSE;
 	}
-
+	
 }

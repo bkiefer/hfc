@@ -3,6 +3,8 @@ package de.dfki.lt.hfc;
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.*;
+
+import de.dfki.lt.hfc.indices.IndexingException;
 import gnu.trove.set.hash.*;
 import gnu.trove.map.hash.*;
 
@@ -39,6 +41,7 @@ public final class ForwardChainer {
 	 * a pointer to the tuple store for this forward chainer
 	 */
 	public TupleStore tupleStore;
+
 
 	/**
 	 * a pointer to the rule store for this forward chainer
@@ -99,7 +102,7 @@ public final class ForwardChainer {
 	 * a similar variable exists in class RuleStore
 	 * @see #exitOnError
 	 */
-	public boolean verbose = false;
+	public boolean verbose = true;
 
 	/**
 	 * a constant that controls whether the system is terminated in case an invalid
@@ -211,6 +214,23 @@ public final class ForwardChainer {
 	}
 
 	/**
+	 * this version allows to explicitly define the namespace
+	 * @throws IOException
+	 * @throws WrongFormatException
+	 * @throws FileNotFoundException
+	 */
+	public ForwardChainer(String tupleFile, String ruleFile,	String namespaceFile, String indexFile)
+			throws FileNotFoundException, WrongFormatException, IOException, IndexingException {
+		this();
+		Namespace namespace = new Namespace(namespaceFile);
+		IndexStore indexStore = new IndexStore(indexFile, this.verbose);
+		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, namespace, tupleFile, indexStore);
+		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
+		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
+		this.noOfTasks = this.ruleStore.allRules.size();
+	}
+
+	/**
 	 * generates a new forward chainer with the default namespace for XSD, RDF, RDFS, and OWL;
 	 * noOfAtoms and noOfTuples are important parameters that affects the performance of the
 	 * tuple store used by the forward chainer
@@ -287,6 +307,32 @@ public final class ForwardChainer {
 																		 this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
 		this.ruleStore = new RuleStore(verbose, rdfCheck, minNoOfArgs, maxNoOfArgs,
 																	 this.tupleStore, ruleFile);
+		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
+		this.noOfTasks = this.ruleStore.allRules.size();
+	}
+
+	public ForwardChainer(int noOfCores,
+						  boolean verbose,
+						  boolean rdfCheck,
+						  boolean eqReduction,
+						  int minNoOfArgs,
+						  int maxNoOfArgs,
+						  int noOfAtoms,
+						  int noOfTuples,
+						  String tupleFile,
+						  String ruleFile,
+						  String namespaceFile,
+						  String indexFile)
+			throws FileNotFoundException, WrongFormatException, IOException, IndexingException {
+		this(noOfCores, verbose);
+		this.noOfAtoms = noOfAtoms;
+		this.noOfTuples = noOfTuples;
+		Namespace namespace = new Namespace(namespaceFile, verbose);
+		IndexStore indexStore = new IndexStore(indexFile,this.verbose);
+		this.tupleStore = new TupleStore(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
+				this.noOfAtoms, this.noOfTuples, namespace, tupleFile, indexStore);
+		this.ruleStore = new RuleStore(verbose, rdfCheck, minNoOfArgs, maxNoOfArgs,
+				this.tupleStore, ruleFile);
 		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
 		this.noOfTasks = this.ruleStore.allRules.size();
 	}
@@ -502,6 +548,10 @@ public final class ForwardChainer {
 			* make sure that this equals obj by NOT distinguishing between first and second
 			*/
 		public boolean equals(Object obj) {
+		    if (obj == this)
+		        return true;
+			if (!(obj instanceof Pair))
+				return false;
 			Pair pair = (Pair)obj;
 			if (this.first.equals(pair.first) && this.second.equals(pair.second))
 				return true;
@@ -639,7 +689,7 @@ public final class ForwardChainer {
 		}
 		else {
 			for (Cluster cluster : rule.clusters) {
-				// even if a (LHS) cluster's delta is empty, the RHS _might_ produce new tuples,
+				// even if a (LHS) cluster's delta is empty, the RHS _might_ produceInput new tuples,
 				// assuming there is another cluster whose delta isn't empty and the RHS combines
 				// old info from first cluster with new info from second cluster;
 				// this is checked during RHS instantiation
@@ -661,9 +711,9 @@ public final class ForwardChainer {
 		}
 		// now that we have one mega-cluster for LHS, we can project result table, using RHS variables
 		SortedMap<Integer, Integer> nameToPos = rule.megaCluster.bindingTable.nameToPos;
-		Set<Integer> mcvars = nameToPos.keySet();  // proper LHS vars w/o DC vars
-		Set<Integer> rhsvars = rule.rhsVariables;  // proper RHS vars w/o BN vars
-		// check whether RHS vars are a subset of the mega cluster vars; if so, call project()
+		Set<Integer> mcvars = nameToPos.keySet();  // proper LHS indexToVariable w/o DC indexToVariable
+		Set<Integer> rhsvars = rule.rhsVariables;  // proper RHS indexToVariable w/o BN indexToVariable
+		// check whether RHS indexToVariable are a subset of the mega cluster indexToVariable; if so, call project()
 		if (mcvars.size() != rhsvars.size()) {  // testing for the size of both sets suffices
 			// in order to call project, I need an ascending int[] of positions
 			int[] pos = new int[rhsvars.size()];
@@ -673,8 +723,8 @@ public final class ForwardChainer {
 			Arrays.sort(pos);
 			// reduce table using project()
 			rule.megaCluster.bindingTable.table = Calc.project(rule.megaCluster.bindingTable.table, pos);
-			// NOTE: project() might lead to surprising (but correct) results in case LHS vars are all don't
-			//       care vars and a blank node var is used on the RHS
+			// NOTE: project() might lead to surprising (but correct) results in case LHS indexToVariable are all don't
+			//       care indexToVariable and a blank node var is used on the RHS
 		}
 		// compute delta, old, table as usual for mega cluster and check whether delta is empty
 		rule.megaCluster.delta = Calc.difference(rule.megaCluster.bindingTable.table, rule.megaCluster.table);
@@ -746,7 +796,7 @@ public final class ForwardChainer {
 		// not sure whether this would pay off, since LHS matching is much more expensive than RHS instantiation
 		Set<int[]> table = rule.megaCluster.delta;
 		SortedMap<Integer, Integer> nameToPos = rule.megaCluster.bindingTable.nameToPos;
-		Set<Integer> rhsvars = rule.rhsVariables;  // proper RHS vars w/o BN vars
+		Set<Integer> rhsvars = rule.rhsVariables;  // proper RHS indexToVariable w/o BN indexToVariable
 		Set<Integer> bnvars = rule.blankNodeVariables;
 		if (this.verbose) {
 			synchronized (System.out) {
@@ -754,18 +804,18 @@ public final class ForwardChainer {
 													 " " + rule.megaCluster.delta.size());
 			}
 		}
-		// use a mediator (array) instead of using the slower map; take care of _blank_node_ vars;
+		// use a mediator (array) instead of using the slower map; take care of _blank_node_ indexToVariable;
 		ArrayList<Integer> allrhsvars = new ArrayList<Integer>(rhsvars);
 		allrhsvars.addAll(bnvars);
-		// adjust array using _all_ RHS vars incl. BN vars; position 0 is unused
+		// adjust array using _all_ RHS indexToVariable incl. BN indexToVariable; position 0 is unused
 		int[] mediator = new int[-Collections.min(allrhsvars).intValue() + 1];
 		// initialize mediator with invalid position -1
 		for (int i = 0; i < mediator.length; i++)
 			mediator[i] = -1;
-		// and overwrite the valid (i.e., non BN) positions
+		// and overwrite the Valid (i.e., non BN) positions
 		for (Integer var : rhsvars)
 			mediator[-var.intValue()] = nameToPos.get(var);
-		// also use a mediator for the true BN vars and binder vars
+		// also use a mediator for the true BN indexToVariable and binder indexToVariable
 		int[] bnmediator = null;
 		TIntHashSet binderVars = null;
 		TIntObjectHashMap<Function> varToFunct = null;
@@ -862,7 +912,7 @@ public final class ForwardChainer {
 					}
 				return;
 			}
-			// apply in-eqs if in-eq vars belong to the same cluster
+			// apply in-eqs if in-eq indexToVariable belong to the same cluster
 			applyTests(rule);
 			if (! rule.isApplicable) {
 				if (this.verbose)
@@ -938,7 +988,7 @@ public final class ForwardChainer {
 			catch (InterruptedException ie) {
 				System.out.println(ie);
 			}
-			// add rule-generated tuples to set of all tuples and update the index
+			// add rule-generated tuples to set of all tuples and updateOntology the index
 			newInfo = false;
 			noOfNewTuples = 0;
 			for (Rule rule : this.ruleStore.allRules) {
@@ -968,13 +1018,12 @@ public final class ForwardChainer {
 		}
 		// possibly cleanup
 		if (this.tupleStore.equivalenceClassReduction && this.cleanUpRepository) {
-		  if (this.verbose) { System.out.print("\n  cleaning up repository ... "); }
+			System.out.print("\n  cleaning up repository ... ");
 			this.tupleStore.cleanUpTupleStore();
-			if (this.verbose) {
-			  System.out.println("done");
-			  System.out.println("  number of all tuples: " + this.tupleStore.allTuples.size());
-			}
+			System.out.println("done");
+			System.out.println("  number of all tuples: " + this.tupleStore.allTuples.size());
 		}
+		System.out.println(this.tupleStore.idToJavaObject.size());
 		// and finally the `answer'
 		if ((noOfAllTuples - this.tupleStore.allTuples.size()) == 0)
 			return false;
@@ -1102,7 +1151,7 @@ public final class ForwardChainer {
 	public void uploadRules(String filename) throws IOException {
 		this.ruleStore.lineNo = 0;
 		this.ruleStore.readRules(filename);
-		// update noOfTask in order to guarantee proper rule execution in a multi-threaded environment
+		// updateOntology noOfTask in order to guarantee proper rule execution in a multi-threaded environment
 		this.noOfTasks = this.ruleStore.allRules.size();
 	}
 
@@ -1441,18 +1490,18 @@ public final class ForwardChainer {
 	// @see ForwardChainer.enableTupleDeletion()
 
 	/**
-	 * transaction 1: addTuplesToRepository()
+	 * Transaction 1: addTuplesToRepository()
 	 * adds a collection of tuples to the repository;
 	 * this quasi-synchronized method obtains a lock on this.tupleStore;
 	 * note that the generation counter from TupleStore is incremented by 2 _before_
 	 * the tuples are added in order to distinguish the tuples involved in this transactions
 	 * from `ordinary' tuples that are `only' uploaded;
-	 * note further that this transaction does NOT compute the deductive closure of the repository
-	 * @return true iff the transaction was successful
-	 * @return false iff an error happened during the transaction or in case tuple deletion
+	 * note further that this Transaction does NOT compute the deductive closure of the repository
+	 * @return true iff the Transaction was successful
+	 * @return false iff an error happened during the Transaction or in case tuple deletion
 	 *         has NOT been enabled;
 	 *         note that we gurantee that the effects which have happended during the
-	 *         transaction are invalidated
+	 *         Transaction are invalidated
 	 */
 	public final boolean addTuplesToRepository(Collection<int[]> tuples) {
 		if (tupleDeletionEnabled()) {
@@ -1460,7 +1509,7 @@ public final class ForwardChainer {
 				// remember what has been added in case things go wrong
 				final ArrayList<int[]> added = new ArrayList<int[]>();
 				try {
-					// each `positive' transaction increments the generation counter;
+					// each `positive' Transaction increments the generation counter;
 					// since NO closure computation is involved, it must be incremented by 2
 					this.tupleStore.generation = this.tupleStore.generation + 2;
 					for (int[] tuple : tuples) {
@@ -1471,7 +1520,7 @@ public final class ForwardChainer {
 				}
 				catch (Exception e) {
 					System.err.println(e);
-					// if something went wrong during the transaction, iterate over the remembered tuples and
+					// if something went wrong during the Transaction, iterate over the remembered tuples and
 					// redo the insertions, not necessarily _all_ tuples
 					for (int[] tuple : added)
 						this.tupleStore.removeTuple(tuple);
@@ -1486,18 +1535,18 @@ public final class ForwardChainer {
 	}
 
 	/**
-	 * transaction 2: removeTuplesFromRepository()
+	 * Transaction 2: removeTuplesFromRepository()
 	 * removes a collection of tuples from the repository;
 	 * note that the entailed tuples are NOT deleted, only the specified tuples;
 	 * in case closure computation is never called, i.e., the repository is only used for
 	 * querying the explicit uploaded information, use this method instead of nethod below;
 	 * this quasi-synchronized method obtains a lock on this.tupleStore
 	 * @see ForwardChainer.deleteTuplesFromRepository()
-	 * @return true iff the transaction was successful
-	 * @return false iff an error happened during the transaction or in case tuple deletion
+	 * @return true iff the Transaction was successful
+	 * @return false iff an error happened during the Transaction or in case tuple deletion
 	 *         has NOT been enabled;
 	 *         note that we gurantee that the effects which have happended during the
-	 *         transaction are invalidated
+	 *         Transaction are invalidated
 	 */
 	public final boolean removeTuplesFromRepository(Collection<int[]> tuples) {
 		if (tupleDeletionEnabled()) {
@@ -1516,7 +1565,7 @@ public final class ForwardChainer {
 				}
 				catch (Exception e) {
 					System.err.println(e);
-					// if something went wrong during transaction, iterate over removed tuples
+					// if something went wrong during Transaction, iterate over removed tuples
 					// and undo the deletions
 					for (Map.Entry<int[], Integer> entry : tuple2generation.entrySet())
 						this.tupleStore.addTupleWithGeneration(entry.getKey(), entry.getValue());
@@ -1603,17 +1652,17 @@ public final class ForwardChainer {
 	}
 
 	/**
-	 * transaction 3: deleteTuplesFromRepository()
+	 * Transaction 3: deleteTuplesFromRepository()
 	 * deletes a collection of tuples from the repository; not only the direct tuples
 	 * are deleted, but also the entailed tuples which solely depend on the deleted
 	 * tuples;
 	 * this quasi-synchronized method obtains a lock on this.tupleStore
 	 * @see ForwardChainer.removeTuplesFromRepository()
-	 * @return true iff the transaction was successful
-	 * @return false iff an error appeared during the transaction or in case tuple deletion
+	 * @return true iff the Transaction was successful
+	 * @return false iff an error appeared during the Transaction or in case tuple deletion
 	 *         has NOT been enabled;
 	 *         note that we gurantee that the effects which have happended during the
-	 *         transaction are invalidated
+	 *         Transaction are invalidated
 	 */
 	public final boolean deleteTuplesFromRepository(Collection<int[]> tuples) {
 		if (tupleDeletionEnabled()) {
@@ -1621,13 +1670,13 @@ public final class ForwardChainer {
 				final Hashtable<int[], Integer> tuple2generation = new Hashtable<int[], Integer>();
 				final int oldGeneration = this.tupleStore.generation;
 				try {
-					// update tuple2generation from inside deleteTuplesRecordGenerations()
+					// updateOntology tuple2generation from inside deleteTuplesRecordGenerations()
 					deleteTuplesRecordGenerations(tuples, tuple2generation);
 					return true;
 				}
 				catch (Exception e) {
 					System.err.println(e);
-					// if something went wrong during transaction, iterate over removed tuples
+					// if something went wrong during Transaction, iterate over removed tuples
 					// and undo the deletions
 					this.tupleStore.generation = oldGeneration;
 					for (Map.Entry<int[], Integer> entry : tuple2generation.entrySet())
@@ -1643,14 +1692,14 @@ public final class ForwardChainer {
 
 
 	/**
-	 * transaction 4: computeClosureFromRepository()
-	 * a `nullary' transaction that computes the deductive closure for the repository;
+	 * Transaction 4: computeClosureFromRepository()
+	 * a `nullary' Transaction that computes the deductive closure for the repository;
 	 * this quasi-synchronized method obtains a lock on this.tupleStore
 	 * @see ForwardChainer.removeFromRepository()
-	 * @return true iff the transaction was successful
-	 * @return false iff an error appeared during the transaction;
+	 * @return true iff the Transaction was successful
+	 * @return false iff an error appeared during the Transaction;
 	 *         note that we gurantee that the effects which have happended during the
-	 *         transaction are invalidated
+	 *         Transaction are invalidated
 	 */
 	public final boolean computeClosureFromRepository() {
 		if (tupleDeletionEnabled()) {
@@ -1713,7 +1762,7 @@ public final class ForwardChainer {
 		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/src/resources/ltworld.jena.nt");
 		fc.computeClosure();
 		Query q = new Query(fc.tupleStore);
-		// different binder vars in aggregates
+		// different binder indexToVariable in aggregates
 		BindingTable bt = q.query("SELECT DISTINCT ?p WHERE ?s ?p ?o FILTER ?p != <rdf:type> AGGREGATE ?number = Count ?p & ?subject = Identity ?p");
 		System.out.println(bt);
 		fc.shutdown();

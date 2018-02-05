@@ -3,6 +3,8 @@ package de.dfki.lt.hfc.operators;
 import de.dfki.lt.hfc.FunctionalOperator;
 import de.dfki.lt.hfc.types.XsdInt;
 
+import java.util.Arrays;
+
 /**
  * checks whether the first argument is greater than the second argument;
  * arguments are assumed to be xsd:ints;

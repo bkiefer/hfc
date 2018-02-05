@@ -11,14 +11,14 @@ package de.dfki.lt.hfc.types;
  */
 public final class XsdLong extends XsdAnySimpleType {
   public final static String NAME = "long";
+  public final static XsdLong NEGINFINTIY = new XsdLong(Long.MIN_VALUE);
+  public final static XsdLong POSINFINTIY = new XsdLong(Long.MAX_VALUE);
 
   public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
   public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
 
   static {
     registerConstructor(XsdLong.class, SHORT_NAME, LONG_NAME);
-    registerConverter(long.class, XsdLong.class);
-    registerConverter(Long.class, XsdLong.class);
   }
 
 	public long value;
@@ -29,13 +29,6 @@ public final class XsdLong extends XsdAnySimpleType {
 	public XsdLong(long value) {
 		this.value = value;
 	}
-
-  /**
-   * @param value a Java long representation of an XSD long
-   */
-  public XsdLong(Long value) {
-    this.value = value;
-  }
 
 	/**
 	 * @param value a string, representing an XSD long, e.g., "\"1272539480080\"^^<xsd:long>"
@@ -84,4 +77,17 @@ public final class XsdLong extends XsdAnySimpleType {
     return this.value;
   }
 
+
+	@Override
+	public int compareTo(Object o) {
+		if(  o instanceof AnyType.MinMaxValue ) {
+			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
+			return minMaxValue.compareTo(this);
+		}
+		int res;
+		if (! (o instanceof  XsdLong)){
+			throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
+		}
+		return Long.compare(this.value,((XsdLong) o).value);
+	}
 }

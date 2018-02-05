@@ -56,6 +56,23 @@ public abstract class Operator {
 			return id;
 	}
 
+
+	/**
+	 * returns the id for a given literal (e.g., a string encoding a URI, blank node,
+	 * XSD int, XSD string, etc.);
+	 * @return a positive int iff there exists a mapping in the tuple store between
+	 *         the literal and this int
+	 * @return -1, otherwise
+	 */
+	public int getIdForPossiblyUnknownEntity(String literal) {
+		Integer id = this.tupleStore.objectToId.get(literal);
+		synchronized (this.tupleStore) {
+			return id == null ? tupleStore.putObject(literal) : id;
+		}
+	}
+
+
+
 	/**
 	 * returns the proxy (the representative) for a given uri which serves as the internal
 	 * name for a URI or a blank node
@@ -105,7 +122,7 @@ public abstract class Operator {
 	}
 
 	/**
-	 * checks whether a ground tuple (i.e., a tuple wo/ vars) exists in the tuple store
+	 * checks whether a ground tuple (i.e., a tuple wo/ indexToVariable) exists in the tuple store
 	 */
 	public boolean ask(int[] tuple) {
 		return this.tupleStore.allTuples.contains(tuple);
@@ -131,5 +148,7 @@ public abstract class Operator {
 	public Set<int[]> ask() {
 		return this.tupleStore.allTuples;
 	}
+
+
 
 }

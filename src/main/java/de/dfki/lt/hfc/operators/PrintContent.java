@@ -5,6 +5,7 @@ import de.dfki.lt.hfc.BindingTable;
 
 /**
  * prints the content of the binding tables given to apply() to standard out
+ * @return args, the input arguments given to apply() without modifying them
  *
  * @see RelationalOperator
  *
@@ -13,9 +14,9 @@ import de.dfki.lt.hfc.BindingTable;
  * @version Fri Mar 15 16:20:24 CET 2013
  */
 public final class PrintContent extends RelationalOperator {
-
+	
 	/**
-   * @return args, the input arguments given to apply() without modifying them
+	 * 
 	 */
 	public BindingTable[] apply(BindingTable[] args) {
 		for (BindingTable arg : args) {
@@ -24,5 +25,5 @@ public final class PrintContent extends RelationalOperator {
 		}
 		return args;
 	}
-
+	
 }

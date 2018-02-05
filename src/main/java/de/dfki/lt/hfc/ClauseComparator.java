@@ -44,7 +44,7 @@ public class ClauseComparator implements Comparator<int[]> {
 	/**
 	 * at the moment only a binary constructor taking into account
 	 * proper variables and don't care variables;
-	 * blank node vars are not of interest, since they only occur on
+	 * blank node indexToVariable are not of interest, since they only occur on
 	 * the RHS of a rule;
 	 */
 	public ClauseComparator(HashSet<Integer> dontCareVariables,
@@ -88,7 +88,7 @@ public class ClauseComparator implements Comparator<int[]> {
 						// proper var in first position
 						c = c + 1000;
 					else
-						// all other proper vars
+						// all other proper indexToVariable
 						c = c + 100;
 				}
 			}

@@ -131,4 +131,16 @@ public final class XsdMonetary extends XsdAnySimpleType {
     return this;
   }
 
+	@Override
+	public int compareTo(Object o) {
+		if(  o instanceof AnyType.MinMaxValue ) {
+			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
+			return minMaxValue.compareTo(this);
+		}
+		if (!(o instanceof XsdMonetary)) {
+			throw new IllegalArgumentException("Can't compare " + this.getClass() + " and " + o.getClass());
+		}
+		//TODO include currencies
+		return Double.compare(this.amount, ((XsdMonetary) o).amount);
+	}
 }

@@ -9,7 +9,7 @@ package de.dfki.lt.hfc.types;
  * @version Fri Jan 29 19:28:31 CET 2016
  */
 public final class XsdDouble extends XsdAnySimpleType {
-
+  
   public final static String NAME = "double";
 
   public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
@@ -17,8 +17,6 @@ public final class XsdDouble extends XsdAnySimpleType {
 
   static {
     registerConstructor(XsdDouble.class, SHORT_NAME, LONG_NAME);
-    registerConverter(double.class, XsdDouble.class);
-    registerConverter(Double.class, XsdDouble.class);
   }
 
 	public double value;
@@ -29,13 +27,6 @@ public final class XsdDouble extends XsdAnySimpleType {
 	public XsdDouble(double value) {
 		this.value = value;
 	}
-
-  /**
-   * @param value a Java double representation of an XSD double
-   */
-  public XsdDouble(Double value) {
-    this.value = value;
-  }
 
 	/**
 	 * @param value a string, representing an XSD double, e.g., "\"2.71828\"^^<xsd:double>"
@@ -79,4 +70,15 @@ public final class XsdDouble extends XsdAnySimpleType {
     return this.value;
   }
 
+	@Override
+	public int compareTo(Object o) {
+		if(  o instanceof AnyType.MinMaxValue ) {
+			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
+			return minMaxValue.compareTo(this);
+		}
+		if (! (o instanceof  XsdDouble)){
+			throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
+		}
+		return Double.compare(this.value,((XsdDouble) o).value);
+	}
 }

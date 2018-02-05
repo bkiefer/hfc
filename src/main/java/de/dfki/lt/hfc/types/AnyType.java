@@ -1,5 +1,6 @@
 package de.dfki.lt.hfc.types;
 
+
 /**
  * this (abstract) class is the superclass for the _internal_
  * representationof URIs, blank nodes, and XSD types (and their
@@ -20,9 +21,13 @@ package de.dfki.lt.hfc.types;
  * @since JDK 1.5
  * @version Fri Jan 29 17:02:37 CET 2016
  */
-public abstract class AnyType {
+public abstract class AnyType implements Comparable{
 
-	/**
+
+    public static final MinMaxValue MIN_VALUE = new MinMaxValue(false);
+    public static final MinMaxValue MAX_VALUE = new MinMaxValue(true);
+
+    /**
 	 * returns a compliant external representation for subtypes
 	 * of AnyType, viz., URIs, blank nodes, and various forms of
 	 * XSD atoms
@@ -70,4 +75,34 @@ public abstract class AnyType {
    */
   public String toString() { return toString(false); }
 
+
+	static class MinMaxValue extends AnyType{
+
+  		final boolean isMax;
+
+		public MinMaxValue(boolean b) {
+			super();
+			isMax = b;
+		}
+
+		@Override
+		public String toString(boolean shortIsDefault) {
+			return isMax ? "MAX_VALUE" : "MIN_VALUE";
+		}
+
+		@Override
+		public String toName() {
+			return isMax ? "MAX_VALUE" : "MIN_VALUE";
+		}
+
+		@Override
+		public Object toJava() {
+			return this;
+		}
+
+		@Override
+		public int compareTo(Object o) {
+			return isMax? -1:1;
+		}
+	}
 }

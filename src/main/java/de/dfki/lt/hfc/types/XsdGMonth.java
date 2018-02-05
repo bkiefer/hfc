@@ -23,7 +23,7 @@ public final class XsdGMonth extends XsdAnySimpleType {
     registerConstructor(XsdGMonth.class, SHORT_NAME, LONG_NAME);
   }
 
-  /**
+    /**
 	 * I do NOT check whether 01 <= month <= 12
 	 */
 	public int month;
@@ -84,5 +84,17 @@ public final class XsdGMonth extends XsdAnySimpleType {
   public Object toJava() {
     return this;
   }
+
+	@Override
+	public int compareTo(Object o) {
+		if(  o instanceof AnyType.MinMaxValue ) {
+			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
+			return minMaxValue.compareTo(this);
+		}
+		if (! (o instanceof  XsdGMonth)){
+			throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
+		}
+		return Integer.compare(this.month,((XsdGMonth) o).month);
+	}
 
 }

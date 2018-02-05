@@ -1,8 +1,8 @@
 package de.dfki.lt.hfc;
 
 /**
- * constructing an iterator through BindingTable.iterator(Sting ... vars)
- * whose variables vars do not match the table headings completely should
+ * constructing an iterator through BindingTable.iterator(Sting ... indexToVariable)
+ * whose variables indexToVariable do not match the table headings completely should
  * not be allowed!
  * this is signaled though through this exception class which should _not_
  * be regarded as an error, but instead as an exception as the tuple store

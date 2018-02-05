@@ -98,7 +98,7 @@ public final class RuleStore {
 	 * a similar variable exists in class TupleStore
 	 * @see #exitOnError
 	 */
-	public boolean verbose = false;
+	public boolean verbose = true;
 
 	/**
 	 * when tuples are read in, this variable decides whether tuples are compliant with
@@ -297,11 +297,6 @@ public final class RuleStore {
 		return literal.startsWith("??(");
 	}
 
-	/** Return all rules contained in this rule store */
-	public List<Rule> getAllRules() {
-	  return this.allRules;
-	}
-
 	/**
 	 * obtains the id of the corresponding functional variable, given the relational
 	 * variable name;
@@ -323,12 +318,12 @@ public final class RuleStore {
 	/**
 	 * at several places, messages were output depending on this.exitOnError
 	 * and this.verbose -- unify this in this special private method;
-	 * perhaps will be replaced by Apache's log4j
+	 * perhaps will be replaced by Apache's 	log4j
 	 */
 	private boolean sayItLoud(int lineNo, String message) {
 		if (this.exitOnError) {
 			System.out.println(" FATAL: " + lineNo + message);
-			throw new RuntimeException("FATAL ERROR");
+			System.exit(1);
 		}
 		if (this.verbose)
 			System.out.println(" ERROR(ignored): " + lineNo + message);
@@ -338,7 +333,7 @@ public final class RuleStore {
 	private boolean sayItLoud(String rulename, String message) {
 		if (this.exitOnError) {
 			System.out.println(" FATAL: " + rulename + message);
-			throw new RuntimeException("FATAL ERROR");
+			System.exit(1);
 		}
 		if (this.verbose)
 			System.out.println(" ERROR(ignored): " + rulename + message);
@@ -361,7 +356,7 @@ public final class RuleStore {
 			// indicating that the i-th ante tuple is invalid
 			for (int i = 0; i < ante.size(); i++) {
 				if (ante.get(i) == null)
-					return sayItLoud(this.lineNo, ": antecedent contains invalid tuple(s)");
+					return sayItLoud(this.lineNo, ": antecedent ontologyContainsTuple invalid tuple(s)");
 			}
 			rule.setAntecedent(ante);
 			return true;
@@ -383,7 +378,7 @@ public final class RuleStore {
 		// indicating that the i-th cons tuple is invalid
 		for (int i = 0; i < cons.size(); i++)
 			if (cons.get(i) == null)
-				return sayItLoud(this.lineNo, ": consequent contains invalid tuple(s)");
+				return sayItLoud(this.lineNo, ": consequent ontologyContainsTuple invalid tuple(s)");
 		rule.setConsequent(cons);
 		// rule name, ante, and cons proper, so check for special LHS/RHS variables
 		return handleSpecialVariables(rule);
@@ -417,7 +412,7 @@ public final class RuleStore {
 	 *       and predicates) and to access information properly (for actions)
 	 */
 	private void computeAmalgamation(Rule rule) {
-		// keep track of common vars and their positions
+		// keep track of common indexToVariable and their positions
 		ArrayList<HashSet<Integer>> variables = new ArrayList<HashSet<Integer>>();
 		ArrayList<ArrayList<Integer>> positions = new ArrayList<ArrayList<Integer>>();
 		// add info from first LHS clause
@@ -552,7 +547,7 @@ public final class RuleStore {
 					}
 				}
 				if (! remains) {
-					// pred contains only variables from the i-th cluster
+					// pred ontologyContainsTuple only variables from the i-th cluster
 					cluster.tests.add(pred);
 					pit.remove();
 				}
@@ -643,7 +638,7 @@ public final class RuleStore {
 		}
 		// check ACTIONS
 		//   * result var is NOT a blank node var and must occur only on the RHS
-		//   * arg vars need to be LHS-only vars
+		//   * arg indexToVariable need to be LHS-only indexToVariable
 		//   * [ WHY? if we would guarantee that the var is bound, everything is fine! ]
 		for (Function function : rule.actions) {
 			// binder var must be a RHS var
@@ -657,7 +652,7 @@ public final class RuleStore {
 					if (! lhsVars.contains(val))
 						return sayItLoud(rule.name, ": argument variable in action does not refer to LHS");
 					noOfOcc.put(val, noOfOcc.get(val) + 1);
-					// furthermore, do add function argument variables to RHS vars, since they are
+					// furthermore, do add function argument variables to RHS indexToVariable, since they are
 					// needed to compute the function result; otherwise, they will be projected
 					// away by ForwardChainer.performReferentialInstantiation()
 					rhsVars.add(val);
@@ -681,7 +676,7 @@ public final class RuleStore {
 												 rule.dontCareVariables.size() + " don't care variables");
 		rhsVars.removeAll(lhsVars2);
 		if ((rhsVars.size() > 0) && this.verbose)
-			System.out.println("  " + rule.name + ": " + rhsVars.size() + " blank node vars");
+			System.out.println("  " + rule.name + ": " + rhsVars.size() + " blank node indexToVariable");
 		rule.blankNodeVariables = rhsVars;
 		// make sure that rule.rhsVariables does NOT contain any (RHS) blank node variables
 		rule.rhsVariables.removeAll(rule.blankNodeVariables);
@@ -720,10 +715,10 @@ public final class RuleStore {
 		// note: blank nodes (if any) will NOT show up here and are filtered out beforehand
 		// is tuple RDF compliant
 		if (rdfCheck) {
-			// check for valid first arg: either URI or variable, but not an atom
+			// check for Valid first arg: either URI or variable, but not an atom
 			if ((stringTuple.size() > 0) && TupleStore.isAtom(stringTuple.get(0)))
 				return sayItLoud(this.lineNo, ": first arg must be an URI or variable");
-			// check for valid second arg: either URI or variable, but not an atom
+			// check for Valid second arg: either URI or variable, but not an atom
 			if ((stringTuple.size() > 1) && TupleStore.isAtom(stringTuple.get(0)))
 				return sayItLoud(this.lineNo, ": second arg must be an URI or variable");
 		}
@@ -736,7 +731,7 @@ public final class RuleStore {
 	 * into an internal representation
 	 */
 	protected int[] makeTuple(ArrayList<String> tuple) {
-		// check whether external representation is valid for a rule tuple
+		// check whether external representation is Valid for a rule tuple
 		if (!isValidTuple(tuple))
 			// if not, return null to indicate this
 			return null;
@@ -833,7 +828,7 @@ public final class RuleStore {
 		// ineq constraint should consist of three tokens
 		if (st.countTokens() != 3)
 			return sayItLoud(rule.name, ": incorrect ineq constraint (less/more than 3 tokens)");
-		// check whether ineq vars have all been mentioned in the ante/cons of the rule
+		// check whether ineq indexToVariable have all been mentioned in the ante/cons of the rule
 		String token = st.nextToken();
 		if (this.varToId.containsKey(token))
 			rule.inEqConstraints.add(this.varToId.get(token));
@@ -928,17 +923,20 @@ public final class RuleStore {
 		if (varids.size() > 9)
 			return sayItLoud(rulename, ": incorrect predicate call (complex relational variable consists of too many names)");
 		// syntactically and semantically well-formed complex relational variable; now construct new proxy name & proxy ID
-		String proxy = "??proxy";
+		String proxySeed = "??proxy";
 		int proxyid = RuleStore.RELVAR_OFFSET;  // note: offset and var ids are _negative_ numbers
 		int exp = 0;
+		StringBuilder stringBuilder = new StringBuilder(proxySeed);
 		for (Integer id : varids) {
 			// ids are negative; fits nicely using the minus sign as the hyphen character
-			proxy = proxy + id;
-			// no more than 9 vars should be involved in a complex relational var (reasonable assumption & checked above)
+			//proxy = proxy + id;
+			stringBuilder.append(id);
+			// no more than 9 indexToVariable should be involved in a complex relational var (reasonable assumption & checked above)
 			// formula returns same ids for both "??var" (see below) and "??(var)" (here)
 			proxyid = proxyid + (id * (int)(Math.pow(10, exp)));
 			++exp;
 		}
+		String proxy = stringBuilder.toString();
 		this.relationalVarToId.put(proxy, proxyid);
 		this.proxyIdToFunctionalIds.put(proxyid, varids);
 		args.add(proxyid);
@@ -1170,7 +1168,7 @@ public final class RuleStore {
 					properVariables.add(clause[i]);
 					// relevantPositions is *SORTED* (important!)
 					relevantPositions.add(i);
-					// encode proper vars by occurrence
+					// encode proper indexToVariable by occurrence
 					if (varToOcc.containsKey(clause[i]))
 						key[i] = varToOcc.get(clause[i]);
 					else {
@@ -1346,7 +1344,7 @@ public final class RuleStore {
 					if (checkRuleSeparator(rule, anteOK) &&
 							evaluateTests(rule, tests) &&
 							evaluateActions(rule, actions) &&
-							// evaluate actions before consequent, since new binder vars are introduced
+							// evaluate actions before consequent, since new binder indexToVariable are introduced
 							makeConsequent(tlist, rule)) {
 						// now potentially invoke a clause reordering
 						reorderAntecedent(rule);
@@ -1479,8 +1477,9 @@ public final class RuleStore {
 			case Namespace.OWL_EQUIVALENTCLASS_ID: sb.append("EquivalentClassTest "); break;
 			case Namespace.OWL_EQUIVALENTPROPERTY_ID: sb.append("EquivalentPropertyTest "); break;
 			default:
-				throw new RuntimeException(
-				    "\nunknown equivalence relation in LHS of rule " + rulename);
+				System.err.println("\nunknown equivalence relation in LHS of rule " + rulename);
+				System.exit(1);
+				break;
 		}
 		// make subject and object of original tuple arguments of the test;
 		// equivalence relation patterns are _always_ triples
@@ -1505,8 +1504,9 @@ public final class RuleStore {
 			case Namespace.OWL_EQUIVALENTCLASS_ID: sb.append("EquivalentClassAction "); break;
 			case Namespace.OWL_EQUIVALENTPROPERTY_ID: sb.append("EquivalentPropertyAction "); break;
 			default:
-			  throw new RuntimeException(
-			      "\nunknown equivalence relation in RHS of rule " + rulename);
+				System.err.println("\nunknown equivalence relation in RHS of rule " + rulename);
+				System.exit(1);
+				break;
 		}
 		sb.append(tuple.get(this.tupleStore.subjectPosition));
 		sb.append(" ");
@@ -1547,7 +1547,7 @@ public final class RuleStore {
 		}
 		catch (IOException e) {
       System.err.println("Error while writing rules to " + filename);
-      throw new RuntimeException("FATAL ERROR");
+      System.exit(1);
     }
 	}
 

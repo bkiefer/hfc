@@ -76,5 +76,17 @@ public final class XsdM extends XsdAnySimpleType {
   public double toCm() {
     return this.value * 100.0;
   }
+
+  @Override
+  public int compareTo(Object o) {
+    if(  o instanceof AnyType.MinMaxValue ) {
+      AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
+      return minMaxValue.compareTo(this);
+    }
+    if (! (o instanceof  XsdM)){
+      throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
+    }
+    return Double.compare(this.value,((XsdM) o).value);
+  }
   
 }

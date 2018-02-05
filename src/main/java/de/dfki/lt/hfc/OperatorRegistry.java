@@ -117,6 +117,7 @@ public final class OperatorRegistry {
     return evaluate(packageName + className, args);
   }
 
+
 	/**
 	 * generates a new functional operator instance for className, sets its public field tupleStore
 	 * with this tupleStore, and generates an association between the class name and the specific
@@ -132,9 +133,9 @@ public final class OperatorRegistry {
 			return op;
 		}
 		catch (Exception e) {
-			//System.out.println("  registering operator " + className + " fails: no such corresponding Java class");
+			System.out.println("  registering operator " + className + " fails: no such corresponding Java class");
 			if (OperatorRegistry.EXIT_WHEN_REGISTRATION_FAILS)
-				throw new RuntimeException("FATAL ERROR");
+				System.exit(1);
 			return null;
 		}
 	}
@@ -144,7 +145,7 @@ public final class OperatorRegistry {
 	 * class name; if so, the operator is returned;
 	 * if not, a new one is created, stored/registered, and returned
 	 */
-	protected Operator checkAndRegister (String className) {
+	public Operator checkAndRegister(String className) {
 		Operator op = this.nameToFo.get(className);
 		if (op == null)
 			op = register(className);

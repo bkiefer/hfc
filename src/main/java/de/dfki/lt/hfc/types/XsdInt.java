@@ -13,8 +13,6 @@ public final class XsdInt extends XsdAnySimpleType {
 
   static {
     registerConstructor(XsdInt.class, SHORT_NAME, LONG_NAME);
-    registerConverter(int.class, XsdInt.class);
-    registerConverter(Integer.class, XsdInt.class);
   }
 
 	public int value;
@@ -25,13 +23,6 @@ public final class XsdInt extends XsdAnySimpleType {
 	public XsdInt(int value) {
 		this.value = value;
 	}
-
-  /**
-   * @param value a Java int representation of an XSD int
-   */
-  public XsdInt(Integer value) {
-    this.value = value;
-  }
 
 	/**
 	 * @param value a string, representing an XSD int, e.g., "\"42\"^^<xsd:int>"
@@ -79,5 +70,17 @@ public final class XsdInt extends XsdAnySimpleType {
   public Object toJava() {
     return this.value;
   }
+
+	@Override
+	public int compareTo(Object o) {
+  		if(  o instanceof AnyType.MinMaxValue ) {
+  			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
+  			return minMaxValue.compareTo(this);
+		}
+  		if (! (o instanceof  XsdInt )){
+			throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
+		}
+		return Integer.compare(this.value,((XsdInt) o).value);
+	}
 
 }

@@ -123,12 +123,13 @@ public class Configuration {
 				st = new StringTokenizer(line, " =:\t");
 				processSpecification(st);
 			}
+			br.close();
 		}
 		catch (Exception e) {
 			System.err.println("\nerror while reading configuration file " + configFile);
-			throw new RuntimeException("FATAL ERROR");
+			System.exit(1);
 		}
-	}
+    }
 
 	/**
 	 *

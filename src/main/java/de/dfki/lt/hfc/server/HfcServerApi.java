@@ -7,6 +7,7 @@ import de.dfki.lt.hfc.ForwardChainer;
 import de.dfki.lt.hfc.Query;
 import de.dfki.lt.hfc.BindingTable;
 import de.dfki.lt.hfc.QueryParseException;
+import org.apache.xmlrpc.webserver.WebServer;
 
 /**
  * the server API that is separated from the server otself;
@@ -22,13 +23,13 @@ public class HfcServerApi {
 	 * @see HfcServer.startServer()
 	 */
 	protected static ForwardChainer HFC;
-
+	
 	/**
 	 * this class instance of class Query is assigned when starting the HFC Web Server
 	 * @see HfcServer.startServer()
 	 */
 	protected static Query QUERY;
-
+	
 	/**
 	 * queries the query store derived from HFC's tuple store;
 	 * the query store is assigned globally to the static field QUERY
@@ -44,7 +45,7 @@ public class HfcServerApi {
 			System.out.println("  query time: " + (System.currentTimeMillis() - start) + "ms\n");
 			if (bt == null)
 				// unknown URI
-				return "  query contains unknown URI(s)";
+				return "  query ontologyContainsTuple unknown URI(s)";
 			else
 				return bt.toString();
 		}
@@ -54,11 +55,11 @@ public class HfcServerApi {
 			return "  malformed query: " + exception.getMessage();
 		}
 	}
-
+	
 	/**
 	 * checks whether a ground tuple is an element of the set of all tuples
 	 * @return true iff tuple is contained in the repository
-	 * @return false iff tuple is NOT contained in the repository
+	 * @return false iff tuple is NOT contained in the repository 
 	 * NOTE: this method is supposed to be called by any user
 	 */
 	public synchronized Boolean ask(String command) {
@@ -69,7 +70,7 @@ public class HfcServerApi {
 			tuple.add(st.nextToken());
 		return HfcServerApi.HFC.tupleStore.ask(tuple);
 	}
-
+	
 	/**
 	 * upload a tuple file
 	 * @return true iff everything went well
@@ -96,7 +97,7 @@ public class HfcServerApi {
 			return "  error while uploading tuples: " + exception.getMessage();
 		}
 	}
-
+	
 	/**
 	 * computes the deductive closure for the HFC repository
 	 * @return true iff new tuples have been generated
@@ -114,7 +115,7 @@ public class HfcServerApi {
 		}
 		return isNew;
 	}
-
+	
 	/**
 	 * starts the HFC server, but NOT the web server;
 	 * note: web server port remains unchanged
@@ -156,7 +157,7 @@ public class HfcServerApi {
 			return 1;
 		}
 	}
-
+	
 	/**
 	 * stops the HFC server, but NOT the web server
 	 * @return 0 iff shutdown succeeds

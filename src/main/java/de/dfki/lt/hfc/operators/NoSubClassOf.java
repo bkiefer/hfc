@@ -49,7 +49,7 @@ public final class NoSubClassOf extends FunctionalOperator {
 	 * explicit
 	 */
 	public int apply(int[] args) {
-		// do we need to check whether '<rdfs:subClassOf>' is a valid literal?  NO!
+		// do we need to check whether '<rdfs:subClassOf>' is a Valid literal?  NO!
 		//if (id == -1)
 		//	return FunctionalOperator.FALSE;
 		return ask(new int[] {args[0], Namespace.RDFS_SUBCLASSOF_ID, args[1]}) ? FunctionalOperator.FALSE : FunctionalOperator.TRUE;
