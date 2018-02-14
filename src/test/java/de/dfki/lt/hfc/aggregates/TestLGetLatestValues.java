@@ -1,12 +1,14 @@
 package de.dfki.lt.hfc.aggregates;
 
-import static de.dfki.lt.hfc.TestUtils.*;
+import static de.dfki.lt.hfc.runnable.Utils.*;
 
-
-import de.dfki.lt.hfc.*;
+import de.dfki.lt.hfc.runnable.Utils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import de.dfki.lt.hfc.*;
+
 
 /**
  * this aggregational operator LGetLatestValues only works for the time-stamped
@@ -29,7 +31,7 @@ public class TestLGetLatestValues {
   static ForwardChainer fc;
 
   public static String getResource(String name) {
-    return TestUtils.getTestResource("LGetLatestValues", name);
+    return Utils.getTestResource("LGetLatestValues", name);
   }
 
 
@@ -98,7 +100,7 @@ public class TestLGetLatestValues {
         + "& ?lv ?prop ?val ?t "
         + "AGGREGATE ?measurement ?result ?patient ?time = LGetLatestValues ?prop ?val ?child ?t ?t");
 
-    printExpected(bt, fc.tupleStore);
+    // printExpected(bt, fc.tupleStore);
 
     //   =============================================================================================
     //   | ?measurement         | ?result              | ?patient             | ?time                |

@@ -122,7 +122,7 @@ public abstract class Operator {
 	}
 
 	/**
-	 * checks whether a ground tuple (i.e., a tuple wo/ indexToVariable) exists in the tuple store
+	 * checks whether a ground tuple (i.e., a tuple wo/ vars) exists in the tuple store
 	 */
 	public boolean ask(int[] tuple) {
 		return this.tupleStore.allTuples.contains(tuple);

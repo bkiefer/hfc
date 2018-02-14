@@ -641,7 +641,7 @@ public final class Calc {
 	private static int compare(int[] tuple0, int[] tuple1, int[][] columns) {
 		int[] col0 = columns[0];
 		int[] col1 = columns[1];
-		// the i's represent the indexToVariable!
+		// the i's represent the vars!
 		int diff;
 		for (int i = 0; i < col0.length; ++i) {
 			diff = tuple0[col0[i]] - tuple1[col1[i]];
@@ -783,7 +783,7 @@ public final class Calc {
 		}
 		// END of TupleComparator constructor code
 
-		// now produceInput a sorted list view of both tables
+		// now produce a sorted list view of both tables
 
 		int pos;
 		int[][] tl1 = new int[tt1.table.size()][];
@@ -942,7 +942,7 @@ public final class Calc {
 		// HUK: tried below code for tl1/tl2 with arrays instead of ArrayList
 		//      does NOT give any reproducable advantage using the profiler
 
-		// Now produceInput a sorted list view of both tables
+		// Now produce a sorted list view of both tables
 
 		int pos;
 		tc.setWhich(0, 0);

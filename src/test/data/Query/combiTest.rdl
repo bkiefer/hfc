@@ -1,0 +1,304 @@
+#
+# this simulates OWLIM's owl-horst_partialRDFS_builtin.pie rule file that builds
+# on the rule semantics for OWL as published by ter Horst which is based on Hayes'
+# work for axiomatizing RDF Schema;
+# I have split up rule $owl_FunctProp into $owl_FunctPropObject and
+# $owl_FunctPropDatatype, since the nature of the object of the triple either
+# leads to a owl:sameAs statement or to the bottom type owl:Nothing
+#
+# @author Hans-Ulrich Krieger
+# @version Tue Jan 10 15:53:00 CET 2012
+#
+
+
+# NOTE: $rdf1_rdfs4a_4b (= rdf1 & rdfs4a & rdfs4b) modified;
+# not interested that ?s, ?p, and ?o are all of rdf:type rdfs:Resource;
+# only add that ?p is of rdf:type rdf:Property
+$rdf1_rdfs4a_4b
+?t0 ?_s ?p ?_o ?t1 ?t2
+->
+?t0 ?p <rdf:type> <rdf:Property> ?t1 ?t2
+
+
+$rdfs2
+?t0 ?s ?p ?_o ?t1 ?t2
+?t0 ?p <rdfs:domain> ?dom ?t1 ?t2
+->
+?t0 ?s <rdf:type> ?dom ?t1 ?t2
+@test
+?p != <rdf:type>
+
+
+# added second clause (HUK)
+$rdfs3
+?t0 ?_s ?p ?o ?t1 ?t2
+?t0 ?p <rdf:type> <owl:ObjectProperty> ?t1 ?t2
+?t0 ?p <rdfs:range> ?rng ?t1 ?t2
+->
+?t0 ?o <rdf:type> ?rng ?t1 ?t2
+
+
+# NOTE: redundant rule -- implemented through owl:TransitiveProperty
+#$rdfs5
+#?p <rdfs:subPropertyOf> ?q
+#?q <rdfs:subPropertyOf> ?r
+#->
+#?p <rdfs:subPropertyOf> ?r
+#@test
+#?p != ?q
+#?p != ?r
+#?q != ?r
+
+
+$rdfs6
+?t0 ?p <rdf:type> <rdf:Property> ?t1 ?t2
+->
+?t0 ?p <rdfs:subPropertyOf> ?p ?t1 ?t2
+
+
+$rdfs7
+?t0 ?s ?p ?o ?t1 ?t2
+?t0 ?p <rdfs:subPropertyOf> ?q ?t1 ?t2
+->
+?t0 ?s ?q ?o ?t1 ?t2
+@test
+?p != ?q
+
+
+# replaced rdfs:Class by owl:Class;
+# or we add a further axiom that owl:Class is a subclass of rdfs:Class as it is
+# enforced for OWL Lite and OWL DL
+# NOTE: this rule only implements rdfs10 (note that ?c is a subclass of rdfs:Resource)
+$rdfs8_10
+?t0 ?c <rdf:type> <owl:Class> ?t1 ?t2
+->
+?t0 ?c <rdfs:subClassOf> ?c ?t1 ?t2
+
+
+# universal instantiation
+$rdfs9
+?t0 ?i <rdf:type> ?c ?t1 ?t2
+?t0 ?c <rdfs:subClassOf> ?d ?t1 ?t2
+->
+?t0 ?i <rdf:type> ?d ?t1 ?t2
+@test
+?c != ?d
+
+
+# NOTE: redundant rule -- implemented through owl:TransitiveProperty
+# NOTE: no rule defined for rdfs:subPropertyOf -- again redundant through
+#       the characterization as being a transitive property
+#$rdfs11
+#?c <rdfs:subClassOf> ?d
+#?d <rdfs:subClassOf> ?e
+#->
+#?c <rdfs:subClassOf> ?e
+#@test
+#?c != ?d
+#?c != ?e
+#?d != ?e
+
+
+# NOTE: $rdfs12 omitted -- deals with rdfs:member
+# will not fire for our OWL ontologies
+
+
+# NOTE: $rdfs13 omitted -- deals with rdfs:Literal
+# will not fire for our OWL ontologies
+
+
+$owl_invOf
+?t0 ?s ?p ?o ?t1 ?t2
+?t0 ?p <owl:inverseOf> ?q ?t1 ?t2
+->
+?t0 ?o ?q ?s ?t1 ?t2
+
+
+$owl_invOfBySymProp
+?t0 ?p <rdf:type> <owl:SymmetricProperty> ?t1 ?t2
+->
+?t0 ?p <owl:inverseOf> ?p ?t1 ?t2
+
+
+$owl_SymPropByInverse
+?t0 ?p <owl:inverseOf> ?p ?t1 ?t2
+->
+?t0 ?p <rdf:type> <owl:SymmetricProperty> ?t1 ?t2
+
+
+# original rule name is: rdfp3;
+# rule was _not_ part of the OWLIM definition (why?)
+$owl_SymmetricProperty
+?t0 ?p <rdf:type> <owl:SymmetricProperty> ?t1 ?t2
+?t0 ?s ?p ?o ?t1 ?t2
+->
+?t0 ?o ?p ?s ?t1 ?t2
+
+
+$owl_TransProp
+?t0 ?p <rdf:type> <owl:TransitiveProperty> ?t1 ?t2
+?t0 ?x ?p ?y ?t1 ?t2
+?t0 ?y ?p ?z ?t1 ?t2
+->
+?t0 ?x ?p ?z ?t1 ?t2
+@test
+?x != ?y
+?y != ?z
+
+
+# second clause has been added to guarantee proper application context
+$owl_FunctPropObject
+?t0 ?p <rdf:type> <owl:FunctionalProperty> ?t1 ?t2
+?t0 ?p <rdf:type> <owl:ObjectProperty> ?t1 ?t2
+?t0 ?x ?p ?y ?t1 ?t2
+?t0 ?x ?p ?z ?t1 ?t2
+->
+?t0 ?y <owl:sameAs> ?z ?t1 ?t2
+@test
+?y != ?z
+?p != <rdf:type>
+
+
+# NOT part of the original rule set, a kind of integrity constraint, deriving
+# that an individual is of type owl:Nothing;
+# NOTE:  currently commented out  !!!!!!!!!!!!!!
+#$owl_FunctPropDatatype
+#?p <rdf:type> <owl:FunctionalProperty>
+#?p <rdf:type> <owl:DatatypeProperty>
+#?x ?p ?y
+#?x ?p ?z
+#->
+#?x <rdf:type> <owl:Nothing>
+#@test
+#?y != ?z
+#?p != <rdf:type>
+
+
+# holds for both datatype and object properties
+$owl_InvFunctProp
+?t0 ?p <rdf:type> <owl:InverseFunctionalProperty> ?t1 ?t2
+?t0 ?y ?p ?x ?t1 ?t2
+?t0 ?z ?p ?x ?t1 ?t2
+->
+?t0 ?y <owl:sameAs> ?z ?t1 ?t2
+@test
+?y != ?z
+?p != <rdf:type>
+
+
+$owl_sameAsCopySubj
+?t0 ?x <owl:sameAs> ?y ?t1 ?t2
+?t0 ?x ?p ?z ?t1 ?t2
+->
+?t0 ?y ?p ?z ?t1 ?t2
+@test
+?x != ?y
+
+
+# called owl_sameAsCopyPred in the original file, but owl:sameAs can NOT
+# be applied to predicates, so replace sameAs by owl:equivalentProperty
+# NOTE: original rule was never applied -- there are no properties p and q
+#       that are connected by owl:sameAs
+$owl_equivalentPropertyCopyPred
+?t0 ?p <owl:equivalentProperty> ?q ?t1 ?t2
+?t0 ?x ?p ?y ?t1 ?t2
+->
+?t0 ?x ?q ?y ?t1 ?t2
+@test
+?p != ?q
+
+
+$owl_sameAsCopyObj
+?t0 ?x <owl:sameAs> ?y ?t1 ?t2
+?t0 ?z ?p ?x ?t1 ?t2
+->
+?t0 ?z ?p ?y ?t1 ?t2
+@test
+?x != ?y
+
+
+$owl_EquivClassBySubClass
+?t0 ?x <rdfs:subClassOf> ?y ?t1 ?t2
+?t0 ?y <rdfs:subClassOf> ?x ?t1 ?t2
+->
+?t0 ?x <owl:equivalentClass> ?y ?t1 ?t2
+@test
+?x != ?y
+
+
+$owl_EquivPropBySubProp
+?t0 ?p <rdfs:subPropertyOf> ?q ?t1 ?t2
+?t0 ?q <rdfs:subPropertyOf> ?p ?t1 ?t2
+->
+?t0 ?p <owl:equivalentProperty> ?q ?t1 ?t2
+@test
+?p != ?q
+
+
+$owl_typeByAllVal
+?t0 ?x <owl:onProperty> ?p ?t1 ?t2
+?t0 ?u <rdf:type> ?x ?t1 ?t2
+?t0 ?x <owl:allValuesFrom> ?y ?t1 ?t2
+?t0 ?u ?p ?v ?t1 ?t2
+->
+?t0 ?v <rdf:type> ?y ?t1 ?t2
+
+
+$owl_typeByHasVal
+?t0 ?r <owl:onProperty> ?p ?t1 ?t2
+?t0 ?r <owl:hasValue> ?v ?t1 ?t2
+?t0 ?i ?p ?v ?t1 ?t2
+->
+?t0 ?i <rdf:type> ?r ?t1 ?t2
+
+
+$owl_AttrByHasVal
+?t0 ?x <owl:hasValue> ?y ?t1 ?t2
+?t0 ?x <owl:onProperty> ?p ?t1 ?t2
+?t0 ?u <rdf:type> ?x ?t1 ?t2
+->
+?t0 ?u ?p ?y ?t1 ?t2
+
+
+$owl_typeBySomeVal
+?t0 ?q <rdf:type> ?c ?t1 ?t2
+?t0 ?r <owl:onProperty> ?p ?t1 ?t2
+?t0 ?r <owl:someValuesFrom> ?c ?t1 ?t2
+?t0 ?i ?p ?q ?t1 ?t2
+->
+?t0 ?i <rdf:type> ?r ?t1 ?t2
+
+
+$owl_subClassByInters1
+?t0 ?c <owl:intersectionOf> ?x ?t1 ?t2
+?t0 ?x <rdf:first> ?y ?t1 ?t2
+->
+?t0 ?c <rdfs:subClassOf> ?x ?t1 ?t2
+?t0 ?c <rdfs:subClassOf> ?y ?t1 ?t2
+
+
+$owl_subClassByInters2
+?t0 ?x <rdf:rest> ?y ?t1 ?t2
+?t0 ?c <owl:intersectionOf> ?x ?t1 ?t2
+->
+?t0 ?x <owl:intersectionOf> ?y ?t1 ?t2
+@test
+?y != <rdf:nil>
+
+
+$owl_typeByIntersect_1
+?t0 ?b <rdf:first> ?c ?t1 ?t2
+?t0 ?b <rdf:rest> <rdf:nil> ?t1 ?t2
+?t0 ?z <owl:intersectionOf> ?b ?t1 ?t2
+?t0 ?i <rdf:type> ?c ?t1 ?t2
+->
+?t0 ?i <rdf:type> ?b ?t1 ?t2
+
+
+$owl_typeByIntersect_2
+?t0 ?b <rdf:first> ?c ?t1 ?t2
+?t0 ?i <rdf:type> ?c ?t1 ?t2
+?t0 ?i <rdf:type> ?b ?t1 ?t2
+?t0 ?n <owl:intersectionOf> ?b ?t1 ?t2
+->
+?t0 ?i <rdf:type> ?n ?t1 ?t2

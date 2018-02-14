@@ -1,15 +1,21 @@
 package de.dfki.lt.hfc;
 
-import gnu.trove.set.hash.TCustomHashSet;
-import gnu.trove.set.hash.THashSet;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
-import static de.dfki.lt.hfc.TestUtils.getResource;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+import gnu.trove.set.hash.*;
+
+import static de.dfki.lt.hfc.runnable.Utils.*;
 
 
 public class CalcTest {
@@ -208,7 +214,7 @@ public class CalcTest {
     varconstIneqs1.add(2);
     assertFalse(varvarIneqs1.isEmpty());//the arrays are not empty
     assertFalse(varconstIneqs1.isEmpty());//the arrays are not empty
-    Namespace namespace = new Namespace(getResource("default.ns"));
+    Namespace namespace = new Namespace(getTestResource("default.ns"), false);
     TupleStore tuple = new TupleStore(3, 2);
     BindingTable bt1 = new BindingTable(tuple);
     //Calc.restrict(bt1, varvarIneqs1, varconstIneqs1);// Null pointer exception

@@ -13,6 +13,8 @@ public final class XsdBoolean extends XsdAnySimpleType {
 
   static {
     registerConstructor(XsdBoolean.class, SHORT_NAME, LONG_NAME);
+    registerConverter(Boolean.class, XsdBoolean.class);
+    registerConverter(boolean.class, XsdBoolean.class);
   }
 
   public boolean value;
@@ -23,6 +25,13 @@ public final class XsdBoolean extends XsdAnySimpleType {
 	public XsdBoolean(boolean value) {
 		this.value = value;
 	}
+
+  /**
+   * @param value a Java boolean representation of an XSD boolean
+   */
+  public XsdBoolean(Boolean value) {
+    this.value = value;
+  }
 
 	/**
 	 * @param value a Java string, representing an XSD boolean, e.g., "\"true\"^^<xsd:boolean>"

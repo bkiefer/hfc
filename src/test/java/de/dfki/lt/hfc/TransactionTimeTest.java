@@ -1,13 +1,13 @@
 package de.dfki.lt.hfc;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import de.dfki.lt.hfc.runnable.Utils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 
 /**
  * a first test of our approach towards mimicing transaction time in
@@ -40,7 +40,7 @@ public class TransactionTimeTest {
     return Utils.getTestResource("TestTransactionTime", name);
   }
 
-  @BeforeClass
+  @BeforeAll
   public static void init() throws Exception {
     fc =	new ForwardChainer(
       4,                                                                   // #cores
@@ -77,7 +77,7 @@ public class TransactionTimeTest {
     fc.uploadRules(getResource("pal.polarity.transtime.long.quintuple.eqred.rdl"));
   }
 
-  @AfterClass
+  @AfterAll
   public static void finish() {
     fc.shutdownNoExit();
   }
@@ -85,7 +85,7 @@ public class TransactionTimeTest {
   @Test
   public void test() throws QueryParseException {
     fc.computeClosure();
-    Query q = new Query(fc);
+    Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT * WHERE ?s ?p ?o");  // 0 triples
     assertEquals(0, bt.size());
     bt = q.query("SELECT * WHERE ?s ?p ?o ?ts");  // 0 quadruples

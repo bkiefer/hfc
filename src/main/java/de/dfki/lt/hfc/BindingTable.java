@@ -192,7 +192,7 @@ public class BindingTable {
   /**
    * given an external name, this method returns the position (an int)
    * of the column which is headed by externalName;
-   * in case externalName is not a Valid table heading, -1 is returned!
+   * in case externalName is not a valid table heading, -1 is returned!
    */
   public int obtainPosition(String externalName) {
     Set<Map.Entry<Integer, String>> iname2ename = this.nameToExternalName.entrySet();
@@ -393,7 +393,7 @@ public class BindingTable {
 	}
 
 	/**
-	 * given a tuple that ontologyContainsTuple a proxy at position pos, generate copies of
+	 * given a tuple that contains a proxy at position pos, generate copies of
 	 * this tuple that only differ by replacing the proxy through its equivalences
 	 */
 	private void expandTuple(int[] tuple,
@@ -427,8 +427,8 @@ public class BindingTable {
 
   /**
    * this implementation of iterator() might reorder the sequence of elements in a
-   * tuple, depending on the sequence of variable names, given by parameter indexToVariable;
-   * in case indexToVariable.length < tuple.length, the nextXXX() method also implement a kind
+   * tuple, depending on the sequence of variable names, given by parameter vars;
+   * in case vars.length < tuple.length, the nextXXX() method also implement a kind
    * of table projection, however, _without_ removing potential duplicate elements!
    * by using this method (instead of the above nullary method), one can be certain
    * that the order of specified column headings is kept (which is not guaranteed for
@@ -440,9 +440,9 @@ public class BindingTable {
    * a header variable multiple times!
    */
   public BindingTableIterator iterator(String ... vars) throws BindingTableIteratorException {
-    // check whether indexToVariable refers to _legal_ variables, i.e., check whether each
-    // variable from indexToVariable refers to one of the columns from the binding table
-    // and keep the sequence of variables from indexToVariable in the tuple that is returned
+    // check whether vars refers to _legal_ variables, i.e., check whether each
+    // variable from vars refers to one of the columns from the binding table
+    // and keep the sequence of variables from vars in the tuple that is returned
     if (this.size() == 0) return this.iterator();
     final Collection<String> allVars = this.nameToExternalName.values();
     for (String var : vars)
@@ -465,7 +465,7 @@ public class BindingTable {
      * if null, next(), nextAsXsdType(), nextAsString(), and nextAsObject() keep the
      * original sequence of the elements of the individual tuples;
      * otherwise, the elements of the returned tuples are reordered according to the
-     * sequence given by indexToVariable in BindingTableIterator()
+     * sequence given by vars in BindingTableIterator()
      */
     private int[] varPos;
 
@@ -486,11 +486,11 @@ public class BindingTable {
     }
 
     /**
-     * is called by BindingTable.iterator(String ... indexToVariable) and the sequence of indexToVariable are recorded
+     * is called by BindingTable.iterator(String ... vars) and the sequence of vars are recorded
      */
     private BindingTableIterator(String[] vars) {
       this();
-      // compute the positions for the column headings of interest, given by indexToVariable
+      // compute the positions for the column headings of interest, given by vars
       this.varPos = new int[vars.length];
       // construct the inverse mapping (external name -> internal name)
       final HashMap<String, Integer> externalNameToName = new HashMap<String, Integer>();
@@ -517,7 +517,7 @@ public class BindingTable {
 
     /**
      * return the next element in the iteration (an int[]), but consider only the columns
-     * listed in this.indexToVariable in that order, if specified;
+     * listed in this.vars in that order, if specified;
      * this method is used by the below three nextXXX() methods;
      */
     public int[] next() {

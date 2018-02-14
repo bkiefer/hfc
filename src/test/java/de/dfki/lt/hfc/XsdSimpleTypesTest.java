@@ -1,11 +1,11 @@
 package de.dfki.lt.hfc;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import de.dfki.lt.hfc.types.*;
 

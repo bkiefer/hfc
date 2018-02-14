@@ -100,7 +100,7 @@ public final class AggregateRegistry {
 		}
 		catch (Exception e) {
 			if (AggregateRegistry.EXIT_WHEN_REGISTRATION_FAILS)
-				System.exit(1);
+				throw new RuntimeException("FATAL ERROR");
 			else
 				System.out.println("  registering aggregate " + className + " fails");
 			return null;

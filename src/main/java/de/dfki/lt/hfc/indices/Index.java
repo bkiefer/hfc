@@ -1,7 +1,6 @@
 package de.dfki.lt.hfc.indices;
 
 import de.dfki.lt.hfc.types.AnyType;
-import de.dfki.lt.streamreasoning.StreamReasoner;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -15,7 +14,7 @@ import org.apache.log4j.Logger;
  * An index is used to significantly speed-up the query processing, which is especially useful for reasoning on streams.
  *
  * @see de.dfki.lt.hfc.Query
- * @see StreamReasoner
+ *
  * Created by christian on 21/12/16.
  */
 public abstract class Index<Key extends AnyType> {

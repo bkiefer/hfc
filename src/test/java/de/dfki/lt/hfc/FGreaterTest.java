@@ -1,13 +1,13 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.Utils.*;
-import static org.junit.Assert.*;
+import static de.dfki.lt.hfc.runnable.Utils.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public final class FGreaterTest {
 
@@ -39,10 +39,10 @@ public final class FGreaterTest {
         .checkAndRegister("de.dfki.lt.hfc.operators.FGreater");
 
     // do operation
-    assertEquals("0.01 > 0.02", FunctionalOperator.FALSE, fop.apply(ids));
-    Utils.reverse(ids);
-    assertEquals("0.02 > 0.01", FunctionalOperator.TRUE, fop.apply(ids));
+    assertEquals(FunctionalOperator.FALSE, fop.apply(ids),"0.01 > 0.02");
+    reverse(ids);
+    assertEquals( FunctionalOperator.TRUE, fop.apply(ids), "0.02 > 0.01");
     ids[0] = ids[1];
-    assertEquals("0.01 > 0.01", FunctionalOperator.FALSE, fop.apply(ids));
+    assertEquals( FunctionalOperator.FALSE, fop.apply(ids), "0.01 > 0.01");
   }
 }

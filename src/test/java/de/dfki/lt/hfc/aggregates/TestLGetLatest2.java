@@ -1,8 +1,7 @@
 package de.dfki.lt.hfc.aggregates;
 
-import static de.dfki.lt.hfc.TestUtils.checkResult;
+import static de.dfki.lt.hfc.runnable.Utils.checkResult;
 import static de.dfki.lt.hfc.aggregates.TestLGetLatest.getResource;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,6 +11,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import de.dfki.lt.hfc.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestLGetLatest2 {
   static ForwardChainer fc;
@@ -106,6 +106,7 @@ public class TestLGetLatest2 {
         + " & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long>"
         + " AGGREGATE ?dialact ?time = LGetLatest2 ?da ?t ?t \"4\"^^<xsd:int>");
     checkResult(fc, bt, expected, "?dialact", "?time");
+    //System.out.println(bt);
   }
 
   @Test
@@ -120,6 +121,7 @@ public class TestLGetLatest2 {
         + " & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long>"
         + " AGGREGATE ?dialact ?time = LGetLatest2 ?da ?t ?t \"3\"^^<xsd:int>");
     checkResult(fc, bt, expected, "?dialact", "?time");
+    //System.out.println(bt);
   }
 
   @Test
@@ -133,6 +135,7 @@ public class TestLGetLatest2 {
         + " & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long>"
         + " AGGREGATE ?dialact ?time = LGetLatest2 ?da ?t ?t \"2\"^^<xsd:int>");
     checkResult(fc, bt, expected, "?dialact", "?time");
+    //System.out.println(bt);
   }
 
   @Test
@@ -145,7 +148,6 @@ public class TestLGetLatest2 {
         + " & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long>"
         + " AGGREGATE ?dialact ?time = LGetLatest2 ?da ?t ?t \"1\"^^<xsd:int>");
     checkResult(fc, bt, expected, "?dialact", "?time");
-   System.out.println(bt);
   }
 
   @Test
@@ -178,7 +180,6 @@ public class TestLGetLatest2 {
         + " & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"548\"^^<xsd:long>"
         + " AGGREGATE ?dialact = LGetLatest2 ?da ?t \"3\"^^<xsd:int>");
     checkResult(fc, bt, expected, "?dialact");
-   System.out.println(bt);
   }
 
   @Test

@@ -13,6 +13,8 @@ public final class XsdInt extends XsdAnySimpleType {
 
   static {
     registerConstructor(XsdInt.class, SHORT_NAME, LONG_NAME);
+    registerConverter(int.class, XsdInt.class);
+    registerConverter(Integer.class, XsdInt.class);
   }
 
 	public int value;
@@ -23,6 +25,13 @@ public final class XsdInt extends XsdAnySimpleType {
 	public XsdInt(int value) {
 		this.value = value;
 	}
+
+  /**
+   * @param value a Java int representation of an XSD int
+   */
+  public XsdInt(Integer value) {
+    this.value = value;
+  }
 
 	/**
 	 * @param value a string, representing an XSD int, e.g., "\"42\"^^<xsd:int>"

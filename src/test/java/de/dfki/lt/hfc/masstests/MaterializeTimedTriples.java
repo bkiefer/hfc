@@ -1,6 +1,5 @@
 package de.dfki.lt.hfc.masstests;
 
-import de.dfki.lt.hfc.*;
 import de.dfki.lt.hfc.ForwardChainer;
 
 public class MaterializeTimedTriples {

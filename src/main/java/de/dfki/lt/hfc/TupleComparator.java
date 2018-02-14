@@ -13,7 +13,10 @@ import java.util.*;
 public final class TupleComparator implements Comparator<int[]> {
 	
 	private int[][] columns;
-
+	
+	private int which0 = 0;
+	private int which1 = 0;
+	
 	public TupleComparator(Set<Integer> commonVars,
 												 Map<Integer, Integer> va0,
 												 Map<Integer, Integer> va1) {
@@ -33,11 +36,23 @@ public final class TupleComparator implements Comparator<int[]> {
 		}
 	}
 
+	/*
+	public int compare(int[] tuple0, int[] tuple1) {
+		int[] col0 = columns[which0];
+		int[] col1 = columns[which1];
+		// the i's represent the vars!
+		for (int i = 0; i < col0.length; ++i) {
+			if (tuple0[col0[i]] < tuple1[col1[i]]) return -1;
+			if (tuple0[col0[i]] > tuple1[col1[i]]) return 1;
+		}
+		return 0;
+	}
+	 */
 
 	public int compare(int[] tuple0, int[] tuple1) {
 		int[] col0 = columns[0];
 		int[] col1 = columns[1];
-		// the i's represent the indexToVariable!
+		// the i's represent the vars!
 		int diff;
 		for (int i = 0; i < col0.length; ++i) {
 			diff = tuple0[col0[i]] - tuple1[col1[i]];
@@ -68,6 +83,12 @@ public final class TupleComparator implements Comparator<int[]> {
 		}
 		return 0;
 	}
-
+  
+  /*
+	public void setWhich(int wh0, int wh1) {
+		which0 = wh0;
+		which1 = wh1;
+	}
+   */
 
 }

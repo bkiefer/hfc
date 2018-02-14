@@ -36,7 +36,7 @@ public abstract class Relation {
 	 * array where the variable names are replaced by the positions in the
 	 * binding table to which the relation is applied;
 	 * note that this mapping must be established w.r.t. to such a table and
-	 * is only Valid when this relation is applied;
+	 * is only valid when this relation is applied;
 	 * note further that the positions are encoded by _negative_ ints in order
 	 * to distinguish them from the literals (positive ints)
 	 */

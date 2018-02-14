@@ -1,12 +1,12 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.Utils.*;
-import static org.junit.Assert.*;
+import static de.dfki.lt.hfc.runnable.Utils.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public final class ISumTest {
 
@@ -64,8 +64,8 @@ public final class ISumTest {
 
     // do operation
     t_ids[1] = fop.apply(ids);
-    assertEquals("100 + 80 = 180", FunctionalOperator.TRUE, feq.apply(t_ids));
+    assertEquals( FunctionalOperator.TRUE, feq.apply(t_ids), "100 + 80 = 180");
     f_nids[1] = fop.apply(nids);
-    assertEquals("100 + 70 != 180", FunctionalOperator.FALSE, feq.apply(f_nids));
+    assertEquals( FunctionalOperator.FALSE, feq.apply(f_nids),"100 + 70 != 180");
   }
 }

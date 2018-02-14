@@ -62,8 +62,6 @@ import java.util.*;
  *     in principle, it would suffice to hand over a _single_ binding table with 4 columns,
  *     viz, ??(s p o c), but this is not as compact as working with ??(s p o) _and_ ??(p c)
  *
- * @return args[0], the modified input binding table, corresponding to subject predicate object
- *
  * @see RelationalOperator
  *
  * @author (C) Hans-Ulrich Krieger

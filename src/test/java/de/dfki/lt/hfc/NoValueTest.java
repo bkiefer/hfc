@@ -1,11 +1,12 @@
 package de.dfki.lt.hfc;
-import static org.junit.Assert.*;
+import static de.dfki.lt.hfc.runnable.Utils.checkResult;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import de.dfki.lt.hfc.runnable.Utils;
 
-import static de.dfki.lt.hfc.Utils.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 
 public class NoValueTest {
   static ForwardChainer fc;
@@ -14,7 +15,7 @@ public class NoValueTest {
     return Utils.getTestResource("NoValue", name);
   }
 
-  @BeforeClass
+  @BeforeAll
   public static void init() throws Exception {
 
     fc =  new ForwardChainer(4,                                                    // #cores
@@ -73,7 +74,7 @@ public class NoValueTest {
     checkResult(expected, bt, bt.getVars());
   }
 
-  @AfterClass
+  @AfterAll
   public static void finish() {
     fc.shutdownNoExit();
   }

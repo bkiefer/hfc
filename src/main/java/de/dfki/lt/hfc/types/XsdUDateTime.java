@@ -35,13 +35,14 @@ package de.dfki.lt.hfc.types;
  */
 public final class XsdUDateTime extends XsdAnySimpleType {
   public final static String NAME = "uDateTime";
+
   public final static XsdUDateTime minValue = new XsdUDateTime(0,0,0,0,0,0);
   public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
   public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
 
   static {
     registerConstructor(XsdUDateTime.class,
-        SHORT_NAME, LONG_NAME);
+        null, SHORT_NAME, LONG_NAME);
   }
 
 	/**

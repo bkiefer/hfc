@@ -1,14 +1,14 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.Utils.*;
+import static de.dfki.lt.hfc.runnable.Utils.*;
 import de.dfki.lt.hfc.types.XsdString;
 import de.dfki.lt.hfc.types.XsdBoolean;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Christophe Biwer, christophe.biwer@dfki.de

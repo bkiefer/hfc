@@ -153,7 +153,7 @@ public class RdfGraph {
       return null;
     if (Literal.isXsdAtom(literal))
       return null;
-    // ontologyContainsTuple() via getValues() suffices here as we do _not_ allow for null values
+    // contains() via getValues() suffices here as we do _not_ allow for null values
     return ((UriProxy)(literal)).getValues(predicate);
   }
 

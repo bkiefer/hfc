@@ -77,11 +77,10 @@ public final class TupleStore {
 	 * @see ForwardChainer.enableTupleDeletion()
 	 */
 	protected TCustomHashMap<int[], Integer> tupleToGeneration = null;
+	public IndexStore indexStore;
 
 
-
-
-    /**
+	/**
 	 * @return true iff tuple deletion has been enabled by method ForwardChainer.enableTupleDeletion()
 	 * @return false otherwise
 	 *
@@ -220,21 +219,28 @@ public final class TupleStore {
 	private int currentId = 0;
 
 	/**
+	 * When reading multiple files, blank nodes in different files might have the
+	 * same name. To make it less likely there is a clash of blank node names, we
+	 * use this id generator to append a unique id for each round of reading.
+	 * TODO: this is not 100% safe.
+	 */
+	private int blankNodeSuffixNo = 0;
+	private String blankNodeSuffix = null;
+
+	/**
 	 * a namespace object used to expand short form namespaces into full forms
 	 */
 	public Namespace namespace;
 
-	public final IndexStore indexStore;
-
 	/**
 	 * used during input, when URIs, blank nodes, or XSD atoms are replaced by their IDs (ints)
 	 */
-	public HashMap<String, Integer> objectToId;
+	protected HashMap<String, Integer> objectToId;
 
 	/**
 	 * used during output, when IDs (ints) are replaced by URI or XSD names
 	 */
-    public ArrayList<String> idToObject;
+	protected ArrayList<String> idToObject;
 
 	/**
 	 * a mapping used by tests & actions to speed up processing
@@ -273,9 +279,7 @@ public final class TupleStore {
 	 * the tuple store as an internal state, we automatically constructs a new
 	 * registry every time a new tuple store is build
 	 */
-    protected OperatorRegistry operatorRegistry = new OperatorRegistry(this);
-
-
+	protected OperatorRegistry operatorRegistry = new OperatorRegistry(this);
 
 	/**
 	 * this registry object gathers the aggregational operators potentially used
@@ -1261,6 +1265,7 @@ public final class TupleStore {
 		return internalizeTuple(extendTupleExternally(in, front, backs));
 	}
 
+
 	/**
 	 * readTuples() reads in a sequence of tuples from a text file;
 	 * tuples must be finished in a _single_ line, constrained by the following
@@ -1298,67 +1303,68 @@ public final class TupleStore {
 	 *   <huk> <hasName> _:foo42 .
 	 *   _:foo42 <firstName> "Uli" .
 	 *   _:foo42 <lastName> "Krieger" .
-		*
-		* @param br
-		* @param front use null to indicate that there is no front element
-		* @param backs use an empty String array that there are no back elements
-		* @throws IOException
+	 *
+	 * @param br
+	 * @param front use null to indicate that there is no front element
+	 * @param backs use an empty String array that there are no back elements
+	 * @throws IOException
 	 * @throws WrongFormatException
 	 *
 	 */
-	public void readTuples(BufferedReader br, String front, String... backs) throws IOException, WrongFormatException {
+	private void readTuplesReally(BufferedReader br, String front, String... backs)
+			throws IOException, WrongFormatException {
 		String line, token;
 		StringTokenizer st;
 		int noOfTuples = 0, lineNo = 0;
 		ArrayList<String> tuple = new ArrayList<String>();
 		boolean eol = true;
 		while ((line = br.readLine()) != null) {
-				// strip of spaces at begin and end of line
-				line = line.trim();
-				++lineNo;
-				// empty lines are NOT recognized as tuples of length 0
-				if (line.length() == 0)
+			// strip of spaces at begin and end of line
+			line = line.trim();
+			++lineNo;
+			// empty lines are NOT recognized as tuples of length 0
+			if (line.length() == 0)
+				continue;
+			// skip comments
+			if (line.startsWith("#"))
+				continue;
+			// generate a string tuple representation for each line;
+			// note: variables are not allowed in ground tuples (facts)
+			st = new StringTokenizer(line, " <>_\"\\", true);
+			tuple.clear();
+			// iterate over the tokens of the tuple
+			while (st.hasMoreTokens()) {
+				token = st.nextToken();
+				if (token.equals("<"))
+					parseURI(st, tuple);
+				else if (token.equals("_"))
+					parseBlankNode(st, tuple);
+				else if (token.equals("\""))
+					parseAtom(st, tuple);
+				else if (token.equals(" "))  // keep on parsing ...
 					continue;
-				// skip comments
-				if (line.startsWith("#"))
-					continue;
-				// generate a string tuple representation for each line;
-				// note: variables are not allowed in ground tuples (facts)
-        st = new StringTokenizer(line, " <>_\"\\", true);
-				tuple.clear();
-				// iterate over the tokens of the tuple
-				while (st.hasMoreTokens()) {
-					token = st.nextToken();
-					if (token.equals("<"))
-						parseURI(st, tuple);
-					else if (token.equals("_"))
-						TupleStore.parseBlankNode(st, tuple);
-					else if (token.equals("\""))
-						parseAtom(st, tuple);
-					else if (token.equals(" "))  // keep on parsing ...
-						continue;
 					// next is optional: tuple needs not end in '.', end of line is also OK
-					else if (token.equals("."))
-						break;
+				else if (token.equals("."))
+					break;
 					// something has gone wrong during read in
-					else {
-						eol = sayItLoud(lineNo, ": tuple misspelled");
-						break;
-					}
+				else {
+					eol = sayItLoud(lineNo, ": tuple misspelled");
+					break;
 				}
-				if (eol) {
-					// now add one potential front element and further potential back elements;
-					// but check whether (front == null) & (backs.length == 0) in order to avoid a
-					// useless copy of 'tuple'
-					if ((front != null) || (backs.length != 0))
-						tuple = extendTupleExternally(tuple, front, backs);
-					// external tuple representation might be misspelled or the tuple is already contained
-					if (addTuple(tuple, lineNo) != null)
-						++noOfTuples;  // everything was fine
-				}
-				else
-					eol = true;
 			}
+			if (eol) {
+				// now add one potential front element and further potential back elements;
+				// but check whether (front == null) & (backs.length == 0) in order to avoid a
+				// useless copy of 'tuple'
+				if ((front != null) || (backs.length != 0))
+					tuple = extendTupleExternally(tuple, front, backs);
+				// external tuple representation might be misspelled or the tuple is already contained
+				if (addTuple(tuple, lineNo) != null)
+					++noOfTuples;  // everything was fine
+			}
+			else
+				eol = true;
+		}
 		if (this.verbose) {
 			System.out.println("\n  read " + noOfTuples + " proper tuples");
 			System.out.println("  overall " + this.allTuples.size() + " unique tuples");
@@ -1388,6 +1394,18 @@ public final class TupleStore {
 				System.out.println("  number of all tuples: " + this.allTuples.size() + "\n");
 			}
 		}
+	}
+
+
+	public void readTuples(BufferedReader br, String front, String... backs)
+	    throws IOException, WrongFormatException {
+	  try {
+	    blankNodeSuffix = String.format("%0,3d", blankNodeSuffixNo);
+	    ++blankNodeSuffixNo;
+	    readTuplesReally(br, front, backs);
+	  } finally {
+	    blankNodeSuffix = null;
+	  }
 	}
 
 	/**

@@ -1,6 +1,6 @@
 package de.dfki.lt.hfc;
 
-import org.junit.jupiter.api.Test;
+import static de.dfki.lt.hfc.runnable.Utils.getTestResource;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import static de.dfki.lt.hfc.TestUtils.getResource;
+import org.junit.jupiter.api.Test;
+
 
 public class RuleComparatorTest {
 
@@ -16,7 +17,7 @@ public class RuleComparatorTest {
   //TODO
   public void testRuleComparator() throws FileNotFoundException, WrongFormatException, IOException {
     //test method compare(Rule rule1, Rule rule2)
-    Namespace namespace = new Namespace(getResource("default.ns"));
+    Namespace namespace = new Namespace(getTestResource("default.ns"), false);
     TupleStore ts = new TupleStore(1, 3, namespace);
     RuleStore rs = new RuleStore(ts);
     int[][] ante = new int[1][2];

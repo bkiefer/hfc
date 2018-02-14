@@ -2,13 +2,13 @@ package de.dfki.lt.hfc.masstests;
 
 import de.dfki.lt.hfc.ForwardChainer;
 import de.dfki.lt.hfc.WrongFormatException;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
 
-import static de.dfki.lt.hfc.Utils.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
-import org.junit.Test;
-
-import java.io.*;
+import static de.dfki.lt.hfc.TestUtils.getResource;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -22,10 +22,10 @@ public class AddSameAs {
       throws FileNotFoundException, WrongFormatException, IOException {
     ForwardChainer fc = new ForwardChainer(16,
         false, false, eqRed, 3, 5, 100000, 500000,
-        getTestResource(eqRed ? "default.eqred.nt" : "default.nt"),
-        getTestResource(eqRed ? "default.eqred.rdl" : "default.rdl"),
-        getTestResource("AddSameAs", "default.sameAs.test.ns"));
-    fc.uploadTuples(getTestResource("ltworld.jena.nt"));
+        getResource(eqRed ? "default.eqred.nt" : "default.nt"),
+        getResource(eqRed ? "default.eqred.rdl" : "default.rdl"),
+        getResource("default.sameAs.test.ns"));
+    fc.uploadTuples(getResource("ltworld.jena.nt"));
     fc.computeClosure();
     return fc;
   }

@@ -1,6 +1,25 @@
 package de.dfki.lt.hfc;
 
+import java.io.*;
 import java.util.*;
+import gnu.trove.*;
+
+
+// TO DO --- IMPLEMENTATION NOTE
+//
+// in order to implement SPARQL's
+//   ORDER BY
+// option in HFC's QDL, the standard BindingTable implementation will not work, as the
+// BindingTable.table implementation is of type Set<int[]> and the output of a query,
+// such as
+//   SELECT ?da
+//   WHERE ?da <rdf:type> <dafn:DialogueAct> &
+//   ?da <dafn:sender> <hst:i_myself> &
+//   ?da <dafn:time> ?time
+//   ORDER BY DESC(?time)
+// no longer has access to ?time in the SELECT;
+// solution: make sure that BindingTable.table is a SortedSet before TROVE's projection
+//           takes place -- not sure whether this will work
 
 import de.dfki.lt.hfc.qrelations.QRelation;
 import de.dfki.lt.hfc.qrelations.QRelationFactory;

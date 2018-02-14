@@ -1,13 +1,13 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.Utils.*;
-import static org.junit.Assert.*;
+import static de.dfki.lt.hfc.runnable.Utils.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
 public class TupleStoreTest {
@@ -83,7 +83,7 @@ public class TupleStoreTest {
   public void testputObject() {
     TupleStore objecttotest = new TupleStore(3, 5);
     int id = objecttotest.putObject("www.bbc.com");
-    assertFalse("Compare the returned id with zero", 0 == id);
+    assertFalse( 0 == id, "Compare the returned id with zero");
     assertEquals(objecttotest.putObject("www.bbc.com"), id);
   }
 

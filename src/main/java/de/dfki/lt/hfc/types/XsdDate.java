@@ -1,6 +1,6 @@
 package de.dfki.lt.hfc.types;
 
-import java.util.BitSet;
+import java.util.Date;
 
 /**
  * an encoding of the XSD date format "[+|-]yyyy-MM-dd" including negative
@@ -43,6 +43,15 @@ public final class XsdDate extends XsdAnySimpleType {
 	 * I represent the sign in a separate boolean field
 	 */
 	public int year, month, day;
+
+	/**
+	 *
+	 */
+	public XsdDate(Date d) {
+		this.year = d.getYear();
+		this.month = d.getMonth();
+		this.day = d.getDay();
+	}
 
 	/**
 	 *

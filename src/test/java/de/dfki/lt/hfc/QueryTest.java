@@ -24,16 +24,16 @@ public class QueryTest {
   @BeforeEach
   void setUp() throws IOException, WrongFormatException {
     fc =  new ForwardChainer(4,                                                    // #cores
-        true,                                                    // verbose
-        false,                                                   // RDF Check
-        false,                                                 // EQ reduction disabled
-        3,                                                    // min #args
-        4,                                                    // max #args
-        100000,                                                 // #atoms
-        500000,                                                 // #tuples
-        getResource("default.nt"),                                  // tuple file
-        getResource("default.rdl"),                                 // rule file
-        getResource("default.ns")                                   // index file
+            true,                                                    // verbose
+            false,                                                   // RDF Check
+            false,                                                 // EQ reduction disabled
+            3,                                                    // min #args
+            4,                                                    // max #args
+            100000,                                                 // #atoms
+            500000,                                                 // #tuples
+            getResource("default.nt"),                                  // tuple file
+            getResource("default.rdl"),                                 // rule file
+            getResource("default.ns")                                   // index file
     );
     fc.uploadTuples(getResource("test.child.labvalues.nt"));
   }
@@ -60,13 +60,13 @@ public class QueryTest {
   @Test
   void query_Invalid_SELECT() throws QueryParseException {
     Query query = new Query(fc.tupleStore);
-      assertThrows(QueryParseException.class, () -> query.query("SELECT "));
-      assertThrows(QueryParseException.class, () -> query.query("SELECT DISTINCT"));
+    assertThrows(QueryParseException.class, () -> query.query("SELECT "));
+    assertThrows(QueryParseException.class, () -> query.query("SELECT DISTINCT"));
     assertThrows(QueryParseException.class, () -> query.query("?o WHERE ?s <rdf:type> ?o"));
     assertThrows(QueryParseException.class, () -> query.query("DISTINCT ?o WHERE ?s <rdf:type> ?o"));
-      assertThrows(QueryParseException.class, () -> query.query("SELECT FILTER ?s <rdf:type> ?o"));
-      assertThrows(QueryParseException.class, () -> query.query("SELECT ?s <rdf:type> ?o"));
-      assertThrows(QueryParseException.class, () -> query.query("SELECT *"));
+    assertThrows(QueryParseException.class, () -> query.query("SELECT FILTER ?s <rdf:type> ?o"));
+    assertThrows(QueryParseException.class, () -> query.query("SELECT ?s <rdf:type> ?o"));
+    assertThrows(QueryParseException.class, () -> query.query("SELECT *"));
     assertThrows(QueryParseException.class, () -> query.query("SELECT WHERE ?s <rdf:type> ?o"));
   }
 
@@ -80,30 +80,30 @@ public class QueryTest {
     assertThrows(QueryParseException.class, () -> query.query("SELECT * ?s WHERE ?s <rdf:type> ?o"));
   }
 
-    @Test
-    public void testSingleIntervalErrors(){
-        TupleStore tupleStore = new TupleStore(2, 5);
-        Query query = new Query(tupleStore);
-        // inputs which should  lead to QueryParseExeptions
-        assertThrows(QueryParseException.class, () -> query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o [\"(1,2)\"^^<xsd:2DPoint>, \"(1,2)\"^^<xsd:2DPoint>]"));
-        assertThrows(QueryParseException.class, () ->  query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o [\"1\"^^<xsd:long>]"));
-        assertThrows(QueryParseException.class, () ->  query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o [ ]"));
-        assertThrows(QueryParseException.class, () ->  query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o [ , ]"));
-        assertThrows(QueryParseException.class, () ->  query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o [\"1\"^^<xsd:long>, \"1\"^^<xsd:long>, \"1\"^^<xsd:long>]"));
-        assertThrows(QueryParseException.class, () ->  query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o [\"1\"^^<xsd:long>, \"1\"^^<xsd:long>}"));
+  @Test
+  public void testSingleIntervalErrors(){
+    TupleStore tupleStore = new TupleStore(2, 5);
+    Query query = new Query(tupleStore);
+    // inputs which should  lead to QueryParseExeptions
+    assertThrows(QueryParseException.class, () -> query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o [\"(1,2)\"^^<xsd:2DPoint>, \"(1,2)\"^^<xsd:2DPoint>]"));
+    assertThrows(QueryParseException.class, () ->  query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o [\"1\"^^<xsd:long>]"));
+    assertThrows(QueryParseException.class, () ->  query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o [ ]"));
+    assertThrows(QueryParseException.class, () ->  query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o [ , ]"));
+    assertThrows(QueryParseException.class, () ->  query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o [\"1\"^^<xsd:long>, \"1\"^^<xsd:long>, \"1\"^^<xsd:long>]"));
+    assertThrows(QueryParseException.class, () ->  query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o [\"1\"^^<xsd:long>, \"1\"^^<xsd:long>}"));
 
-    }
+  }
 
-    @Test
-    public void testIntervalRelationsErrors(){
-        TupleStore tupleStore = new TupleStore(2, 5);
-        Query query = new Query(tupleStore);
+  @Test
+  public void testIntervalRelationsErrors(){
+    TupleStore tupleStore = new TupleStore(2, 5);
+    Query query = new Query(tupleStore);
 
-        assertThrows(QueryParseException.class, () ->  query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o FOO  \"1\"^^<xsd:date> , \"2\"^^<xsd:date>"));
-        assertThrows(QueryParseException.class, () ->  query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o F"));
-        assertThrows(QueryParseException.class, () ->  query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o F  \"1\"^^<xsd:long>  \"2\"^^<xsd:long>  \"1\"^^<xsd:long>"));
+    assertThrows(QueryParseException.class, () ->  query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o FOO  \"1\"^^<xsd:date> , \"2\"^^<xsd:date>"));
+    assertThrows(QueryParseException.class, () ->  query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o F"));
+    assertThrows(QueryParseException.class, () ->  query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o F  \"1\"^^<xsd:long>  \"2\"^^<xsd:long>  \"1\"^^<xsd:long>"));
 
-    }
+  }
 
   @Test
   void query_Invalid_Filter(){
@@ -138,7 +138,7 @@ public class QueryTest {
   @Test
   void query_SELECT_WHERE() throws QueryParseException {
     String[][] expected = {{"<pal:labval22>"},{"<pal:labval22>"}, {"<pal:labval33>"},
-{"<pal:labval33>"}};
+            {"<pal:labval33>"}};
     Query query = new Query(fc.tupleStore);
     BindingTable bt = query.query("SELECT ?s WHERE ?s <dom:bsl> ?o ?t");
     checkResult(fc, bt, expected, "?s");
@@ -146,22 +146,22 @@ public class QueryTest {
 
   @Test
   void query_SELECT_WHERE_EMPTYTABLE() throws QueryParseException {
-      Query query = new Query(fc.tupleStore);
-      BindingTable bt = query.query("SELECT ?s WHERE ?s <dom:bse> ?o ?t");
-      assertTrue(bt.isEmpty());
-      query = new Query(fc.tupleStore);
-      bt = query.query("SELECT ?s WHERE ?s \"0\"^^<xsd:long> ?o ?t");
-      assertTrue(bt.isEmpty());
+    Query query = new Query(fc.tupleStore);
+    BindingTable bt = query.query("SELECT ?s WHERE ?s <dom:bse> ?o ?t");
+    assertTrue(bt.isEmpty());
+    query = new Query(fc.tupleStore);
+    bt = query.query("SELECT ?s WHERE ?s \"0\"^^<xsd:long> ?o ?t");
+    assertTrue(bt.isEmpty());
   }
 
-    @Test
-    void query_SELECTALL_WHERE() throws QueryParseException {
-        String[][] expected = {{"<pal:labval22>"},{"<pal:labval22>"}, {"<pal:labval33>"},
-                {"<pal:labval33>"}};
-        Query query = new Query(fc.tupleStore);
-        BindingTable bt = query.query("SELECTALL ?s WHERE ?s <dom:bsl> ?o ?t");
-        checkResult(fc, bt, expected, "?s");
-    }
+  @Test
+  void query_SELECTALL_WHERE() throws QueryParseException {
+    String[][] expected = {{"<pal:labval22>"},{"<pal:labval22>"}, {"<pal:labval33>"},
+            {"<pal:labval33>"}};
+    Query query = new Query(fc.tupleStore);
+    BindingTable bt = query.query("SELECTALL ?s WHERE ?s <dom:bsl> ?o ?t");
+    checkResult(fc, bt, expected, "?s");
+  }
 
   /**
    * expected bindingTable
@@ -181,8 +181,8 @@ public class QueryTest {
     checkResult(fc, bt, expected, "?s");
     expected = new String[][]{{"<pal:labval22>"},{"<pal:labval33>"}};
     query = new Query(fc.tupleStore);
-     bt = query.query("SELECT DISTINCT ?s WHERE ?s <dom:bsl> ?o ?t & ?s <dom:weight> ?o1 ?t1");
-     checkResult(fc, bt, expected, "?s");
+    bt = query.query("SELECT DISTINCT ?s WHERE ?s <dom:bsl> ?o ?t & ?s <dom:weight> ?o1 ?t1");
+    checkResult(fc, bt, expected, "?s");
 
   }
 
@@ -192,10 +192,10 @@ public class QueryTest {
     Query query = new Query(fc.tupleStore);
     BindingTable bt = query.query("SELECT DISTINCT ?s WHERE ?s <dom:bsl> ?o ?t FILTER ?s != <pal:labval33>");
     checkResult(fc, bt, expected, "?s");
-      expected = new String[][]{{"<pal:labval22>"}};
-      query = new Query(fc.tupleStore);
-      bt = query.query("SELECT DISTINCT ?s WHERE ?s <dom:bsl> ?o ?t FILTER ?s != <pal:labval33> & ?t != \"5577\"^^<xsd:long>");
-      checkResult(fc, bt, expected, "?s");
+    expected = new String[][]{{"<pal:labval22>"}};
+    query = new Query(fc.tupleStore);
+    bt = query.query("SELECT DISTINCT ?s WHERE ?s <dom:bsl> ?o ?t FILTER ?s != <pal:labval33> & ?t != \"5577\"^^<xsd:long>");
+    checkResult(fc, bt, expected, "?s");
   }
 
   @Test
@@ -213,11 +213,11 @@ public class QueryTest {
     BindingTable bt = query.query("SELECT ?s WHERE ?s <dom:bsl> ?o ?t FILTER ?s != <pal:labval33> AGGREGATE ?number = CountDistinct ?s") ;
     checkResult(fc, bt, expected, "?number");
     //?subject = Identity ?p
-       expected = new String[][]{{"\"1\"^^<xsd:int>", "\"1\"^^<xsd:int>"}};
-      query = new Query(fc.tupleStore);
-      bt = query.query("SELECT ?s WHERE ?s <dom:bsl> ?o ?t FILTER ?s != <pal:labval33> AGGREGATE ?number = CountDistinct ?s & ?number2 = CountDistinct <pal:labval33>") ;
-      System.out.println(bt);
-      checkResult(fc, bt, expected, "?number", "?subject");
+    expected = new String[][]{{"\"1\"^^<xsd:int>", "\"1\"^^<xsd:int>"}};
+    query = new Query(fc.tupleStore);
+    bt = query.query("SELECT ?s WHERE ?s <dom:bsl> ?o ?t FILTER ?s != <pal:labval33> AGGREGATE ?number = CountDistinct ?s & ?number2 = CountDistinct <pal:labval33>") ;
+    System.out.println(bt);
+    checkResult(fc, bt, expected, "?number", "?subject");
   }
 
   @Test

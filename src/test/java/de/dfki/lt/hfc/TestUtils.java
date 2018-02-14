@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestUtils {
   private static final File testResourceDir = new File("src/test/data/");
-  private static final File resourceDir = new File("src/main/resources/");
+  private static final File resourceDir = new File("src/resources/");
   private static final File tmpDir = new File("/tmp");
 
   public static String getResource(String name) {
@@ -183,6 +183,7 @@ public class TestUtils {
       System.out.println(" },");
     }
   }
+
 
 
   public static <T> void check(BindingTableIterator it, T[][] expected,

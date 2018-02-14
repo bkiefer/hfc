@@ -1,12 +1,14 @@
 package de.dfki.lt.hfc;
 
-import gnu.trove.set.hash.TCustomHashSet;
-import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
+import org.junit.jupiter.api.Test;
+
+import gnu.trove.set.hash.*;
 
 public class AggregateRegistryTest {
 	@Test
@@ -28,6 +30,7 @@ public class AggregateRegistryTest {
 		BindingTable bt = new BindingTable(table1, nameToPos, nameToExternalName);
 		//what object to call evaluate on?
 		//?.evaluate("class", bt, nameToPos, nameToExternalName);
+    // TODO: ADD A TEST!
 	}
 
 }

@@ -40,7 +40,7 @@ import de.dfki.lt.hfc.types.XsdLong;
  * @since JDK 1.5
  * @version Thu Jan  7 17:41:55 CET 2016
  */
-public final class LGetLatest2 extends AggregationalOperator {
+public final class LGetLatest2 extends LGetTimestamped2 {
 
   /**
    * general form of the aggregate call:  ?arg1' ... ?argN' = LGetLatest ?arg1 ... ?argN ?time ?limit
@@ -48,48 +48,7 @@ public final class LGetLatest2 extends AggregationalOperator {
   public BindingTable apply(BindingTable args,
                             SortedMap<Integer, Integer> nameToPos,
                             Map<Integer, String> nameToExternalName) {
-    // use a linked hash set here to guarantee the "right" iteration ordering
-    final LinkedHashSet<int[]> resultTable = new LinkedHashSet<int[]>();
-    final BindingTable bt = new BindingTable(resultTable,
-                                             nameToPos,
-                                             nameToExternalName,
-                                             this.tupleStore);
-    // is args empty? if so, return an _empty_ result table!
-    if (args.table.size() == 0)
-      return bt;
-    // move from the set representation of the input table to an array for efficient sorting;
-    int[][] table = args.table.toArray(new int[args.table.size()][]);
-    final int rowLength = table[0].length;  // rows are of same length
-    final int sortColumnNo = rowLength - 2;
-    // supply the sort method with its own comparator
-    Arrays.sort(table, new Comparator<int[]>() {
-      public int compare(int[] t1, int[] t2) {
-        final long l1 = ((XsdLong)(getObject(t1[sortColumnNo]))).value;
-        final long l2 = ((XsdLong)(getObject(t2[sortColumnNo]))).value;
-        // we want a descending, _not_ ascending order
-        return Long.compare(l2, l1);  // an int must be returned, so (l2 - l1) won't work
-      }
-    });
-    // take the "latest" rows, given by the last argument ?limit (an XSD int)
-    // this differs from LGetLatest in that the limit relates to the time stamps,
-    // not the number of rows!
-    int limit = ((XsdInt)(getObject(table[0][rowLength - 1]))).value;
-    // check whether there are at least |limit|-many elements
-    if (limit > table.length)
-      limit = table.length;
-    long lastStamp = ((XsdLong)(getObject(table[0][sortColumnNo]))).value;
-    // no need to throw away the last two columns
-    for (int i = 0; i < table.length && limit > 0; ++i) {
-      int[] row = table[i];
-      long currentStamp = ((XsdLong)(getObject(row[sortColumnNo]))).value;
-      if (lastStamp != currentStamp) {
-        if (--limit == 0) break;
-        lastStamp = currentStamp;
-      }
-      resultTable.add(row);
-    }
-
-    return bt;
+    return applyInternal(tupleStore, args, nameToPos, nameToExternalName, true);
   }
 
 }

@@ -1,22 +1,21 @@
 package de.dfki.lt.hfc;
-import static org.junit.Assert.*;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
-import static de.dfki.lt.hfc.Utils.checkResult;
-import static de.dfki.lt.hfc.Utils.checkResult;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
+import static de.dfki.lt.hfc.runnable.Utils.checkResult;
+import static de.dfki.lt.hfc.runnable.Utils.getTestResource;
 
 
 public class ConcatenateFourTest {
   static ForwardChainer fc;
 
   private static String getResource(String name) {
-    return Utils.getTestResource("Concatenate4", name);
+    return getTestResource("Concatenate4", name);
   }
-  @BeforeClass
+  @BeforeAll
   public static void init() throws Exception {
 
     fc =  new ForwardChainer(4,                                                    // #cores
@@ -74,7 +73,7 @@ public class ConcatenateFourTest {
     checkResult(expected, bt, bt.getVars());
   }
 
-  @AfterClass
+  @AfterAll
   public static void finish() {
     fc.shutdownNoExit();
   }

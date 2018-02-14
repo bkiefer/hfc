@@ -19,6 +19,8 @@ public final class XsdLong extends XsdAnySimpleType {
 
   static {
     registerConstructor(XsdLong.class, SHORT_NAME, LONG_NAME);
+    registerConverter(long.class, XsdLong.class);
+    registerConverter(Long.class, XsdLong.class);
   }
 
 	public long value;
@@ -29,6 +31,13 @@ public final class XsdLong extends XsdAnySimpleType {
 	public XsdLong(long value) {
 		this.value = value;
 	}
+
+  /**
+   * @param value a Java long representation of an XSD long
+   */
+  public XsdLong(Long value) {
+    this.value = value;
+  }
 
 	/**
 	 * @param value a string, representing an XSD long, e.g., "\"1272539480080\"^^<xsd:long>"

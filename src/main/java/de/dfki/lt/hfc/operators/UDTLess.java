@@ -1,7 +1,6 @@
 package de.dfki.lt.hfc.operators;
 
 import de.dfki.lt.hfc.FunctionalOperator;
-import de.dfki.lt.hfc.types.XsdDateTime;
 import de.dfki.lt.hfc.types.XsdUDateTime;
 
 import java.io.*;
