@@ -4,6 +4,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import static de.dfki.lt.hfc.runnable.Utils.printExpected;
+
 public class NoValue {
   static ForwardChainer fc;
 
@@ -42,7 +44,7 @@ public class NoValue {
     };
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    TestUtils.printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
+    printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     //checkResult(expected, bt, bt.getVars());
   }
 

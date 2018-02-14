@@ -1,7 +1,6 @@
 package de.dfki.lt.hfc;
 
 import static de.dfki.lt.hfc.runnable.Utils.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.FileNotFoundException;
