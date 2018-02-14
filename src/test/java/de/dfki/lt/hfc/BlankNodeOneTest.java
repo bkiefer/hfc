@@ -1,14 +1,14 @@
 package de.dfki.lt.hfc;
 
+import static de.dfki.lt.hfc.TestUtils.checkResult;
 
 
 import de.dfki.lt.hfc.runnable.Utils;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static de.dfki.lt.hfc.runnable.Utils.*;
+
 
 public class BlankNodeOneTest {
   static ForwardChainer fc;

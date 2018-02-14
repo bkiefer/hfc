@@ -2,20 +2,23 @@ package de.dfki.lt.hfc;
 
 
 
-
-import de.dfki.lt.hfc.runnable.Utils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static de.dfki.lt.hfc.runnable.Utils.checkResult;
+
+
+
+
+import static de.dfki.lt.hfc.TestUtils.checkResult;
+
 
 
 public class BlankNodeTwoTest {
   static ForwardChainer fc;
 
   private static String getResource(String name) {
-    return Utils.getTestResource("BlankNode2", name);
+    return TestUtils.getTestResource("BlankNode2", name);
   }
 
   /**

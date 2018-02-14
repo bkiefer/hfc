@@ -1,13 +1,11 @@
 package de.dfki.lt.hfc;
 
-import junit.framework.Assert;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static junit.framework.TestCase.*;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.fail;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 /**
  * Created by christian on 08/06/17.
@@ -58,10 +56,10 @@ public class QueryTest_LookupTimeCombi {
    * "2000"^^<xsd:long>.
    */
   @Test
-  public void testSelectWhere() {
+  public void testSelectWhere() throws QueryParseException {
     TupleStore tupleStore = fc.tupleStore;
     Query query = new Query(tupleStore);
-    try {
+
       //Start
       BindingTable bt = query.query(
           "SELECT ?s ?o WHERE  [\"1\"^^<xsd:long>, \"6\"^^<xsd:long>] ?s <test:hasValue> ?o D \"200\"^^<xsd:long>  \"1550\"^^<xsd:long> ");
@@ -70,70 +68,58 @@ public class QueryTest_LookupTimeCombi {
       assertEquals(3, bt.size());
       assertEquals(2, bt.getVars().length);
       //End
-    } catch (QueryParseException e) {
-      e.printStackTrace();
-      fail();
-    }
+
   }
 
   @Test
-  public void testSelectDistinctWhere() {
+  public void testSelectDistinctWhere() throws QueryParseException {
     TupleStore tupleStore = fc.tupleStore;
     Query query = new Query(tupleStore);
-    try { // F
+
       BindingTable bt = query.query(
           "SELECT DISTINCT ?s ?o WHERE [\"1\"^^<xsd:long>, \"6\"^^<xsd:long>] ?s <test:hasValue> ?o D \"100\"^^<xsd:long>  \"1550\"^^<xsd:long> ");
       assertNotNull(bt);
       assertFalse(bt.isEmpty());
-      Assert.assertEquals(5, bt.size());
+      assertEquals(5, bt.size());
       assertEquals(2, bt.getVars().length);
-    } catch (QueryParseException e) {
-      e.printStackTrace();
-      fail();
-    }
+
   }
 
   @Test
-  public void testSelectWhereFilter() {
+  public void testSelectWhereFilter() throws QueryParseException {
     TupleStore tupleStore = fc.tupleStore;
     Query query = new Query(tupleStore);
-    try { // F
+
       BindingTable bt = query.query(
           "SELECT DISTINCT ?s ?o WHERE [\"1\"^^<xsd:long>, \"6\"^^<xsd:long>] ?s <test:hasValue> ?o D \"200\"^^<xsd:long>  \"1550\"^^<xsd:long> FILTER ?s != <test:Sensor1>");
       assertNotNull(bt);
       assertFalse(bt.isEmpty());
       assertEquals(2, bt.size());
       assertEquals(2, bt.getVars().length);
-    } catch (QueryParseException e) {
-      e.printStackTrace();
-      fail();
-    }
+
   }
 
 
   @Test
-  public void testSelectDistinctWhereFilter() {
+  public void testSelectDistinctWhereFilter() throws QueryParseException {
     TupleStore tupleStore = fc.tupleStore;
     Query query = new Query(tupleStore);
-    try { // F
+
       BindingTable bt = query.query(
           "SELECT DISTINCT ?s ?o WHERE [\"1\"^^<xsd:long>, \"6\"^^<xsd:long>] ?s <test:hasValue> ?o D \"200\"^^<xsd:long>  \"1550\"^^<xsd:long> FILTER ?o IGreater \"2\"^^<xsd:int>");
       assertNotNull(bt);
       assertFalse(bt.isEmpty());
       assertEquals(3, bt.size());
       assertEquals(2, bt.getVars().length);
-    } catch (QueryParseException e) {
-      e.printStackTrace();
-      fail();
-    }
+
   }
 
 
   @Test
-  public void testSelectWhereAggregate() {
+  public void testSelectWhereAggregate() throws QueryParseException {
     TupleStore tupleStore = fc.tupleStore;
     Query query = new Query(tupleStore);
-    try { // F
+
       long startTime = System.currentTimeMillis();
       BindingTable bt = query.query(
           "SELECT DISTINCT ?s ?o WHERE [\"1\"^^<xsd:long>, \"6\"^^<xsd:long>] ?s <test:hasValue> ?o D \"200\"^^<xsd:long>  \"1550\"^^<xsd:long> AGGREGATE  ?number = Count ?o");
@@ -145,10 +131,7 @@ public class QueryTest_LookupTimeCombi {
       long endTime = System.currentTimeMillis();
       long totalTime = endTime - startTime;
       System.out.println(totalTime);
-    } catch (QueryParseException e) {
-      e.printStackTrace();
-      fail();
-    }
+
   }
 
 

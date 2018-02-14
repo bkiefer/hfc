@@ -1,12 +1,12 @@
 package de.dfki.lt.hfc;
 
-import de.dfki.lt.hfc.runnable.Utils;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static de.dfki.lt.hfc.runnable.Utils.checkResult;
+
+import static de.dfki.lt.hfc.TestUtils.checkResult;
 
 
 
@@ -14,7 +14,7 @@ public class IsNotSubtypeOfTest {
   static ForwardChainer fc;
 
   private static String getResource(String name) {
-    return Utils.getTestResource("IsNotSubtypeOf", name);
+    return TestUtils.getTestResource("IsNotSubtypeOf", name);
   }
   @BeforeAll
   public static void init() throws Exception {

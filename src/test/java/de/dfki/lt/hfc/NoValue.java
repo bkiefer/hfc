@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import static de.dfki.lt.hfc.runnable.Utils.checkResult;
 import static de.dfki.lt.hfc.runnable.Utils.printExpected;
 
 public class NoValue {
@@ -44,8 +45,8 @@ public class NoValue {
     };
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
-    //checkResult(expected, bt, bt.getVars());
+    //printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
+    checkResult(expected, bt, bt.getVars());
   }
 
   @AfterAll

@@ -1,19 +1,18 @@
 package de.dfki.lt.hfc;
 
 
-import de.dfki.lt.hfc.runnable.Utils;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static de.dfki.lt.hfc.runnable.Utils.*;
+
+import static de.dfki.lt.hfc.TestUtils.*;
 
 public class NoSubClassOfTest {
   static ForwardChainer fc;
 
   private static String getResource(String name) {
-    return Utils.getTestResource("NoSubClassOf", name);
+    return TestUtils.getTestResource("NoSubClassOf", name);
   }
   @BeforeAll
   public static void init() throws Exception {

@@ -133,12 +133,7 @@
       <version>3.0.3</version>
     </dependency>
 
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.12</version>
-      <scope>test</scope>
-    </dependency>
+
       <dependency>
           <groupId>log4j</groupId>
           <artifactId>log4j</artifactId>
@@ -154,6 +149,24 @@
           <artifactId>junit-jupiter-api</artifactId>
           <version>RELEASE</version>
       </dependency>
+    <dependency>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
+      <version>4.12.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-launcher</artifactId>
+      <version>1.0.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-runner</artifactId>
+      <version>1.0.1</version>
+      <scope>test</scope>
+    </dependency>
 
   </dependencies>
 
