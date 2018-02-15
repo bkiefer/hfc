@@ -1,12 +1,19 @@
-package de.dfki.lt.hfc;
+package de.dfki.lt.hfc.runnable;
 
-import static org.junit.Assert.*;
+import de.dfki.lt.hfc.BindingTable;
+import de.dfki.lt.hfc.BindingTable.BindingTableIterator;
+import de.dfki.lt.hfc.BindingTableIteratorException;
+import de.dfki.lt.hfc.ForwardChainer;
+import de.dfki.lt.hfc.TupleStore;
+import de.dfki.lt.hfc.types.AnyType;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
-import de.dfki.lt.hfc.BindingTable.BindingTableIterator;
-import de.dfki.lt.hfc.types.AnyType;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class Utils {
   private static final File testResourceDir = new File("src/test/data/");
@@ -75,14 +82,16 @@ public class Utils {
             break; // take the next row
           }
         }
-        assertTrue("Row not found "+Arrays.toString(tuple), found);
+        assertTrue(found,"Row not found "+Arrays.toString(tuple));
       }
-      assertTrue("Not all expected rows found ", exp.isEmpty());
+      assertTrue(exp.isEmpty(), "Not all expected rows found ");
     }
     catch (BindingTableIteratorException e) {
       throw new RuntimeException(e); // should never happen
     }
   }
+
+
 
   public interface NextCall<T> {
     public T[] next(BindingTableIterator it);
@@ -163,10 +172,10 @@ public class Utils {
           break;
         }
       }
-      assertTrue(Arrays.toString(next) + " " + ee.size(), found);
+      assertTrue(found, Arrays.toString(next) + " " + ee.size());
     }
 
-    assertTrue("Remaining: " + ee.size(), ee.isEmpty());
+    assertTrue(ee.isEmpty(), "Remaining: " + ee.size());
   }
 
   public static void printExpected(BindingTable bt, TupleStore store) {
