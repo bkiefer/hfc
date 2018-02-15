@@ -10,6 +10,10 @@ import java.util.*;
 /**
  * The Sort aggregate is used to arrange the entries in the given bindingtable in an ascending order with respect to
  * the given key, i.e. the variable according to which the table should be sorted.
+ *
+ * @author (C) Christian Willms
+ * @since JDK 1.8
+ * @version Wed Feb  14 10:06:56 CET 2018
  */
 public class Sort extends AggregationalOperator{
 

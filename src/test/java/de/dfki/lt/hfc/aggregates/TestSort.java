@@ -11,7 +11,13 @@ import java.util.Arrays;
 import static de.dfki.lt.hfc.TestUtils.checkResult;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
+/**
+ * TODO add description
+ *
+ * @author (C) Christian Willms
+ * @since JDK 1.8
+ * @version Wed Feb  14 09:23:55 CET 2018
+ */
 public class TestSort {
 
     static final long DAY = 86400000;
@@ -50,7 +56,7 @@ public class TestSort {
 
 
     /**
-     * TODO
+     * TODO add description
      */
     @Test
     public void testSort() throws QueryParseException, BindingTableIteratorException {
@@ -81,7 +87,7 @@ public class TestSort {
     }
 
     /**
-     * TODO
+     * TODO add description
      */
     @Test
     public void testSortR() throws QueryParseException, BindingTableIteratorException {
@@ -115,7 +121,7 @@ public class TestSort {
     /**
      * Checks whether the results are sorted correctly
      * @param bt the bindingtable to be checked
-     * @param ordering true for descending ordering, false for ascending ordering
+     * @param ordering {@code true} for descending ordering, {@code false} for ascending ordering
      * @throws BindingTableIteratorException
      */
     private void checkOrdering(BindingTable bt, boolean ordering) throws BindingTableIteratorException {

@@ -21,7 +21,13 @@ import static de.dfki.lt.hfc.TestUtils.printExpected;
 import static de.dfki.lt.hfc.runnable.Utils.checkResult;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
+/**
+ * TODO add usage description
+ *
+ * @author (C) Christian Willms
+ * @since JDK 1.8
+ * @version Tue Feb  13 16:41:55 CET 2018
+ */
 public class TestGetEvents {
 
     static final long DAY = 86400000;
@@ -71,10 +77,10 @@ public class TestGetEvents {
         LocalDateTime midnightDate = Instant.ofEpochMilli(midnight).atZone(ZoneId.of("UTC")).toLocalDateTime();
         assertTrue(midnightDate.toString().endsWith("00:00"));
         // check whether the computation of sundays work
-        long sundayMidnight = currentTime - (currentTime % (7 * DAY)) + 4* DAY;
+        long sundayMidnight = currentTime - (currentTime % (7 * DAY)) - 3* DAY;
         LocalDateTime lastSundayDateTime = Instant.ofEpochMilli(sundayMidnight).atZone(ZoneId.of("UTC")).toLocalDateTime();
         LocalDate lastSundayDate = Instant.ofEpochMilli(sundayMidnight).atZone(ZoneId.of("UTC")).toLocalDate();
-
+        System.out.println(lastSundayDate);
         assertTrue(lastSundayDate.getDayOfWeek().toString().endsWith("MONDAY"));
         assertTrue(lastSundayDateTime.toString().endsWith("00:00"));
     }
@@ -179,7 +185,7 @@ public class TestGetEvents {
         Query q = new Query(fc.tupleStore);
 
         long currentTime = System.currentTimeMillis();
-        long sunday = currentTime - (currentTime % (DAY*7))+(4*DAY) ;
+        long sunday = currentTime - (currentTime % (DAY*7))-(3*DAY) ;
         long start = sunday - (14 * DAY);
         // populate ontology and expected values
         Set<String[]> validTuples = new HashSet<String[]>();
@@ -207,7 +213,7 @@ public class TestGetEvents {
         Query q = new Query(fc.tupleStore);
 
         long currentTime = System.currentTimeMillis();
-        long sunday = currentTime - (currentTime % (DAY*7)) +(4*DAY);
+        long sunday = currentTime - (currentTime % (DAY*7)) -(3*DAY);
         long start = sunday - (7 * DAY);
         // populate ontology and expected values
         Set<String[]> validTuples = new HashSet<String[]>();
@@ -235,7 +241,7 @@ public class TestGetEvents {
         Query q = new Query(fc.tupleStore);
 
         long currentTime = System.currentTimeMillis();
-        long sunday = currentTime - (currentTime % (DAY*7)) +(4*DAY) ;
+        long sunday = currentTime - (currentTime % (DAY*7))-(3*DAY) ;
         // populate ontology and expected values
         Set<String[]> validTuples = new HashSet<String[]>();
         populateTestSetup(validTuples, currentTime, sunday, currentTime, 1);
