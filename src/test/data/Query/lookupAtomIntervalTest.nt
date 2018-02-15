@@ -1,0 +1,108 @@
+#
+# @author Christian Willms
+# @version Fri Feb 24 09:45:21 CEST 2017
+#
+"0"^^<xsd:long> <rdf:type> <rdf:type> <rdf:Property> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <rdf:subject> <rdf:type> <rdf:Property> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <rdf:predicate> <rdf:type> <rdf:Property> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <rdf:object> <rdf:type> <rdf:Property> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <rdf:first> <rdf:type> <rdf:Property> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <rdf:rest> <rdf:type> <rdf:Property> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <rdf:nil> <rdf:type> <rdf:List> "0"^^<xsd:long> "999"^^<xsd:long> .
+
+"0"^^<xsd:long> <owl:equivalentClass> <rdf:type> <rdf:Property> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <owl:equivalentClass> <rdfs:subPropertyOf> <rdfs:subClassOf> "0"^^<xsd:long> "999"^^<xsd:long> .
+
+"0"^^<xsd:long> <owl:equivalentProperty> <rdf:type> <rdf:Property> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <owl:equivalentProperty> <rdfs:subPropertyOf> <rdfs:subPropertyOf> "0"^^<xsd:long> "999"^^<xsd:long> .
+
+"0"^^<xsd:long> <owl:sameAs> <rdf:type> <rdf:Property> "0"^^<xsd:long> "999"^^<xsd:long> .
+
+"0"^^<xsd:long> <rdfs:subClassOf> <rdf:type> <owl:TransitiveProperty> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <rdfs:subPropertyOf> <rdf:type> <owl:TransitiveProperty> "0"^^<xsd:long> "999"^^<xsd:long> .
+
+"0"^^<xsd:long> <owl:disjointWith> <rdf:type> <owl:SymmetricProperty> "0"^^<xsd:long> "999"^^<xsd:long> .
+
+"0"^^<xsd:long> <owl:inverseOf> <rdf:type> <owl:SymmetricProperty> "0"^^<xsd:long> "999"^^<xsd:long> .
+
+"0"^^<xsd:long> <owl:FunctionalProperty> <rdfs:subClassOf> <rdf:Property> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <owl:TransitiveProperty> <rdfs:subClassOf> <rdf:Property> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <owl:SymmetricProperty> <rdfs:subClassOf> <rdf:Property> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <owl:InverseFunctionalProperty> <rdfs:subClassOf> <rdf:Property> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <owl:AnnotationProperty> <rdfs:subClassOf> <rdf:Property> "0"^^<xsd:long> "999"^^<xsd:long> .
+
+"0"^^<xsd:long> <owl:differentFrom> <rdf:type> <owl:SymmetricProperty> "0"^^<xsd:long> "999"^^<xsd:long> .
+
+# I have added the four below triples
+"0"^^<xsd:long> <owl:Thing> <rdf:type> <owl:Class> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <owl:Nothing> <rdf:type> <owl:Class> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <owl:Nothing> <rdfs:subClassOf> <owl:Thing> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <owl:Thing> <owl:disjointWith> <owl:Nothing> "0"^^<xsd:long> "999"^^<xsd:long> .
+
+# I have added the below triples
+"0"^^<xsd:long> <nary:Thing+> <rdf:type> <nary:Class> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <nary:Nothing+> <rdf:type> <nary:Class> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <nary:Thing+> <owl:disjointWith> <nary:Nothing+> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <nary:Nothing+> <rdfs:subClassOf> <nary:Thing+> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <owl:Thing> <rdfs:subClassOf> <nary:Thing+> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <xsd:AnyType> <rdfs:subClassOf> <nary:Thing+> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <xsd:AnyType> <rdf:type> <rdfs:Datatype> "0"^^<xsd:long> "999"^^<xsd:long> .
+
+"0"^^<xsd:long> <nary:MixedProperty> <rdfs:subClassOf> <rdf:Property> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <owl:DatatypeProperty> <rdfs:subClassOf> <nary:MixedProperty> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <owl:ObjectProperty> <rdfs:subClassOf> <nary:MixedProperty> "0"^^<xsd:long> "999"^^<xsd:long> .
+# XSD Datatypes
+"0"^^<xsd:long> <xsd:int> <rdf:type> <rdfs:Datatype> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <xsd:int> <rdfs:subClassOf> <xsd:AnyType> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <xsd:long> <rdf:type> <rdfs:Datatype>  "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <xsd:long> <rdfs:subClassOf> <xsd:AnyType> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <xsd:float> <rdf:type> <rdfs:Datatype>  "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <xsd:float> <rdfs:subClassOf> <xsd:AnyType> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <xsd:double> <rdf:type> <rdfs:Datatype>  "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <xsd:double> <rdfs:subClassOf> <xsd:AnyType> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <xsd:string> <rdf:type> <rdfs:Datatype>  "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <xsd:string> <rdfs:subClassOf> <xsd:AnyType> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <xsd:boolean> <rdf:type> <rdfs:Datatype>  "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <xsd:boolean> <rdfs:subClassOf> <xsd:AnyType> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <xsd:date> <rdf:type> <rdfs:Datatype>  "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <xsd:data> <rdfs:subClassOf> <xsd:AnyType> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <xsd:dateTime> <rdf:type> <rdfs:Datatype> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <xsd:dateTime> <rdfs:subClassOf> <xsd:AnyType> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <xsd:gYear> <rdf:type> <rdfs:Datatype> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <xsd:gYear> <rdfs:subClassOf> <xsd:AnyType> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <xsd:gMonthYear> <rdf:type> <rdfs:Datatype> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <xsd:gMonthYear> <rdfs:subClassOf> <xsd:AnyType> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <xsd:anyURI> <rdf:type> <rdfs:Datatype> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <xsd:anyURI> <rdfs:subClassOf> <xsd:AnyType> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <xsd:monetary> <rdf:type> <rdfs:Datatype> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <xsd:monetary> <rdfs:subClassOf> <xsd:AnyType> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <xsd:uDateTime> <rdf:type> <rdfs:Datatype> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <xsd:uDateTime> <rdfs:subClassOf> <xsd:AnyType> "0"^^<xsd:long> "999"^^<xsd:long> .
+
+# Comments owl:Nothing
+"0"^^<xsd:long> <owl:Nothing> <rdfs:label> "Nothing"^^<xsd:string> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <owl:Nothing> <rdfs:comment> "This_is_the_empty_class."^^<xsd:string> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <owl:Nothing> <rdfs:isDefinedBy> "<http://www.w3.org/2002/07/owl#>"^^<xsd:string> "0"^^<xsd:long> "999"^^<xsd:long> .
+# Comments owl:Thing
+"0"^^<xsd:long> <owl:Thing> <rdfs:label> "Thing"^^<xsd:string> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <owl:Thing> <rdfs:comment> "The_class_of_OWL_individuals."^^<xsd:string> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <owl:Thing> <rdfs:isDefinedBy> "<http://www.w3.org/2002/07/owl#>"^^<xsd:string> "0"^^<xsd:long> "999"^^<xsd:long> .
+# Test classes
+"0"^^<xsd:long> <test:sensor> <rdfs:subClassOf> <owl:Thing> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <test:value> <rdf:type> <owl:DatatypeProperty> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <test:value> <rdfs:domain> <test:sensor> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <test:value> <rdfs:range> <xsd:int> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <test:Sensor1> <rdf:type> <test:sensor> "0"^^<xsd:long> "999"^^<xsd:long> .
+"0"^^<xsd:long> <test:Sensor2> <rdf:type> <test:sensor> "0"^^<xsd:long> "999"^^<xsd:long> .
+# Test values
+"1"^^<xsd:long> <test:Sensor1> <test:hasValue> "1"^^<xsd:int> "100"^^<xsd:long> "1100"^^<xsd:long> .
+"2"^^<xsd:long> <test:Sensor2> <test:hasValue> "2"^^<xsd:int> "200"^^<xsd:long> "1200"^^<xsd:long> .
+"2"^^<xsd:long> <test:Sensor1> <test:hasValue> "2"^^<xsd:int> "180"^^<xsd:long> "800"^^<xsd:long> .
+"3"^^<xsd:long> <test:Sensor1> <test:hasValue> "3"^^<xsd:int> "300"^^<xsd:long> "1300"^^<xsd:long> .
+"4"^^<xsd:long> <test:Sensor2> <test:hasValue> "4"^^<xsd:int> "400"^^<xsd:long> "1400"^^<xsd:long> .
+"5"^^<xsd:long> <test:Sensor2> <test:hasValue> "5"^^<xsd:int> "500"^^<xsd:long> "1500"^^<xsd:long> .
+"6"^^<xsd:long> <test:Sensor1> <test:hasValue> "6"^^<xsd:int> "600"^^<xsd:long> "1600"^^<xsd:long> .
+"7"^^<xsd:long> <test:Sensor2> <test:hasValue> "7"^^<xsd:int> "700"^^<xsd:long> "1700"^^<xsd:long> .
+"8"^^<xsd:long> <test:Sensor1> <test:hasValue> "8"^^<xsd:int> "800"^^<xsd:long> "1800"^^<xsd:long> .
+"9"^^<xsd:long> <test:Sensor1> <test:hasValue> "9"^^<xsd:int> "900"^^<xsd:long> "1900"^^<xsd:long> .
+"10"^^<xsd:long> <test:Sensor2> <test:hasValue> "10"^^<xsd:int> "1000"^^<xsd:long> "2000"^^<xsd:long> .

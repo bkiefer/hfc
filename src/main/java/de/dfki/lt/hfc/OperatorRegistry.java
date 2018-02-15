@@ -144,7 +144,7 @@ public final class OperatorRegistry {
 	 * class name; if so, the operator is returned;
 	 * if not, a new one is created, stored/registered, and returned
 	 */
-	protected Operator checkAndRegister (String className) {
+	public Operator checkAndRegister(String className) {
 		Operator op = this.nameToFo.get(className);
 		if (op == null)
 			op = register(className);

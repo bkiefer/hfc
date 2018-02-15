@@ -102,4 +102,23 @@ public final class XsdGMonthDay extends XsdAnySimpleType {
     return this;
   }
 
+
+	@Override
+	public int compareTo(Object o) {
+		if(  o instanceof AnyType.MinMaxValue ) {
+			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
+			return minMaxValue.compareTo(this);
+		}
+		if (! (o instanceof  XsdGMonthDay)){
+			throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
+		}
+		XsdGMonthDay date = (XsdGMonthDay) o;
+		int[] comp = new int[]{Integer.compare(this.month,date.month), Integer.compare(this.day, date.day)};
+		for (int r : comp){
+			if (r != 0)
+				return r;
+		}
+		return 0;
+	}
+
 }

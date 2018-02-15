@@ -1,0 +1,107 @@
+#
+# @author Christian Willms
+# @version Fri Feb 24 09:45:21 CEST 2017
+#
+<rdf:type> <rdf:type> <rdf:Property> "0000-00-00"^^<xsd:date> .
+<rdf:subject> <rdf:type> <rdf:Property> "0000-00-00"^^<xsd:date> .
+<rdf:predicate> <rdf:type> <rdf:Property> "0000-00-00"^^<xsd:date> .
+<rdf:object> <rdf:type> <rdf:Property> "0000-00-00"^^<xsd:date> .
+<rdf:first> <rdf:type> <rdf:Property> "0000-00-00"^^<xsd:date> .
+<rdf:rest> <rdf:type> <rdf:Property> "0000-00-00"^^<xsd:date> .
+<rdf:nil> <rdf:type> <rdf:List> "0000-00-00"^^<xsd:date> .
+
+<owl:equivalentClass> <rdf:type> <rdf:Property> "0000-00-00"^^<xsd:date> .
+<owl:equivalentClass> <rdfs:subPropertyOf> <rdfs:subClassOf> "0000-00-00"^^<xsd:date> .
+
+<owl:equivalentProperty> <rdf:type> <rdf:Property> "0000-00-00"^^<xsd:date> .
+<owl:equivalentProperty> <rdfs:subPropertyOf> <rdfs:subPropertyOf> "0000-00-00"^^<xsd:date> .
+
+<owl:sameAs> <rdf:type> <rdf:Property> "0000-00-00"^^<xsd:date> .
+
+<rdfs:subClassOf> <rdf:type> <owl:TransitiveProperty> "0000-00-00"^^<xsd:date> .
+<rdfs:subPropertyOf> <rdf:type> <owl:TransitiveProperty> "0000-00-00"^^<xsd:date> .
+
+<owl:disjointWith> <rdf:type> <owl:SymmetricProperty> "0000-00-00"^^<xsd:date> .
+
+<owl:inverseOf> <rdf:type> <owl:SymmetricProperty> "0000-00-00"^^<xsd:date> .
+
+<owl:FunctionalProperty> <rdfs:subClassOf> <rdf:Property> "0000-00-00"^^<xsd:date> .
+<owl:TransitiveProperty> <rdfs:subClassOf> <rdf:Property> "0000-00-00"^^<xsd:date> .
+<owl:SymmetricProperty> <rdfs:subClassOf> <rdf:Property> "0000-00-00"^^<xsd:date> .
+<owl:InverseFunctionalProperty> <rdfs:subClassOf> <rdf:Property> "0000-00-00"^^<xsd:date> .
+<owl:AnnotationProperty> <rdfs:subClassOf> <rdf:Property> "0000-00-00"^^<xsd:date> .
+
+<owl:differentFrom> <rdf:type> <owl:SymmetricProperty> "0000-00-00"^^<xsd:date> .
+
+# I have added the four below triples
+<owl:Thing> <rdf:type> <owl:Class> "0000-00-00"^^<xsd:date> .
+<owl:Nothing> <rdf:type> <owl:Class> "0000-00-00"^^<xsd:date> .
+<owl:Nothing> <rdfs:subClassOf> <owl:Thing> "0000-00-00"^^<xsd:date> .
+<owl:Thing> <owl:disjointWith> <owl:Nothing> "0000-00-00"^^<xsd:date> .
+
+# I have added the below triples
+<nary:Thing+> <rdf:type> <nary:Class> "0000-00-00"^^<xsd:date> .
+<nary:Nothing+> <rdf:type> <nary:Class> "0000-00-00"^^<xsd:date> .
+<nary:Thing+> <owl:disjointWith> <nary:Nothing+> "0000-00-00"^^<xsd:date> .
+<nary:Nothing+> <rdfs:subClassOf> <nary:Thing+> "0000-00-00"^^<xsd:date> .
+<owl:Thing> <rdfs:subClassOf> <nary:Thing+> "0000-00-00"^^<xsd:date> .
+<xsd:AnyType> <rdfs:subClassOf> <nary:Thing+> "0000-00-00"^^<xsd:date> .
+<xsd:AnyType> <rdf:type> <rdfs:Datatype> "0000-00-00"^^<xsd:date> .
+
+<nary:MixedProperty> <rdfs:subClassOf> <rdf:Property> "0000-00-00"^^<xsd:date> .
+<owl:DatatypeProperty> <rdfs:subClassOf> <nary:MixedProperty> "0000-00-00"^^<xsd:date> .
+<owl:ObjectProperty> <rdfs:subClassOf> <nary:MixedProperty> "0000-00-00"^^<xsd:date> .
+# XSD Datatypes
+<xsd:int> <rdf:type> <rdfs:Datatype> "0000-00-00"^^<xsd:date> .
+<xsd:int> <rdfs:subClassOf> <xsd:AnyType> "0000-00-00"^^<xsd:date> .
+<xsd:long> <rdf:type> <rdfs:Datatype>  "0000-00-00"^^<xsd:date> .
+<xsd:long> <rdfs:subClassOf> <xsd:AnyType> "0000-00-00"^^<xsd:date> .
+<xsd:float> <rdf:type> <rdfs:Datatype>  "0000-00-00"^^<xsd:date> .
+<xsd:float> <rdfs:subClassOf> <xsd:AnyType> "0000-00-00"^^<xsd:date> .
+<xsd:double> <rdf:type> <rdfs:Datatype>  "0000-00-00"^^<xsd:date> .
+<xsd:double> <rdfs:subClassOf> <xsd:AnyType> "0000-00-00"^^<xsd:date> .
+<xsd:string> <rdf:type> <rdfs:Datatype>  "0000-00-00"^^<xsd:date> .
+<xsd:string> <rdfs:subClassOf> <xsd:AnyType> "0000-00-00"^^<xsd:date> .
+<xsd:boolean> <rdf:type> <rdfs:Datatype>  "0000-00-00"^^<xsd:date> .
+<xsd:boolean> <rdfs:subClassOf> <xsd:AnyType> "0000-00-00"^^<xsd:date> .
+<xsd:date> <rdf:type> <rdfs:Datatype>  "0000-00-00"^^<xsd:date> .
+<xsd:data> <rdfs:subClassOf> <xsd:AnyType> "0000-00-00"^^<xsd:date> .
+<xsd:dateTime> <rdf:type> <rdfs:Datatype> "0000-00-00"^^<xsd:date> .
+<xsd:dateTime> <rdfs:subClassOf> <xsd:AnyType> "0000-00-00"^^<xsd:date> .
+<xsd:gYear> <rdf:type> <rdfs:Datatype> "0000-00-00"^^<xsd:date> .
+<xsd:gYear> <rdfs:subClassOf> <xsd:AnyType> "0000-00-00"^^<xsd:date> .
+<xsd:gMonthYear> <rdf:type> <rdfs:Datatype> "0000-00-00"^^<xsd:date> .
+<xsd:gMonthYear> <rdfs:subClassOf> <xsd:AnyType> "0000-00-00"^^<xsd:date> .
+<xsd:anyURI> <rdf:type> <rdfs:Datatype> "0000-00-00"^^<xsd:date> .
+<xsd:anyURI> <rdfs:subClassOf> <xsd:AnyType> "0000-00-00"^^<xsd:date> .
+<xsd:monetary> <rdf:type> <rdfs:Datatype> "0000-00-00"^^<xsd:date> .
+<xsd:monetary> <rdfs:subClassOf> <xsd:AnyType> "0000-00-00"^^<xsd:date> .
+<xsd:uDateTime> <rdf:type> <rdfs:Datatype> "0000-00-00"^^<xsd:date> .
+<xsd:uDateTime> <rdfs:subClassOf> <xsd:AnyType> "0000-00-00"^^<xsd:date> .
+
+# Comments owl:Nothing
+<owl:Nothing> <rdfs:label> "Nothing"^^<xsd:string> "0000-00-00"^^<xsd:date> .
+<owl:Nothing> <rdfs:comment> "This_is_the_empty_class."^^<xsd:string> "0000-00-00"^^<xsd:date> .
+<owl:Nothing> <rdfs:isDefinedBy> "<http://www.w3.org/2002/07/owl#>"^^<xsd:string> "0000-00-00"^^<xsd:date> .
+# Comments owl:Thing
+<owl:Thing> <rdfs:label> "Thing"^^<xsd:string> "0000-00-00"^^<xsd:date> .
+<owl:Thing> <rdfs:comment> "The_class_of_OWL_individuals."^^<xsd:string> "0000-00-00"^^<xsd:date> .
+<owl:Thing> <rdfs:isDefinedBy> "<http://www.w3.org/2002/07/owl#>"^^<xsd:string> "0000-00-00"^^<xsd:date> .
+# Test classes
+<test:sensor> <rdfs:subClassOf> <owl:Thing> "0000-00-00"^^<xsd:date> .
+<test:value> <rdf:type> <owl:DatatypeProperty> "0000-00-00"^^<xsd:date> .
+<test:value> <rdfs:domain> <test:sensor> "0000-00-00"^^<xsd:date> .
+<test:value> <rdfs:range> <xsd:long> "0000-00-00"^^<xsd:date> .
+<test:Sensor1> <rdf:type> <test:sensor> "0000-00-00"^^<xsd:date> .
+<test:Sensor2> <rdf:type> <test:sensor> "0000-00-00"^^<xsd:date> . 
+# Test values
+<test:Sensor1> <test:hasValue> "142"^^<xsd:long> "0000-00-01"^^<xsd:date> .
+<test:Sensor2> <test:hasValue> "242"^^<xsd:long> "0000-00-02"^^<xsd:date> .
+<test:Sensor1> <test:hasValue> "342"^^<xsd:long> "0000-00-03"^^<xsd:date> .
+<test:Sensor2> <test:hasValue> "442"^^<xsd:long> "0000-00-04"^^<xsd:date> .
+<test:Sensor2> <test:hasValue> "542"^^<xsd:long> "0000-00-05"^^<xsd:date> .
+<test:Sensor1> <test:hasValue> "642"^^<xsd:long> "0000-00-06"^^<xsd:date> .
+<test:Sensor2> <test:hasValue> "742"^^<xsd:long> "0000-00-07"^^<xsd:date> .
+<test:Sensor1> <test:hasValue> "842"^^<xsd:long> "0000-00-08"^^<xsd:date> .
+<test:Sensor1> <test:hasValue> "942"^^<xsd:long> "0000-00-09"^^<xsd:date> .
+<test:Sensor2> <test:hasValue> "1042"^^<xsd:long> "0000-00-10"^^<xsd:date> .

@@ -1,17 +1,18 @@
 package de.dfki.lt.hfc.aggregates;
 
-import static de.dfki.lt.hfc.Utils.*;
-import static org.junit.Assert.assertEquals;
+import static de.dfki.lt.hfc.runnable.Utils.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import de.dfki.lt.hfc.runnable.Utils;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import de.dfki.lt.hfc.*;
-import static org.junit.Assert.assertEquals;
+
 
 public class TestLGetLatest {
   static ForwardChainer fc;
@@ -40,7 +41,7 @@ public class TestLGetLatest {
    * @author (C) Hans-Ulrich Krieger
    * @version Mon Jan  4 10:11:02 CET 2016
    */
-  @BeforeClass
+  @BeforeAll
   public static void init() throws Exception {
 
     fc =	new ForwardChainer(4,                                                    // #cores
@@ -67,7 +68,7 @@ public class TestLGetLatest {
     fc.computeClosure();
   }
 
-  @AfterClass
+  @AfterAll
   public static void finish() {
     fc.shutdownNoExit();
   }

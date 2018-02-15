@@ -85,4 +85,17 @@ public final class XsdGDay extends XsdAnySimpleType {
     return this;
   }
 
+
+		@Override
+		public int compareTo(Object o) {
+			if(  o instanceof AnyType.MinMaxValue ) {
+				AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
+				return minMaxValue.compareTo(this);
+			}
+			if (! (o instanceof  XsdGDay)){
+				throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
+			}
+			return Integer.compare(this.day,((XsdGDay) o).day);
+		}
+
 }

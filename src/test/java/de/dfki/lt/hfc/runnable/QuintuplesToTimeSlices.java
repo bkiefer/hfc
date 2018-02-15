@@ -1,11 +1,11 @@
 package de.dfki.lt.hfc.runnable;
 
-import java.util.ArrayList;
-import de.dfki.lt.hfc.*;
 import de.dfki.lt.hfc.ForwardChainer;
 import de.dfki.lt.hfc.TupleStore;
 
-import static de.dfki.lt.hfc.runnable.Utils.getResource;
+import java.util.ArrayList;
+
+import static de.dfki.lt.hfc.TestUtils.getResource;
 
 public class QuintuplesToTimeSlices {
 

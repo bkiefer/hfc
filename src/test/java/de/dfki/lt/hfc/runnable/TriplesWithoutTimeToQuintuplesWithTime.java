@@ -1,13 +1,12 @@
 package de.dfki.lt.hfc.runnable;
 
-import static de.dfki.lt.hfc.runnable.Utils.getResource;
-
-import java.util.ArrayList;
-import de.dfki.lt.hfc.*;
 import de.dfki.lt.hfc.ForwardChainer;
-import de.dfki.lt.hfc.Namespace;
 import de.dfki.lt.hfc.TupleStore;
 import de.dfki.lt.hfc.types.XsdInt;
+
+import java.util.ArrayList;
+
+import static de.dfki.lt.hfc.TestUtils.getResource;
 
 public class TriplesWithoutTimeToQuintuplesWithTime {
 

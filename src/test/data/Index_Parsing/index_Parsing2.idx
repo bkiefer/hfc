@@ -1,0 +1,4 @@
+Structure2: IntervalTreeIndex
+Key1: XsdDate
+Position1: 3
+Structure1: BPlusTreeIndex

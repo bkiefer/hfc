@@ -1,12 +1,12 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.Utils.*;
-import static org.junit.Assert.*;
+import static de.dfki.lt.hfc.runnable.Utils.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public final class IIncrementTest {
 
@@ -52,8 +52,8 @@ public final class IIncrementTest {
 
     // do operation
     ids[0] = fop.apply(ids);
-    assertEquals("1++ = 2", FunctionalOperator.TRUE, feq.apply(ids));
+    assertEquals( FunctionalOperator.TRUE, feq.apply(ids), "1++ = 2");
     nids[0] = fop.apply(nids);
-    assertEquals("9++ != 7", FunctionalOperator.FALSE, feq.apply(nids));
+    assertEquals( FunctionalOperator.FALSE, feq.apply(nids), "9++ != 7");
   }
 }

@@ -210,4 +210,25 @@ public final class XsdDateTime extends XsdAnySimpleType {
     return this;
   }
 
+
+	@Override
+	public int compareTo(Object o) {
+		if(  o instanceof AnyType.MinMaxValue ) {
+			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
+			return minMaxValue.compareTo(this);
+		}
+		if (! (o instanceof  XsdDateTime)){
+			throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
+		}
+		XsdDateTime dateTime = (XsdDateTime) o;
+		int[] comp = new int[]{Integer.compare(this.year,dateTime.year), Integer.compare(this.month, dateTime.month),
+				Integer.compare(this.day, dateTime.day), Integer.compare(this.hour, dateTime.hour),
+				Integer.compare(this.minute,dateTime.minute), Float.compare(this.second, dateTime.second)};
+		for (int r : comp){
+			if (r != 0)
+				return r;
+		}
+		return 0;
+	}
+
 }

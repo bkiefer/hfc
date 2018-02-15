@@ -45,5 +45,16 @@ public class Uri extends AnyType {
   public Object toJava() {
     return this;
   }
-	
+
+	@Override
+	public int compareTo(Object o) {
+		if(  o instanceof AnyType.MinMaxValue ) {
+			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
+			return minMaxValue.compareTo(this);
+		}
+  		if (! (o instanceof  Uri)){
+  			throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
+		}
+		return this.value.compareTo(((Uri) o).value);
+	}
 }

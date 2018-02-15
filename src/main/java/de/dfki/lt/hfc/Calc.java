@@ -2,6 +2,9 @@ package de.dfki.lt.hfc;
 
 import java.util.*;
 import gnu.trove.set.hash.*;
+import org.apache.log4j.Level;
+import org.apache.log4j.LogMF;
+import org.apache.log4j.Logger;
 
 /**
  * a collection of static methods that deal with sets and binding tables, used by the
@@ -17,6 +20,15 @@ import gnu.trove.set.hash.*;
  * @version Fri Mar 15 18:26:17 CET 2013
  */
 public final class Calc {
+
+	/**
+	 * A basic LOGGER.
+	 */
+	private final static Logger LOGGER = Logger.getLogger(Calc.class.getName());
+
+	static {
+		LOGGER.setLevel(Level.ERROR);
+	}
 
 	/**
 	 * the default hashing and equals strategy for tuples from the output set of the current
@@ -233,10 +245,11 @@ public final class Calc {
 	public static BindingTable restrict(BindingTable bt,
 																			ArrayList<Integer> varvarIneqs,
 																			ArrayList<Integer> varconstIneqs) {
+		LogMF.trace(LOGGER, "restrict ineqs", null);
 		// check whether both ineq lists are empty in order to avoid iterator
-		if (varvarIneqs.isEmpty() && varconstIneqs.isEmpty())
-			return bt;
-		// instead of using the vars, we use their positions (faster!);
+		if (varvarIneqs.isEmpty() && varconstIneqs.isEmpty()){
+			return bt;}
+		// instead of using the indexToVariable, we use their positions (faster!);
 		// use int[] instead of ArrayList<Integer>
 		int[] vv = new int[varvarIneqs.size()];
 		for (int i = 0; i < varvarIneqs.size(); i++) {
@@ -273,6 +286,7 @@ public final class Calc {
 			}
 		}  // outerloop block
 		}
+		bt.size();
 		return bt;
 	}
 
@@ -281,9 +295,10 @@ public final class Calc {
 	 */
 	public static BindingTable restrict(BindingTable bt,
 																			ArrayList<Predicate> predicates) {
+		LogMF.trace(LOGGER, "restrict predicates", null);
 		// no predicate: binding table does not change
-		if (predicates.isEmpty())
-			return bt;
+		if (predicates.isEmpty()){
+			return bt;}
 		// fundamental distinction: functional-only vs. relational-only variables;
 		// address the RELATIONAL case first: involved predicates will NOT undergo the double loop below
 		ArrayList<Predicate> allPredicates = new ArrayList<Predicate>(predicates);  // do NOT modify predicates

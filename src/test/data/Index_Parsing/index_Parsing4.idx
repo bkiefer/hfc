@@ -1,0 +1,6 @@
+#TestComment
+#Structure2: IntervalTreeIndex
+Key1: XsdDate
+#TestComment
+Position1: 3
+#Structure1: BPlusTreeIndex

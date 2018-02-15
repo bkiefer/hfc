@@ -124,4 +124,30 @@ public final class XsdGYearMonth extends XsdAnySimpleType {
     return this;
   }
 
+	@Override
+	public int compareTo(Object o) {
+		if(  o instanceof AnyType.MinMaxValue ) {
+			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
+			return minMaxValue.compareTo(this);
+		}
+		if (! (o instanceof  XsdGYearMonth)){
+			throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
+		}
+		XsdGYearMonth date = (XsdGYearMonth) o;
+
+		int[] comp = new int[]{Integer.compare(transform(this.year),date.transform(date.year)),Integer.compare(transform(this.month),date.transform(date.month))};
+		for (int r : comp){
+			if (r != 0)
+				return r;
+		}
+		return 0;
+	}
+
+	public int transform(int v){
+		if (!this.sign){
+			return v*-1;
+		}
+		return v;
+	}
+
 }

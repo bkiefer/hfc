@@ -1,13 +1,12 @@
 package de.dfki.lt.hfc;
 
-import static org.junit.Assert.*;
 
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import gnu.trove.set.hash.*;
 

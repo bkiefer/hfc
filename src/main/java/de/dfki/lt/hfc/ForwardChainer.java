@@ -3,6 +3,8 @@ package de.dfki.lt.hfc;
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.*;
+
+import de.dfki.lt.hfc.indices.IndexingException;
 import gnu.trove.set.hash.*;
 import gnu.trove.map.hash.*;
 
@@ -211,6 +213,23 @@ public final class ForwardChainer {
 	}
 
 	/**
+	 * this version allows to explicitly define the namespace
+	 * @throws IOException
+	 * @throws WrongFormatException
+	 * @throws FileNotFoundException
+	 */
+	public ForwardChainer(String tupleFile, String ruleFile,	String namespaceFile, String indexFile)
+			throws FileNotFoundException, WrongFormatException, IOException, IndexingException {
+		this();
+		Namespace namespace = new Namespace(namespaceFile);
+		IndexStore indexStore = new IndexStore(indexFile, this.verbose);
+		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, namespace, tupleFile, indexStore);
+		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
+		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
+		this.noOfTasks = this.ruleStore.allRules.size();
+	}
+
+	/**
 	 * generates a new forward chainer with the default namespace for XSD, RDF, RDFS, and OWL;
 	 * noOfAtoms and noOfTuples are important parameters that affects the performance of the
 	 * tuple store used by the forward chainer
@@ -287,6 +306,32 @@ public final class ForwardChainer {
 																		 this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
 		this.ruleStore = new RuleStore(verbose, rdfCheck, minNoOfArgs, maxNoOfArgs,
 																	 this.tupleStore, ruleFile);
+		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
+		this.noOfTasks = this.ruleStore.allRules.size();
+	}
+
+	public ForwardChainer(int noOfCores,
+						  boolean verbose,
+						  boolean rdfCheck,
+						  boolean eqReduction,
+						  int minNoOfArgs,
+						  int maxNoOfArgs,
+						  int noOfAtoms,
+						  int noOfTuples,
+						  String tupleFile,
+						  String ruleFile,
+						  String namespaceFile,
+						  String indexFile)
+			throws FileNotFoundException, WrongFormatException, IOException, IndexingException {
+		this(noOfCores, verbose);
+		this.noOfAtoms = noOfAtoms;
+		this.noOfTuples = noOfTuples;
+		Namespace namespace = new Namespace(namespaceFile, verbose);
+		IndexStore indexStore = new IndexStore(indexFile,this.verbose);
+		this.tupleStore = new TupleStore(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
+				this.noOfAtoms, this.noOfTuples, namespace, tupleFile, indexStore);
+		this.ruleStore = new RuleStore(verbose, rdfCheck, minNoOfArgs, maxNoOfArgs,
+				this.tupleStore, ruleFile);
 		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
 		this.noOfTasks = this.ruleStore.allRules.size();
 	}
@@ -502,6 +547,10 @@ public final class ForwardChainer {
 			* make sure that this equals obj by NOT distinguishing between first and second
 			*/
 		public boolean equals(Object obj) {
+		    if (obj == this)
+		        return true;
+			if (!(obj instanceof Pair))
+				return false;
 			Pair pair = (Pair)obj;
 			if (this.first.equals(pair.first) && this.second.equals(pair.second))
 				return true;

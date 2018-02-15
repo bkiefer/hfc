@@ -62,7 +62,7 @@ public final class XsdGYear extends XsdAnySimpleType {
 			this.sign = false;
 			time = time.substring(1);
 		}
-		this.year = Integer.parseInt(time.substring(0));
+		this.year = Integer.parseInt(time);
 	}
 
 	/**
@@ -111,4 +111,24 @@ public final class XsdGYear extends XsdAnySimpleType {
     return this;
   }
 
+	@Override
+	public int compareTo(Object o) {
+		if(  o instanceof AnyType.MinMaxValue ) {
+			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
+			return minMaxValue.compareTo(this);
+		}
+		if (! (o instanceof  XsdGYear)){
+			throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
+		}
+		XsdGYear date = (XsdGYear) o;
+		return Integer.compare(transform(this.year),date.transform(date.year));
+
+	}
+
+	private int transform(int v){
+		if (!this.sign){
+			return v*-1;
+		}
+		return v;
+	}
 }

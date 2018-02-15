@@ -36,6 +36,7 @@ package de.dfki.lt.hfc.types;
 public final class XsdUDateTime extends XsdAnySimpleType {
   public final static String NAME = "uDateTime";
 
+  public final static XsdUDateTime minValue = new XsdUDateTime(0,0,0,0,0,0);
   public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
   public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
 
@@ -76,7 +77,12 @@ public final class XsdUDateTime extends XsdAnySimpleType {
 	 *          --> "????-07-31" -- combination of underspecification and unspecification
 	 * example 2: "Obama was born in 1961" --> "1961"
 	 * when using toString(), these values are replaced by the '?' character;
-	 * @param value a Java int representation of an XSD int
+	 * @param year a Java int representation of an XSD GYear
+	 * @param month a Java int representation of an XSD GMonth
+	 * @param day a Java int representation of an XSD GDay
+	 * @param hour a Java int representation of an
+	 * @param minute a Java int representation of an
+	 * @param second a Java float representation of an
 	 */
 	public XsdUDateTime(int year, int month, int day, int hour, int minute, float second) {
 		this.year = year;
@@ -303,5 +309,26 @@ public final class XsdUDateTime extends XsdAnySimpleType {
   public Object toJava() {
     return this;
   }
+
+
+	@Override
+	public int compareTo(Object o) {
+		if(  o instanceof AnyType.MinMaxValue ) {
+			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
+			return minMaxValue.compareTo(this);
+		}
+		if (! (o instanceof  XsdUDateTime)){
+			throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
+		}
+		XsdUDateTime dateTime = (XsdUDateTime) o;
+		int[] comp = new int[]{Integer.compare(this.year,dateTime.year), Integer.compare(this.month, dateTime.month),
+				Integer.compare(this.day, dateTime.day), Integer.compare(this.hour, dateTime.hour),
+				Integer.compare(this.minute,dateTime.minute), Float.compare(this.second, dateTime.second)};
+		for (int r : comp){
+			if (r != 0)
+				return r;
+		}
+		return 0;
+	}
 
 }

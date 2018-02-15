@@ -1,0 +1,96 @@
+#
+# @author Christian Willms
+# @version Fri Feb 24 09:45:21 CEST 2017
+#
+<rdf:type> <rdf:type> <rdf:Property> "(0,0)"^^<xsd:2DPoint> .
+<rdf:subject> <rdf:type> <rdf:Property> "(0,0)"^^<xsd:2DPoint> .
+<rdf:predicate> <rdf:type> <rdf:Property> "(0,0)"^^<xsd:2DPoint> .
+<rdf:object> <rdf:type> <rdf:Property> "(0,0)"^^<xsd:2DPoint> .
+<rdf:first> <rdf:type> <rdf:Property> "(0,0)"^^<xsd:2DPoint> .
+<rdf:rest> <rdf:type> <rdf:Property> "(0,0)"^^<xsd:2DPoint> .
+<rdf:nil> <rdf:type> <rdf:List> "(0,0)"^^<xsd:2DPoint> .
+
+<owl:equivalentClass> <rdf:type> <rdf:Property> "(0,0)"^^<xsd:2DPoint> .
+<owl:equivalentClass> <rdfs:subPropertyOf> <rdfs:subClassOf> "(0,0)"^^<xsd:2DPoint> .
+
+<owl:equivalentProperty> <rdf:type> <rdf:Property> "(0,0)"^^<xsd:2DPoint> .
+<owl:equivalentProperty> <rdfs:subPropertyOf> <rdfs:subPropertyOf> "(0,0)"^^<xsd:2DPoint> .
+
+<owl:sameAs> <rdf:type> <rdf:Property> "(0,0)"^^<xsd:2DPoint> .
+
+<rdfs:subClassOf> <rdf:type> <owl:TransitiveProperty> "(0,0)"^^<xsd:2DPoint> .
+<rdfs:subPropertyOf> <rdf:type> <owl:TransitiveProperty> "(0,0)"^^<xsd:2DPoint> .
+
+<owl:disjointWith> <rdf:type> <owl:SymmetricProperty> "(0,0)"^^<xsd:2DPoint> .
+
+<owl:inverseOf> <rdf:type> <owl:SymmetricProperty> "(0,0)"^^<xsd:2DPoint> .
+
+<owl:FunctionalProperty> <rdfs:subClassOf> <rdf:Property> "(0,0)"^^<xsd:2DPoint> .
+<owl:TransitiveProperty> <rdfs:subClassOf> <rdf:Property> "(0,0)"^^<xsd:2DPoint> .
+<owl:SymmetricProperty> <rdfs:subClassOf> <rdf:Property> "(0,0)"^^<xsd:2DPoint> .
+<owl:InverseFunctionalProperty> <rdfs:subClassOf> <rdf:Property> "(0,0)"^^<xsd:2DPoint> .
+<owl:AnnotationProperty> <rdfs:subClassOf> <rdf:Property> "(0,0)"^^<xsd:2DPoint> .
+
+<owl:differentFrom> <rdf:type> <owl:SymmetricProperty> "(0,0)"^^<xsd:2DPoint> .
+
+# I have added the four below triples
+<owl:Thing> <rdf:type> <owl:Class> "(0,0)"^^<xsd:2DPoint> .
+<owl:Nothing> <rdf:type> <owl:Class> "(0,0)"^^<xsd:2DPoint> .
+<owl:Nothing> <rdfs:subClassOf> <owl:Thing> "(0,0)"^^<xsd:2DPoint> .
+<owl:Thing> <owl:disjointWith> <owl:Nothing> "(0,0)"^^<xsd:2DPoint> .
+
+# I have added the below triples
+<nary:Thing+> <rdf:type> <nary:Class> "(0,0)"^^<xsd:2DPoint> .
+<nary:Nothing+> <rdf:type> <nary:Class> "(0,0)"^^<xsd:2DPoint> .
+<nary:Thing+> <owl:disjointWith> <nary:Nothing+> "(0,0)"^^<xsd:2DPoint> .
+<nary:Nothing+> <rdfs:subClassOf> <nary:Thing+> "(0,0)"^^<xsd:2DPoint> .
+<owl:Thing> <rdfs:subClassOf> <nary:Thing+> "(0,0)"^^<xsd:2DPoint> .
+<xsd:AnyType> <rdfs:subClassOf> <nary:Thing+> "(0,0)"^^<xsd:2DPoint> .
+<xsd:AnyType> <rdf:type> <rdfs:Datatype> "(0,0)"^^<xsd:2DPoint> .
+
+<nary:MixedProperty> <rdfs:subClassOf> <rdf:Property> "(0,0)"^^<xsd:2DPoint> .
+<owl:DatatypeProperty> <rdfs:subClassOf> <nary:MixedProperty> "(0,0)"^^<xsd:2DPoint> .
+<owl:ObjectProperty> <rdfs:subClassOf> <nary:MixedProperty> "(0,0)"^^<xsd:2DPoint> .
+# XSD Datatypes
+<xsd:int> <rdf:type> <rdfs:Datatype> "(0,0)"^^<xsd:2DPoint> .
+<xsd:int> <rdfs:subClassOf> <xsd:AnyType> "(0,0)"^^<xsd:2DPoint> .
+<xsd:long> <rdf:type> <rdfs:Datatype>  "(0,0)"^^<xsd:2DPoint> .
+<xsd:long> <rdfs:subClassOf> <xsd:AnyType> "(0,0)"^^<xsd:2DPoint> .
+<xsd:float> <rdf:type> <rdfs:Datatype>  "(0,0)"^^<xsd:2DPoint> .
+<xsd:float> <rdfs:subClassOf> <xsd:AnyType> "(0,0)"^^<xsd:2DPoint> .
+<xsd:double> <rdf:type> <rdfs:Datatype>  "(0,0)"^^<xsd:2DPoint> .
+<xsd:double> <rdfs:subClassOf> <xsd:AnyType> "(0,0)"^^<xsd:2DPoint> .
+<xsd:string> <rdf:type> <rdfs:Datatype>  "(0,0)"^^<xsd:2DPoint> .
+<xsd:string> <rdfs:subClassOf> <xsd:AnyType> "(0,0)"^^<xsd:2DPoint> .
+<xsd:boolean> <rdf:type> <rdfs:Datatype>  "(0,0)"^^<xsd:2DPoint> .
+<xsd:boolean> <rdfs:subClassOf> <xsd:AnyType> "(0,0)"^^<xsd:2DPoint> .
+<xsd:date> <rdf:type> <rdfs:Datatype>  "(0,0)"^^<xsd:2DPoint> .
+<xsd:data> <rdfs:subClassOf> <xsd:AnyType> "(0,0)"^^<xsd:2DPoint> .
+<xsd:dateTime> <rdf:type> <rdfs:Datatype> "(0,0)"^^<xsd:2DPoint> .
+<xsd:dateTime> <rdfs:subClassOf> <xsd:AnyType> "(0,0)"^^<xsd:2DPoint> .
+<xsd:gYear> <rdf:type> <rdfs:Datatype> "(0,0)"^^<xsd:2DPoint> .
+<xsd:gYear> <rdfs:subClassOf> <xsd:AnyType> "(0,0)"^^<xsd:2DPoint> .
+<xsd:gMonthYear> <rdf:type> <rdfs:Datatype> "(0,0)"^^<xsd:2DPoint> .
+<xsd:gMonthYear> <rdfs:subClassOf> <xsd:AnyType> "(0,0)"^^<xsd:2DPoint> .
+<xsd:anyURI> <rdf:type> <rdfs:Datatype> "(0,0)"^^<xsd:2DPoint> .
+<xsd:anyURI> <rdfs:subClassOf> <xsd:AnyType> "(0,0)"^^<xsd:2DPoint> .
+<xsd:monetary> <rdf:type> <rdfs:Datatype> "(0,0)"^^<xsd:2DPoint> .
+<xsd:monetary> <rdfs:subClassOf> <xsd:AnyType> "(0,0)"^^<xsd:2DPoint> .
+<xsd:uDateTime> <rdf:type> <rdfs:Datatype> "(0,0)"^^<xsd:2DPoint> .
+<xsd:uDateTime> <rdfs:subClassOf> <xsd:AnyType> "(0,0)"^^<xsd:2DPoint> .
+
+# Comments owl:Nothing
+<owl:Nothing> <rdfs:label> "Nothing"^^<xsd:string> "(0,0)"^^<xsd:2DPoint> .
+<owl:Nothing> <rdfs:comment> "This_is_the_empty_class."^^<xsd:string> "(0,0)"^^<xsd:2DPoint> .
+<owl:Nothing> <rdfs:isDefinedBy> "<http://www.w3.org/2002/07/owl#>"^^<xsd:string> "(0,0)"^^<xsd:2DPoint> .
+# Comments owl:Thing
+<owl:Thing> <rdfs:label> "Thing"^^<xsd:string> "(0,0)"^^<xsd:2DPoint> .
+<owl:Thing> <rdfs:comment> "The_class_of_OWL_individuals."^^<xsd:string> "(0,0)"^^<xsd:2DPoint> .
+<owl:Thing> <rdfs:isDefinedBy> "<http://www.w3.org/2002/07/owl#>"^^<xsd:string> "(0,0)"^^<xsd:2DPoint> .
+# Test classes
+<test:sensor> <rdfs:subClassOf> <owl:Thing> "(0,0)"^^<xsd:2DPoint> .
+<test:value> <rdf:type> <owl:DatatypeProperty> "(0,0)"^^<xsd:2DPoint> .
+<test:value> <rdfs:domain> <test:sensor> "(0,0)"^^<xsd:2DPoint> .
+<test:value> <rdfs:range> <xsd:long> "(0,0)"^^<xsd:2DPoint> .
+<test:Sensor1> <rdf:type> <test:sensor> "(0,0)"^^<xsd:2DPoint> .
+<test:Sensor2> <rdf:type> <test:sensor> "(0,0)"^^<xsd:2DPoint> . 

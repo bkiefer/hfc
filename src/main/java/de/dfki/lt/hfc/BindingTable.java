@@ -363,7 +363,7 @@ public class BindingTable {
 	 * on or not; in case it is turned off, calling this method does not have an
 	 * effect
 	 */
-	protected void expandBindingTable() {
+	public void expandBindingTable() {
 		// if already expanded, no need to call method again, esp., since SELECT
 		// statements without the DISTINCT keyword use java.util.Hashset objects to
 		// represent duplicate elements (int arrays); otherwise (w/ DISTINCT), a
@@ -454,7 +454,7 @@ public class BindingTable {
   /**
    * an implementation of TupleIterator for BindingTable objects
    */
-  class BindingTableIterator implements TupleIterator {
+  public class BindingTableIterator implements TupleIterator {
 
     /**
      * the number of tuples covered by the binding table

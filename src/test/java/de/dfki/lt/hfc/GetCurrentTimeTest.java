@@ -1,11 +1,13 @@
 package de.dfki.lt.hfc;
-import static org.junit.Assert.*;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
-import static de.dfki.lt.hfc.Utils.*;
+import de.dfki.lt.hfc.runnable.Utils;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import static de.dfki.lt.hfc.runnable.Utils.*;
 
 public class GetCurrentTimeTest {
   static ForwardChainer fc;
@@ -13,7 +15,7 @@ public class GetCurrentTimeTest {
   private static String getResource(String name) {
     return Utils.getTestResource("GetCurrentTime", name);
   }
-  @BeforeClass
+  @BeforeAll
   public static void init() throws Exception {
 
     fc =  new ForwardChainer(4,                                                    // #cores
@@ -67,7 +69,7 @@ public class GetCurrentTimeTest {
     checkResult(expected, bt, bt.getVars());
   }
 
-  @AfterClass
+  @AfterAll
   public static void finish() {
     fc.shutdownNoExit();
   }

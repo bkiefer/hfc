@@ -77,7 +77,20 @@ public final class XsdBoolean extends XsdAnySimpleType {
    * returns a java.lang.Boolean container for an HFC XsdBoolean object
    */
   public Object toJava() {
-    return new Boolean(this.value);
+    return  Boolean.valueOf(this.value);
   }
+
+	@Override
+	public int compareTo(Object o) {
+		if(  o instanceof AnyType.MinMaxValue ) {
+			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
+			return minMaxValue.compareTo(this);
+		}
+		if (! (o instanceof  XsdBoolean)){
+			throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
+		}
+		return Boolean.compare(this.value,((XsdBoolean) o).value);
+	}
+
 
 }

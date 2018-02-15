@@ -1,0 +1,6 @@
+Key1: XsdLong
+Position1: 0
+Structure1: BTreeIndex
+Key2: XsdLong
+Position2: 4,5
+Structure2: IntervalTreeIndex

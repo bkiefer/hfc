@@ -1,14 +1,14 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.Utils.*;
+import static de.dfki.lt.hfc.runnable.Utils.*;
 import de.dfki.lt.hfc.types.XsdString;
 import de.dfki.lt.hfc.types.XsdBoolean;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Christophe Biwer, christophe.biwer@dfki.de
@@ -51,15 +51,15 @@ public final class IntStringToBooleanTest {
 
 
     // do operation
-    assertEquals("0", store.getObject(bools[0]), store.getObject(fop.apply(new int[]{args[0]})));
-    assertEquals("1", store.getObject(bools[1]), store.getObject(fop.apply(new int[]{args[1]})));
+    assertEquals( store.getObject(bools[0]), store.getObject(fop.apply(new int[]{args[0]})), "0");
+    assertEquals( store.getObject(bools[1]), store.getObject(fop.apply(new int[]{args[1]})), "1");
 //    assertEquals("true", store.getObject(bools[1]), store.getObject(fop.apply(new int[]{args[2]})));
 //    assertEquals("false", store.getObject(bools[1]), store.getObject(fop.apply(new int[]{args[3]})));
 //    assertEquals("True", store.getObject(bools[1]), store.getObject(fop.apply(new int[]{args[4]})));
 //    assertEquals("False", store.getObject(bools[1]), store.getObject(fop.apply(new int[]{args[5]})));
 //    assertEquals("TRUE", store.getObject(bools[1]), store.getObject(fop.apply(new int[]{args[6]})));
 //    assertEquals("FALSE", store.getObject(bools[1]), store.getObject(fop.apply(new int[]{args[7]})));
-    assertEquals("2", store.getObject(bools[1]), store.getObject(fop.apply(new int[]{args[1]})));
+    assertEquals( store.getObject(bools[1]), store.getObject(fop.apply(new int[]{args[1]})), "2");
 
 
   }

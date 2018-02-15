@@ -1,27 +1,27 @@
 package de.dfki.lt.hfc;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static de.dfki.lt.hfc.Utils.*;
+import de.dfki.lt.hfc.runnable.Utils;
+import org.junit.jupiter.api.*;
+
+import static de.dfki.lt.hfc.runnable.Utils.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import org.junit.After;
-import static org.junit.Assert.*;
-import org.junit.Before;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 
 
 public class PrintSizeTest {
   static ForwardChainer fc;
   private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
-  @Before
+  @BeforeEach
   public void setUpStreams() {
     System.setOut(new PrintStream(outContent));
   }
 
-  @After
+  @AfterEach
   public void cleanUpStreams() {
     System.setOut(null);
   }
@@ -30,7 +30,7 @@ public class PrintSizeTest {
     return Utils.getTestResource("PrintSize", name);
   }
 
-  @BeforeClass
+  @BeforeAll
   public static void init() throws Exception {
 
     fc =  new ForwardChainer(4,                                                    // #cores
@@ -103,7 +103,7 @@ public class PrintSizeTest {
     assertEquals("19 \n", temp.substring(temp.length() -4));
   }
 
-  @AfterClass
+  @AfterAll
   public static void finish() {
     fc.shutdownNoExit();
   }

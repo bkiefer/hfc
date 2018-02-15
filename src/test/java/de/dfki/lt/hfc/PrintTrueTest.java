@@ -1,20 +1,21 @@
 package de.dfki.lt.hfc;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import static de.dfki.lt.hfc.Utils.checkResult;
+
+import static de.dfki.lt.hfc.TestUtils.checkResult;
 
 
 public class PrintTrueTest {
   static ForwardChainer fc;
 
   private static String getResource(String name) {
-    return Utils.getTestResource("PrintTrue", name);
+    return TestUtils.getTestResource("PrintTrue", name);
   }
 
-  @BeforeClass
+  @BeforeAll
   public static void init() throws Exception {
 
     fc =  new ForwardChainer(1,                                                    // #cores
@@ -69,7 +70,7 @@ public class PrintTrueTest {
     //checkResult(expected, bt, bt.getVars());
   }
 
-  @AfterClass
+  @AfterAll
   public static void finish() {
     fc.shutdownNoExit();
   }

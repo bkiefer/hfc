@@ -79,4 +79,15 @@ public final class XsdDouble extends XsdAnySimpleType {
     return this.value;
   }
 
+	@Override
+	public int compareTo(Object o) {
+		if(  o instanceof AnyType.MinMaxValue ) {
+			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
+			return minMaxValue.compareTo(this);
+		}
+		if (! (o instanceof  XsdDouble)){
+			throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
+		}
+		return Double.compare(this.value,((XsdDouble) o).value);
+	}
 }

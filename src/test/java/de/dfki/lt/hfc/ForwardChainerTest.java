@@ -1,15 +1,15 @@
 package de.dfki.lt.hfc;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import static de.dfki.lt.hfc.Utils.getTestResource;
+import static de.dfki.lt.hfc.runnable.Utils.getTestResource;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Set;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import gnu.trove.set.hash.*;
 

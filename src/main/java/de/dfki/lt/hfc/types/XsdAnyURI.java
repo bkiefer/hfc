@@ -83,4 +83,16 @@ public final class XsdAnyURI extends XsdAnySimpleType {
     return null;
   }
 
+	@Override
+	public int compareTo(Object o) {
+		if(  o instanceof AnyType.MinMaxValue ) {
+			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
+			return minMaxValue.compareTo(this);
+		}
+		if (! (o instanceof  XsdAnyURI)){
+			throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
+		}
+		return this.value.compareTo(((XsdAnyURI) o).value);
+	}
+
 }
