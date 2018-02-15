@@ -1,18 +1,32 @@
 package de.dfki.lt.hfc.aggregates;
 
-import de.dfki.lt.hfc.types.XsdInt;
 import de.dfki.lt.hfc.types.XsdLong;
 
 import java.util.HashSet;
 
 /**
- * TODO add usage description
+ * The aggregational operator GetEventsThisWeek returns a table of all events
+ * that occurred during the this week starting at current time and going back to Monday 00:00.
+ * It is supposed to be given a table of several columns of the following form
+ *   arg1 ... argN time
+ * where the tuples <arg1, ..., argN> with timestamps during the current week are returned.
+ *
+ * Note that time is required to be filled with XSD long integers
+ *
+ * example query:
+ *
+ *   // return all labvalues for children collected in the this week
+ *   SELECT ?child ?prop ?val ?t
+ *   WHERE ?child <rdf:type> <dom:Child> ?t1
+ *       & ?child <dom:hasLabValue> ?lv ?t2
+ *       & ?lv ?prop ?val ?t
+ *   AGGREGATE ?measurement ?result ?patient ?time = GetEventsThisWeek ?prop ?val ?child ?t ?t
  *
  * @author (C) Christian Willms
  * @since JDK 1.8
  * @version Tue Feb 13 10:52:05 CET 2018
  */
-public final class GetThisWeeksEvents extends GetLastDaysEvents {
+public final class GetEventsThisWeek extends GetEventsLastNDays {
 
 
 

@@ -9,13 +9,29 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * TODO add usage description
+ * The aggregational operator GetEventsLastNDays returns a table of all events
+ * that occurred during the last n days starting from today 00:00.
+ * It is supposed to be given a table of several columns of the following form
+ *   arg1 ... argN time n
+ * where the tuples <arg1, ..., argN> with timestamps during the last n days are returned.
+ *
+ * Note that time is required to be filled with XSD long integers
+ *
+ * example query:
+ *
+ *   // return all labvalues for children collected in the last 3 days
+ *   SELECT ?child ?prop ?val ?t
+ *   WHERE ?child <rdf:type> <dom:Child> ?t1
+ *       & ?child <dom:hasLabValue> ?lv ?t2
+ *       & ?lv ?prop ?val ?t
+ *   AGGREGATE ?measurement ?result ?patient ?time = GetEventsLastNDays ?prop ?val ?child ?t ?t "3"^^<xsd:int>
+ *
  *
  * @author (C) Christian Willms
  * @since JDK 1.8
  * @version Tue Feb 13 10:41:55 CET 2018
  */
-public  class GetLastDaysEvents extends AggregationalOperator {
+public  class GetEventsLastNDays extends AggregationalOperator {
 
   //////////////////////////////////////////////////
   // Some useful constants
@@ -24,9 +40,7 @@ public  class GetLastDaysEvents extends AggregationalOperator {
    * One day (24 hours) represented as milliseconds
    */
   static final long DAY = 86400000;
-  //TODO compute the last sunday using currentime % Week
   static final long WEEK = 604800000;
-  static final long MONTH = 0;
 
   /**
    * general form of the aggregate call:  ?arg1' ... ?argN' = LGetLatest ?arg1 ... ?argN ?time ?n

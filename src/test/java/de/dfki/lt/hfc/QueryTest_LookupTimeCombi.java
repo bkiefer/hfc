@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
+ * TODO change tests to use checkResult !!!
  * Created by christian on 08/06/17.
  */
 public class QueryTest_LookupTimeCombi {
@@ -35,8 +36,7 @@ public class QueryTest_LookupTimeCombi {
         getResource("lookupCombi.idx")
     );
 
-    // compute deductive closure
-    // TODO move this into extra tests -> fcInterval.computeClosure();
+
   }
 
   /**
@@ -120,17 +120,12 @@ public class QueryTest_LookupTimeCombi {
     TupleStore tupleStore = fc.tupleStore;
     Query query = new Query(tupleStore);
 
-      long startTime = System.currentTimeMillis();
       BindingTable bt = query.query(
           "SELECT DISTINCT ?s ?o WHERE [\"1\"^^<xsd:long>, \"6\"^^<xsd:long>] ?s <test:hasValue> ?o D \"200\"^^<xsd:long>  \"1550\"^^<xsd:long> AGGREGATE  ?number = Count ?o");
       assertNotNull(bt);
       assertFalse(bt.isEmpty());
       assertEquals(1, bt.size());
       assertEquals(1, bt.getVars().length);
-      System.out.println(bt.toString());
-      long endTime = System.currentTimeMillis();
-      long totalTime = endTime - startTime;
-      System.out.println(totalTime);
 
   }
 
