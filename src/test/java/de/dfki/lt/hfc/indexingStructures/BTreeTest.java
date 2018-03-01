@@ -48,7 +48,6 @@ public class BTreeTest extends IndexStructureTest {
 
     @Override
     protected void validateData() throws IndexingException {
-        System.out.println("Validate data ...");
         for (Map.Entry<AnyType, Set<int[]>> entry : mMap.entrySet()) {
             try {
                 //System.out.println("Search key = " + entry.getKey());
@@ -71,13 +70,6 @@ public class BTreeTest extends IndexStructureTest {
         Set<int[]> val2 = bTree.search(key);
         if (!((val1 == null) && (val2 == null)))
             if (!val1.equals(val2)) {
-            System.out.println();
-            for (int[] i : val1)
-                System.out.println(Arrays.toString(i));
-            System.out.println();
-                for (int[] i : val2)
-                    System.out.println(Arrays.toString(i));
-            System.out.println();
                 throw new IndexingException("Error in validateSearch(): Failed to compare value for key = " + key);
             }
     }

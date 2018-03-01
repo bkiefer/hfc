@@ -21,7 +21,7 @@ public class QueryTest_AllenRelations {
     public static void init() throws Exception {
 
         fcInterval =  new ForwardChainer(4,                                                     // #cores
-                true,                                                                    // verbose
+                false,                                                                    // verbose
                 false,                                                                  // RDF Check
                 false,                                                                // EQ reduction disabled
                 5,                                                    // min #args
@@ -35,7 +35,7 @@ public class QueryTest_AllenRelations {
         );
 
         fcNoIndex = new ForwardChainer(4,                                                    // #cores
-                true,                                                 // verbose
+                false,                                                 // verbose
                 false,                                                 // RDF Check
                 false,                                                // EQ reduction disabled
                 5,                                                    // min #args
@@ -52,7 +52,7 @@ public class QueryTest_AllenRelations {
 
 
     @Test
-    public void testTemp(){
+    public void testTemp() throws QueryParseException {
         String[][] expected = {
 //                {"<test:Sensor1>", "\"1\"^^<xsd:int>",  "\"100\"^^<xsd:long>" ,"\"1100\"^^<xsd:long>"},
 //                {"<test:Sensor1>", "\"2\"^^<xsd:int>",  "\"180\"^^<xsd:long>", "\"800\"^^<xsd:long>"},
@@ -67,18 +67,13 @@ public class QueryTest_AllenRelations {
         TupleStore tupleStoreNoIdex = fcNoIndex.tupleStore;
         Query queryInterval = new Query(tupleStoreInterval);
         Query queryNoIndex = new Query(tupleStoreNoIdex);
-        try { // F
+
             String input = "SELECT ?s ?o WHERE ?s <rdf:type> <test:sensor> \"0\"^^<xsd:long> \"999\"^^<xsd:long> & ?s <test:hasValue> ?o ?t1 ?t2 ";
             BindingTable btInterval = queryInterval.query(input);
             BindingTable btNoIndex = queryNoIndex.query(input);
-            System.out.println(btInterval.toString());
-            System.out.println(btNoIndex.toString());
 //            checkResult(fcInterval, btInterval, expected, btInterval.getVars());//"?s", "?o", "?rel1", "?rel2");
 //            checkResult(fcNoIndex, btNoIndex, expected, btNoIndex.getVars());//"?s", "?o", "?rel1", "?rel2");
-        } catch (QueryParseException e) {
-            e.printStackTrace();
-            fail();
-        }
+
     }
 
     /**
@@ -94,7 +89,7 @@ public class QueryTest_AllenRelations {
      *
      */
     @Test
-    public void testBefore(){
+    public void testBefore() throws QueryParseException {
         String[][] expected = {
 //                {"<test:Sensor1>", "\"1\"^^<xsd:int>",  "\"100\"^^<xsd:long>" ,"\"1100\"^^<xsd:long>"},
 //                {"<test:Sensor1>", "\"2\"^^<xsd:int>",  "\"180\"^^<xsd:long>", "\"800\"^^<xsd:long>"},
@@ -109,16 +104,12 @@ public class QueryTest_AllenRelations {
         TupleStore tupleStoreNoIdex = fcNoIndex.tupleStore;
         Query queryInterval = new Query(tupleStoreInterval);
         Query queryNoIndex = new Query(tupleStoreNoIdex);
-        try { // F
             String input = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o Bf \"1400\"^^<xsd:long>  \"1600\"^^<xsd:long> ";
             BindingTable btInterval = queryInterval.query(input);
             BindingTable btNoIndex = queryNoIndex.query(input);
             checkResult(fcInterval, btInterval, expected, btInterval.getVars());//"?s", "?o", "?rel1", "?rel2");
             checkResult(fcNoIndex, btNoIndex, expected, btNoIndex.getVars());//"?s", "?o", "?rel1", "?rel2");
-        } catch (QueryParseException e) {
-            e.printStackTrace();
-            fail();
-        }
+
     }
 
     /**
@@ -134,7 +125,7 @@ public class QueryTest_AllenRelations {
      *
      */
     @Test
-    public void testAfter(){
+    public void testAfter() throws QueryParseException {
         String[][] expected = {
                 {"<test:Sensor1>", "\"8\"^^<xsd:int>"},
                 {"<test:Sensor2>", "\"7\"^^<xsd:int>"},
@@ -144,16 +135,12 @@ public class QueryTest_AllenRelations {
         TupleStore tupleStoreNoIdex = fcNoIndex.tupleStore;
         Query queryInterval = new Query(tupleStoreInterval);
         Query queryNoIndex = new Query(tupleStoreNoIdex);
-        try { // F
             String input = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o Af \"0\"^^<xsd:long>  \"600\"^^<xsd:long> ";
             BindingTable btInterval = queryInterval.query(input);
             BindingTable btNoIndex = queryNoIndex.query(input);
             checkResult(fcInterval, btInterval, expected, btInterval.getVars());//"?s", "?o", "?rel1", "?rel2");
             checkResult(fcNoIndex, btNoIndex, expected, btNoIndex.getVars());//"?s", "?o", "?rel1", "?rel2");
-        } catch (QueryParseException e) {
-            e.printStackTrace();
-            fail();
-        }
+
     }
 
     /**
@@ -166,7 +153,7 @@ public class QueryTest_AllenRelations {
      *
      */
     @Test
-    public void testEqual(){
+    public void testEqual() throws QueryParseException {
         String[][] expected = {
                 {"<test:Sensor2>", "\"2\"^^<xsd:int>"}
                 };
@@ -174,17 +161,13 @@ public class QueryTest_AllenRelations {
         TupleStore tupleStoreNoIdex = fcNoIndex.tupleStore;
         Query queryInterval = new Query(tupleStoreInterval);
         Query queryNoIndex = new Query(tupleStoreNoIdex);
-        
-        try { // F
+
             String input = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o EA \"200\"^^<xsd:long>  \"1200\"^^<xsd:long> ";
             BindingTable btInterval = queryInterval.query(input);
             BindingTable btNoIndex = queryNoIndex.query(input);
             checkResult(fcInterval, btInterval, expected, btInterval.getVars());//"?s", "?o", "?rel1", "?rel2");
             checkResult(fcNoIndex, btNoIndex, expected, btNoIndex.getVars());//"?s", "?o", "?rel1", "?rel2");
-        } catch (QueryParseException e) {
-            e.printStackTrace();
-            fail();
-        }
+
     }
 
     /**
@@ -194,7 +177,7 @@ public class QueryTest_AllenRelations {
      * -------------------------------------------------------------------------------------
      */
     @Test
-    public void testStart(){
+    public void testStart() throws QueryParseException {
         String[][] expected = {
                 {"<test:Sensor2>", "\"2\"^^<xsd:int>"}
         };
@@ -203,17 +186,13 @@ public class QueryTest_AllenRelations {
         
         Query queryInterval = new Query(tupleStoreInterval);
         Query queryNoIndex = new Query(tupleStoreNoIdex);
-        
-        try { // F
+
             String input = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o S \"200\"^^<xsd:long>  \"1300\"^^<xsd:long> ";
             BindingTable btInterval = queryInterval.query(input);
             BindingTable btNoIndex = queryNoIndex.query(input);
             checkResult(fcInterval, btInterval, expected, btInterval.getVars());//"?s", "?o", "?rel1", "?rel2");
             checkResult(fcNoIndex, btNoIndex, expected, btNoIndex.getVars());//"?s", "?o", "?rel1", "?rel2");
-        } catch (QueryParseException e) {
-            e.printStackTrace();
-            fail();
-        }
+
     }
 
     /**
@@ -225,7 +204,7 @@ public class QueryTest_AllenRelations {
      * -------------------------------------------------------------------------------------
      */
     @Test
-    public void testStartI(){
+    public void testStartI() throws QueryParseException {
         String[][] expected = {
                 {"<test:Sensor2>", "\"2\"^^<xsd:int>"}
         };
@@ -235,16 +214,13 @@ public class QueryTest_AllenRelations {
         Query queryInterval = new Query(tupleStoreInterval);
         Query queryNoIndex = new Query(tupleStoreNoIdex);
         
-        try { // F
+
             String input = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o Si \"200\"^^<xsd:long>  \"1100\"^^<xsd:long> ";
             BindingTable btInterval = queryInterval.query(input);
             BindingTable btNoIndex = queryNoIndex.query(input);
             checkResult(fcInterval, btInterval, expected, btInterval.getVars());//"?s", "?o", "?rel1", "?rel2");
             checkResult(fcNoIndex, btNoIndex, expected, btNoIndex.getVars());//"?s", "?o", "?rel1", "?rel2");
-        } catch (QueryParseException e) {
-            e.printStackTrace();
-            fail();
-        }
+
     }
 
     /**
@@ -257,7 +233,7 @@ public class QueryTest_AllenRelations {
      *
      */
     @Test
-    public void testFinish(){
+    public void testFinish() throws QueryParseException {
         String[][] expected = {
                 {"<test:Sensor2>", "\"2\"^^<xsd:int>"}
         };
@@ -267,16 +243,13 @@ public class QueryTest_AllenRelations {
         Query queryInterval = new Query(tupleStoreInterval);
         Query queryNoIndex = new Query(tupleStoreNoIdex);
         
-        try { // F
+
             String input = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o F \"100\"^^<xsd:long>  \"1200\"^^<xsd:long> ";
             BindingTable btInterval = queryInterval.query(input);
             BindingTable btNoIndex = queryNoIndex.query(input);
             checkResult(fcInterval, btInterval, expected, btInterval.getVars());//"?s", "?o", "?rel1", "?rel2");
             checkResult(fcNoIndex, btNoIndex, expected, btNoIndex.getVars());//"?s", "?o", "?rel1", "?rel2");
-        } catch (QueryParseException e) {
-            e.printStackTrace();
-            fail();
-        }
+
     }
 
     /**
@@ -289,7 +262,7 @@ public class QueryTest_AllenRelations {
      *
      */
     @Test
-    public void testFinishI(){
+    public void testFinishI() throws QueryParseException {
         String[][] expected = {
                 {"<test:Sensor2>", "\"2\"^^<xsd:int>"}
         };
@@ -299,17 +272,14 @@ public class QueryTest_AllenRelations {
         Query queryInterval = new Query(tupleStoreInterval);
         Query queryNoIndex = new Query(tupleStoreNoIdex);
         
-        try { // F
+
             String input = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o Fi \"800\"^^<xsd:long>  \"1200\"^^<xsd:long> ";
             BindingTable btInterval = queryInterval.query(input);
             BindingTable btNoIndex = queryNoIndex.query(input);
 
             checkResult(fcInterval, btInterval, expected, btInterval.getVars());//"?s", "?o", "?rel1", "?rel2");
             checkResult(fcNoIndex, btNoIndex, expected, btNoIndex.getVars());//"?s", "?o", "?rel1", "?rel2");
-        } catch (QueryParseException e) {
-            e.printStackTrace();
-            fail();
-        }
+
     }
 
     /**
@@ -330,7 +300,7 @@ public class QueryTest_AllenRelations {
      *
      */
     @Test
-    public void testDuring(){
+    public void testDuring() throws QueryParseException {
         String[][] expected = {
                 {"<test:Sensor1>", "\"3\"^^<xsd:int>"},
                 {"<test:Sensor2>", "\"4\"^^<xsd:int>"},
@@ -349,16 +319,13 @@ public class QueryTest_AllenRelations {
         Query queryNoIndex = new Query(tupleStoreNoIdex);
 
         
-        try { // F
+
             String input = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o D \"100\"^^<xsd:long>  \"2000\"^^<xsd:long> ";
             BindingTable btInterval = queryInterval.query(input);
             BindingTable btNoIndex = queryNoIndex.query(input);
             checkResult(fcInterval, btInterval, expected, btInterval.getVars());//"?s", "?o", "?rel1", "?rel2");
             checkResult(fcNoIndex, btNoIndex, expected, btNoIndex.getVars());//"?s", "?o", "?rel1", "?rel2");
-        } catch (QueryParseException e) {
-            e.printStackTrace();
-            fail();
-        }
+
     }
 
     /**
@@ -370,7 +337,7 @@ public class QueryTest_AllenRelations {
      * -------------------------------------------------------------------------------------
      */
     @Test
-    public void testDuringI(){
+    public void testDuringI() throws QueryParseException {
         String[][] expected = {
                 {"<test:Sensor1>", "\"10\"^^<xsd:int>"}
         };
@@ -380,16 +347,13 @@ public class QueryTest_AllenRelations {
         
         Query queryInterval = new Query(tupleStoreInterval);
         Query queryNoIndex = new Query(tupleStoreNoIdex);
-        try { // F
+
             String input = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o Di \"100\"^^<xsd:long>  \"2000\"^^<xsd:long> ";
             BindingTable btInterval = queryInterval.query(input);
             BindingTable btNoIndex = queryNoIndex.query(input);
             checkResult(fcInterval, btInterval, expected, btInterval.getVars());//"?s", "?o", "?rel1", "?rel2");
             checkResult(fcNoIndex, btNoIndex, expected, btNoIndex.getVars());//"?s", "?o", "?rel1", "?rel2");
-        } catch (QueryParseException e) {
-            e.printStackTrace();
-            fail();
-        }
+
     }
 
     /**
@@ -402,7 +366,7 @@ public class QueryTest_AllenRelations {
      *
      */
     @Test
-    public void testMeeting(){
+    public void testMeeting() throws QueryParseException {
         String[][] expected = {
                 {"<test:Sensor1>", "\"2\"^^<xsd:int>"}
         };
@@ -413,7 +377,7 @@ public class QueryTest_AllenRelations {
         //Query queryInterval = new Query(tupleStoreInterval);
         Query queryNoIndex = new Query(tupleStoreNoIdex);
         //Query queryNewInterval = new Query(tupleStoreIntervalNew);
-        try { // F
+
             String input = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o M \"800\"^^<xsd:long>  \"820\"^^<xsd:long> ";
             //BindingTable btInterval = queryInterval.query(input);
             BindingTable btNoIndex = queryNoIndex.query(input);
@@ -421,10 +385,7 @@ public class QueryTest_AllenRelations {
             //checkResult(fcInterval, btInterval, expected, btInterval.getVars());//"?s", "?o", "?rel1", "?rel2");
             checkResult(fcNoIndex, btNoIndex, expected, btNoIndex.getVars());//"?s", "?o", "?rel1", "?rel2");
             //checkResult(fcNew, btNewInterval, expected, btNewInterval.getVars());// "?s", "?o", "?rel1", "?rel2");
-        } catch (QueryParseException e) {
-            e.printStackTrace();
-            fail();
-        }
+
     }
 
     /**
@@ -437,7 +398,7 @@ public class QueryTest_AllenRelations {
      *
      */
     @Test
-    public void testMeetingI(){
+    public void testMeetingI() throws QueryParseException {
         String[][] expected = {
                 {"<test:Sensor2>", "\"2\"^^<xsd:int>"}
         };
@@ -447,7 +408,7 @@ public class QueryTest_AllenRelations {
         Query queryInterval = new Query(tupleStoreInterval);
         Query queryNoIndex = new Query(tupleStoreNoIdex);
         
-        try { // F
+
             String input = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o Mi \"100\"^^<xsd:long>  \"200\"^^<xsd:long> ";
             BindingTable btInterval = queryInterval.query(input);
             BindingTable btNoIndex = queryNoIndex.query(input);
@@ -455,10 +416,6 @@ public class QueryTest_AllenRelations {
             checkResult(fcInterval, btInterval, expected, btInterval.getVars());//"?s", "?o", "?rel1", "?rel2");
             checkResult(fcNoIndex, btNoIndex, expected, btNoIndex.getVars());//"?s", "?o", "?rel1", "?rel2");
 
-        } catch (QueryParseException e) {
-            e.printStackTrace();
-            fail();
-        }
     }
 
     /**
@@ -470,7 +427,7 @@ public class QueryTest_AllenRelations {
      * ---------------------------------------------------------------------------------
      */
     @Test
-    public void testOverlap(){
+    public void testOverlap() throws QueryParseException {
         String[][] expected = {
                 {"<test:Sensor1>", "\"2\"^^<xsd:int>"}
         };
@@ -479,23 +436,16 @@ public class QueryTest_AllenRelations {
         Query queryInterval = new Query(tupleStoreInterval);
         Query queryNoIndex = new Query(tupleStoreNoIdex);
 
-        
-        try { // F
             String input = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o O \"400\"^^<xsd:long>  \"900\"^^<xsd:long> ";
             BindingTable btInterval = queryInterval.query(input);
-            System.out.println(btInterval.toString());
             BindingTable btNoIndex = queryNoIndex.query(input);
             String tempQuery = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o ?t ?t1 FILTER LGreater ?t \"400\"^^<xsd:long>";
             BindingTable tempTable = queryNoIndex.query(tempQuery);
-            System.out.println(tempTable);
 
             checkResult(fcInterval, btInterval, expected, btInterval.getVars());//"?s", "?o", "?rel1", "?rel2");
             checkResult(fcNoIndex, btNoIndex, expected, btNoIndex.getVars());//"?s", "?o", "?rel1", "?rel2");
 
-        } catch (QueryParseException e) {
-            e.printStackTrace();
-            fail();
-        }
+
     }
 
     /**
@@ -509,7 +459,7 @@ public class QueryTest_AllenRelations {
      *
      */
     @Test
-    public void testOverlapI(){
+    public void testOverlapI() throws QueryParseException {
         String[][] expected = {
                 {"<test:Sensor2>", "\"10\"^^<xsd:int>"},
                 {"<test:Sensor1>", "\"9\"^^<xsd:int>"}
@@ -521,8 +471,6 @@ public class QueryTest_AllenRelations {
         Query queryInterval = new Query(tupleStoreInterval);
         Query queryNoIndex = new Query(tupleStoreNoIdex);
 
-        
-        try { // F
             String input = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o Oi \"800\"^^<xsd:long>  \"1300\"^^<xsd:long> ";
             BindingTable btInterval = queryInterval.query(input);
             BindingTable btNoIndex = queryNoIndex.query(input);
@@ -530,10 +478,7 @@ public class QueryTest_AllenRelations {
             checkResult(fcInterval, btInterval, expected, btInterval.getVars());//"?s", "?o", "?rel1", "?rel2");
             checkResult(fcNoIndex, btNoIndex, expected, btNoIndex.getVars());//"?s", "?o", "?rel1", "?rel2");
 
-        } catch (QueryParseException e) {
-            e.printStackTrace();
-            fail();
-        }
+
     }
 
     @AfterAll

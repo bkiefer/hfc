@@ -429,6 +429,22 @@ public final class TupleStore {
 	}
 
 	/**
+	 * choose a proper noOfAtoms/noOfTuples in order not to arrive at copying (at all or
+   * too early) the elements into a larger structure; keep in mind that other services
+   * (e.g., rule application) can drastically increase the number of tuples;
+   * note: assigns an empty Namespace object to this.namespace
+	 */
+	public TupleStore(boolean verbose, int noOfAtoms, int noOfTuples) {
+		this.namespace = new Namespace();
+		this.indexStore = null;
+		this.verbose = verbose;
+		init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
+				   this.minNoOfArgs, this.maxNoOfArgs,
+						 this.subjectPosition, this.predicatePosition, this.objectPosition,
+						 noOfAtoms, noOfTuples);
+	}
+
+	/**
 	 * extends the binary constructor with the ability to read in a namespace
 	 */
 	public TupleStore(int noOfAtoms, int noOfTuples, Namespace namespace) {
@@ -451,6 +467,25 @@ public final class TupleStore {
 	 */
 	public TupleStore(int noOfAtoms, int noOfTuples, Namespace namespace, String tupleFile)
 	    throws  IOException, WrongFormatException {
+		this.namespace = namespace;
+		this.indexStore = null;
+		init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
+			this.minNoOfArgs, this.maxNoOfArgs,
+			this.subjectPosition, this.predicatePosition, this.objectPosition,
+			noOfAtoms, noOfTuples);
+		readTuples(tupleFile);
+	}
+
+	/**
+	 * extends the binary constructor with the ability to read in a namespace and a
+	 * textual representation of facts (basically N-Triples syntax), stored in a file
+	 * @throws IOException
+	 * @throws WrongFormatException
+	 * @see #readTuples
+	 */
+	public TupleStore(boolean verbose, int noOfAtoms, int noOfTuples, Namespace namespace, String tupleFile)
+	    throws  IOException, WrongFormatException {
+		this.verbose = verbose;
 		this.namespace = namespace;
 		this.indexStore = null;
 		init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
@@ -542,6 +577,19 @@ public final class TupleStore {
 
 	/**
 	 * assumes a default of 100,000 atoms and 500,000 tuples
+	 */
+	public TupleStore(boolean verbose, Namespace namespace) {
+		this.verbose = false;
+		this.namespace = namespace;
+		this.indexStore = null;
+		init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
+			this.minNoOfArgs, this.maxNoOfArgs,
+			this.subjectPosition, this.predicatePosition, this.objectPosition,
+			100000, 500000);
+	}
+
+	/**
+	 * assumes a default of 100,000 atoms and 500,000 tuples
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 * @throws WrongFormatException
@@ -549,6 +597,18 @@ public final class TupleStore {
 	public TupleStore(Namespace namespace, String tupleFile)
 	    throws FileNotFoundException, IOException, WrongFormatException {
 		this(namespace);
+		readTuples(tupleFile);
+	}
+
+	/**
+	 * assumes a default of 100,000 atoms and 500,000 tuples
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 * @throws WrongFormatException
+	 */
+	public TupleStore(boolean verbose, Namespace namespace, String tupleFile)
+	    throws FileNotFoundException, IOException, WrongFormatException {
+		this(verbose,namespace);
 		readTuples(tupleFile);
 	}
 

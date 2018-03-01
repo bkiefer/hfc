@@ -26,7 +26,7 @@ public class QueryTest_LookupAllenRelations {
     public static void init() throws Exception {
 
         fc =  new ForwardChainer(4,                                                    // #cores
-                true,                                                 // verbose
+                false,                                                 // verbose
                 false,                                                 // RDF Check
                 false,                                                // EQ reduction disabled
                 5,                                                    // min #args

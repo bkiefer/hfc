@@ -22,7 +22,7 @@ public class QueryTest_LookupPointInTime {
     public static void init() throws Exception {
 
         fc = new ForwardChainer(4,                                                    // #cores
-                true,                                                 // verbose
+                false,                                                 // verbose
                 false,                                                 // RDF Check
                 false,                                                // EQ reduction disabled
                 4,                                                    // min #args
@@ -77,7 +77,6 @@ public class QueryTest_LookupPointInTime {
                 {"<test:Sensor1>", "\"3\"^^<xsd:int>"}};
 
         BindingTable bt = query.query("SELECT DISTINCT ?s ?o WHERE [\"1\"^^<xsd:long>, \"5\"^^<xsd:long>] ?s <test:hasValue> ?o");
-        System.out.println(bt.toString());
         checkResult(fc, bt, expected, "?s", "?o");
 
     }
@@ -90,7 +89,6 @@ public class QueryTest_LookupPointInTime {
                 {"<test:Sensor2>", "\"4\"^^<xsd:int>"}};
 
         BindingTable bt = query.query("SELECT DISTINCT ?s ?o WHERE [\"1\"^^<xsd:long>, \"5\"^^<xsd:long>] ?s <test:hasValue> ?o  FILTER ?s != <test:Sensor1>");
-        System.out.println(bt.toString());
         checkResult(fc, bt, expected, "?s", "?o");
     }
 
@@ -102,7 +100,6 @@ public class QueryTest_LookupPointInTime {
                 {"<test:Sensor1>", "\"3\"^^<xsd:int>"}, {"<test:Sensor2>", "\"4\"^^<xsd:int>"}};
 
         BindingTable bt = query.query("SELECT DISTINCT ?s ?o WHERE [\"1\"^^<xsd:long>, \"5\"^^<xsd:long>] ?s <test:hasValue> ?o  FILTER IGreater ?o  \"2\"^^<xsd:int>");
-        System.out.println(bt.toString());
         checkResult(fc, bt, expected, "?s", "?o");
 
     }
@@ -114,7 +111,6 @@ public class QueryTest_LookupPointInTime {
         String[][] expected = {{"\"4\"^^<xsd:int>"}};
 
         BindingTable bt = query.query("SELECT DISTINCT ?s ?o WHERE [\"1\"^^<xsd:long>, \"5\"^^<xsd:long>] ?s <test:hasValue> ?o AGGREGATE  ?number = Count ?o");
-        System.out.println(bt.toString());
         checkResult(fc, bt, expected, "?number");
 
     }

@@ -197,6 +197,23 @@ public final class ForwardChainer {
 	}
 
 	/**
+	 * generates a new forward chainer with the default namespace for XSD, RDF, RDFS, and OWL
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 * @throws WrongFormatException
+	 */
+	public ForwardChainer(boolean verbose, String tupleFile, String ruleFile)
+			throws FileNotFoundException, IOException, WrongFormatException {
+		this();
+		this.verbose = verbose;
+		Namespace namespace = new Namespace();
+		this.tupleStore = new TupleStore(verbose, this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
+		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
+		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
+		this.noOfTasks = this.ruleStore.allRules.size();
+	}
+
+	/**
 	 * this version allows to explicitly define the namespace
 	 * @throws IOException
 	 * @throws WrongFormatException
@@ -207,6 +224,23 @@ public final class ForwardChainer {
 		this();
 		Namespace namespace = new Namespace(namespaceFile);
 		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
+		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
+		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
+		this.noOfTasks = this.ruleStore.allRules.size();
+	}
+
+	/**
+	 * this version allows to explicitly define the namespace
+	 * @throws IOException
+	 * @throws WrongFormatException
+	 * @throws FileNotFoundException
+	 */
+	public ForwardChainer(boolean verbose, String tupleFile, String ruleFile,	String namespaceFile)
+	    throws FileNotFoundException, WrongFormatException, IOException {
+		this();
+		this.verbose = verbose;
+		Namespace namespace = new Namespace(namespaceFile);
+		this.tupleStore = new TupleStore(false, this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
 		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
 		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
 		this.noOfTasks = this.ruleStore.allRules.size();
@@ -251,6 +285,28 @@ public final class ForwardChainer {
 	}
 
 	/**
+	 * generates a new forward chainer with the default namespace for XSD, RDF, RDFS, and OWL;
+	 * noOfAtoms and noOfTuples are important parameters that affects the performance of the
+	 * tuple store used by the forward chainer
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 * @throws WrongFormatException
+	 */
+	public ForwardChainer(boolean verbose, int noOfAtoms, int noOfTuples, String tupleFile, String ruleFile)
+	    throws FileNotFoundException, IOException, WrongFormatException {
+		this();
+		this.verbose = verbose;
+		this.noOfAtoms = noOfAtoms;
+	  this.noOfTuples = noOfTuples;
+		//this.namespace = new Namespace();
+		this.tupleStore = new TupleStore(verbose, this.noOfAtoms, this.noOfTuples);
+		this.tupleStore.readTuples(tupleFile);
+		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
+		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
+		this.noOfTasks = this.ruleStore.allRules.size();
+	}
+
+	/**
 	 * this version allows to explicitly define the namespace
 	 * @throws IOException
 	 * @throws WrongFormatException
@@ -268,12 +324,43 @@ public final class ForwardChainer {
 		this.noOfTasks = this.ruleStore.allRules.size();
 	}
 
+	/**
+	 * this version allows to explicitly define the namespace
+	 * @throws IOException
+	 * @throws WrongFormatException
+	 * @throws FileNotFoundException
+	 */
+	public ForwardChainer(boolean verbose, int noOfAtoms, int noOfTuples, String tupleFile, String ruleFile, String namespaceFile)
+	    throws FileNotFoundException, WrongFormatException, IOException {
+		this();
+		this.verbose = verbose;
+		this.noOfAtoms = noOfAtoms;
+	  	this.noOfTuples = noOfTuples;
+		Namespace namespace = new Namespace(namespaceFile);
+		this.tupleStore = new TupleStore(verbose, this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
+		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
+		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
+		this.noOfTasks = this.ruleStore.allRules.size();
+	}
+
 
 	/**
 	 *  assumes a default of 100,000 atoms and 500,000 tuples
 	 */
 	public ForwardChainer(TupleStore tupleStore, RuleStore ruleStore) {
 		this();
+		this.tupleStore = tupleStore;
+		this.ruleStore = ruleStore;
+		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
+		this.noOfTasks = this.ruleStore.allRules.size();
+	}
+
+	/**
+	 *  assumes a default of 100,000 atoms and 500,000 tuples
+	 */
+	public ForwardChainer(boolean verbose, TupleStore tupleStore, RuleStore ruleStore) {
+		this();
+		this.verbose = verbose;
 		this.tupleStore = tupleStore;
 		this.ruleStore = ruleStore;
 		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);

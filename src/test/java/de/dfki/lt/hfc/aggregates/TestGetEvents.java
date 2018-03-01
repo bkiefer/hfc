@@ -85,7 +85,6 @@ public class TestGetEvents {
         long sundayMidnight = currentTime - (currentTime % (7 * DAY)) - 3 * DAY;
         LocalDateTime lastSundayDateTime = Instant.ofEpochMilli(sundayMidnight).atZone(ZoneId.of("UTC")).toLocalDateTime();
         LocalDate lastSundayDate = Instant.ofEpochMilli(sundayMidnight).atZone(ZoneId.of("UTC")).toLocalDate();
-        System.out.println(lastSundayDate);
         assertTrue(lastSundayDate.getDayOfWeek().toString().endsWith("MONDAY"));
         assertTrue(lastSundayDateTime.toString().endsWith("00:00"));
     }

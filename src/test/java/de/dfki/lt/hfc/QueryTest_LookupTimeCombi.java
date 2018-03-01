@@ -23,7 +23,7 @@ public class QueryTest_LookupTimeCombi {
   public static void init() throws Exception {
 
     fc = new ForwardChainer(4,                                                    // #cores
-        true,                                                 // verbose
+        false,                                                 // verbose
         false,                                                 // RDF Check
         false,                                                // EQ reduction disabled
         6,                                                    // min #args

@@ -63,8 +63,6 @@ public class DateBasicThree {
          key = new XsdDate(0,0,0);
          values = fc.tupleStore.indexStore.lookup(key);
         assertEquals(154,values.size());
-        for ( int[] t : values)
-            System.out.println(Arrays.toString(t));
     }
 
     @AfterAll

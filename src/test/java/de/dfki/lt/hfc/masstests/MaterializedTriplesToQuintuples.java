@@ -36,7 +36,7 @@ public class MaterializedTriplesToQuintuples {
 	    ForwardChainer fc = new ForwardChainer(
 
 	      4, // int noOfCores,
-        true, // boolean verbose,
+        false, // boolean verbose,
         false, //boolean rdfCheck,
         true, //boolean eqReduction,
         3, //int minNoOfArgs,
@@ -54,7 +54,7 @@ public class MaterializedTriplesToQuintuples {
 	  }
     ForwardChainer fc2 = new ForwardChainer(
         4, // int noOfCores,
-        true, // boolean verbose,
+        false, // boolean verbose,
         false, //boolean rdfCheck,
         true, //boolean eqReduction,
         3, //int minNoOfArgs,
@@ -76,7 +76,7 @@ public class MaterializedTriplesToQuintuples {
       ForwardChainer fc = new ForwardChainer(
 
         4, // int noOfCores,
-        true, // boolean verbose,
+        false, // boolean verbose,
         false, //boolean rdfCheck,
         true, //boolean eqReduction,
         3, //int minNoOfArgs,
@@ -93,7 +93,7 @@ public class MaterializedTriplesToQuintuples {
     }
 		//   time java -server -cp .:../lib/trove-2.1.0.jar -Xmx1024m de/dfki/lt/hfc/tests/MaterializedTriplesToQuintuples
 		ForwardChainer fc =	new ForwardChainer(2,      // noOfCores
-																					 true,   // verbose
+																					 false,   // verbose
 																					 false,  // rdfCheck
 																					 true,   // eqReduction
 																					 3,      // minNoOfArgs
@@ -127,7 +127,7 @@ public class MaterializedTriplesToQuintuples {
 		ts.writeTuples(newTuples, OUT_FILE);
 
 		fc =  new ForwardChainer(2,      // noOfCores
-        true,   // verbose
+        false,   // verbose
         false,  // rdfCheck
         true,   // eqReduction
         3,      // minNoOfArgs

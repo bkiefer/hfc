@@ -21,7 +21,7 @@ public class TestApplicabilityOfAllenRelations {
   public static void init() throws Exception {
 
     fcWithIntervalTree_Index = new ForwardChainer(4,                                                    // #cores
-        true,                                                 // verbose
+        false,                                                 // verbose
         false,                                                 // RDF Check
         false,                                                // EQ reduction disabled
         6,                                                    // min #args
@@ -35,7 +35,7 @@ public class TestApplicabilityOfAllenRelations {
     );
 
     fcWithoutIntervalTree_Index = new ForwardChainer(4,                                                    // #cores
-        true,                                                 // verbose
+        false,                                                 // verbose
         false,                                                 // RDF Check
         false,                                                // EQ reduction disabled
         6,                                                    // min #args
@@ -50,7 +50,7 @@ public class TestApplicabilityOfAllenRelations {
   }
 
   @Test
-  public void testValidConfiguration(){
+  public void testValidConfiguration() throws QueryParseException {
     TupleStore tupleStore = fcWithIntervalTree_Index.tupleStore;
     Query query = new Query(tupleStore);
     String[][] expected = {
@@ -58,9 +58,7 @@ public class TestApplicabilityOfAllenRelations {
     { "<test:Sensor2>" , "\"5\"^^<xsd:int>"},
     { "<test:Sensor1>", "\"3\"^^<xsd:int>"    }
     };
-    try {
-      //Start
-      long startTime = System.currentTimeMillis();
+
       BindingTable bt = query.query(
           "SELECT ?s ?o WHERE  [\"1\"^^<xsd:long>, \"6\"^^<xsd:long>] ?s <test:hasValue> ?o D \"200\"^^<xsd:long>  \"1550\"^^<xsd:long> ");
       assertNotNull(bt);
@@ -70,17 +68,12 @@ public class TestApplicabilityOfAllenRelations {
       checkResult(expected, bt, bt.getVars());
       //End
       // Print Result
-      long endTime = System.currentTimeMillis();
-      long totalTime = endTime - startTime;
-      System.out.println(totalTime);
-    } catch (QueryParseException e) {
-      e.printStackTrace();
-      fail("");
-    }
+
+
   }
 
   @Test
-  public void testInvalidConfiguration(){
+  public void testInvalidConfiguration() throws QueryParseException {
     TupleStore tupleStore = fcWithoutIntervalTree_Index.tupleStore;
     Query query = new Query(tupleStore);
     String[][] expected = {
@@ -88,26 +81,16 @@ public class TestApplicabilityOfAllenRelations {
         {  "<test:Sensor2>" , "\"5\"^^<xsd:int>"},
         {   "<test:Sensor1>" , "\"3\"^^<xsd:int>" }
     };
-    try {
-      //Start
-      long startTime = System.currentTimeMillis();
+
       BindingTable bt = query.query(
           "SELECT ?s ?o WHERE  [\"1\"^^<xsd:long>, \"6\"^^<xsd:long>] ?s <test:hasValue> ?o D \"200\"^^<xsd:long>  \"1550\"^^<xsd:long> ");
       assertNotNull(bt);
       assertFalse(bt.isEmpty());
       assertEquals(3, bt.size());
       assertEquals(2, bt.getVars().length);
-      System.out.println(bt.toString());
       checkResult(expected, bt, bt.getVars());
       //End
-      // Print Result
-      long endTime = System.currentTimeMillis();
-      long totalTime = endTime - startTime;
-      System.out.println(totalTime);
-    } catch (QueryParseException e) {
-      e.printStackTrace();
-      fail("");
-    }
+
   }
 
   @AfterAll
