@@ -1,0 +1,8 @@
+<dom:val0> <dom:prof> "abc"@en "1"^^<xsd:long> .
+<dom:val1> <dom:prof> "def"@en "2"^^<xsd:long> .
+<dom:val2> <dom:prof> "abc"@nl "3"^^<xsd:long> .
+<dom:val3> <dom:prof> "def"@nl "4"^^<xsd:long> .
+<dom:val4> <dom:prof> "abc"^^<xsd:string> "5"^^<xsd:long> .
+<dom:val5> <dom:prof> "abc" "6"^^<xsd:long> .
+<dom:val6> <dom:prof> "def"^^<xsd:string> "7"^^<xsd:long> .
+<dom:val7> <dom:prof> "def" "8"^^<xsd:long> .

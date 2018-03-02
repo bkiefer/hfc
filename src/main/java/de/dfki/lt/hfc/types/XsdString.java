@@ -133,4 +133,25 @@ public final class XsdString extends XsdAnySimpleType {
 		return this.value.compareTo(((XsdString) o).value);
 	}
 
+  /** Two XsdString objects are equal if value and language tag are equal
+   */
+  public boolean equals(Object o) {
+    if (o instanceof String)
+      return this.languageTag == null && value.equals(o);
+    if (o instanceof XsdString) {
+      XsdString s = (XsdString)o;
+      if (this.languageTag == null) {
+        return s.languageTag == null && this.value.equals(s.value);
+      } else {
+        return this.languageTag.equals(s.languageTag)
+            && this.value.equals(s.value);
+      }
+    }
+    return false;
+  }
+
+  public int hashCode() {
+    return this.value.hashCode()
+        + (this.languageTag == null ? 0 : 29 * this.languageTag.hashCode());
+  }
 }
