@@ -7,7 +7,7 @@ import static de.dfki.lt.hfc.TestUtils.checkResult;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class TestApplicabilityOfAllenRelations {
+public class ApplicabilityOfAllenRelationsTest {
 
   static ForwardChainer fcWithIntervalTree_Index;
 

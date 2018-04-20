@@ -4,7 +4,7 @@ package de.dfki.lt.hfc;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestHfc {
+public class HTCTest {
 
   @Test
   public void test() {

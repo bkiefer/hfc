@@ -65,7 +65,7 @@ public class Utils {
       // one by one from the List, which must be empty in the end
       List<String[]> exp = new ArrayList<String[]>(Arrays.asList(expected));
       BindingTableIterator bindIt = bt.iterator(vars);
-      assertEquals(expected.length, bindIt.hasSize());
+      assertEquals(expected.length, bindIt.hasSize(), bt.toString(true));
 
       while (bindIt.hasNext()) {
         String[] tuple = neutralizeBlanknodes(bindIt.nextAsString());

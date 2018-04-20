@@ -16,6 +16,7 @@ public class ISumTwoTest {
   private static String getResource(String name) {
     return TestUtils.getTestResource("ISum2", name);
   }
+
   @BeforeAll
   public static void init() throws Exception {
 
@@ -74,7 +75,6 @@ public class ISumTwoTest {
     };
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    //TestUtils.printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     checkResult(expected, bt, bt.getVars());
   }
 

@@ -12,7 +12,7 @@ import static de.dfki.lt.hfc.TestUtils.getTempFile;
 import static de.dfki.lt.hfc.TestUtils.getTestResource;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestTupleStore {
+public class TupleStoreTest {
 
   @Test
   public void testConstructors() throws FileNotFoundException, WrongFormatException, IOException {

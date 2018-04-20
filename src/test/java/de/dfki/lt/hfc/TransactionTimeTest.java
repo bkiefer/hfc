@@ -1,11 +1,12 @@
 package de.dfki.lt.hfc;
 
-import de.dfki.lt.hfc.runnable.Utils;
+
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import static de.dfki.lt.hfc.runnable.Utils.getTestResource;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -37,7 +38,7 @@ public class TransactionTimeTest {
   static String TIME = "\"0\"^^<xsd:long>";
 
   public static String getResource(String name) {
-    return Utils.getTestResource("TestTransactionTime", name);
+    return getTestResource("TestTransactionTime", name);
   }
 
   @BeforeAll
