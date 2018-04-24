@@ -1,20 +1,21 @@
 package de.dfki.lt.hfc;
-
+import static org.junit.Assert.*;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static de.dfki.lt.hfc.TestUtils.checkResult;
+import static de.dfki.lt.hfc.Utils.checkResult;
+import static de.dfki.lt.hfc.Utils.checkResult;
+
 
 
 public class ISumOneTest {
   static ForwardChainer fc;
 
   private static String getResource(String name) {
-    return TestUtils.getTestResource("ISum1", name);
+    return Utils.getTestResource("ISum1", name);
   }
-
   @BeforeClass
   public static void init() throws Exception {
 

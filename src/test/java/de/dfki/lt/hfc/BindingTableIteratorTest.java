@@ -1,14 +1,15 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.runnable.Utils.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static de.dfki.lt.hfc.Utils.*;
+
+import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.After;
+import org.junit.Test;
 
 import de.dfki.lt.hfc.BindingTable.BindingTableIterator;
 import de.dfki.lt.hfc.types.AnyType;
@@ -19,7 +20,7 @@ public class BindingTableIteratorTest {
   Namespace ns;
   TupleStore ts;
 
-  @BeforeEach
+  @Before
   public void setup() throws FileNotFoundException, IOException, WrongFormatException {
     ns = new Namespace(getTestResource("default.ns"), false);
     ts = new TupleStore(100000, 250000, ns);
@@ -28,7 +29,7 @@ public class BindingTableIteratorTest {
     q = new Query(ts);
   }
 
-  @AfterEach
+  @After
   public void tearDown() {
     ns = null;
     ts = null;
@@ -500,9 +501,10 @@ public class BindingTableIteratorTest {
   }
 
   @SuppressWarnings("unused")
+  @Test(expected = BindingTableIteratorException.class)
   public void testError() throws QueryParseException, BindingTableIteratorException {
     BindingTable bt = q.query("SELECT ?p WHERE ?s ?p ?o AGGREGATE ?number = CountDistinct ?p & ?subject = Identity ?p");
-    assertThrows(BindingTableIteratorException.class, () -> bt.iterator("?s", "?p", "?o")); // error!
+    BindingTableIterator it = bt.iterator("?s", "?p", "?o"); // error!
   }
 
   @Test

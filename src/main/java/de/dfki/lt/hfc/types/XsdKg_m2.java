@@ -80,5 +80,5 @@ public final class XsdKg_m2 extends XsdAnySimpleType {
     }
     return Double.compare(this.value,((XsdKg_m2) o).value);
   }
-  
+
 }

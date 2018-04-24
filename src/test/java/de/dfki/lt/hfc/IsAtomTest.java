@@ -1,17 +1,17 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.runnable.Utils.*;
+import static de.dfki.lt.hfc.Utils.*;
 import de.dfki.lt.hfc.types.XsdString;
 import de.dfki.lt.hfc.types.XsdBoolean;
 import de.dfki.lt.hfc.types.XsdInt;
 import de.dfki.lt.hfc.types.Uri;
 import de.dfki.lt.hfc.types.BlankNode;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 /**
  * @author Christophe Biwer, christophe.biwer@dfki.de
@@ -45,10 +45,10 @@ public final class IsAtomTest {
     args[4] = store.putObject((new BlankNode("_blank")).toString(true));
 
     // do operation
-    assertEquals( FunctionalOperator.TRUE, fop.apply(new int[]{args[0]}), "XsdString 0");
-    assertEquals( FunctionalOperator.TRUE, fop.apply(new int[]{args[1]}),"XsdInt 1");
-    assertEquals( FunctionalOperator.TRUE, fop.apply(new int[]{args[2]}),"XsdBoolean false");
-    assertEquals( FunctionalOperator.FALSE, fop.apply(new int[]{args[3]}),"Uri <rdf:type>");
-    assertEquals( FunctionalOperator.FALSE, fop.apply(new int[]{args[4]}),"BlankNode _:blank");
+    assertEquals("XsdString 0", FunctionalOperator.TRUE, fop.apply(new int[]{args[0]}));
+    assertEquals("XsdInt 1", FunctionalOperator.TRUE, fop.apply(new int[]{args[1]}));
+    assertEquals("XsdBoolean false", FunctionalOperator.TRUE, fop.apply(new int[]{args[2]}));
+    assertEquals("Uri <rdf:type>", FunctionalOperator.FALSE, fop.apply(new int[]{args[3]}));
+    assertEquals("BlankNode _:blank", FunctionalOperator.FALSE, fop.apply(new int[]{args[4]}));
   }
 }

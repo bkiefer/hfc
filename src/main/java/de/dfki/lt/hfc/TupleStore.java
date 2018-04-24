@@ -54,12 +54,6 @@ import gnu.trove.set.hash.*;
 public final class TupleStore {
 
 	/**
-	 * TODO updateOntology and set this value regulary.
-	 * TODO Ensure that it is up to date with the versionNumber of the indexStore
-	 */
-	public int versionNumber;
-
-	/**
 	 * this field serves a different purpose compared to field ForwardChainer.generationCounter
 	 * and is solely used when tuple deletion is enabled in the forward chainer;
 	 * this field is incremented by 1 before closure computation is called and is incremented
@@ -77,8 +71,6 @@ public final class TupleStore {
 	 * @see ForwardChainer.enableTupleDeletion()
 	 */
 	protected TCustomHashMap<int[], Integer> tupleToGeneration = null;
-	public IndexStore indexStore;
-
 
 	/**
 	 * @return true iff tuple deletion has been enabled by method ForwardChainer.enableTupleDeletion()
@@ -125,7 +117,7 @@ public final class TupleStore {
 	 * set to 0, subject to 1, and object to 2, even if we would allow for tuples
 	 * of length > 3 (interpret this as "the object, given as a Cartesian product,
 	 * starts at position 2);
-		* other settings would include polarity information, Transaction and Valid time
+		* other settings would include polarity information, transaction and valid time
 	 */
 	public int subjectPosition = 0;
 	public int predicatePosition = 1;
@@ -190,7 +182,7 @@ public final class TupleStore {
 	 * a similar variable exists in class RuleStore
 	 * @see #exitOnError
 	 */
-	public boolean verbose = true;
+	public boolean verbose = false;
 
 	/**
 	 * when tuples are read in, this variable decides whether tuples are compliant with
@@ -232,15 +224,17 @@ public final class TupleStore {
 	 */
 	public Namespace namespace;
 
+	public final IndexStore indexStore;
+
 	/**
 	 * used during input, when URIs, blank nodes, or XSD atoms are replaced by their IDs (ints)
 	 */
-	protected HashMap<String, Integer> objectToId;
+	public HashMap<String, Integer> objectToId;
 
 	/**
 	 * used during output, when IDs (ints) are replaced by URI or XSD names
 	 */
-	protected ArrayList<String> idToObject;
+	public ArrayList<String> idToObject;
 
 	/**
 	 * a mapping used by tests & actions to speed up processing
@@ -429,22 +423,6 @@ public final class TupleStore {
 	}
 
 	/**
-	 * choose a proper noOfAtoms/noOfTuples in order not to arrive at copying (at all or
-   * too early) the elements into a larger structure; keep in mind that other services
-   * (e.g., rule application) can drastically increase the number of tuples;
-   * note: assigns an empty Namespace object to this.namespace
-	 */
-	public TupleStore(boolean verbose, int noOfAtoms, int noOfTuples) {
-		this.namespace = new Namespace();
-		this.indexStore = null;
-		this.verbose = verbose;
-		init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
-				   this.minNoOfArgs, this.maxNoOfArgs,
-						 this.subjectPosition, this.predicatePosition, this.objectPosition,
-						 noOfAtoms, noOfTuples);
-	}
-
-	/**
 	 * extends the binary constructor with the ability to read in a namespace
 	 */
 	public TupleStore(int noOfAtoms, int noOfTuples, Namespace namespace) {
@@ -456,17 +434,16 @@ public final class TupleStore {
 			noOfAtoms, noOfTuples);
 	}
 
-
-
 	/**
 	 * extends the binary constructor with the ability to read in a namespace and a
 	 * textual representation of facts (basically N-Triples syntax), stored in a file
 	 * @throws IOException
+	 * @throws FileNotFoundException
 	 * @throws WrongFormatException
 	 * @see #readTuples
 	 */
 	public TupleStore(int noOfAtoms, int noOfTuples, Namespace namespace, String tupleFile)
-	    throws  IOException, WrongFormatException {
+	    throws FileNotFoundException, IOException, WrongFormatException {
 		this.namespace = namespace;
 		this.indexStore = null;
 		init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
@@ -477,52 +454,22 @@ public final class TupleStore {
 	}
 
 	/**
-	 * extends the binary constructor with the ability to read in a namespace and a
-	 * textual representation of facts (basically N-Triples syntax), stored in a file
-	 * @throws IOException
-	 * @throws WrongFormatException
-	 * @see #readTuples
-	 */
-	public TupleStore(boolean verbose, int noOfAtoms, int noOfTuples, Namespace namespace, String tupleFile)
-	    throws  IOException, WrongFormatException {
-		this.verbose = verbose;
-		this.namespace = namespace;
-		this.indexStore = null;
-		init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
-			this.minNoOfArgs, this.maxNoOfArgs,
-			this.subjectPosition, this.predicatePosition, this.objectPosition,
-			noOfAtoms, noOfTuples);
-		readTuples(tupleFile);
-	}
-
-
-	/**
-	 * extends the binary constructor with the ability to read in a namespace, a index store, as well as a
-	 * textual representation of facts (basically N-Triples syntax), as well as stored in a file
-	 * @throws 	IOException
-	 * @throws WrongFormatException
-	 * @see #readTuples
-	 */
-	public TupleStore(int noOfAtoms, int noOfTuples, Namespace namespace, String tupleFile, IndexStore indexStore)
-		throws  IOException, WrongFormatException{
-		this.namespace = namespace;
-		this.indexStore = indexStore;
-		init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
-				this.minNoOfArgs, this.maxNoOfArgs,
-				this.subjectPosition, this.predicatePosition, this.objectPosition,
-				noOfAtoms, noOfTuples);
-		readTuples(tupleFile);
-	}
-
-	public TupleStore(boolean verbose, boolean rdfCheck, boolean eqReduction, int minNoOfArgs, int maxNoOfArgs, int noOfAtoms, int noOfTuples, Namespace namespace, String tupleFile, IndexStore indexStore) throws IOException, WrongFormatException {
-		this.namespace = namespace;
-		this.indexStore = indexStore;
-		init(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
-				this.subjectPosition, this.predicatePosition, this.objectPosition,
-				noOfAtoms, noOfTuples);
-		readTuples(tupleFile);
-	}
-
+		 * extends the binary constructor with the ability to read in a namespace, a index store, as well as a
+		 * textual representation of facts (basically N-Triples syntax), as well as stored in a file
+		 * @throws 	IOException
+		 * @throws WrongFormatException
+		 * @see #readTuples
+		 */
+		public TupleStore(int noOfAtoms, int noOfTuples, Namespace namespace, String tupleFile, IndexStore indexStore)
+			throws  IOException, WrongFormatException{
+			this.namespace = namespace;
+			this.indexStore = indexStore;
+			init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
+					this.minNoOfArgs, this.maxNoOfArgs,
+					this.subjectPosition, this.predicatePosition, this.objectPosition,
+					noOfAtoms, noOfTuples);
+			readTuples(tupleFile);
+		}
 
 	/**
 	 * more options to fully parameterize the tuple store
@@ -535,8 +482,28 @@ public final class TupleStore {
 										int noOfAtoms, int noOfTuples,
 										Namespace namespace, String tupleFile)
 										    throws FileNotFoundException, IOException, WrongFormatException {
-		this.indexStore = null;
 		this.namespace = namespace;
+		this.indexStore = null;
+		init(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
+			this.subjectPosition, this.predicatePosition, this.objectPosition,
+			noOfAtoms, noOfTuples);
+		readTuples(tupleFile);
+	}
+
+	/**
+	 * more options to fully parameterize the tuple store
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 * @throws WrongFormatException
+	 */
+	public TupleStore(boolean verbose, boolean rdfCheck, boolean eqReduction,
+										int minNoOfArgs, int maxNoOfArgs,
+										int noOfAtoms, int noOfTuples,
+										Namespace namespace, String tupleFile,
+					  					IndexStore indexStore)
+										    throws FileNotFoundException, IOException, WrongFormatException {
+		this.namespace = namespace;
+		this.indexStore = indexStore;
 		init(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
 			this.subjectPosition, this.predicatePosition, this.objectPosition,
 			noOfAtoms, noOfTuples);
@@ -555,31 +522,19 @@ public final class TupleStore {
 																			int noOfAtoms, int noOfTuples,
 																			Namespace namespace, String tupleFile)
 					throws FileNotFoundException, IOException, WrongFormatException {
-		this.indexStore = null;
 		this.namespace = namespace;
+		this.indexStore = null;
 		init(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
 			subjectPosition, predicatePosition, objectPosition,
 			noOfAtoms, noOfTuples);
 		readTuples(tupleFile);
 	}
 
-	/**
-	 * assumes a default of 100,000 atoms and 500,000 tuples
-	 */
-	public TupleStore(Namespace namespace) {
-		this.namespace = namespace;
-		this.indexStore = null;
-		init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
-			this.minNoOfArgs, this.maxNoOfArgs,
-			this.subjectPosition, this.predicatePosition, this.objectPosition,
-			100000, 500000);
-	}
 
 	/**
 	 * assumes a default of 100,000 atoms and 500,000 tuples
 	 */
-	public TupleStore(boolean verbose, Namespace namespace) {
-		this.verbose = false;
+	public TupleStore(Namespace namespace) {
 		this.namespace = namespace;
 		this.indexStore = null;
 		init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
@@ -597,18 +552,6 @@ public final class TupleStore {
 	public TupleStore(Namespace namespace, String tupleFile)
 	    throws FileNotFoundException, IOException, WrongFormatException {
 		this(namespace);
-		readTuples(tupleFile);
-	}
-
-	/**
-	 * assumes a default of 100,000 atoms and 500,000 tuples
-	 * @throws IOException
-	 * @throws FileNotFoundException
-	 * @throws WrongFormatException
-	 */
-	public TupleStore(boolean verbose, Namespace namespace, String tupleFile)
-	    throws FileNotFoundException, IOException, WrongFormatException {
-		this(verbose,namespace);
 		readTuples(tupleFile);
 	}
 
@@ -731,7 +674,7 @@ public final class TupleStore {
 		toBeRemoved.addAll(getTuples(this.predicatePosition, Namespace.OWL_SAMEAS_ID));
 		toBeRemoved.addAll(getTuples(this.predicatePosition, Namespace.OWL_EQUIVALENTCLASS_ID));
 		toBeRemoved.addAll(getTuples(this.predicatePosition, Namespace.OWL_EQUIVALENTPROPERTY_ID));
-		// remove ER tuples from store (set & index) and updateOntology uriToProxy and proxyToUris,
+		// remove ER tuples from store (set & index) and update uriToProxy and proxyToUris,
 		// but also record the equivalence relation in which subject and object are related to
 		for (int[] tuple : toBeRemoved) {
 			removeTuple(tuple);
@@ -862,18 +805,16 @@ public final class TupleStore {
 	 *   xsd:monetary   -> de.dfki.lt.hfc.types.XsdMonetary
 	 *   xsd:anyURI     -> de.dfki.lt.hfc.types.XsdAnyURI
 	 *
-	 * this is a lazy method, calling
-	 * Object() in case no Java object has been
+	 * this is a lazy method, calling makeJavaObject() in case no Java object has been
 	 * created so far for id
 	 */
   public AnyType getJavaObject(int id) {
     AnyType obj = this.idToJavaObject.get(id);
     // note that there is at least a mapping from id to the null value
-    if (obj == null) {
-		return makeJavaObject(id);
-	}
-	else
-		return obj;
+    if (obj == null)
+      	return makeJavaObject(id);
+    else
+    	return obj;
 	}
 
 	/**
@@ -953,7 +894,7 @@ public final class TupleStore {
 	private boolean sayItLoud(int lineNo, String message) throws WrongFormatException {
 		if (this.exitOnError) {
 			System.out.println("  " + lineNo + message);
-			// System.exit(1);
+			// throw new RuntimeException("FATAL ERROR");
 			throw new WrongFormatException("  " + lineNo + message);
 		}
 		if (this.verbose)
@@ -967,7 +908,7 @@ public final class TupleStore {
 	private boolean sayItLoud(String message) {
 		if (this.exitOnError) {
 			System.out.println("  " + message);
-			System.exit(1);
+			throw new RuntimeException("FATAL ERROR");
 		}
 		if (this.verbose)
 			System.out.println("  " + message);
@@ -1004,10 +945,10 @@ public final class TupleStore {
 			return sayItLoud(lineNo, ": tuple too long");
 		// is tuple RDF compliant
 		if (rdfCheck) {
-			// check for Valid first arg
+			// check for valid first arg
 			if ((stringTuple.size() > 0) && (TupleStore.isAtom(stringTuple.get(this.subjectPosition))))
 				return sayItLoud(lineNo, ": first arg is an atom");
-			// check for Valid second arg
+			// check for valid second arg
 			if ((stringTuple.size() > 1) && (!TupleStore.isUri(stringTuple.get(this.predicatePosition))))
 				return sayItLoud(lineNo, ": second arg is not an URI");
 		}
@@ -1018,7 +959,7 @@ public final class TupleStore {
 	 * given a string representation of a literal (an argument of a tuple),
 	 * isUri() returns true iff literal is a URI; false, otherwise
 	 */
-		public static boolean isUri (String literal) {
+	public static boolean isUri (String literal) {
 		return literal.startsWith("<");
 	}
 
@@ -1103,7 +1044,7 @@ public final class TupleStore {
 	 *
 	 * TODO: LONG TO SHORT MAPPINGS MUST HAVE BEEN DONE BEFOREHAND
 	 */
-	public int[] internalizeTuple(String[] stringTuple) {
+	public int[] internalizeTuple(String ... stringTuple) {
 		int[] intTuple = new int[stringTuple.length];
 		for (int i = 0; i < stringTuple.length; i++)
 			intTuple[i] = putObject(stringTuple[i]);
@@ -1126,7 +1067,7 @@ public final class TupleStore {
 	 */
 	protected int[] addTuple (ArrayList<String> stringTuple, int lineNo)
 	    throws WrongFormatException {
-		// check whether external representation is Valid for a ground tuple
+		// check whether external representation is valid for a ground tuple
 		if (!isValidTuple(stringTuple, lineNo))
 				return null;
 		// internalize tuple
@@ -1151,7 +1092,7 @@ public final class TupleStore {
 	/**
 	 * addTuple() assumes an int[] as input (the tuple);
 	 * the mappings are established and the index is updated;
-	 * this method does not check whether the representation is Valid;
+	 * this method does not check whether the representation is valid;
 	 * addTuple() also adds the tuple to the set of all tuples;
 	 * if tuple deletion is enabled, addTuple() also updates the tuple-
 	 * to-generation mapping;
@@ -1159,11 +1100,10 @@ public final class TupleStore {
 	 * argument tuple
 	 */
 	public final boolean addTuple(int[] tuple) {
-		//System.out.println("TS Adding tuple " + Arrays.toString(tuple));
 		// add the int tuple itself to the list of all tuples
 		final boolean isNew = this.allTuples.add(tuple);
 		// no need to add tuple to index if its already in the set of all tuples;
-		// we also stick to the old/lower generation number if it is not new
+		// we also strick to the old/lower generation number if it is not new
 		if (isNew) {
 			addToIndex(tuple);
 			if (tupleDeletionEnabled())
@@ -1226,7 +1166,7 @@ public final class TupleStore {
 	public Set<int[]> getTuples(int pos, int obj) {
 		final Set<int[]> result = this.index[pos].get(obj);
 		if (result == null)
-			return new THashSet<int[]>();
+			return Collections.emptySet();
 		else
 			return result;
 	}
@@ -1240,7 +1180,7 @@ public final class TupleStore {
 	public Set<int[]> getTuples(int pos, String obj) {
 		final Set<int[]> result = this.index[pos].get(this.objectToId.get(obj));
 		if (result == null)
-			return new THashSet<int[]>();
+			return Collections.emptySet();
 		else
 			return result;
 	}
@@ -1303,7 +1243,7 @@ public final class TupleStore {
 		* <it>no</it> front element and an <it>empty array</it> that there are no
 		* <it>back</it> elements;
 		* this method is particularly useful for extending tuples with a notion of
-		* Valid time, Transaction time, or gradation/modal operators
+		* valid time, transaction time, or gradation/modal operators
 		* @return the new extended tuple
 		*/
 	protected ArrayList<String> extendTupleExternally(final ArrayList<String> in, final String front, final String... backs) {
@@ -1324,7 +1264,6 @@ public final class TupleStore {
 	public int[] extendTupleInternally(ArrayList<String> in, String front, String... backs) {
 		return internalizeTuple(extendTupleExternally(in, front, backs));
 	}
-
 
 	/**
 	 * readTuples() reads in a sequence of tuples from a text file;
@@ -1363,68 +1302,68 @@ public final class TupleStore {
 	 *   <huk> <hasName> _:foo42 .
 	 *   _:foo42 <firstName> "Uli" .
 	 *   _:foo42 <lastName> "Krieger" .
-	 *
-	 * @param br
-	 * @param front use null to indicate that there is no front element
-	 * @param backs use an empty String array that there are no back elements
-	 * @throws IOException
+		*
+		* @param br
+		* @param front use null to indicate that there is no front element
+		* @param backs use an empty String array that there are no back elements
+		* @throws IOException
 	 * @throws WrongFormatException
 	 *
 	 */
 	private void readTuplesReally(BufferedReader br, String front, String... backs)
-			throws IOException, WrongFormatException {
+	    throws IOException, WrongFormatException {
 		String line, token;
 		StringTokenizer st;
 		int noOfTuples = 0, lineNo = 0;
 		ArrayList<String> tuple = new ArrayList<String>();
 		boolean eol = true;
 		while ((line = br.readLine()) != null) {
-			// strip of spaces at begin and end of line
-			line = line.trim();
-			++lineNo;
-			// empty lines are NOT recognized as tuples of length 0
-			if (line.length() == 0)
-				continue;
-			// skip comments
-			if (line.startsWith("#"))
-				continue;
-			// generate a string tuple representation for each line;
-			// note: variables are not allowed in ground tuples (facts)
-			st = new StringTokenizer(line, " <>_\"\\", true);
-			tuple.clear();
-			// iterate over the tokens of the tuple
-			while (st.hasMoreTokens()) {
-				token = st.nextToken();
-				if (token.equals("<"))
-					parseURI(st, tuple);
-				else if (token.equals("_"))
-					parseBlankNode(st, tuple);
-				else if (token.equals("\""))
-					parseAtom(st, tuple);
-				else if (token.equals(" "))  // keep on parsing ...
+				// strip of spaces at begin and end of line
+				line = line.trim();
+				++lineNo;
+				// empty lines are NOT recognized as tuples of length 0
+				if (line.length() == 0)
 					continue;
+				// skip comments
+				if (line.startsWith("#"))
+					continue;
+				// generate a string tuple representation for each line;
+				// note: variables are not allowed in ground tuples (facts)
+        st = new StringTokenizer(line, " <>_\"\\", true);
+				tuple.clear();
+				// iterate over the tokens of the tuple
+				while (st.hasMoreTokens()) {
+					token = st.nextToken();
+					if (token.equals("<"))
+						parseURI(st, tuple);
+					else if (token.equals("_"))
+						parseBlankNode(st, tuple);
+					else if (token.equals("\""))
+						parseAtom(st, tuple);
+					else if (token.equals(" "))  // keep on parsing ...
+						continue;
 					// next is optional: tuple needs not end in '.', end of line is also OK
-				else if (token.equals("."))
-					break;
+					else if (token.equals("."))
+						break;
 					// something has gone wrong during read in
-				else {
-					eol = sayItLoud(lineNo, ": tuple misspelled");
-					break;
+					else {
+						eol = sayItLoud(lineNo, ": tuple misspelled");
+						break;
+					}
 				}
+				if (eol) {
+					// now add one potential front element and further potential back elements;
+					// but check whether (front == null) & (backs.length == 0) in order to avoid a
+					// useless copy of 'tuple'
+					if ((front != null) || (backs.length != 0))
+						tuple = extendTupleExternally(tuple, front, backs);
+					// external tuple representation might be misspelled or the tuple is already contained
+					if (addTuple(tuple, lineNo) != null)
+						++noOfTuples;  // everything was fine
+				}
+				else
+					eol = true;
 			}
-			if (eol) {
-				// now add one potential front element and further potential back elements;
-				// but check whether (front == null) & (backs.length == 0) in order to avoid a
-				// useless copy of 'tuple'
-				if ((front != null) || (backs.length != 0))
-					tuple = extendTupleExternally(tuple, front, backs);
-				// external tuple representation might be misspelled or the tuple is already contained
-				if (addTuple(tuple, lineNo) != null)
-					++noOfTuples;  // everything was fine
-			}
-			else
-				eol = true;
-		}
 		if (this.verbose) {
 			System.out.println("\n  read " + noOfTuples + " proper tuples");
 			System.out.println("  overall " + this.allTuples.size() + " unique tuples");
@@ -1455,7 +1394,6 @@ public final class TupleStore {
 			}
 		}
 	}
-
 
 	public void readTuples(BufferedReader br, String front, String... backs)
 	    throws IOException, WrongFormatException {
@@ -1552,13 +1490,13 @@ public final class TupleStore {
 					readAllTuples(br, noOfLines);
 				else {
 					System.err.println("\nwrong section name: " + line);
-					System.exit(1);
+					throw new RuntimeException("FATAL ERROR");
 				}
 			}
 		}
 		catch (IOException e) {
 			System.err.println("\nerror while reading tuples from " + filename);
-			System.exit(1);
+			throw new RuntimeException("FATAL ERROR");
 		}
 		System.out.println("\n  read " + noOfTuples + " proper tuples");
 		System.out.println("  overall " + this.allTuples.size() + " unique tuples");
@@ -1614,7 +1552,7 @@ public final class TupleStore {
 	/**
 	 * a URI starts with a '<' and ends with a '>';
 	 */
-	public String parseURI(StringTokenizer st, ArrayList<String> tuple) {
+	public String parseURI (StringTokenizer st, ArrayList<String> tuple) {
 		// the leading '<' char has already been consumed, so consume tokens until we
 		// find the closing '>'
 		// note: no blanks are allowed inside a URI, but a URI might clearly contain
@@ -1640,11 +1578,12 @@ public final class TupleStore {
 	 * i.e., no whitespaces are allowed inside the name of the blank node;
 	 * since, blank nodes make no reference to a namespace, we make this a static method
 	 */
-	protected static void parseBlankNode (StringTokenizer st, ArrayList<String> tuple) {
+	protected void parseBlankNode (StringTokenizer st, ArrayList<String> tuple) {
 		// the leading '_' char has already been consumed, so consume tokens until we
 		// find the next whitespace char
 		StringBuilder sb = new StringBuilder("_");
 		sb.append(st.nextToken());  // the rest of the blank node
+		if (blankNodeSuffix != null) sb.append('X').append(blankNodeSuffix);
 		tuple.add(sb.toString());
 	}
 
@@ -1654,7 +1593,7 @@ public final class TupleStore {
 	 * within the preceding string, further strings are allowed, surrounded by "\"",
 	 * as well as spaces, "\\", etc.
 	 */
-	public String parseAtom(StringTokenizer st, ArrayList<String> tuple) {
+	public String parseAtom (StringTokenizer st, ArrayList<String> tuple) {
 		StringBuilder sb = new StringBuilder("\"");
 		boolean backquote = false;
 		String token;
@@ -1678,7 +1617,7 @@ public final class TupleStore {
 		boolean bareAtom = true;
 		while (st.hasMoreTokens()) {
 			token = st.nextToken();
-			if (token.equals(" ") )
+			if (token.equals(" "))
 				break;
 			else {
 				bareAtom = false;
@@ -1686,7 +1625,7 @@ public final class TupleStore {
 					// normalize namespace
 					token = this.namespace.normalizeNamespaceUri(token);
 				sb.append(token);
-				// new condition
+				// new condition TODO check wheter this is really needed
 				if (token.equals(">"))
 					break;
 			}
@@ -1708,7 +1647,7 @@ public final class TupleStore {
 	 * containing no whitespace chars;
 	 * since variables make no reference to a namespace, we make this a static method
 	 */
-	public static String parseVariable(StringTokenizer st, ArrayList<String> tuple) {
+	public static String parseVariable (StringTokenizer st, ArrayList<String> tuple) {
 		// '?' already consumed
 		StringBuilder sb = new StringBuilder("?");
 		sb.append(st.nextToken());  // the rest of the URI
@@ -1745,7 +1684,7 @@ public final class TupleStore {
 		}
 		catch (IOException e) {
 			System.err.println("Error while writing tuples to " + filename);
-			System.exit(1);
+			throw new RuntimeException("FATAL ERROR");
 		}
 	}
 
@@ -1766,7 +1705,7 @@ public final class TupleStore {
 		}
 		catch (IOException e) {
 			System.err.println("Error while writing tuples to " + filename);
-			System.exit(1);
+			throw new RuntimeException("FATAL ERROR");
 		}
 	}
 
@@ -1806,7 +1745,7 @@ public final class TupleStore {
 		}
 		catch (IOException e) {
 			System.err.println("Error while writing tuples to " + filename);
-			System.exit(1);
+			throw new RuntimeException("FATAL ERROR");
 		}
 	}
 
@@ -1829,7 +1768,7 @@ public final class TupleStore {
 	public String toExpandedString(int[] tuple) {
 		StringBuilder sb = new StringBuilder();
 		String literal;
-		for (int i = 0; i < tuple.length; i++) { // TODO what changes have I done here in my x-protege hfc version???
+		for (int i = 0; i < tuple.length; i++) {
 			// distinguish between URIs vs. XSD atoms or blank nodes
 			literal = getObject(tuple[i]);
 			if (TupleStore.isAtom(literal) || TupleStore.isBlankNode(literal))
@@ -1841,8 +1780,6 @@ public final class TupleStore {
 		sb.append(".");
 		return sb.toString();
 	}
-
-
 
 	/**
 	 * checks whether a tuple (represented as a string array) is contained in the
@@ -1894,7 +1831,7 @@ public final class TupleStore {
 	 * NOTE: we will return the NULL VALUE for the EMPTY prefix pattern (even though ALL
 	 *       tuples match this pattern)
 	 *
-	 * NOTE: it makes perfect sense that the pattern ontologyContainsTuple AT LEAST ONE URI or XSD atom;
+	 * NOTE: it makes perfect sense that the pattern contains AT LEAST ONE URI or XSD atom;
 	 *       checking for patterns containing only variables can be done more efficiently
 	 *       than by calling this method
 	 *       we will return the NULL VALUE for patterns consisting of variables only
@@ -2025,7 +1962,7 @@ public final class TupleStore {
 		outerloop:
 			for (int i = 0; i < duplPos.length; i++) {
 				dupl = duplPos[i];
-				// note: dupl ontologyContainsTuple at least two elements
+				// note: dupl contains at least two elements
 				for (int j = 1; j < dupl.length; j++) {
 					if (tuple[dupl[j - 1]] != tuple[dupl[j]]) {
 						it.remove();
@@ -2056,11 +1993,11 @@ public final class TupleStore {
 		copy.exitOnError = this.exitOnError;
 		copy.namespace = this.namespace;
 		copy.equivalenceClassReduction = this.equivalenceClassReduction;
-		// JavaDoc says createClone() returns deep copy in both cases; second createClone does not need casting
+		// JavaDoc says clone() returns deep copy in both cases; second clone does not need casting
 		/*
-		copy.uriToProxy = (TIntIntHashMap)this.uriToProxy.createClone();
-		copy.proxyToUris = this.proxyToUris.createClone();
-		copy.uriToEquivalenceRelation = (TIntIntHashMap)this.uriToEquivalenceRelation.createClone();
+		copy.uriToProxy = (TIntIntHashMap)this.uriToProxy.clone();
+		copy.proxyToUris = this.proxyToUris.clone();
+		copy.uriToEquivalenceRelation = (TIntIntHashMap)this.uriToEquivalenceRelation.clone();
 		*/
     copy.uriToProxy = new TIntIntHashMap(this.uriToProxy);
     copy.proxyToUris = new TIntObjectHashMap<TIntArrayList>(this.proxyToUris);
@@ -2089,7 +2026,7 @@ public final class TupleStore {
    * @see Namespace.readNamespaces()
    */
   public void uploadNamespaces(String filename)
-      throws WrongFormatException, IOException {
+      throws FileNotFoundException, WrongFormatException, IOException {
     this.namespace.readNamespaces(filename);
   }
 
@@ -2182,4 +2119,5 @@ public final class TupleStore {
 	public Operator getOperator(String name) {
 		return this.operatorRegistry.checkAndRegister(name);
 	}
+
 }

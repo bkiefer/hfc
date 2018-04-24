@@ -36,7 +36,6 @@ package de.dfki.lt.hfc.types;
 public final class XsdUDateTime extends XsdAnySimpleType {
   public final static String NAME = "uDateTime";
 
-  public final static XsdUDateTime minValue = new XsdUDateTime(0,0,0,0,0,0);
   public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
   public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
 
@@ -77,12 +76,7 @@ public final class XsdUDateTime extends XsdAnySimpleType {
 	 *          --> "????-07-31" -- combination of underspecification and unspecification
 	 * example 2: "Obama was born in 1961" --> "1961"
 	 * when using toString(), these values are replaced by the '?' character;
-	 * @param year a Java int representation of an XSD GYear
-	 * @param month a Java int representation of an XSD GMonth
-	 * @param day a Java int representation of an XSD GDay
-	 * @param hour a Java int representation of an
-	 * @param minute a Java int representation of an
-	 * @param second a Java float representation of an
+	 * @param value a Java int representation of an XSD int
 	 */
 	public XsdUDateTime(int year, int month, int day, int hour, int minute, float second) {
 		this.year = year;
@@ -309,7 +303,6 @@ public final class XsdUDateTime extends XsdAnySimpleType {
   public Object toJava() {
     return this;
   }
-
 
 	@Override
 	public int compareTo(Object o) {

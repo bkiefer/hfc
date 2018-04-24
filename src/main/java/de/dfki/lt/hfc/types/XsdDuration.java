@@ -223,4 +223,5 @@ public final class XsdDuration extends XsdAnySimpleType {
 		}
 		return 0;
 	}
+
 }

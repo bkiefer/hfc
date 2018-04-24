@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
  * An index is used to significantly speed-up the query processing, which is especially useful for reasoning on streams.
  *
  * @see de.dfki.lt.hfc.Query
- *
  * Created by christian on 21/12/16.
  */
 public abstract class Index<Key extends AnyType> {

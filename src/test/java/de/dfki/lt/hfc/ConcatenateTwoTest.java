@@ -1,12 +1,12 @@
 package de.dfki.lt.hfc;
+import static org.junit.Assert.*;
 
-import de.dfki.lt.hfc.runnable.Utils;
-;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-import static de.dfki.lt.hfc.runnable.Utils.checkResult;
+import static de.dfki.lt.hfc.Utils.checkResult;
+import static de.dfki.lt.hfc.Utils.checkResult;
 
 
 
@@ -16,7 +16,7 @@ public class ConcatenateTwoTest {
   private static String getResource(String name) {
     return Utils.getTestResource("Concatenate2", name);
   }
-  @BeforeAll
+  @BeforeClass
   public static void init() throws Exception {
 
     fc =  new ForwardChainer(4,                                                    // #cores
@@ -73,7 +73,7 @@ public class ConcatenateTwoTest {
     checkResult(expected, bt, bt.getVars());
   }
 
-  @AfterAll
+  @AfterClass
   public static void finish() {
     fc.shutdownNoExit();
   }

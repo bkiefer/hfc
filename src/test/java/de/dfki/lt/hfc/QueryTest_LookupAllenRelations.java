@@ -1,12 +1,14 @@
 package de.dfki.lt.hfc;
 
 
-import junit.framework.Assert;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 
 
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import static de.dfki.lt.hfc.Utils.checkResult;
 import static junit.framework.TestCase.*;
 
 /**
@@ -19,10 +21,10 @@ public class QueryTest_LookupAllenRelations {
 
 
     private static String getResource(String name) {
-        return TestUtils.getTestResource("Query", name);
+        return Utils.getTestResource("Query", name);
     }
 
-    @BeforeAll
+    @BeforeClass
     public static void init() throws Exception {
 
         fc =  new ForwardChainer(4,                                                    // #cores
@@ -54,7 +56,7 @@ public class QueryTest_LookupAllenRelations {
             String[][] expected = {{"<test:Sensor2>" ,"\"4\"^^<xsd:int>"},
                     {"<test:Sensor1>" ,"\"3\"^^<xsd:int>"},
                     {"<test:Sensor2>" ,"\"5\"^^<xsd:int>"}};
-            TestUtils.checkResult(expected, bt, bt.getVars());
+            checkResult(expected, bt, bt.getVars());
         } catch (QueryParseException e) {
             e.printStackTrace();
             fail();
@@ -72,7 +74,7 @@ public class QueryTest_LookupAllenRelations {
                     {"<test:Sensor2>" ,"\"2\"^^<xsd:int>"},
                     {"<test:Sensor1>" ,"\"2\"^^<xsd:int>"},
                     {"<test:Sensor2>" ,"\"5\"^^<xsd:int>"}};
-            TestUtils.checkResult(expected, bt, bt.getVars());
+            checkResult(expected, bt, bt.getVars());
         } catch (QueryParseException e) {
             e.printStackTrace();
             fail();
@@ -87,7 +89,7 @@ public class QueryTest_LookupAllenRelations {
             BindingTable bt = query.query("SELECT DISTINCT ?s ?o WHERE ?s <test:hasValue> ?o D \"200\"^^<xsd:long>  \"1600\"^^<xsd:long> FILTER ?s != <test:Sensor1>");
             String[][] expected = {{"<test:Sensor2>" ,"\"4\"^^<xsd:int>"},
                     {"<test:Sensor2>" ,"\"5\"^^<xsd:int>"}};
-            TestUtils.checkResult(expected, bt, bt.getVars());
+            checkResult(expected, bt, bt.getVars());
         } catch (QueryParseException e) {
             e.printStackTrace();
             fail();
@@ -104,7 +106,7 @@ public class QueryTest_LookupAllenRelations {
             String[][] expected = {{"<test:Sensor2>" ,"\"4\"^^<xsd:int>"},
                     {"<test:Sensor1>" ,"\"3\"^^<xsd:int>"},
                     {"<test:Sensor2>" ,"\"5\"^^<xsd:int>"}};
-            TestUtils.checkResult(expected, bt, bt.getVars());
+            checkResult(expected, bt, bt.getVars());
         } catch (QueryParseException e) {
             e.printStackTrace();
             fail();
@@ -119,7 +121,7 @@ public class QueryTest_LookupAllenRelations {
         try { // F
             BindingTable bt = query.query("SELECT DISTINCT ?s ?o WHERE ?s <test:hasValue> ?o D \"200\"^^<xsd:long>  \"1600\"^^<xsd:long> AGGREGATE  ?number = Count ?o");
             String[][] expected = {{"\"3\"^^<xsd:int>"}};
-            TestUtils.checkResult(expected, bt, bt.getVars());
+            checkResult(expected, bt, bt.getVars());
         } catch (QueryParseException e) {
             e.printStackTrace();
             fail();
@@ -127,7 +129,7 @@ public class QueryTest_LookupAllenRelations {
     }
 
 
-    @AfterAll
+    @AfterClass
     public static void finish() {
         fc.shutdownNoExit();
     }

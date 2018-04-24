@@ -5,7 +5,7 @@ import de.dfki.lt.hfc.indices.IntervalTree.Interval;
 import de.dfki.lt.hfc.indices.IntervalTree.IntervalTree;
 import de.dfki.lt.hfc.types.AnyType;
 import de.dfki.lt.hfc.types.XsdInt;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.*;
 
@@ -54,20 +54,20 @@ public class IntervalTreeTestNew extends IndexStructureTest {
     }
 
 
-    /**
-     * Rewritten as original one took about an hour with the interval tree.
-     * @throws IndexingException
-     */
-    @Override
-    @Test
-    public void validateTestCase5() throws IndexingException {
-        clearData();
-        addRandomKeys(-1000,10000, 40000);
-        for (int i = 666; i < 12220; ++i) {
-            validateSearch(new XsdInt(i));
-        }
-        validateAll();
-    }
+
+//    /**
+//     * Rewritten as original one took about an hour with the interval tree.
+//     * @throws IndexingException
+//     */
+//    @Test
+//    public void validateTestCase5() throws IndexingException {
+//        clearData();
+//        addRandomKeys(-1000,10000, 40000);
+//        for (int i = 666; i < 12220; ++i) {
+//            validateSearch(new XsdInt(i));
+//        }
+//        validateAll();
+//    }
 
     @Override
     protected void validateData() throws IndexingException {

@@ -1,11 +1,11 @@
 package de.dfki.lt.hfc.indexingStructures;
 
 import de.dfki.lt.hfc.indices.ZOrder;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 
 import static junit.framework.TestCase.fail;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.Assert.assertArrayEquals;
 
 
 /**

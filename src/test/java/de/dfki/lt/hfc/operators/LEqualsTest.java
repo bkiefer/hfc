@@ -1,6 +1,6 @@
 package de.dfki.lt.hfc.operators;
 
-import static de.dfki.lt.hfc.TestUtils.*;
+import static de.dfki.lt.hfc.Utils.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

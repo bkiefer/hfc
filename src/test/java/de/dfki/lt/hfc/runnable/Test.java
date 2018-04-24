@@ -1,14 +1,13 @@
 package de.dfki.lt.hfc.runnable;
 
 import de.dfki.lt.hfc.TupleStore;
-
-import java.util.Random;
+import java.util.*;
 
 /**
  * the test class for HFC
  */
 public class Test {
-	
+
 	/**
 	 * to measure 100,000,000 triple and 10,000,000 uris/atoms
 	 *   time java -server -cp .:trove-2.0.4.jar -Xms15000m -Xmx26000m de/dfki/lt/hfc/TupleStore 10000000 100000000

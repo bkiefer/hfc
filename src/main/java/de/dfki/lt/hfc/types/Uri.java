@@ -52,9 +52,10 @@ public class Uri extends AnyType {
 			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
 			return minMaxValue.compareTo(this);
 		}
-  		if (! (o instanceof  Uri)){
-  			throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
+		if (! (o instanceof  Uri)){
+			throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
 		}
 		return this.value.compareTo(((Uri) o).value);
 	}
+	
 }

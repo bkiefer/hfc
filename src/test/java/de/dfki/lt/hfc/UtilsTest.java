@@ -5,9 +5,10 @@
  */
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.runnable.Utils.*;
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
+import static de.dfki.lt.hfc.Utils.*;
+import org.junit.Assert;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *
@@ -20,7 +21,7 @@ public class UtilsTest {
     int[] in = { 1, 2, 3, 4, 5 };
     int[] exp = { 5, 4, 3, 2, 1 };
     reverse(in);
-    assertArrayEquals(exp, in, expstring(exp, in));
+    assertArrayEquals(expstring(exp, in), exp, in);
   }
 
   @Test
@@ -28,7 +29,7 @@ public class UtilsTest {
     int[] in = { 1, 2, 3, 4, 5, 6 };
     int[] exp = { 6, 5, 4, 3, 2, 1 };
     reverse(in);
-    assertArrayEquals(exp, in, expstring(exp, in));
+    assertArrayEquals(expstring(exp, in), exp, in);
   }
 
   @Test
@@ -36,7 +37,7 @@ public class UtilsTest {
     int[] in = { 1, 2 };
     int[] exp = { 2, 1 };
     reverse(in);
-    assertArrayEquals(exp, in, expstring(exp, in));
+    assertArrayEquals(expstring(exp, in), exp, in);
   }
 
   @Test
@@ -44,7 +45,7 @@ public class UtilsTest {
     int[] in = { 1  };
     int[] exp = { 1 };
     reverse(in);
-    assertArrayEquals(exp, in, expstring(exp, in));
+    assertArrayEquals(expstring(exp, in), exp, in);
   }
 
   @Test
@@ -52,6 +53,6 @@ public class UtilsTest {
     int[] in = {   };
     int[] exp = {  };
     reverse(in);
-    assertArrayEquals(exp, in, expstring(exp, in));
+    assertArrayEquals(expstring(exp, in), exp, in);
   }
 }

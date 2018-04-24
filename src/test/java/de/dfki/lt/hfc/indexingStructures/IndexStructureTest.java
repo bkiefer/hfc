@@ -3,8 +3,7 @@ package de.dfki.lt.hfc.indexingStructures;
 import de.dfki.lt.hfc.indices.IndexingException;
 import de.dfki.lt.hfc.types.AnyType;
 import de.dfki.lt.hfc.types.XsdInt;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -79,8 +78,9 @@ public abstract class IndexStructureTest {
         validateAll();
     }
 
-    @Test
-    @Tag("slow")
+    //@Test
+    /**
+     @Tag
     public void validateTestCase3() throws IndexingException {
         clearData();
         addRandomKeys(0,1000, 4000);
@@ -111,7 +111,7 @@ public abstract class IndexStructureTest {
         }
         validateAll();
     }
-
+    **/
 
     public void addKey(int i) {
         add(new XsdInt(i), new HashSet<>(Arrays.asList(new int[]{i, i, i, i})));

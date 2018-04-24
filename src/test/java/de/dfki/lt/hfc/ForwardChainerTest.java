@@ -1,15 +1,15 @@
 package de.dfki.lt.hfc;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-import static de.dfki.lt.hfc.runnable.Utils.getTestResource;
+import static de.dfki.lt.hfc.Utils.getTestResource;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Set;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import gnu.trove.set.hash.*;
 
@@ -30,7 +30,7 @@ public class ForwardChainerTest {
     //test constructor ForwardChainer(String tupleFile, String ruleFile)
     String tupleFile = getTestResource("default.nt");
     String ruleFile = getTestResource("default.eqred.rdl");
-    ForwardChainer fc = new ForwardChainer(false, tupleFile, ruleFile);
+    ForwardChainer fc = new ForwardChainer(tupleFile, ruleFile);
     assertNotNull(fc);
   }
 
@@ -40,7 +40,7 @@ public class ForwardChainerTest {
     String tupleFile = getTestResource("default.nt");
     String ruleFile = getTestResource("default.eqred.rdl");
     String namespaceFile = getTestResource("default.ns");
-    ForwardChainer fc = new ForwardChainer(false,tupleFile, ruleFile, namespaceFile);
+    ForwardChainer fc = new ForwardChainer(tupleFile, ruleFile, namespaceFile);
     assertNotNull(fc);
   }
 
@@ -51,7 +51,7 @@ public class ForwardChainerTest {
     int noOfTuples = 2;
     String tupleFile = getTestResource("default.nt");
     String ruleFile = getTestResource("default.eqred.rdl");
-    ForwardChainer fc = new ForwardChainer( false,noOfAtoms, noOfTuples, tupleFile, ruleFile);
+    ForwardChainer fc = new ForwardChainer(noOfAtoms, noOfTuples, tupleFile, ruleFile);
     assertNotNull(fc);
   }
 
@@ -63,7 +63,7 @@ public class ForwardChainerTest {
     String tupleFile = getTestResource("default.nt");
     String ruleFile = getTestResource("default.eqred.rdl");
     String namespaceFile = getTestResource("default.ns");
-    ForwardChainer fc = new ForwardChainer(false, noOfAtoms, noOfTuples, tupleFile, ruleFile, namespaceFile);
+    ForwardChainer fc = new ForwardChainer(noOfAtoms, noOfTuples, tupleFile, ruleFile, namespaceFile);
     assertNotNull(fc);
   }
 
@@ -73,7 +73,7 @@ public class ForwardChainerTest {
     Namespace namespace = new Namespace(getTestResource("default.ns"));
     TupleStore tupleStore = new TupleStore(1, 2, namespace);
     RuleStore ruleStore = new RuleStore(tupleStore);
-    ForwardChainer fc = new ForwardChainer(false, tupleStore, ruleStore);
+    ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);
     assertNotNull(fc);
   }
 
@@ -144,7 +144,7 @@ public class ForwardChainerTest {
     //test method setNoOfCores(int noOfCores)
     String tupleFile = getTestResource("default.nt");
     String ruleFile = getTestResource("default.eqred.rdl");
-    ForwardChainer fc = new ForwardChainer(false,tupleFile, ruleFile);
+    ForwardChainer fc = new ForwardChainer(tupleFile, ruleFile);
     fc.setNoOfCores(104);
     assertEquals(fc.noOfCores, 104);
   }
@@ -154,7 +154,7 @@ public class ForwardChainerTest {
     //test method nextBlankNode () that returns an int
     String tupleFile = getTestResource("default.nt");
     String ruleFile = getTestResource("default.eqred.rdl");
-    ForwardChainer fc = new ForwardChainer(false, tupleFile, ruleFile);
+    ForwardChainer fc = new ForwardChainer(tupleFile, ruleFile);
     assertEquals(51, fc.nextBlankNode());
     assertTrue(fc.nextBlankNode() > 0);
   }
@@ -192,7 +192,7 @@ public class ForwardChainerTest {
     Namespace namespace = new Namespace(getTestResource("default.ns"));
     TupleStore tupleStore = new TupleStore(2, 2, namespace);
     RuleStore ruleStore = new RuleStore(tupleStore);
-    ForwardChainer fc = new ForwardChainer(false, tupleStore, ruleStore);
+    ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);
     //fc.deleteTuple(tuple); Null pointer exception
 	}
 
@@ -207,7 +207,7 @@ public class ForwardChainerTest {
     Namespace namespace = new Namespace(getTestResource("default.ns"));
     TupleStore tupleStore = new TupleStore(1, 2, namespace);
     RuleStore ruleStore = new RuleStore(tupleStore);
-    ForwardChainer fc = new ForwardChainer(false, tupleStore, ruleStore);
+    ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);
     //fc.deleteTuples(tuples); Null pointer exception
 	}
 
@@ -239,12 +239,12 @@ public class ForwardChainerTest {
     Namespace namespace = new Namespace(getTestResource("default.ns"));
     TupleStore tupleStore = new TupleStore(false, true, true, 2, 5, 4, 2, namespace, getTestResource("default.nt"));
     RuleStore ruleStore = new RuleStore(tupleStore);
-    ForwardChainer fc2 = new ForwardChainer(false, tupleStore, ruleStore);
+    ForwardChainer fc2 = new ForwardChainer(tupleStore, ruleStore);
     assertEquals(fc2.computeClosure(1, true), false);
     assertEquals(fc2.computeClosure(1, false), false);
     //
     TupleStore tupleStore1 = new TupleStore(false, true, false, 2, 1, 2, 3, namespace, getTestResource("default.nt"));
-    ForwardChainer fc3 = new ForwardChainer(false, tupleStore1, ruleStore);
+    ForwardChainer fc3 = new ForwardChainer(tupleStore1, ruleStore);
     assertEquals(fc3.computeClosure(2, true), false);
   }
 
@@ -254,7 +254,7 @@ public class ForwardChainerTest {
     Namespace namespace = new Namespace(getTestResource("default.ns"));
     TupleStore tupleStore = new TupleStore(false, true, true, 2, 5, 4, 2, namespace, getTestResource("default.nt"));
     RuleStore ruleStore = new RuleStore(tupleStore);
-    ForwardChainer fc2 = new ForwardChainer(false, tupleStore, ruleStore);
+    ForwardChainer fc2 = new ForwardChainer(tupleStore, ruleStore);
     assertEquals(fc2.computeClosure(), false);
   }
 
@@ -267,7 +267,7 @@ public class ForwardChainerTest {
     Namespace namespace = new Namespace(getTestResource("default.ns"));
     TupleStore tupleStore = new TupleStore(false, true, true, 2, 5, 4, 2, namespace, getTestResource("default.nt"));
     RuleStore ruleStore = new RuleStore(tupleStore);
-    ForwardChainer fc = new ForwardChainer(false, tupleStore, ruleStore);
+    ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);
     //no tuples were generated, so returns false
     assertEquals(fc.computeClosure(newTuples, noOfIterations, cleanUpRepository), false);
     //set verbose to false
@@ -282,7 +282,7 @@ public class ForwardChainerTest {
     String tupleFile = getTestResource("default.nt");
     String ruleFile = getTestResource("default.eqred.rdl");
     String namespaceFile = getTestResource("default.ns");
-    ForwardChainer fc1 = new ForwardChainer( noOfCores, verboseF, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
+    ForwardChainer fc1 = new ForwardChainer(noOfCores, verboseF, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
         noOfAtoms, noOfTuples, tupleFile, ruleFile, namespaceFile);
     assertEquals(fc1.computeClosure(newTuples, noOfIterations, cleanUpRepository), false);
     //newTuples not empty:
@@ -291,7 +291,7 @@ public class ForwardChainerTest {
     toadd[0] = 0;
     toadd[1] = 1;
     newTuplesfull.add(toadd);
-    ForwardChainer fc2 = new ForwardChainer(false, tupleStore, ruleStore);
+    ForwardChainer fc2 = new ForwardChainer(tupleStore, ruleStore);
     assertEquals(fc2.computeClosure(newTuplesfull, 1, false), false);
     assertEquals(fc2.computeClosure(newTuplesfull, 1, true), false);
   }
@@ -322,7 +322,7 @@ public class ForwardChainerTest {
     String filename = getTestResource("default.ns");
     String tupleFile = getTestResource("default.nt");
     String ruleFile = getTestResource("default.eqred.rdl");
-    ForwardChainer fc = new ForwardChainer(false, tupleFile, ruleFile);
+    ForwardChainer fc = new ForwardChainer(tupleFile, ruleFile);
     fc.uploadNamespaces(filename);
     //TODO create a test
   }
@@ -334,8 +334,7 @@ public class ForwardChainerTest {
     Namespace namespace = new Namespace(getTestResource("default.ns"));
     TupleStore tupleStore = new TupleStore(1, 2, namespace);
     RuleStore ruleStore = new RuleStore(tupleStore);
-    ForwardChainer fc = new ForwardChainer(false, tupleStore, ruleStore);
-    tupleStore.verbose = false;
+    ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);
     fc.uploadTuples(filename);
     //TODO create a test
   }
@@ -352,7 +351,7 @@ public class ForwardChainerTest {
     Namespace namespace = new Namespace(getTestResource("default.ns"));
     TupleStore tupleStore = new TupleStore(1, 2, namespace);
     RuleStore ruleStore = new RuleStore(tupleStore);
-    ForwardChainer fc = new ForwardChainer(false, tupleStore, ruleStore);
+    ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);
     assertEquals(false, fc.addTuplesToRepository(tuples));
   }
 
@@ -364,7 +363,7 @@ public class ForwardChainerTest {
     Namespace namespace = new Namespace(getTestResource("default.ns"));
     TupleStore tupleStore = new TupleStore(1, 2, namespace);
     RuleStore ruleStore = new RuleStore(tupleStore);
-    ForwardChainer fc = new ForwardChainer(false, tupleStore, ruleStore);
+    ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);
     fc.addTuples(tuples);
     //TODO create a test
 
@@ -382,7 +381,7 @@ public class ForwardChainerTest {
     Namespace namespace = new Namespace(getTestResource("default.ns"));
     TupleStore tupleStore = new TupleStore(1, 2, namespace);
     RuleStore ruleStore = new RuleStore(tupleStore);
-    ForwardChainer fc = new ForwardChainer(false, tupleStore, ruleStore);
+    ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);
     assertEquals(false, fc.removeTuplesFromRepository(tuples));
   }
 
@@ -397,7 +396,7 @@ public class ForwardChainerTest {
     Namespace namespace = new Namespace(getTestResource("default.ns"));
     TupleStore tupleStore = new TupleStore(1, 2, namespace);
     RuleStore ruleStore = new RuleStore(tupleStore);
-    ForwardChainer fc = new ForwardChainer(false, tupleStore, ruleStore);
+    ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);
     assertEquals(false, fc.deleteTuplesFromRepository(tuples));
   }
 
@@ -407,7 +406,7 @@ public class ForwardChainerTest {
     Namespace namespace = new Namespace(getTestResource("default.ns"));
     TupleStore tupleStore = new TupleStore(1, 2, namespace);
     RuleStore ruleStore = new RuleStore(tupleStore);
-    ForwardChainer fc = new ForwardChainer(false, tupleStore, ruleStore);
+    ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);
     assertEquals(false, fc.computeClosure());
   }
 
@@ -428,7 +427,7 @@ public class ForwardChainerTest {
     Namespace namespace = new Namespace(getTestResource("default.ns"));
     TupleStore tupleStore = new TupleStore(1, 2, namespace);
     RuleStore ruleStore = new RuleStore(tupleStore);
-    ForwardChainer fc = new ForwardChainer(false, tupleStore, ruleStore);
+    ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);
     fc.uploadRules(filename);
     //TODO create a test
   }
@@ -491,7 +490,7 @@ public class ForwardChainerTest {
     int levelx = 12900;
     String tupleFile = getTestResource("default.nt");
     String ruleFile = getTestResource("default.eqred.rdl");
-    ForwardChainer fc = new ForwardChainer(false, tupleFile, ruleFile);
+    ForwardChainer fc = new ForwardChainer(tupleFile, ruleFile);
     fc.compress(level0);
     fc.compress(level1);
     fc.compress(level2);
@@ -509,7 +508,7 @@ public class ForwardChainerTest {
     fc.uncompressIndex();
     //TODO create a test
     TupleStore tupleconstructor5 = new TupleStore(false, true, true, 2, 5, 4, 2, namespace, getTestResource("default.nt"));
-    ForwardChainer fc1 = new ForwardChainer(false, tupleconstructor5, ruleStore);
+    ForwardChainer fc1 = new ForwardChainer(tupleconstructor5, ruleStore);
     fc1.uncompressIndex();
     //TODO create a test
   }

@@ -1,9 +1,9 @@
 package de.dfki.lt.hfc.comparators;
 
 import de.dfki.lt.hfc.types.XsdDouble;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertTrue;
 
 
 /**

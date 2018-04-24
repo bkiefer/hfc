@@ -4,6 +4,7 @@ import de.dfki.lt.hfc.indices.bplustree.BPlusTree;
 
 import de.dfki.lt.hfc.indices.IndexingException;
 import de.dfki.lt.hfc.types.AnyType;
+import de.dfki.lt.hfc.types.XsdInt;
 
 import java.util.*;
 
@@ -15,6 +16,8 @@ public class BPlusTreeTest extends IndexStructureTest{
     private static BPlusTree<AnyType> bTree = new BPlusTree<AnyType>();
 
     private final Map<AnyType, Set<int[]>> mMap = new TreeMap<AnyType, Set<int[]>>();
+
+
 
     @Override
     protected void add(AnyType key, Set<int[]> value) {

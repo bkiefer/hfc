@@ -23,7 +23,7 @@ public final class XsdGMonth extends XsdAnySimpleType {
     registerConstructor(XsdGMonth.class, SHORT_NAME, LONG_NAME);
   }
 
-    /**
+  /**
 	 * I do NOT check whether 01 <= month <= 12
 	 */
 	public int month;

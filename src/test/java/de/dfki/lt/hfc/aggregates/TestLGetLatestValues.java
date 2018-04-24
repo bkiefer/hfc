@@ -1,14 +1,17 @@
 package de.dfki.lt.hfc.aggregates;
 
-import static de.dfki.lt.hfc.runnable.Utils.*;
+import static de.dfki.lt.hfc.Utils.*;
+import static org.junit.Assert.assertEquals;
 
-import de.dfki.lt.hfc.runnable.Utils;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import de.dfki.lt.hfc.*;
-
+import static org.junit.Assert.assertEquals;
 
 /**
  * this aggregational operator LGetLatestValues only works for the time-stamped
@@ -35,7 +38,7 @@ public class TestLGetLatestValues {
   }
 
 
-  @BeforeAll
+  @BeforeClass
   public static void init() throws Exception {
 
     // forward chainer actually not needed -- tuple store and query object would suffice !
@@ -68,7 +71,7 @@ public class TestLGetLatestValues {
     fc.uploadTuples(getResource("test.child.labvalues.nt"));
     }
 
-  @AfterAll
+  @AfterClass
   public static void finish() {
     fc.shutdownNoExit();
   }

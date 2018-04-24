@@ -88,5 +88,4 @@ public final class XsdM extends XsdAnySimpleType {
     }
     return Double.compare(this.value,((XsdM) o).value);
   }
-  
 }

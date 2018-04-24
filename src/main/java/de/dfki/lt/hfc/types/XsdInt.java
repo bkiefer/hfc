@@ -82,11 +82,11 @@ public final class XsdInt extends XsdAnySimpleType {
 
 	@Override
 	public int compareTo(Object o) {
-  		if(  o instanceof AnyType.MinMaxValue ) {
-  			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
-  			return minMaxValue.compareTo(this);
+		if(  o instanceof AnyType.MinMaxValue ) {
+			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
+			return minMaxValue.compareTo(this);
 		}
-  		if (! (o instanceof  XsdInt )){
+		if (! (o instanceof  XsdInt )){
 			throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
 		}
 		return Integer.compare(this.value,((XsdInt) o).value);

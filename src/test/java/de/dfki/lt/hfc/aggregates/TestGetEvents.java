@@ -1,13 +1,10 @@
 package de.dfki.lt.hfc.aggregates;
 
-import de.dfki.lt.hfc.BindingTable;
-import de.dfki.lt.hfc.ForwardChainer;
-import de.dfki.lt.hfc.Query;
-import de.dfki.lt.hfc.QueryParseException;
-import de.dfki.lt.hfc.runnable.Utils;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import de.dfki.lt.hfc.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -18,8 +15,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static de.dfki.lt.hfc.runnable.Utils.checkResult;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static de.dfki.lt.hfc.Utils.checkResult;
+import static org.junit.Assert.assertTrue;
+
 
 /**
  * This is a collection of test for the newly introduced aggregtates
@@ -44,7 +42,7 @@ public class TestGetEvents {
         return Utils.getTestResource("LGetLatestValues", name);
     }
 
-    @BeforeEach
+    @Before
     public void init() throws Exception {
 
         fc = new ForwardChainer(4,                                                    // #cores
@@ -64,7 +62,7 @@ public class TestGetEvents {
     }
 
 
-    @AfterEach
+    @After
     public void cleanup() {
         fc.shutdownNoExit();
     }

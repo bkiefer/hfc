@@ -1,10 +1,12 @@
 package de.dfki.lt.hfc.runnable;
 
+import static de.dfki.lt.hfc.runnable.Utils.getResource;
+
+import java.util.ArrayList;
+import de.dfki.lt.hfc.*;
 import de.dfki.lt.hfc.Namespace;
 import de.dfki.lt.hfc.Query;
 import de.dfki.lt.hfc.TupleStore;
-
-import static de.dfki.lt.hfc.TestUtils.getResource;
 
 public class TestApproach1copy {
 

@@ -1,16 +1,15 @@
 package de.dfki.lt.hfc.aggregates;
 
 import de.dfki.lt.hfc.*;
-import de.dfki.lt.hfc.runnable.Utils;
+
 import de.dfki.lt.hfc.types.XsdLong;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-import java.text.SimpleDateFormat;
+import static de.dfki.lt.hfc.Utils.checkResult;
+import static org.junit.Assert.assertTrue;
 
-import static de.dfki.lt.hfc.TestUtils.checkResult;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * This is a collection of test for the newly introduced aggregtates
@@ -28,7 +27,7 @@ public class TestSort {
         return Utils.getTestResource("LGetLatestValues", name);
     }
 
-    @BeforeAll
+    @BeforeClass
     public static void init() throws Exception {
 
         fc = new ForwardChainer(4,                                                    // #cores
@@ -48,7 +47,7 @@ public class TestSort {
     }
 
 
-    @AfterAll
+    @AfterClass
     public static void cleanup() {
         fc.shutdownNoExit();
     }

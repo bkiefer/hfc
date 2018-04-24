@@ -121,18 +121,6 @@ public final class XsdString extends XsdAnySimpleType {
     return this.value;
   }
 
-	@Override
-	public int compareTo(Object o) {
-		if(  o instanceof AnyType.MinMaxValue ) {
-			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
-			return minMaxValue.compareTo(this);
-		}
-		if (!(o instanceof XsdString)) {
-			throw new IllegalArgumentException("Can't compare " + this.getClass() + " and " + o.getClass());
-		}
-		return this.value.compareTo(((XsdString) o).value);
-	}
-
   /** Two XsdString objects are equal if value and language tag are equal
    */
   public boolean equals(Object o) {
@@ -154,4 +142,16 @@ public final class XsdString extends XsdAnySimpleType {
     return this.value.hashCode()
         + (this.languageTag == null ? 0 : 29 * this.languageTag.hashCode());
   }
+
+	@Override
+	public int compareTo(Object o) {
+		if(  o instanceof AnyType.MinMaxValue ) {
+			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
+			return minMaxValue.compareTo(this);
+		}
+		if (!(o instanceof XsdString)) {
+			throw new IllegalArgumentException("Can't compare " + this.getClass() + " and " + o.getClass());
+		}
+		return this.value.compareTo(((XsdString) o).value);
+	}
 }
