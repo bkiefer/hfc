@@ -341,7 +341,7 @@ public class Query {
       } else if (token.equals("\"")) {
         this.tupleStore.parseAtom(st, tuple);
       } else if (token.equals("_")) {
-        TupleStore.parseBlankNode(st, tuple);
+        this.tupleStore.parseBlankNode(st, tuple);
       } else if (token.equals("[")) { // check for exclusive interval
         QRelationFactory.parseInterval(true, st, tuple);
       } else if (token.equals("(")) {// check for inclusive interval

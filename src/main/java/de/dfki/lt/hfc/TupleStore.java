@@ -1640,11 +1640,12 @@ public final class TupleStore {
 	 * i.e., no whitespaces are allowed inside the name of the blank node;
 	 * since, blank nodes make no reference to a namespace, we make this a static method
 	 */
-	protected static void parseBlankNode (StringTokenizer st, ArrayList<String> tuple) {
+	protected  void parseBlankNode (StringTokenizer st, ArrayList<String> tuple) {
 		// the leading '_' char has already been consumed, so consume tokens until we
 		// find the next whitespace char
 		StringBuilder sb = new StringBuilder("_");
 		sb.append(st.nextToken());  // the rest of the blank node
+		if (blankNodeSuffix != null) sb.append('X').append(blankNodeSuffix);
 		tuple.add(sb.toString());
 	}
 

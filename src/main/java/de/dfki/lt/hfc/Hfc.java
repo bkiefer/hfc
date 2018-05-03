@@ -16,7 +16,7 @@ public class Hfc {
    * I'm making _all_ the potentially relevant object directly accessable
    */
   private Namespace _namespace = null;
-  private TupleStore _tupleStore = null;
+  public TupleStore _tupleStore = null;
   private RuleStore _ruleStore = null;
   private ForwardChainer _forwardChainer = null;
 
