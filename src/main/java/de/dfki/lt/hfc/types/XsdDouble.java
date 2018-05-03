@@ -90,4 +90,5 @@ public final class XsdDouble extends XsdAnySimpleType {
 		}
 		return Double.compare(this.value,((XsdDouble) o).value);
 	}
+
 }

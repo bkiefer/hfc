@@ -7,9 +7,9 @@ import de.dfki.lt.hfc.Namespace;
 import de.dfki.lt.hfc.Query;
 import de.dfki.lt.hfc.QueryParseException;
 import de.dfki.lt.hfc.TupleStore;
+import de.dfki.lt.hfc.Utils;
 import de.dfki.lt.hfc.WrongFormatException;
-import de.dfki.lt.hfc.runnable.Utils;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 public class LIsValidTest {
 

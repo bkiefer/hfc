@@ -1,15 +1,17 @@
 package de.dfki.lt.hfc.indexParsing;
 
 import de.dfki.lt.hfc.ForwardChainer;
-import de.dfki.lt.hfc.TestUtils;
+
+import de.dfki.lt.hfc.Utils;
 import de.dfki.lt.hfc.types.XsdLong;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
+
 
 /**
  * This tests ensure that the basic parsing for Transaction time encoded by xsd:long works. Here the Transaction time
@@ -24,10 +26,10 @@ public class LongBasicOne {
     static String[] testSub2 = new String[]{"<test:sensor>", "<rdfs:subClassOf>", "<owl:Thing>"};
 
     private static String getResource(String name) {
-        return TestUtils.getTestResource("Index_Parsing", name);
+        return Utils.getTestResource("Index_Parsing", name);
     }
 
-    @BeforeAll
+    @BeforeClass
     public static void init() throws Exception {
 
         fc =  new ForwardChainer(4,                                                    // #cores
@@ -66,7 +68,7 @@ public class LongBasicOne {
     }
 
 
-    @AfterAll
+    @AfterClass
     public static void finish() {
         fc.shutdownNoExit();
     }

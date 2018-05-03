@@ -1,14 +1,16 @@
 package de.dfki.lt.hfc;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import junit.framework.Assert;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
 
+import static junit.framework.TestCase.*;
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.fail;
 
 /**
- * TODO change tests to use checkResult !!!
  * Created by christian on 08/06/17.
  */
 public class QueryTest_LookupTimeCombi {
@@ -16,10 +18,10 @@ public class QueryTest_LookupTimeCombi {
   static ForwardChainer fc;
 
   private static String getResource(String name) {
-    return TestUtils.getTestResource("Query", name);
+    return Utils.getTestResource("Query", name);
   }
 
-  @BeforeAll
+  @BeforeClass
   public static void init() throws Exception {
 
     fc = new ForwardChainer(4,                                                    // #cores
@@ -36,7 +38,8 @@ public class QueryTest_LookupTimeCombi {
         getResource("lookupCombi.idx")
     );
 
-
+    // compute deductive closure
+    // TODO move this into extra tests -> fcInterval.computeClosure();
   }
 
   /**
@@ -56,10 +59,10 @@ public class QueryTest_LookupTimeCombi {
    * "2000"^^<xsd:long>.
    */
   @Test
-  public void testSelectWhere() throws QueryParseException {
+  public void testSelectWhere() {
     TupleStore tupleStore = fc.tupleStore;
     Query query = new Query(tupleStore);
-
+    try {
       //Start
       BindingTable bt = query.query(
           "SELECT ?s ?o WHERE  [\"1\"^^<xsd:long>, \"6\"^^<xsd:long>] ?s <test:hasValue> ?o D \"200\"^^<xsd:long>  \"1550\"^^<xsd:long> ");
@@ -68,57 +71,70 @@ public class QueryTest_LookupTimeCombi {
       assertEquals(3, bt.size());
       assertEquals(2, bt.getVars().length);
       //End
-
+    } catch (QueryParseException e) {
+      e.printStackTrace();
+      fail();
+    }
   }
 
   @Test
-  public void testSelectDistinctWhere() throws QueryParseException {
+  public void testSelectDistinctWhere() {
     TupleStore tupleStore = fc.tupleStore;
     Query query = new Query(tupleStore);
-
+    try { // F
       BindingTable bt = query.query(
           "SELECT DISTINCT ?s ?o WHERE [\"1\"^^<xsd:long>, \"6\"^^<xsd:long>] ?s <test:hasValue> ?o D \"100\"^^<xsd:long>  \"1550\"^^<xsd:long> ");
       assertNotNull(bt);
       assertFalse(bt.isEmpty());
-      assertEquals(5, bt.size());
+      Assert.assertEquals(5, bt.size());
       assertEquals(2, bt.getVars().length);
-
+    } catch (QueryParseException e) {
+      e.printStackTrace();
+      fail();
+    }
   }
 
   @Test
-  public void testSelectWhereFilter() throws QueryParseException {
+  public void testSelectWhereFilter() {
     TupleStore tupleStore = fc.tupleStore;
     Query query = new Query(tupleStore);
-
+    try { // F
       BindingTable bt = query.query(
           "SELECT DISTINCT ?s ?o WHERE [\"1\"^^<xsd:long>, \"6\"^^<xsd:long>] ?s <test:hasValue> ?o D \"200\"^^<xsd:long>  \"1550\"^^<xsd:long> FILTER ?s != <test:Sensor1>");
       assertNotNull(bt);
       assertFalse(bt.isEmpty());
       assertEquals(2, bt.size());
       assertEquals(2, bt.getVars().length);
-
+    } catch (QueryParseException e) {
+      e.printStackTrace();
+      fail();
+    }
   }
 
 
   @Test
-  public void testSelectDistinctWhereFilter() throws QueryParseException {
+  public void testSelectDistinctWhereFilter() {
     TupleStore tupleStore = fc.tupleStore;
     Query query = new Query(tupleStore);
-
+    try { // F
       BindingTable bt = query.query(
           "SELECT DISTINCT ?s ?o WHERE [\"1\"^^<xsd:long>, \"6\"^^<xsd:long>] ?s <test:hasValue> ?o D \"200\"^^<xsd:long>  \"1550\"^^<xsd:long> FILTER ?o IGreater \"2\"^^<xsd:int>");
       assertNotNull(bt);
       assertFalse(bt.isEmpty());
       assertEquals(3, bt.size());
       assertEquals(2, bt.getVars().length);
-
+    } catch (QueryParseException e) {
+      e.printStackTrace();
+      fail();
+    }
   }
 
 
   @Test
-  public void testSelectWhereAggregate() throws QueryParseException {
+  public void testSelectWhereAggregate() {
     TupleStore tupleStore = fc.tupleStore;
     Query query = new Query(tupleStore);
+    try { // F
 
       BindingTable bt = query.query(
           "SELECT DISTINCT ?s ?o WHERE [\"1\"^^<xsd:long>, \"6\"^^<xsd:long>] ?s <test:hasValue> ?o D \"200\"^^<xsd:long>  \"1550\"^^<xsd:long> AGGREGATE  ?number = Count ?o");
@@ -126,11 +142,14 @@ public class QueryTest_LookupTimeCombi {
       assertFalse(bt.isEmpty());
       assertEquals(1, bt.size());
       assertEquals(1, bt.getVars().length);
-
+    } catch (QueryParseException e) {
+      e.printStackTrace();
+      fail();
+    }
   }
 
 
-  @AfterAll
+  @AfterClass
   public static void finish() {
     fc.shutdownNoExit();
   }

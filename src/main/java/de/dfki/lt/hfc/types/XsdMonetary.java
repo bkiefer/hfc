@@ -143,4 +143,5 @@ public final class XsdMonetary extends XsdAnySimpleType {
 		//TODO include currencies
 		return Double.compare(this.amount, ((XsdMonetary) o).amount);
 	}
+
 }

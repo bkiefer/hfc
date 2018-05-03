@@ -1,11 +1,10 @@
 package de.dfki.lt.hfc;
 
-import de.dfki.lt.hfc.runnable.Utils;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-import static de.dfki.lt.hfc.runnable.Utils.checkResult;
+import static de.dfki.lt.hfc.Utils.checkResult;
 
 
 public class PrintFalseTest {
@@ -15,7 +14,7 @@ public class PrintFalseTest {
     return Utils.getTestResource("PrintFalse", name);
   }
 
-  @BeforeAll
+  @BeforeClass
   public static void init() throws Exception {
 
     fc =  new ForwardChainer(4,                                                    // #cores
@@ -69,7 +68,7 @@ public class PrintFalseTest {
     checkResult(expected, bt, bt.getVars());
   }
 
-  @AfterAll
+  @AfterClass
   public static void finish() {
     fc.shutdownNoExit();
   }

@@ -1,16 +1,16 @@
 package de.dfki.lt.hfc;
 
 
+import static org.junit.Assert.*;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
-
-
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 
-import static de.dfki.lt.hfc.TestUtils.checkResult;
+
+import static de.dfki.lt.hfc.Utils.checkResult;
+import static de.dfki.lt.hfc.Utils.checkResult;
 
 
 
@@ -18,7 +18,7 @@ public class BlankNodeTwoTest {
   static ForwardChainer fc;
 
   private static String getResource(String name) {
-    return TestUtils.getTestResource("BlankNode2", name);
+    return Utils.getTestResource("BlankNode2", name);
   }
 
   /**
@@ -41,7 +41,7 @@ public class BlankNodeTwoTest {
    * @author (C) Hans-Ulrich Krieger
    * @version Mon Jan  4 10:11:02 CET 2016
    */
-  @BeforeAll
+  @BeforeClass
   public static void init() throws Exception {
 
     fc =  new ForwardChainer(4,                                                    // #cores
@@ -94,10 +94,11 @@ public class BlankNodeTwoTest {
 
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
+    //TestLGetLatest.printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     checkResult(expected, bt, bt.getVars());
   }
 
-  @AfterAll
+  @AfterClass
   public static void finish() {
     fc.shutdownNoExit();
   }

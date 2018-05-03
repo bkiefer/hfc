@@ -11,8 +11,6 @@ package de.dfki.lt.hfc.types;
  */
 public final class XsdLong extends XsdAnySimpleType {
   public final static String NAME = "long";
-  public final static XsdLong NEGINFINTIY = new XsdLong(Long.MIN_VALUE);
-  public final static XsdLong POSINFINTIY = new XsdLong(Long.MAX_VALUE);
 
   public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
   public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';

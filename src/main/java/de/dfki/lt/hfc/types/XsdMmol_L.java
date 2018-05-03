@@ -89,4 +89,5 @@ public final class XsdMmol_L extends XsdAnySimpleType {
     }
     return Double.compare(this.value, ((XsdMmol_L) o).value);
   }
+
 }

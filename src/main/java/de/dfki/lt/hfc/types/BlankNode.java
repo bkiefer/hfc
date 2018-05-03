@@ -38,6 +38,7 @@ public class BlankNode extends AnyType {
     return this;
   }
 
+
 	@Override
 	public int compareTo(Object o) {
 		if(  o instanceof AnyType.MinMaxValue ) {
@@ -49,5 +50,4 @@ public class BlankNode extends AnyType {
 		}
 		return this.value.compareTo(((BlankNode) o).value);
 	}
-	
 }

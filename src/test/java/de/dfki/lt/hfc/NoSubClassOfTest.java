@@ -1,20 +1,19 @@
 package de.dfki.lt.hfc;
+import static org.junit.Assert.*;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
-
-import static de.dfki.lt.hfc.TestUtils.*;
+import static de.dfki.lt.hfc.Utils.*;
 
 public class NoSubClassOfTest {
   static ForwardChainer fc;
 
   private static String getResource(String name) {
-    return TestUtils.getTestResource("NoSubClassOf", name);
+    return Utils.getTestResource("NoSubClassOf", name);
   }
-  @BeforeAll
+  @BeforeClass
   public static void init() throws Exception {
 
     fc =  new ForwardChainer(4,                                                    // #cores
@@ -83,7 +82,7 @@ public class NoSubClassOfTest {
     checkResult(expected, bt, bt.getVars());
   }
 
-  @AfterAll
+  @AfterClass
   public static void finish() {
     fc.shutdownNoExit();
   }

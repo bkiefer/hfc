@@ -77,7 +77,7 @@ public final class XsdBoolean extends XsdAnySimpleType {
    * returns a java.lang.Boolean container for an HFC XsdBoolean object
    */
   public Object toJava() {
-    return  Boolean.valueOf(this.value);
+    return new Boolean(this.value);
   }
 
 	@Override
@@ -91,6 +91,5 @@ public final class XsdBoolean extends XsdAnySimpleType {
 		}
 		return Boolean.compare(this.value,((XsdBoolean) o).value);
 	}
-
 
 }

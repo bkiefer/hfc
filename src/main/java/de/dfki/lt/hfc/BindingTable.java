@@ -363,7 +363,7 @@ public class BindingTable {
 	 * on or not; in case it is turned off, calling this method does not have an
 	 * effect
 	 */
-	public void expandBindingTable() {
+	protected void expandBindingTable() {
 		// if already expanded, no need to call method again, esp., since SELECT
 		// statements without the DISTINCT keyword use java.util.Hashset objects to
 		// represent duplicate elements (int arrays); otherwise (w/ DISTINCT), a

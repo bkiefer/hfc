@@ -18,7 +18,7 @@ public final class IDecrement extends FunctionalOperator {
 	
 	/**
 	 * note that apply() does NOT check at the moment whether the int arg
-	 * represents in fact an XSD int;
+	 * represent in fact an XSD int;
 	 * note that apply() does NOT check whether it is given exactly one argument
 	 */
 	public int apply(int[] args) {

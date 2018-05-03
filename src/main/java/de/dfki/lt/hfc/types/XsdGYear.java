@@ -62,7 +62,7 @@ public final class XsdGYear extends XsdAnySimpleType {
 			this.sign = false;
 			time = time.substring(1);
 		}
-		this.year = Integer.parseInt(time);
+		this.year = Integer.parseInt(time.substring(0));
 	}
 
 	/**
@@ -131,4 +131,5 @@ public final class XsdGYear extends XsdAnySimpleType {
 		}
 		return v;
 	}
+
 }

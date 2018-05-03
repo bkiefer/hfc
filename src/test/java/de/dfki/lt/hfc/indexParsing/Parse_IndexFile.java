@@ -1,15 +1,16 @@
 package de.dfki.lt.hfc.indexParsing;
 
 import de.dfki.lt.hfc.IndexStore;
+import de.dfki.lt.hfc.Utils;
 import de.dfki.lt.hfc.indices.*;
-import de.dfki.lt.hfc.TestUtils;
 import de.dfki.lt.hfc.types.XsdDate;
 import de.dfki.lt.hfc.types.XsdLong;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+
 
 import static junit.framework.Assert.fail;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class Parse_IndexFile {
 
     private static String getResource(String name) {
-        return TestUtils.getTestResource("Index_Parsing", name);
+        return Utils.getTestResource("Index_Parsing", name);
     }
 
     @Test

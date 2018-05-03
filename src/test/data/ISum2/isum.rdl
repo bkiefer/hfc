@@ -16,6 +16,5 @@ $test
 ?bn <test:numberOfEmployees> ?w
 @test
 ?s != ?t
-PrintTrue ?s ?u ?t ?v
 @action
 ?w = ISum ?u ?v

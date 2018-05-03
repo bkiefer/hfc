@@ -210,7 +210,6 @@ public final class XsdDateTime extends XsdAnySimpleType {
     return this;
   }
 
-
 	@Override
 	public int compareTo(Object o) {
 		if(  o instanceof AnyType.MinMaxValue ) {

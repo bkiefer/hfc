@@ -1,14 +1,12 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.TestUtils.checkResult;
+import static org.junit.Assert.*;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-import de.dfki.lt.hfc.runnable.Utils;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
-
+import static de.dfki.lt.hfc.Utils.*;
 
 public class BlankNodeOneTest {
   static ForwardChainer fc;
@@ -37,7 +35,7 @@ public class BlankNodeOneTest {
    * @author (C) Hans-Ulrich Krieger
    * @version Mon Jan  4 10:11:02 CET 2016
    */
-  @BeforeAll
+  @BeforeClass
   public static void init() throws Exception {
 
     fc =  new ForwardChainer(4,                                                    // #cores
@@ -92,7 +90,7 @@ public class BlankNodeOneTest {
     checkResult(expected, bt, bt.getVars());
   }
 
-  @AfterAll
+  @AfterClass
   public static void finish() {
     fc.shutdownNoExit();
   }

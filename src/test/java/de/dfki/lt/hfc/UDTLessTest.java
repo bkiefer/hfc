@@ -1,13 +1,13 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.runnable.Utils.*;
+import static de.dfki.lt.hfc.Utils.*;
 import de.dfki.lt.hfc.types.XsdUDateTime;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 /**
  * @author Christophe Biwer, christophe.biwer@dfki.de

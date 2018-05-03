@@ -1,15 +1,15 @@
 package de.dfki.lt.hfc.indexParsing;
 
 import de.dfki.lt.hfc.ForwardChainer;
-import de.dfki.lt.hfc.TestUtils;
+import de.dfki.lt.hfc.Utils;
 import de.dfki.lt.hfc.types.XsdDate;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 
 /**
@@ -25,10 +25,10 @@ public class DateBasicOne {
     static String[] testSub2 = new String[]{"<test:sensor>", "<rdfs:subClassOf>", "<owl:Thing>"};
 
     private static String getResource(String name) {
-        return TestUtils.getTestResource("Index_Parsing", name);
+        return Utils.getTestResource("Index_Parsing", name);
     }
 
-    @BeforeAll
+    @BeforeClass
     public static void init() throws Exception {
 
         fc =  new ForwardChainer(4,                                                    // #cores
@@ -67,7 +67,7 @@ public class DateBasicOne {
 //            System.out.println(Arrays.toString(t));
     }
 
-    @AfterAll
+    @AfterClass
     public static void finish() {
         fc.shutdownNoExit();
     }

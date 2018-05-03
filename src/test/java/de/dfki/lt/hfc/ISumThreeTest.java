@@ -1,11 +1,11 @@
 package de.dfki.lt.hfc;
+import static org.junit.Assert.*;
 
-import de.dfki.lt.hfc.runnable.Utils;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-
+import static de.dfki.lt.hfc.Utils.*;
 
 public class ISumThreeTest {
   static ForwardChainer fc;
@@ -13,7 +13,7 @@ public class ISumThreeTest {
   private static String getResource(String name) {
     return Utils.getTestResource("ISum3", name);
   }
-  @BeforeAll
+  @BeforeClass
   public static void init() throws Exception {
 
     fc =  new ForwardChainer(4,                                                    // #cores
@@ -49,7 +49,7 @@ public class ISumThreeTest {
     //checkResult(expected, bt, bt.getVars());
   }
 
-  @AfterAll
+  @AfterClass
   public static void finish() {
     fc.shutdownNoExit();
   }

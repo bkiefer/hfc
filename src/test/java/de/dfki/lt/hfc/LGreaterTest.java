@@ -1,13 +1,13 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.runnable.Utils.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static de.dfki.lt.hfc.Utils.*;
+import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 public final class LGreaterTest {
 
@@ -39,10 +39,10 @@ public final class LGreaterTest {
         .checkAndRegister("de.dfki.lt.hfc.operators.LGreater");
 
     // do operation
-    assertEquals( FunctionalOperator.FALSE, fop.apply(ids), "1 > 2");
-    reverse(ids);
-    assertEquals( FunctionalOperator.TRUE, fop.apply(ids), "2 > 1");
+    assertEquals("1 > 2", FunctionalOperator.FALSE, fop.apply(ids));
+    Utils.reverse(ids);
+    assertEquals("2 > 1", FunctionalOperator.TRUE, fop.apply(ids));
     ids[0] = ids[1];
-    assertEquals( FunctionalOperator.FALSE, fop.apply(ids), "1 > 1");
+    assertEquals("1 > 1", FunctionalOperator.FALSE, fop.apply(ids));
   }
 }

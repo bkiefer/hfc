@@ -1,12 +1,12 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.runnable.Utils.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static de.dfki.lt.hfc.Utils.*;
+import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 public final class FQuotientTest {
 
@@ -106,9 +106,9 @@ public final class FQuotientTest {
 
     // do operation
     t_ids[1] = fop.apply(ids);
-    assertEquals( FunctionalOperator.TRUE, feq.apply(t_ids),"100.0 / 4.0 = 25.0");
+    assertEquals("100.0 / 4.0 = 25.0", FunctionalOperator.TRUE, feq.apply(t_ids));
     f_nids[1] = fop.apply(nids);
-    assertEquals( FunctionalOperator.FALSE, feq.apply(f_nids),"100.0 / 4.0 != 20.0");
+    assertEquals("100.0 / 4.0 != 20.0", FunctionalOperator.FALSE, feq.apply(f_nids));
 
 
 // TODO: adding Float.NaN as <xsd:float> to store manually (not with

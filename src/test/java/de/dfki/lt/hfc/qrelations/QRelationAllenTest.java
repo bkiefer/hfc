@@ -1,20 +1,21 @@
 package de.dfki.lt.hfc.qrelations;
 
-import static org.junit.jupiter.api.Assertions.*;
 
-import de.dfki.lt.hfc.TupleStore;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * TODO add a dedicated test for isValid()
  * @author Christian Willms - Date: 18.09.17 12:15.
  * @version 18.09.17
  */
-class QRelationAllenTest {
+public class QRelationAllenTest {
 
 
   @Test
-  void isAllenRelation() {
+  public void isAllenRelation() {
     AllenAfter after = new AllenAfter("After",0, 0, 0);
     assertTrue(after.isAllenRelation());
     AllenBefore before = new AllenBefore("Before",0, 0, 0);
@@ -36,7 +37,7 @@ class QRelationAllenTest {
   }
 
   @Test
-  void isInterval() {
+  public void isInterval() {
     AllenAfter after = new AllenAfter("After",0, 0, 0);
     assertFalse(after.isInterval());
     AllenBefore before = new AllenBefore("Before",0, 0, 0);

@@ -1,6 +1,6 @@
 package de.dfki.lt.hfc;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,11 +11,11 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import gnu.trove.set.hash.*;
 
-import static de.dfki.lt.hfc.runnable.Utils.*;
+import static de.dfki.lt.hfc.Utils.*;
 
 
 public class CalcTest {

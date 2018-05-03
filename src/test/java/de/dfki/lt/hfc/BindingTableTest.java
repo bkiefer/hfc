@@ -1,7 +1,7 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.runnable.Utils.getTestResource;
-import static org.junit.jupiter.api.Assertions.*;
+import static de.dfki.lt.hfc.Utils.getTestResource;
+import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,12 +9,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import gnu.trove.set.hash.*;
 
@@ -223,7 +224,7 @@ public class BindingTableTest {
     Set<String> s = new HashSet<String>();
     s.addAll(Arrays.asList(expected));
     assertTrue(s.containsAll(Arrays.asList(vars)));
-    assertEquals( expected.length, vars.length, Arrays.toString(expected));
+    assertEquals(Arrays.toString(expected), expected.length, vars.length);
     /* THIS IS NOT GUARANTEED, BY NO MEANS, THE TABLE CAN BE WIDER THAN THE
      * NUMBER OF VARIABLES
      * TODO: MARK THIS SOMEWHERE
@@ -245,7 +246,7 @@ public class BindingTableTest {
     Set<String> s = new HashSet<String>();
     s.addAll(Arrays.asList(expected));
     assertTrue(s.containsAll(Arrays.asList(vars)));
-    assertEquals( expected.length, vars.length, Arrays.toString(expected));
+    assertEquals(Arrays.toString(expected), expected.length, vars.length);
     /* THIS IS NOT GUARANTEED, BY NO MEANS, THE TABLE CAN BE WIDER THAN THE
      * NUMBER OF VARIABLES
     for (int i = 0; i < expected.length; ++i) {
@@ -266,7 +267,7 @@ public class BindingTableTest {
     Set<String> s = new HashSet<String>();
     s.addAll(Arrays.asList(expected));
     assertTrue(s.containsAll(Arrays.asList(vars)));
-    assertEquals( expected.length, vars.length, Arrays.toString(expected));
+    assertEquals(Arrays.toString(expected), expected.length, vars.length);
     /* THIS IS NOT GUARANTEED, BY NO MEANS, THE TABLE CAN BE WIDER THAN THE
      * NUMBER OF VARIABLES
     for (int i = 0; i < expected.length; ++i) {
@@ -290,8 +291,8 @@ public class BindingTableTest {
     String[] expected = { "?number", "?subject" };
     Set<String> s = new HashSet<String>();
     s.addAll(Arrays.asList(expected));
-    assertTrue( s.containsAll(Arrays.asList(vars)), Arrays.toString(expected));
-    assertEquals( expected.length, vars.length, Arrays.toString(expected));
+    assertTrue(Arrays.toString(expected), s.containsAll(Arrays.asList(vars)));
+    assertEquals(Arrays.toString(expected), expected.length, vars.length);
     /* THIS IS NOT GUARANTEED, BY NO MEANS, THE TABLE CAN BE WIDER THAN THE
      * NUMBER OF VARIABLES
     for (int i = 0; i < expected.length; ++i) {
@@ -311,8 +312,8 @@ public class BindingTableTest {
     String[] expected = { "?number", "?subject" };
     Set<String> s = new HashSet<String>();
     s.addAll(Arrays.asList(expected));
-    assertTrue( s.containsAll(Arrays.asList(vars)), Arrays.toString(expected));
-    assertEquals( expected.length, vars.length, Arrays.toString(expected));
+    assertTrue(Arrays.toString(expected), s.containsAll(Arrays.asList(vars)));
+    assertEquals(Arrays.toString(expected), expected.length, vars.length);
     /* THIS IS NOT GUARANTEED, BY NO MEANS, THE TABLE CAN BE WIDER THAN THE
      * NUMBER OF VARIABLES
     for (int i = 0; i < expected.length; ++i) {
