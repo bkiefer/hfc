@@ -188,7 +188,6 @@ public class TupleStoreTest {
   @Test
   public void testParseAtom() throws IOException, WrongFormatException, QueryParseException {
     TupleStore objectToTest = new TupleStore(1,1);
-    objectToTest.verbose = true;
     objectToTest.readTuples(getTestResource("ReadTest", "testAtoms.nt"));
 
     assertEquals("Expected 10 atoms but was " + objectToTest.getAllTuples().size(), 10, objectToTest.getAllTuples().size());
