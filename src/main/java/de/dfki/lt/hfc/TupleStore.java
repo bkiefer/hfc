@@ -1613,12 +1613,12 @@ public final class TupleStore {
 		// now gather potential additional information (XSD Type or language tag);
 		// the first whitespace char terminates XSD atom recognition
 		//
-		// type checking of XSD atoms should be implemented HERE -- use a seceond
+		// type checking of XSD atoms should be implemented HERE -- use a second
 		// string buffer to separate the bare atom from its type
 		boolean bareAtom = true;
 		while (st.hasMoreTokens()) {
 			token = st.nextToken();
-			if (token.equals(" "))
+			if (token.equals(" ") )
 				break;
 			else {
 				bareAtom = false;
@@ -1626,9 +1626,6 @@ public final class TupleStore {
 					// normalize namespace
 					token = this.namespace.normalizeNamespaceUri(token);
 				sb.append(token);
-				// new condition TODO check wheter this is really needed
-				if (token.equals(">"))
-					break;
 			}
 		}
 		if (bareAtom) {

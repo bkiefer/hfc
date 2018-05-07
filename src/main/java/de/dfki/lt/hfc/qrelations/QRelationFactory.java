@@ -137,27 +137,38 @@ public class QRelationFactory {
         StringBuilder sb = new StringBuilder();
         sb.append((isExclusive) ? "[" : "(");
         String[] values = {"", ""};
-        int counter = 0;
+        boolean firstElement = true;
         while (st.hasMoreTokens()) {
             token = st.nextToken();
-            //System.out.println(token);
-            if (token.equals("]")) {
-                if (values[0].equals("") || values[1].equals(""))
-                    throw new QueryParseException("An interval must consist of exactly two values! At least one is missing");
-                end = "]";
-                break;
-            } else if (token.equals(")")) {
-                if (values[0].equals("") || values[1].equals(""))
-                    throw new QueryParseException("An interval must consist of exactly two values! At least one is missing");
-                end = ")";
-                break;
-            } else if (token.equals("\"")) {
-                values[counter] = tupleStore.parseAtom(st, tuple);
+            if (token.equals("\"")) {
+                //we need to add the trim to remove possible whitespaces at the end of the string.
+                String atom = tupleStore.parseAtom(st, tuple).trim();
+                if (atom.endsWith(",")){
+                    if (!firstElement ) throw new QueryParseException("An interval must consist of exactly two values! ");
+                    values[0] = atom.substring(0, atom.length()-1);
+                    // it is also necessary to fix the corresponding tuple
+                    tuple.set(tuple.size()-1, values[0]);
+                    firstElement = false;
+                }
+                if (atom.endsWith(")")){
+                    if (firstElement) throw new QueryParseException("An interval must consist of exactly two values! At least one is missing");
+
+                    values[1] = atom.substring(0, atom.length()-1);
+                    // it is also necessary to fix the corresponding tuple
+                    tuple.set(tuple.size()-1, values[1]);
+                    end = ")";
+                    break;
+                }
+                if (atom.endsWith("]")){
+                    if (firstElement) throw new QueryParseException("An interval must consist of exactly two values! At least one is missing");
+                    values[1] = atom.substring(0, atom.length()-1);
+                    // it is also necessary to fix the corresponding tuple
+                    tuple.set(tuple.size()-1, values[1]);
+                    end = "]";
+                    break;
+                }
                 tupleStore.putObject(values[counter]);
-            } else if (token.equals(",")) {
-                if (values[0].equals("") || counter == 1)
-                    throw new QueryParseException("An interval must consist of exactly two values! ");
-                counter++;
+
             } else if (token.equals(" "))  // keep on parsing ...
                 continue;
         }

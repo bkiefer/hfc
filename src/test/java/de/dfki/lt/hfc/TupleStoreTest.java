@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 
@@ -182,6 +183,30 @@ public class TupleStoreTest {
   public void testisConstant2() {
     assertFalse(TupleStore.isConstant(0));
     assertTrue(TupleStore.isConstant(1));
+  }
+
+  @Test
+  public void testParseAtom() throws IOException, WrongFormatException, QueryParseException {
+    TupleStore objectToTest = new TupleStore(1,1);
+    objectToTest.verbose = true;
+    objectToTest.readTuples(getTestResource("ReadTest", "testAtoms.nt"));
+
+    assertEquals("Expected 10 atoms but was " + objectToTest.getAllTuples().size(), 10, objectToTest.getAllTuples().size());
+    String[][] expected = {
+            {  "\"foo\"^^<xsd:string>" },
+            {  "\"fo\\o\"^^<xsd:string>" },
+            {  "\"fo_|o\"^^<xsd:string>" },
+            {  "\"fo o\"^^<xsd:string>" },
+            { "\"fo<o\"^^<xsd:string>" },
+            {  "\"fo>o\"^^<xsd:string>" },
+            {  "\"f<oo>\"^^<xsd:string>" },
+            {  "\"f<\"o\"o\"^^<xsd:string>" },
+            {  "\"fo<o\"^^<xsd:string>" },
+            {  "\"f<\"\">o\"o\"^^<xsd:string>" }
+    };
+    Query q = new Query(objectToTest);
+    BindingTable bt = q.query("SELECT ?o WHERE ?s <test:value> ?o");
+    checkResult(expected, bt, "?o");
   }
 
   @Test

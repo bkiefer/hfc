@@ -7,6 +7,7 @@ import de.dfki.lt.hfc.qrelations.QRelationFactory;
 import org.apache.commons.lang3.ArrayUtils;
 
 
+
 // TO DO --- IMPLEMENTATION NOTE
 //
 // in order to implement SPARQL's
@@ -140,7 +141,7 @@ public class Query {
 		where = where.trim();  // get rid of leading space
 		HashSet<String> foundVars = new HashSet<String>();
 		// Changed the regex to cover the intervals - CW
-    parseWhere(new StringTokenizer(where, " [](),?<>_\"\\", true), whereClauses, foundVars);
+    parseWhere(new StringTokenizer(where, " ?<>_\"\\", true), whereClauses, foundVars);
 		// some further checks on the projected vars, independent of optional filters
 		if (projectedVars.contains("*")) {
 			// a "*" should not come up with further vars
