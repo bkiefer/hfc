@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -190,7 +191,8 @@ public class TupleStoreTest {
     TupleStore objectToTest = new TupleStore(1,1);
     objectToTest.readTuples(getTestResource("ReadTest", "testAtoms.nt"));
 
-    assertEquals("Expected 10 atoms but was " + objectToTest.getAllTuples().size(), 10, objectToTest.getAllTuples().size());
+    assertEquals("Expected 10 tuples but was " + objectToTest.getAllTuples().size(),
+            10, objectToTest.getAllTuples().size());
     String[][] expected = {
             {  "\"foo\"^^<xsd:string>" },
             {  "\"fo\\o\"^^<xsd:string>" },
@@ -202,6 +204,21 @@ public class TupleStoreTest {
             {  "\"f<\"o\"o\"^^<xsd:string>" },
             {  "\"fo<o\"^^<xsd:string>" },
             {  "\"f<\"\">o\"o\"^^<xsd:string>" }
+    };
+    Query q = new Query(objectToTest);
+    BindingTable bt = q.query("SELECT ?o WHERE ?s <test:value> ?o");
+    checkResult(expected, bt, "?o");
+  }
+
+  @Test
+  public void testUnicodeHandling() throws IOException, WrongFormatException, QueryParseException {
+    TupleStore objectToTest = new TupleStore(1,1);
+    objectToTest.readTuples(getTestResource("ReadTest", "testUnicodes.nt"));
+
+    assertEquals("expected 10 tuples but was " + objectToTest.getAllTuples().size(),
+            1, objectToTest.getAllTuples().size());
+    String[][] expected = {
+            {"\"Hello foo\"^^<xsd:string>"}
     };
     Query q = new Query(objectToTest);
     BindingTable bt = q.query("SELECT ?o WHERE ?s <test:value> ?o");
