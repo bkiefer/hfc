@@ -5,6 +5,8 @@ import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.dfki.lt.hfc.types.*;
 import gnu.trove.list.array.TIntArrayList;
@@ -1636,7 +1638,15 @@ public final class TupleStore {
 				sb.append("^^").append(XsdString.LONG_NAME);
 		}
 		token = sb.toString();
-		tuple.add(token);
+		Pattern p = Pattern.compile("\\\\u(\\p{XDigit}{4})");
+		Matcher m = p.matcher(token);
+		StringBuffer buf = new StringBuffer(token.length());
+		while(m.find()){
+			String ch = String.valueOf((char) Integer.parseInt(m.group(1), 16));
+			m.appendReplacement(buf, Matcher.quoteReplacement(ch));
+		}
+		m.appendTail(buf);
+		tuple.add(buf.toString());
 		return token;
 	}
 

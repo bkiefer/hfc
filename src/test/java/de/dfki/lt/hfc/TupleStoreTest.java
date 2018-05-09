@@ -215,10 +215,10 @@ public class TupleStoreTest {
     TupleStore objectToTest = new TupleStore(1,1);
     objectToTest.readTuples(getTestResource("ReadTest", "testUnicodes.nt"));
 
-    assertEquals("expected 10 tuples but was " + objectToTest.getAllTuples().size(),
-            1, objectToTest.getAllTuples().size());
     String[][] expected = {
-            {"\"Hello foo\"^^<xsd:string>"}
+            {"\"Hello foo\"^^<xsd:string>"},
+            {"\"Hello foo!\"^^<xsd:string>"},
+            {"\"ü foo\"^^<xsd:string>"}
     };
     Query q = new Query(objectToTest);
     BindingTable bt = q.query("SELECT ?o WHERE ?s <test:value> ?o");

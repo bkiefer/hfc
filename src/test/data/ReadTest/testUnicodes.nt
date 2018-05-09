@@ -1,1 +1,6 @@
+# Hello foo
 <test:a1> <test:value> "\u0048\u0065\u006C\u006C\u006F foo"^^<xsd:string> .
+# Hello foo!
+<test:a1> <test:value> "\u0048\u0065\u006C\u006C\u006F foo\u0021"^^<xsd:string> .
+# ü foo
+<test:a2> <test:value> "\u00FC foo"^^<xsd:string> .
