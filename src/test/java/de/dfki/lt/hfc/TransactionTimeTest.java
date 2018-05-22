@@ -37,7 +37,7 @@ public class TransactionTimeTest {
   static String TIME = "\"0\"^^<xsd:long>";
 
   public static String getResource(String name) {
-    return Utils.getTestResource("TestTransactionTime", name);
+    return TestingUtils.getTestResource("TestTransactionTime", name);
   }
 
   @BeforeClass

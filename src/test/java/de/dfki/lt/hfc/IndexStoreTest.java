@@ -35,7 +35,7 @@ public class IndexStoreTest {
   static String[] testSub2 = new String[]{"<test:sensor>", "<rdfs:subClassOf>", "<owl:Thing>"};
 
   private static String getResource(String name) {
-    return Utils.getTestResource("Index_Parsing", name);
+    return TestingUtils.getTestResource("Index_Parsing", name);
   }
   
   @Before

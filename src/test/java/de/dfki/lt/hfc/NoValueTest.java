@@ -5,13 +5,13 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static de.dfki.lt.hfc.Utils.*;
+import static de.dfki.lt.hfc.TestingUtils.*;
 
 public class NoValueTest {
   static ForwardChainer fc;
 
   private static String getResource(String name) {
-    return Utils.getTestResource("NoValue", name);
+    return TestingUtils.getTestResource("NoValue", name);
   }
 
   @BeforeClass

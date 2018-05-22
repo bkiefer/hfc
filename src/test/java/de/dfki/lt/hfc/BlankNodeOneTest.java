@@ -6,13 +6,13 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static de.dfki.lt.hfc.Utils.*;
+import static de.dfki.lt.hfc.TestingUtils.*;
 
 public class BlankNodeOneTest {
   static ForwardChainer fc;
 
   private static String getResource(String name) {
-    return Utils.getTestResource("BlankNode1", name);
+    return TestingUtils.getTestResource("BlankNode1", name);
   }
 
   /**

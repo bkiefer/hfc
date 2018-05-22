@@ -18,7 +18,7 @@ public class QueryTest_LookupTimeCombi {
   static ForwardChainer fc;
 
   private static String getResource(String name) {
-    return Utils.getTestResource("Query", name);
+    return TestingUtils.getTestResource("Query", name);
   }
 
   @BeforeClass

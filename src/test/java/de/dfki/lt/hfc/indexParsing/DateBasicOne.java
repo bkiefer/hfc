@@ -1,7 +1,7 @@
 package de.dfki.lt.hfc.indexParsing;
 
 import de.dfki.lt.hfc.ForwardChainer;
-import de.dfki.lt.hfc.Utils;
+import de.dfki.lt.hfc.TestingUtils;
 import de.dfki.lt.hfc.types.XsdDate;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -25,7 +25,7 @@ public class DateBasicOne {
     static String[] testSub2 = new String[]{"<test:sensor>", "<rdfs:subClassOf>", "<owl:Thing>"};
 
     private static String getResource(String name) {
-        return Utils.getTestResource("Index_Parsing", name);
+        return TestingUtils.getTestResource("Index_Parsing", name);
     }
 
     @BeforeClass

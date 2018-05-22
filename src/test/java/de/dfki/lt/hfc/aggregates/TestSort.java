@@ -7,7 +7,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static de.dfki.lt.hfc.Utils.checkResult;
+import static de.dfki.lt.hfc.TestingUtils.checkResult;
 import static org.junit.Assert.assertTrue;
 
 
@@ -24,7 +24,7 @@ public class TestSort {
     static ForwardChainer fc;
 
     public static String getResource(String name) {
-        return Utils.getTestResource("LGetLatestValues", name);
+        return TestingUtils.getTestResource("LGetLatestValues", name);
     }
 
     @BeforeClass

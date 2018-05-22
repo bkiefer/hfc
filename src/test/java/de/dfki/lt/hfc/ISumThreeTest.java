@@ -5,13 +5,13 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static de.dfki.lt.hfc.Utils.*;
+import static de.dfki.lt.hfc.TestingUtils.*;
 
 public class ISumThreeTest {
   static ForwardChainer fc;
 
   private static String getResource(String name) {
-    return Utils.getTestResource("ISum3", name);
+    return TestingUtils.getTestResource("ISum3", name);
   }
   @BeforeClass
   public static void init() throws Exception {

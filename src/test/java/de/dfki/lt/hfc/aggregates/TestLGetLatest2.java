@@ -1,6 +1,6 @@
 package de.dfki.lt.hfc.aggregates;
 
-import static de.dfki.lt.hfc.Utils.checkResult;
+import static de.dfki.lt.hfc.TestingUtils.checkResult;
 import static de.dfki.lt.hfc.aggregates.TestLGetLatest.getResource;
 
 import java.io.FileNotFoundException;

@@ -7,7 +7,6 @@ import gnu.trove.set.hash.TCustomHashSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogMF;
 import org.apache.log4j.Logger;
@@ -48,7 +47,7 @@ public class IndexLookup {
       QRelation r) {
     this.tupleStore = tupleStore;
     this.index = index;
-    this.clause = ArrayUtils.toPrimitive(clause.toArray(new Integer[clause.size()]));
+    this.clause = Utils.toPrimitive(clause);
     this.indexedPosition = this.indexedPositionEnd = position;
     this.relation = r;
   }
@@ -67,7 +66,7 @@ public class IndexLookup {
       QRelation r) {
     this.tupleStore = tupleStore;
     this.index = index;
-    this.clause = ArrayUtils.toPrimitive(clause.toArray(new Integer[clause.size()]));
+    this.clause = Utils.toPrimitive(clause);
     this.indexedPosition = position_start;
     this.indexedPositionEnd = position_end;
     this.relation = r;

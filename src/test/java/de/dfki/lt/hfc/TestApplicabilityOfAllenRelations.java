@@ -5,7 +5,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static de.dfki.lt.hfc.Utils.checkResult;
+import static de.dfki.lt.hfc.TestingUtils.checkResult;
 import static org.junit.Assert.*;
 
 public class TestApplicabilityOfAllenRelations {
@@ -15,7 +15,7 @@ public class TestApplicabilityOfAllenRelations {
   static ForwardChainer fcWithoutIntervalTree_Index;
 
   private static String getResource(String name) {
-    return Utils.getTestResource("Query", name);
+    return TestingUtils.getTestResource("Query", name);
   }
 
   @BeforeClass

@@ -7,14 +7,14 @@ import de.dfki.lt.hfc.Namespace;
 import de.dfki.lt.hfc.Query;
 import de.dfki.lt.hfc.QueryParseException;
 import de.dfki.lt.hfc.TupleStore;
-import de.dfki.lt.hfc.Utils;
+import de.dfki.lt.hfc.TestingUtils;
 import de.dfki.lt.hfc.WrongFormatException;
 import org.junit.Test;
 
 public class LIsValidTest {
 
   public static String getResource(String name) {
-    return Utils.getTestResource("LIsValid", name);
+    return TestingUtils.getTestResource("LIsValid", name);
   }
 
   @Test
@@ -30,7 +30,7 @@ public class LIsValidTest {
         = q.query("SELECT ?o WHERE <logic:true> <dom:prof> <dom:treats> "
             + "?o ?ts FILTER LIsValid <dom:prof> <dom:treats> ?o ?ts");
     String[][] expected = {{"<pal:p2>"}, {"<pal:p3>"}, {"<pal:p1>"}};
-    Utils.checkResult(expected, bt, bt.getVars());
+    TestingUtils.checkResult(expected, bt, bt.getVars());
   }
 
 }

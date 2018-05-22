@@ -3,7 +3,7 @@ package de.dfki.lt.hfc;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static de.dfki.lt.hfc.Utils.*;
+import static de.dfki.lt.hfc.TestingUtils.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -27,7 +27,7 @@ public class PrintSizeTest {
   }
 
   private static String getResource(String name) {
-    return Utils.getTestResource("PrintSize", name);
+    return TestingUtils.getTestResource("PrintSize", name);
   }
 
   @BeforeClass

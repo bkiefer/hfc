@@ -1,6 +1,6 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.Utils.*;
+import static de.dfki.lt.hfc.TestingUtils.*;
 import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
@@ -40,7 +40,7 @@ public final class LGreaterTest {
 
     // do operation
     assertEquals("1 > 2", FunctionalOperator.FALSE, fop.apply(ids));
-    Utils.reverse(ids);
+    TestingUtils.reverse(ids);
     assertEquals("2 > 1", FunctionalOperator.TRUE, fop.apply(ids));
     ids[0] = ids[1];
     assertEquals("1 > 1", FunctionalOperator.FALSE, fop.apply(ids));

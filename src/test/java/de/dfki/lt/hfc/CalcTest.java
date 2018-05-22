@@ -15,7 +15,7 @@ import org.junit.Test;
 
 import gnu.trove.set.hash.*;
 
-import static de.dfki.lt.hfc.Utils.*;
+import static de.dfki.lt.hfc.TestingUtils.*;
 
 
 public class CalcTest {

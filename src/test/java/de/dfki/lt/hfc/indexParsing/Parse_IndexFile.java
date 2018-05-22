@@ -1,7 +1,7 @@
 package de.dfki.lt.hfc.indexParsing;
 
 import de.dfki.lt.hfc.IndexStore;
-import de.dfki.lt.hfc.Utils;
+import de.dfki.lt.hfc.TestingUtils;
 import de.dfki.lt.hfc.indices.*;
 import de.dfki.lt.hfc.types.XsdDate;
 import de.dfki.lt.hfc.types.XsdLong;
@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
 public class Parse_IndexFile {
 
     private static String getResource(String name) {
-        return Utils.getTestResource("Index_Parsing", name);
+        return TestingUtils.getTestResource("Index_Parsing", name);
     }
 
     @Test

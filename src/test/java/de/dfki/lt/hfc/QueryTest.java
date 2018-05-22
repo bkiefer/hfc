@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static de.dfki.lt.hfc.Utils.checkResult;
+import static de.dfki.lt.hfc.TestingUtils.checkResult;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -21,7 +21,7 @@ public class QueryTest {
   static ForwardChainer fc;
 
   private static String getResource(String name) {
-    return Utils.getTestResource("LGetLatestValues", name);
+    return TestingUtils.getTestResource("LGetLatestValues", name);
   }
 
   @Before

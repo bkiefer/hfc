@@ -6,7 +6,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static de.dfki.lt.hfc.Utils.checkResult;
+import static de.dfki.lt.hfc.TestingUtils.checkResult;
 import static junit.framework.TestCase.*;
 
 public class QueryTest_AllenRelations {
@@ -15,7 +15,7 @@ public class QueryTest_AllenRelations {
 
 
     private static String getResource(String name) {
-        return Utils.getTestResource("Query", name);
+        return TestingUtils.getTestResource("Query", name);
     }
 
     @BeforeClass

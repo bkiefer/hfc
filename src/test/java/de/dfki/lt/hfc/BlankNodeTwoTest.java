@@ -9,8 +9,8 @@ import org.junit.Test;
 
 
 
-import static de.dfki.lt.hfc.Utils.checkResult;
-import static de.dfki.lt.hfc.Utils.checkResult;
+import static de.dfki.lt.hfc.TestingUtils.checkResult;
+import static de.dfki.lt.hfc.TestingUtils.checkResult;
 
 
 
@@ -18,7 +18,7 @@ public class BlankNodeTwoTest {
   static ForwardChainer fc;
 
   private static String getResource(String name) {
-    return Utils.getTestResource("BlankNode2", name);
+    return TestingUtils.getTestResource("BlankNode2", name);
   }
 
   /**

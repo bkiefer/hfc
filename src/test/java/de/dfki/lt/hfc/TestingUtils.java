@@ -8,7 +8,7 @@ import java.util.*;
 import de.dfki.lt.hfc.BindingTable.BindingTableIterator;
 import de.dfki.lt.hfc.types.AnyType;
 
-public class Utils {
+public class TestingUtils {
   private static final File testResourceDir = new File("src/test/data/");
   //private static final File resourceDir = new File("src/resources/");
   private static final File tmpDir = new File("/tmp");

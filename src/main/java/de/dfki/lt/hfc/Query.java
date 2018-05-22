@@ -4,7 +4,6 @@ import java.util.*;
 
 import de.dfki.lt.hfc.qrelations.QRelation;
 import de.dfki.lt.hfc.qrelations.QRelationFactory;
-import org.apache.commons.lang3.ArrayUtils;
 
 
 
@@ -442,6 +441,7 @@ private boolean parseSelect(StringTokenizer st, HashSet<String> projectedVars)
 			aggregateClauses.add(aggregate);
 	}
 
+
 	/**
    * maps surface WHERE form to internal representation. Further handles the internalization of
    * relations and intervals, In case there are relations or intervals, two cases have to be
@@ -536,7 +536,7 @@ private boolean parseSelect(StringTokenizer st, HashSet<String> projectedVars)
         createPattern = tupleStore.indexStore.prepareLookup(clause, idToRelation, lkps,relationsToBeRewritten);
       }
       if (!activeIndex || !relationsToBeRewritten.isEmpty() || createPattern) {
-        patterns.add(ArrayUtils.toPrimitive(clause.toArray(new Integer[clause.size()])));
+        patterns.add(Utils.toPrimitive(clause));
       }
     }
     for (QRelation relation : new HashSet<>(idToRelation.values())) {

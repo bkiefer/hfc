@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static de.dfki.lt.hfc.Utils.checkResult;
+import static de.dfki.lt.hfc.TestingUtils.checkResult;
 import static org.junit.Assert.assertTrue;
 
 
@@ -39,7 +39,7 @@ public class TestGetEvents {
 
 
     public static String getResource(String name) {
-        return Utils.getTestResource("LGetLatestValues", name);
+        return TestingUtils.getTestResource("LGetLatestValues", name);
     }
 
     @Before

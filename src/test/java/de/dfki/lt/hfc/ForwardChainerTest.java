@@ -2,7 +2,7 @@ package de.dfki.lt.hfc;
 
 import static org.junit.Assert.*;
 
-import static de.dfki.lt.hfc.Utils.getTestResource;
+import static de.dfki.lt.hfc.TestingUtils.getTestResource;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

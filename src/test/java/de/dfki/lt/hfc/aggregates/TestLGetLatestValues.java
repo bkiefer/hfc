@@ -1,6 +1,6 @@
 package de.dfki.lt.hfc.aggregates;
 
-import static de.dfki.lt.hfc.Utils.*;
+import static de.dfki.lt.hfc.TestingUtils.*;
 import static org.junit.Assert.assertEquals;
 
 import java.io.FileNotFoundException;
@@ -34,7 +34,7 @@ public class TestLGetLatestValues {
   static ForwardChainer fc;
 
   public static String getResource(String name) {
-    return Utils.getTestResource("LGetLatestValues", name);
+    return TestingUtils.getTestResource("LGetLatestValues", name);
   }
 
 

@@ -1,6 +1,6 @@
 package de.dfki.lt.hfc.aggregates;
 
-import static de.dfki.lt.hfc.Utils.*;
+import static de.dfki.lt.hfc.TestingUtils.*;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -12,7 +12,7 @@ public class TestRemoveSupers {
   static ForwardChainer fc;
 
   public static String getResource(String name) {
-    return Utils.getTestResource("LGetLatest", name);
+    return TestingUtils.getTestResource("LGetLatest", name);
   }
 
   /**

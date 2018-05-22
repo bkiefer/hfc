@@ -5,8 +5,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static de.dfki.lt.hfc.Utils.checkResult;
-import static de.dfki.lt.hfc.Utils.checkResult;
+import static de.dfki.lt.hfc.TestingUtils.checkResult;
+import static de.dfki.lt.hfc.TestingUtils.checkResult;
 
 
 
@@ -14,7 +14,7 @@ public class MegaclusterTest {
   static ForwardChainer fc;
 
   private static String getResource(String name) {
-    return Utils.getTestResource("Megacluster", name);
+    return TestingUtils.getTestResource("Megacluster", name);
   }
   @BeforeClass
   public static void init() throws Exception {
