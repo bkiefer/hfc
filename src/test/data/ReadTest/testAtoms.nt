@@ -8,3 +8,5 @@
 <test:a8> <test:value> "f<"o"o"^^<xsd:string> .
 <test:a9> <test:value> "fo<o"^^<xsd:string> .
 <test:a10> <test:value> "f<"">o"o"^^<xsd:string> .
+<test:a11> <test:value> "f<"">o^o"^^<xsd:string> .
+<test:a12> <test:value>  "f<"">o^^"o"^^<xsd:string> .
