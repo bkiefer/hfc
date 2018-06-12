@@ -329,6 +329,32 @@ public class XsdSimpleTypesTest {
 
     String res = new XsdString("val").toString(true);
     assertEquals("\"val\"^^<xsd:string>", res);
+
+    xs = new XsdString("he\\llo", "en");
+    assertEquals("he\\llo", xs.value);
+    assertEquals("en", xs.languageTag);
+    assertEquals("\"he\\\\llo\"@en", xs.toString(true));
+    assertEquals("\"he\\\\llo\"@en", xs.toString(false));
+
+    xs = new XsdString("\"he\\llo\\", "en");
+    assertEquals("\"he\\llo\\", xs.value);
+    assertEquals("en", xs.languageTag);
+    assertEquals("\"\\\"he\\\\llo\\\\\"@en", xs.toString(true));
+    assertEquals("\"\\\"he\\\\llo\\\\\"@en", xs.toString(false));
+
+    xs = new XsdString("he\\llo");
+    assertEquals("he\\llo", xs.value);
+    assertEquals(null, xs.languageTag);
+    assertEquals("\"he\\\\llo\"^^<xsd:string>", xs.toString(true));
+    assertEquals("\"he\\\\llo\"^^<http://www.w3.org/2001/XMLSchema#string>",
+        xs.toString(false));
+
+    xs = new XsdString("\"he\\llo\\");
+    assertEquals("\"he\\llo\\", xs.value);
+    assertEquals(null, xs.languageTag);
+    assertEquals("\"\\\"he\\\\llo\\\\\"^^<xsd:string>", xs.toString(true));
+    assertEquals("\"\\\"he\\\\llo\\\\\"^^<http://www.w3.org/2001/XMLSchema#string>",
+        xs.toString(false));
   }
 
   @Test

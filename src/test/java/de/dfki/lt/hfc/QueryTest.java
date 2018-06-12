@@ -219,7 +219,7 @@ public class QueryTest {
        expected = new String[][]{{"\"1\"^^<xsd:int>", "\"1\"^^<xsd:int>"}};
       query = new Query(fc.tupleStore);
       bt = query.query("SELECT ?s WHERE ?s <dom:bsl> ?o ?t FILTER ?s != <pal:labval33> AGGREGATE ?number = CountDistinct ?s & ?number2 = CountDistinct <pal:labval33>") ;
-      checkResult(fc, bt, expected, "?number", "?subject");
+      checkResult(fc, bt, expected, "?number", "?number2");
   }
 
   @Test

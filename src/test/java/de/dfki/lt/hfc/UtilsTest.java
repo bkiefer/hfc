@@ -55,4 +55,139 @@ public class UtilsTest {
     reverse(in);
     assertArrayEquals(expstring(exp, in), exp, in);
   }
+
+  @Test
+  public void testEscape1() {
+    String in = "abcdefg";
+    String res = Utils.escapeDoublequotes(in);
+    assertEquals(in, res);
+  }
+
+  @Test
+  public void testEscape2() {
+    String in = "abc\"de\"fg";
+    String res = Utils.escapeDoublequotes(in);
+    assertEquals("abc\\\"de\\\"fg", res);
+  }
+
+  @Test
+  public void testEscape3() {
+    String in = "abc\"de\\\"fg";
+    String res = Utils.escapeDoublequotes(in);
+    assertEquals("abc\\\"de\\\"fg", res);
+  }
+  @Test
+  public void testEscape4() {
+    String in = "\"abcde\"";
+    String res = Utils.escapeDoublequotes(in);
+    assertEquals("\\\"abcde\\\"", res);
+  }
+
+  @Test
+  public void testEscape5() {
+    String in = "\\\"abcde\\\"";
+    String res = Utils.escapeDoublequotes(in);
+    assertEquals("\\\"abcde\\\"", res);
+  }
+
+  @Test
+  public void testEscape6() {
+    String in = "";
+    String res = Utils.escapeDoublequotes(in);
+    assertEquals("", res);
+  }
+
+  @Test
+  public void testEscape11() {
+    String in = "\"abc\"aldsjf;lasjkdf\\\"de\"\\\"abc\\\"aldsjf;lasjkdf\\\\\\\""
+        + "de\\\"\\\"abc\\\"aldsjf;lasjkdf\\\\\\\""
+        + "de\\\"\\\"abc\\\"aldsjf;lasjkdf\\\\\\\"de\\\"";
+    String res = null;
+    for (int i = 0; i < 1; ++i) {
+      res = Utils.escapeDoublequotes(in);
+    }
+    assertEquals("\\\"abc\\\"aldsjf;lasjkdf\\\"de\\\"\\\"abc\\\"aldsjf;lasjkdf\\\\\\\""
+        + "de\\\"\\\"abc\\\"aldsjf;lasjkdf\\\\\\\""
+        + "de\\\"\\\"abc\\\"aldsjf;lasjkdf\\\\\\\"de\\\"", res);
+  }
+
+
+  @Test
+  public void testIntToExt1() {
+    String in = "abcdefg";
+    String ex = "abcdefg";
+    String res = Utils.stringToExternal(in);
+    assertEquals(ex, res);
+    res = Utils.externalToString(ex);
+    assertEquals(in, res);
+  }
+
+  @Test
+  public void testIntToExt2() {
+    String in = "abc\"de\"fg";
+    String ex = "abc\\\"de\\\"fg";
+    String res = Utils.stringToExternal(in);
+    assertEquals(ex, res);
+    res = Utils.externalToString(ex);
+    assertEquals(in, res);
+  }
+
+  @Test
+  public void testIntToExt3() {
+    String in = "abc\"de\\\"fg";
+    String ex = "abc\\\"de\\\\\\\"fg";
+    String res = Utils.stringToExternal(in);
+    assertEquals(ex, res);
+    res = Utils.externalToString(ex);
+    assertEquals(in, res);
+  }
+
+  @Test
+  public void testIntToExt4() {
+    String in = "\"abcde\"";
+    String ex = "\\\"abcde\\\"";
+    String res = Utils.stringToExternal(in);
+    assertEquals(ex, res);
+    res = Utils.externalToString(ex);
+    assertEquals(in, res);
+  }
+
+  @Test
+  public void testIntToExt5() {
+    String in = "\\\"abcde\\\"";
+    String ex = "\\\\\\\"abcde\\\\\\\"";
+    String res = Utils.stringToExternal(in);
+    assertEquals(ex, res);
+    res = Utils.externalToString(ex);
+    assertEquals(in, res);
+  }
+
+  @Test
+  public void testIntToExt6() {
+    String in = "";
+    String ex = "";
+    String res = Utils.stringToExternal(in);
+    assertEquals(ex, res);
+    res = Utils.externalToString(ex);
+    assertEquals(in, res);
+  }
+
+  @Test
+  public void testIntToExt11() {
+    String in = "\"abc\"aldsjf;lasjkdf\\\"de\"\\\"abc\\\"aldsjf;lasjkdf\\\\\\\""
+        + "de\\\"\\\"abc\\\"aldsjf;lasjkdf\\\\\\\""
+        + "de\\\"\\\"abc\\\"aldsjf;lasjkdf\\\\\\\"de\\\"";
+    String ex = "\\\"abc\\\"aldsjf;lasjkdf\\\\\\\"de\\\"\\\\\\\"abc\\\\\\\"aldsjf;lasjkdf\\\\\\\\\\\\\\\""
+        + "de\\\\\\\"\\\\\\\"abc\\\\\\\"aldsjf;lasjkdf\\\\\\\\\\\\\\\""
+        + "de\\\\\\\"\\\\\\\"abc\\\\\\\"aldsjf;lasjkdf\\\\\\\\\\\\\\\"de\\\\\\\"";
+    String res = null;
+    for (int i = 0; i < 1000000; ++i) {
+      res = Utils.stringToExternal(in);
+    }
+    assertEquals(ex, res);
+    for (int i = 0; i < 1; ++i) {
+      res = Utils.externalToString(ex);
+    }
+    assertEquals(in, res);
+  }
 }

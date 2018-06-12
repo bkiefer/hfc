@@ -1,5 +1,7 @@
 package de.dfki.lt.hfc.types;
 
+import de.dfki.lt.hfc.Utils;
+
 /**
  * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
@@ -29,16 +31,20 @@ public final class XsdString extends XsdAnySimpleType {
       this.value = val;
       return;
     }
-		int index = val.lastIndexOf('^');
-		if (index == -1) {
-			// no suffix "^^<xsd:string>"
-			index = val.lastIndexOf('@');
+    // if the string is in "external" form, meaning it starts with '"' and
+    // ends with '"', '"^^<xsd:string>' or '"@langtag', we have to set value
+    // to the "internal" form, removing backslashes that escape other
+    // backslashes or double quotes
+		String ext = null;
+		if (! val.endsWith("^^<xsd:string>")) {
+		  // no suffix "^^<xsd:string>"
+			int index = val.lastIndexOf('@');
 			final int length = val.length();
 			if (index == -1) {
 				// no language tag
 			  if (val.charAt(0) == '"' &&
 			      val.charAt(val.length() - 1) == '"') {
-			    this.value = val.substring(1, length - 1);
+			    ext = val.substring(1, length - 1);
 			  } else {
 			    this.value = val;
 			  }
@@ -46,13 +52,16 @@ public final class XsdString extends XsdAnySimpleType {
 			}
 			else {
 				// there is a language tag
-				this.value = val.substring(1, index - 1);
+				ext = val.substring(1, index - 1);
 				this.languageTag = val.substring(index + 1, length);;
 			}
 		}
 		else {
-			this.value = val.substring(1, index - 2);
+		  ext = val.substring(1, val.length() - 15);
 			this.languageTag = null;
+		}
+		if (ext != null) {
+		  this.value = Utils.externalToString(ext);
 		}
 	}
 
@@ -76,7 +85,7 @@ public final class XsdString extends XsdAnySimpleType {
 	 */
 	public String toString(boolean shortIsDefault) {
 		StringBuilder sb = new StringBuilder("\"");
-		sb.append(this.value);
+		sb.append(Utils.stringToExternal(this.value));
 		sb.append("\"");
 		if (this.languageTag != null) {
 			sb.append("@");
