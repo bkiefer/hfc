@@ -194,7 +194,7 @@ public class TupleStoreTest {
         objectToTest.readTuples(getTestResource("ReadTest", "testAtoms.nt"));
 
         assertEquals("Expected 10 tuples but was " + objectToTest.getAllTuples().size(),
-                10, objectToTest.getAllTuples().size());
+                12, objectToTest.getAllTuples().size());
         String[][] expected = {
                 {"\"foo\"^^<xsd:string>"},
                 {"\"fo\\o\"^^<xsd:string>"},
@@ -205,7 +205,9 @@ public class TupleStoreTest {
                 {"\"f<oo>\"^^<xsd:string>"},
                 {"\"f<\"o\"o\"^^<xsd:string>"},
                 {"\"fo<o\"^^<xsd:string>"},
-                {"\"f<\"\">o\"o\"^^<xsd:string>"}
+                {"\"f<\"\">o\"o\"^^<xsd:string>"},
+                {"\"f<\"\">o^o\"^^<xsd:string>"},
+                {"\"f<\"\">o^^\"o\"^^<xsd:string>"}
         };
         Query q = new Query(objectToTest);
         BindingTable bt = q.query("SELECT ?o WHERE ?s <test:value> ?o");
@@ -232,6 +234,17 @@ public class TupleStoreTest {
         }};
         for (int[] tuple : objectToTest.getAllTuples()) {
             expectedOutput.remove(objectToTest.toString(tuple));
+        }
+        bt = q.query("SELECT ?o WHERE ?s <test:value> ?o");
+        checkResult(expected, bt, "?o");
+        expectedOutput = new HashSet<String>() {{
+            add("<test:a1> <test:value> \"Hello foo!\"^^<http://www.w3.org/2001/XMLSchema#string> .");
+            add("<test:a1> <test:value> \"Hello foo\"^^<http://www.w3.org/2001/XMLSchema#string> .");
+            add("<test:a2> <test:value> \"\\u00fc foo\"^^<http://www.w3.org/2001/XMLSchema#string> .");
+        }};
+        for (int[] tuple : objectToTest.getAllTuples()) {
+            //System.out.println(objectToTest.toExpandedString(tuple));
+            expectedOutput.remove(objectToTest.toExpandedString(tuple));
         }
         assertEquals(0, expectedOutput.size());
     }

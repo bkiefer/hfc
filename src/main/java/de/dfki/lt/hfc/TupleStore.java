@@ -1788,10 +1788,10 @@ public final class TupleStore {
             // distinguish between URIs vs. XSD atoms or blank nodes
             literal = getObject(tuple[i]);
             if (TupleStore.isAtom(literal) || TupleStore.isBlankNode(literal))
-                sb.append(literal.replace("xsd:", this.namespace.getLongForm("xsd")) + " ");
+                sb.append(toUnicode(literal.replace("xsd:", this.namespace.getLongForm("xsd")) + " "));
             else
                 // a URI
-                sb.append(this.namespace.expandUri(literal) + " ");
+                sb.append(toUnicode(this.namespace.expandUri(literal) + " "));
         }
         sb.append(".");
         return sb.toString();
