@@ -36,7 +36,12 @@ public final class XsdString extends XsdAnySimpleType {
     // to the "internal" form, removing backslashes that escape other
     // backslashes or double quotes
 		String ext = null;
-		if (! val.endsWith("^^<xsd:string>")) {
+		this.languageTag = null;
+		if (val.endsWith("^^" + SHORT_NAME)) {
+		  ext = val.substring(1, val.length() - SHORT_NAME.length() - 3);
+		} else if (val.endsWith("^^" + LONG_NAME)) {
+		  ext = val.substring(1, val.length() - LONG_NAME.length() - 3);
+		} else {
 		  // no suffix "^^<xsd:string>"
 			int index = val.lastIndexOf('@');
 			final int length = val.length();
@@ -48,7 +53,6 @@ public final class XsdString extends XsdAnySimpleType {
 			  } else {
 			    this.value = val;
 			  }
-			  this.languageTag = null;
 			}
 			else {
 				// there is a language tag
@@ -56,10 +60,7 @@ public final class XsdString extends XsdAnySimpleType {
 				this.languageTag = val.substring(index + 1, length);;
 			}
 		}
-		else {
-		  ext = val.substring(1, val.length() - 15);
-			this.languageTag = null;
-		}
+
 		if (ext != null) {
 		  this.value = Utils.externalToString(ext);
 		}
