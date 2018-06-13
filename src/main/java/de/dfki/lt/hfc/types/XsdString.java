@@ -45,7 +45,7 @@ public final class XsdString extends XsdAnySimpleType {
 		  // no suffix "^^<xsd:string>"
 			int index = val.lastIndexOf('@');
 			final int length = val.length();
-			if (index == -1) {
+			if (index == -1 || index < 2) {
 				// no language tag
 			  if (val.charAt(0) == '"' &&
 			      val.charAt(val.length() - 1) == '"') {
