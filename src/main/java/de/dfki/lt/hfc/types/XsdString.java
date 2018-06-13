@@ -55,9 +55,13 @@ public final class XsdString extends XsdAnySimpleType {
 			  }
 			}
 			else {
-				// there is a language tag
-				ext = val.substring(1, index - 1);
-				this.languageTag = val.substring(index + 1, length);;
+				// there is a language tag ?
+			  if (val.charAt(0) == '"' && val.charAt(index - 1) == '"') {
+			    ext = val.substring(1, index - 1);
+			    this.languageTag = val.substring(index + 1, length);;
+			  } else {
+			    this.value = val;
+			  }
 			}
 		}
 
