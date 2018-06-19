@@ -6,6 +6,7 @@ import de.dfki.lt.hfc.WrongFormatException;
 import de.dfki.lt.hfc.types.XsdAnySimpleType;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -20,7 +21,7 @@ public class QRelationFactory {
     /**
      * A basic LOGGER.
      */
-    private static final Logger LOGGER = Logger.getLogger(QRelationFactory.class.getName());
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(QRelationFactory.class);
     private static boolean verbose;
 
     /**
@@ -54,7 +55,6 @@ public class QRelationFactory {
     private static int counter = 1;
 
     static {
-        LOGGER.setLevel(Level.ERROR);
         nameToRe = new HashMap<String, Constructor<QRelation>>();
         loadRelations();
     }
@@ -93,7 +93,7 @@ public class QRelationFactory {
         };
         for (String relation : relations) {
             if(verbose)
-                LOGGER.info("Class for name " + RELATION_PATH + relation);
+                logger.info("Class for name {0}{1}");
             try {
                 Class.forName(RELATION_PATH + relation);
             } catch (ClassNotFoundException e) {

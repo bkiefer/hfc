@@ -63,8 +63,7 @@ public abstract class Relation {
 	/**
 	 *
 	 */
-	public Relation(String name,
-									ArrayList<Integer> args) {
+	public Relation(String name, ArrayList<Integer> args) {
 		this.name = name;
 		this.args = new int[args.size()];
 		for (int i = 0; i < args.size(); i++)
@@ -74,9 +73,7 @@ public abstract class Relation {
 	/**
 	 *
 	 */
-	public Relation(String name,
-									Operator op,
-									ArrayList<Integer> args) {
+	public Relation(String name, Operator op, ArrayList<Integer> args) {
 		this(name, args);
 		this.op = op;
 	}

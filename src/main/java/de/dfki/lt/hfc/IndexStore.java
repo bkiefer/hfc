@@ -5,9 +5,9 @@ import de.dfki.lt.hfc.indices.Index;
 import de.dfki.lt.hfc.indices.AdvancedIndex;
 import de.dfki.lt.hfc.qrelations.QRelation;
 import de.dfki.lt.hfc.types.AnyType;
-import org.apache.log4j.Level;
-import org.apache.log4j.LogMF;
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -35,11 +35,9 @@ public class IndexStore {
   /**
    * A basic LOGGER.
    */
-  private final static Logger LOGGER = Logger.getLogger(IndexStore.class.getName());
+  private static final Logger logger = LoggerFactory.getLogger(IndexStore.class);
 
-  static {
-    LOGGER.setLevel(Level.ERROR);
-  }
+
 
   // last '.' char is OK!
   public static final String INDEX_PATH = "de.dfki.lt.hfc.indices.";
@@ -96,9 +94,9 @@ public class IndexStore {
    * Creates a new instance of {@link IndexStore} according to the specification in the given file.
    */
   public IndexStore(String indexFile, boolean verbose) throws IndexingException {
-    LogMF.debug(LOGGER, "Initializing indexStore ...", null);
+    logger.debug("Initializing indexStore ...");
     readIndex(indexFile);
-    LogMF.debug(LOGGER, "... successfully initialized", null);
+    logger.debug( "... successfully initialized");
   }
 
 
@@ -111,7 +109,7 @@ public class IndexStore {
    * @return A Set of tuples associated with the given key/the given date.
    */
   public Set<int[]> lookup(AnyType key) {
-    LogMF.debug(LOGGER, "Lookup key: {0} ", key);
+    logger.debug( "Lookup key: {0} ", key);
     return this.primaryIndex.search(key);
   }
 
@@ -125,7 +123,7 @@ public class IndexStore {
    * @return The values associated with all keys between the given ones.
    */
   public Set<int[]> lookup(AnyType key1, AnyType key2) {
-    LogMF.debug(LOGGER, "Lookup interval: {0} - {1} ", key1, key2);
+    logger.debug( "Lookup interval: {0} - {1} ", key1, key2);
     if (secundaryIndex != null) {
       return this.secundaryIndex.searchInterval(key1, key2);
     }
@@ -156,7 +154,7 @@ public class IndexStore {
             try {
               this.primIndexKey = Class.forName(TYPE_PATH + splitline[1].trim());
             } catch (ClassNotFoundException e) {
-              LOGGER.error(e.getStackTrace());
+              logger.error(e.getStackTrace().toString());
             }
             break;
           }
@@ -164,7 +162,7 @@ public class IndexStore {
             try {
               this.secIndexKey = Class.forName(TYPE_PATH + splitline[1].trim());
             } catch (ClassNotFoundException e) {
-              LOGGER.error(e.getStackTrace());
+              logger.error(e.getStackTrace().toString());
             }
             break;
           }
@@ -195,7 +193,7 @@ public class IndexStore {
               this.primIndexBackend = Class.forName(INDEX_PATH + splitline[1].trim());
 
             } catch (ClassNotFoundException e) {
-              LOGGER.error(e.getStackTrace());
+              logger.error(e.getStackTrace().toString());
             }
             break;
           }
@@ -204,7 +202,7 @@ public class IndexStore {
               this.secIndexBackend = Class.forName(INDEX_PATH + splitline[1].trim());
 
             } catch (ClassNotFoundException e) {
-              LOGGER.error(e.getStackTrace());
+              logger.error(e.getStackTrace().toString());
             }
             break;
           }
@@ -212,13 +210,13 @@ public class IndexStore {
             if (splitline[0].trim().startsWith("#")) {
               continue;
             }
-            LOGGER.error("Unknown parameter" + line );
+            logger.warn("Unknown parameter" + line );
           }
         }
       }
       bufferedReader.close();
     } catch (IOException e) {
-      LOGGER.error(e.getStackTrace());
+      logger.error(e.getStackTrace().toString());
     }
     //check whether all necessary values are present
     if (primIndexBackend == null || position_prime_start == -1 || primIndexKey == null) {
@@ -240,7 +238,7 @@ public class IndexStore {
             .newInstance(secIndexKey, position_second_start, position_second_end);
       }
     } catch (Exception e) {
-      LOGGER.error(e.getStackTrace());
+      logger.error(e.getStackTrace().toString());
     }
   }
 
@@ -253,7 +251,7 @@ public class IndexStore {
     try (BufferedWriter writer = Files.newBufferedWriter(path)) {
       //TODO
     } catch (IOException e) {
-      LOGGER.error("Something went wrong while writing the index to " + file);
+      logger.error("Something went wrong while writing the index to " + file);
     }
   }
 
@@ -398,7 +396,7 @@ public class IndexStore {
   private boolean createAtomLookup(Index index, List<Integer> clause, Set<IndexLookup> lkps,
                                      Map<Integer, QRelation> idToRelation, Set<QRelation> notApplicableRelations) {
     int id = clause.get(index.indexedPosition_start);
-    LogMF.debug(LOGGER, "Create A lookup for {0}",clause);
+    logger.debug( "Create A lookup for {0}",clause);
     QRelation r;
     //Check whether the id is a variable
     if (id < 0) {
@@ -408,12 +406,12 @@ public class IndexStore {
       {
         return false;
       } else {
-        LogMF.debug(LOGGER, "id {0}  is associated with {1}", id,  idToRelation.get(id));
+        logger.debug("id {0}  is associated with {1}", id,  idToRelation.get(id));
         //create a lookup object for the given represented QRelation
         r = idToRelation.get(id);
         if (r.getType() == index.key) {
           if (!relationIsApplicable(index, r)) {
-            LogMF.debug(LOGGER,"Relation is not applicable", null);
+            logger.debug("Relation is not applicable");
             notApplicableRelations.add(r);
             return false;
           }
@@ -443,20 +441,20 @@ public class IndexStore {
     int ids = clause.get(index.indexedPosition_start);
     int ide = clause.get(index.indexedPosition_end);
     QRelation r;
-    LogMF.debug(LOGGER,"Create B lookup for {0}", clause);
+    logger.debug("Create B lookup for {0}", clause);
     //Check whether the id is a variable
     if (ids < 0 || ide < 0) {
       // Check whether the variable is associated with an QRelation
       if (!(idToRelation.containsKey(ids) && idToRelation.containsKey(ide))) {
-        LogMF.debug(LOGGER,"No match for {0} and {1}", ids, ide);
+        logger.debug("No match for {0} and {1}", ids, ide);
         return false;
       } else {
         //create a lookup object for the given represented QRelation
-        LogMF.debug(LOGGER,"id {0} is associated with {1}", ids , idToRelation.get(ids));
+        logger.debug("id {0} is associated with {1}", ids , idToRelation.get(ids));
         r = idToRelation.get(ids);
         if (r.getType() == index.key) {
           if (!relationIsApplicable(index, r)) {
-            LogMF.debug(LOGGER,"Relation is not applicable", null);
+            logger.debug("Relation is not applicable");
             notApplicableRelations.add(r);
             return false;
           }
@@ -479,7 +477,7 @@ public class IndexStore {
   }
 
   private boolean relationIsApplicable(Index index, QRelation r) {
-    LogMF.debug(LOGGER, "isAllen {0}, isInterval {1}, intervalSupport {2}", r.isAllenRelation(),r.isInterval(),index.intervalSupport());
+    logger.debug("isAllen {0}, isInterval {1}, intervalSupport {2}", r.isAllenRelation(),r.isInterval(),index.intervalSupport());
     if(r.isAllenRelation()) {
       if (!r.isInterval() && index.intervalSupport())
         return true;

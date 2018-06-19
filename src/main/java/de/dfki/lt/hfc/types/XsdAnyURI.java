@@ -1,5 +1,8 @@
 package de.dfki.lt.hfc.types;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * NOTE: XsdAnyURI should be used to represent true URI values, i.e.,
  *       _without_ angle brackets !
@@ -14,6 +17,11 @@ package de.dfki.lt.hfc.types;
  * @version Fri Jan 29 17:16:44 CET 2016
  */
 public final class XsdAnyURI extends XsdAnySimpleType {
+
+	/**
+	 * A basic LOGGER.
+	 */
+	private static final Logger logger = LoggerFactory.getLogger(XsdAnyURI.class);
   public final static String NAME = "anyURI";
 
   public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
@@ -78,7 +86,7 @@ public final class XsdAnyURI extends XsdAnySimpleType {
      return new java.net.URI(this.value);
     }
     catch (java.net.URISyntaxException e) {
-      System.err.println("  " + this.value + " not compliant with URI syntax specification");
+      logger.error("  " + this.value + " not compliant with URI syntax specification");
     }
     return null;
   }

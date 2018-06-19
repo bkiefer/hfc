@@ -7,6 +7,8 @@ import de.dfki.lt.hfc.ForwardChainer;
 import de.dfki.lt.hfc.Query;
 import de.dfki.lt.hfc.BindingTable;
 import de.dfki.lt.hfc.QueryParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * the server API that is separated from the server otself;
@@ -16,6 +18,12 @@ import de.dfki.lt.hfc.QueryParseException;
  * @version Thu Jun 30 16:10:04 CEST 2011
  */
 public class HfcServerApi {
+
+
+	/**
+	 * A basic LOGGER.
+	 */
+	private static final Logger logger = LoggerFactory.getLogger(HfcServerApi.class);
 
 	/**
 	 * this class instance of class ForwardChainer is assigned when starting the HFC Web Server
@@ -38,10 +46,10 @@ public class HfcServerApi {
 	 */
 	public synchronized String query(String query) {
 		try {
-			System.out.println("  query: " + query);
+			logger.info("  query: " + query);
 			long start = System.currentTimeMillis();
 			BindingTable bt = HfcServerApi.QUERY.query(query);
-			System.out.println("  query time: " + (System.currentTimeMillis() - start) + "ms\n");
+			logger.info("  query time: " + (System.currentTimeMillis() - start) + "ms\n");
 			if (bt == null)
 				// unknown URI
 				return "  query contains unknown URI(s)";
@@ -130,11 +138,11 @@ public class HfcServerApi {
 	public synchronized Integer start(String command) {
 		// check whether another HFC is already running
 		if (HfcServerApi.HFC != null) {
-			System.out.println("  HFC already running: first call 'stop' command");
+			logger.info("  HFC already running: first call 'stop' command");
 			return 1;
 		}
 		try {
-			System.out.println("  starting up HFC server ...");
+			logger.info("  starting up HFC server ...");
 			// get rid of 'start'
 			StringTokenizer st = new StringTokenizer(command);
 			st.nextToken();
@@ -152,7 +160,7 @@ public class HfcServerApi {
 		}
 		catch (Exception exception) {
 			// be careful
-			System.out.println("  error while starting HFC (too less arguments or wrong order): " + exception.getMessage());
+			logger.info("  error while starting HFC (too less arguments or wrong order): " + exception.getMessage());
 			return 1;
 		}
 	}
@@ -166,7 +174,7 @@ public class HfcServerApi {
 	 */
 	public synchronized Integer stop(String command) {
 		try {
-			System.out.println("  shutting down HFC server ...");
+			logger.info("  shutting down HFC server ...");
 			HfcServerApi.HFC.shutdownNoExit();
 			HfcServerApi.HFC = null;
 			HfcServerApi.QUERY = null;
@@ -174,7 +182,7 @@ public class HfcServerApi {
 		}
 		catch (Exception exception) {
 			// be careful
-			System.out.println("  error while shutting down HFC: " + exception.getMessage());
+			logger.info("  error while shutting down HFC: " + exception.getMessage());
 			return 1;
 		}
 	}

@@ -2,6 +2,9 @@ package de.dfki.lt.hfc.proxy;
 
 import de.dfki.lt.hfc.TupleStore;
 import de.dfki.lt.hfc.Namespace;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.*;
 
 /**
@@ -17,6 +20,11 @@ import java.util.*;
  */
 public class RdfGraph {
 
+
+  /**
+   * A basic LOGGER.
+   */
+  private static final Logger logger = LoggerFactory.getLogger(RdfGraph.class);
   /**
    * change these numbers in case you deviate from a triple
    */
@@ -254,7 +262,7 @@ public class RdfGraph {
     rg.addToRdfGraph(new String[] {"<test:labval_1>", "<test:weight>", "\"63\"^^<xsd:kg>"});
     rg.addToRdfGraph(new String[] {"<test:labval_1>", "<test:time>", "\"1234567890\"^^<xsd:long>"});
     // check RDF graph
-    System.out.println(rg.nameToLiteral);
+    logger.info(rg.nameToLiteral.toString());
     // remove all information in a different order
     rg.removeFromRdfGraph(new String[] {"<test:child_0>", "<rdf:type>", "<test:Human>"});
     rg.removeFromRdfGraph(new String[] {"<test:child_0>", "<test:forename>", "\"Henk\"^^<xsd:string>"});
@@ -267,7 +275,7 @@ public class RdfGraph {
     rg.removeFromRdfGraph(new String[] {"<test:labval_1>", "<test:time>", "\"1234567890\"^^<xsd:long>"});
     rg.removeFromRdfGraph(new String[] {"<test:labval_1>", "<rdf:type>", "<test:LabValue>"});
     // check RDF graph again
-    System.out.println(rg.nameToLiteral);
+    logger.info(rg.nameToLiteral.toString());
     // nevertheless information remains in the RDF graph that is not accessable via links from URIs,
     // similar to chunks of memory that need to be reclaimed by a garbage collector
   }

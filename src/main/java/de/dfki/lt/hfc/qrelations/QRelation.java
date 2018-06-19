@@ -3,10 +3,11 @@ package de.dfki.lt.hfc.qrelations;
 import de.dfki.lt.hfc.indices.Index;
 import de.dfki.lt.hfc.QueryParseException;
 import de.dfki.lt.hfc.types.XsdAnySimpleType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+
 
 /**
  * Most general class representing all kinds of Interval and RCC8 relations.
@@ -17,11 +18,7 @@ public abstract class QRelation {
     /**
      * A basic LOGGER.
      */
-    private static final Logger LOGGER = Logger.getLogger(QRelation.class.getName());
-
-    static {
-        LOGGER.setLevel(Level.ERROR);
-    }
+    private static final Logger logger = LoggerFactory.getLogger(QRelation.class);
 
     protected int firstArgumentVariableID;
     protected int secondArgumentVariableID;

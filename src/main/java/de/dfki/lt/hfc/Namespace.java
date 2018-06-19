@@ -1,5 +1,8 @@
 package de.dfki.lt.hfc;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.util.HashMap;
@@ -49,6 +52,8 @@ import java.util.StringTokenizer;
  * @version Mon Oct  5 09:45:59 CEST 2015
  */
 public final class Namespace {
+
+	private static final Logger logger = LoggerFactory.getLogger(Namespace.class);
 
   /**
    * the two directives that can be found in a namespace file
@@ -157,7 +162,7 @@ public final class Namespace {
 		putForm(Namespace.RDFS_SHORT, Namespace.RDFS_LONG);
 		putForm(Namespace.OWL_SHORT, Namespace.OWL_LONG);
 		if (verbose)
-			System.out.println("\n  defining default namespace for XSD, RDF, RDFS, and OWL ...");
+			logger.info("\n  defining default namespace for XSD, RDF, RDFS, and OWL ...");
 	}
 
 	/**
@@ -371,7 +376,7 @@ public final class Namespace {
       }
     }
     if (this.verbose) {
-			System.out.println("\n  read " + noOfNamespaces + " namespace mappings");
+			logger.info("\n  read " + noOfNamespaces + " namespace mappings");
       //System.out.println("  read " + noOfTypes + " type mappings");  // no longer necessary
     }
 	}
@@ -379,7 +384,7 @@ public final class Namespace {
 	 public void readNamespaces(String filename)
 	     throws WrongFormatException, IOException {
 	   if (this.verbose)
-	     System.out.println("\n  reading namespace & type mappings from " + filename + " ...");
+	     logger.info("\n  reading namespace & type mappings from " + filename + " ...");
      readNamespaces(Files.newBufferedReader(new File(filename).toPath()));
 	 }
 

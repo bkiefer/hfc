@@ -1,5 +1,8 @@
 package de.dfki.lt.hfc;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.*;
 import java.lang.reflect.*;
 
@@ -17,7 +20,11 @@ import java.lang.reflect.*;
  * @version Thu Jan 14 14:57:24 CET 2010
  */
 public final class AggregateRegistry {
-	
+
+	/**
+	 * A basic LOGGER.
+	 */
+	private static final Logger logger = LoggerFactory.getLogger(AggregateRegistry.class);
 	/**
 	 * all (custom) aggregates should be put in package de.dfki.lt.hfc.aggregates
 	 */
@@ -102,7 +109,7 @@ public final class AggregateRegistry {
 			if (AggregateRegistry.EXIT_WHEN_REGISTRATION_FAILS)
 				throw new RuntimeException("FATAL ERROR");
 			else
-				System.out.println("  registering aggregate " + className + " fails");
+				logger.info("  registering aggregate " + className + " fails");
 			return null;
 		}
 	}

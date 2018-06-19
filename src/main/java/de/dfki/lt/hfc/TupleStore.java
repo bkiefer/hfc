@@ -12,7 +12,8 @@ import de.dfki.lt.hfc.types.*;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.map.hash.*;
 import gnu.trove.set.hash.*;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
  * tuples are represented as int[] in order to save space;
  * although container objects (embodying the int[]) are easier to
@@ -307,6 +308,8 @@ public final class TupleStore {
      */
     public int noOfTuples = 500000;
 
+    private static final Logger logger = LoggerFactory.getLogger(TupleStore.class);
+
     /**
      * init form that "outsources" initialization code that needs to be duplicated by the
      * binary (that is used be several other constructors) and 10-ary constructor
@@ -571,7 +574,8 @@ public final class TupleStore {
      * a simple STATIC method, translating an int array into something readable (N-tuple syntax)
      */
     public static void printTuple(int[] tuple, ArrayList<String> mapping) {
-        System.out.println(toString(tuple, mapping));
+        logger.info(toString(tuple,mapping));
+        //System.out.println(toString(tuple, mapping));
     }
 
     /**
@@ -899,12 +903,12 @@ public final class TupleStore {
      */
     private boolean sayItLoud(int lineNo, String message) throws WrongFormatException {
         if (this.exitOnError) {
-            System.out.println("  " + lineNo + message);
+            logger.error("  " + lineNo + message);
             // throw new RuntimeException("FATAL ERROR");
             throw new WrongFormatException("  " + lineNo + message);
         }
         if (this.verbose)
-            System.out.println("  " + lineNo + message);
+            logger.info("  " + lineNo + message);
         return false;
     }
 
@@ -913,11 +917,11 @@ public final class TupleStore {
      */
     private boolean sayItLoud(String message) {
         if (this.exitOnError) {
-            System.out.println("  " + message);
+            logger.error("  " + message);
             throw new RuntimeException("FATAL ERROR");
         }
         if (this.verbose)
-            System.out.println("  " + message);
+            logger.info("  " + message);
         return false;
     }
 
@@ -1369,8 +1373,8 @@ public final class TupleStore {
                 eol = true;
         }
         if (this.verbose) {
-            System.out.println("\n  read " + noOfTuples + " proper tuples");
-            System.out.println("  overall " + this.allTuples.size() + " unique tuples");
+            logger.info("\n  read " + noOfTuples + " proper tuples");
+            logger.info("  overall " + this.allTuples.size() + " unique tuples");
             // some further statistics
             int noOfURIs = 0, noOfBlanks = 0, noOfAtoms = 0;
             for (int i = 0; i < this.idToObject.size(); i++) {
@@ -1381,20 +1385,20 @@ public final class TupleStore {
                 else
                     ++noOfAtoms;
             }
-            System.out.println("  found " + noOfURIs + " URIs");
-            System.out.println("  found " + noOfBlanks + " blank nodes");
-            System.out.println("  found " + noOfAtoms + " XSD atoms");
+            logger.info("  found " + noOfURIs + " URIs");
+            logger.info("  found " + noOfBlanks + " blank nodes");
+            logger.info("  found " + noOfAtoms + " XSD atoms");
         }
         // finally cleanup
         if (this.equivalenceClassReduction) {
             if (this.verbose)
-                System.out.println("\n  applying equivalence class reduction ... ");
+                logger.info("\n  applying equivalence class reduction ... ");
             final int all = this.allTuples.size();
             final int no = cleanUpTupleStore();
             if (this.verbose) {
-                System.out.println("  removing " + no + " equivalence relation instances");
-                System.out.println("  removing " + (all - this.allTuples.size()) + " resulting duplicates");
-                System.out.println("  number of all tuples: " + this.allTuples.size() + "\n");
+                logger.info("  removing " + no + " equivalence relation instances");
+                logger.info("  removing " + (all - this.allTuples.size()) + " resulting duplicates");
+                logger.info("  number of all tuples: " + this.allTuples.size() + "\n");
             }
         }
     }
@@ -1445,7 +1449,7 @@ public final class TupleStore {
      */
     public void readTuples(String filename) throws FileNotFoundException, IOException, WrongFormatException {
         if (this.verbose)
-            System.out.println("\n  reading tuples from " + filename + " ...");
+            logger.info("\n  reading tuples from " + filename + " ...");
         readTuples(Files.newBufferedReader(new File(filename).toPath(),
                 Charset.forName(this.inputCharacterEncoding)));
     }
@@ -1461,7 +1465,7 @@ public final class TupleStore {
     public void readTuples(String filename, String front, String... backs)
             throws FileNotFoundException, IOException, WrongFormatException {
         if (this.verbose)
-            System.out.println("\n  reading tuples from " + filename + " ...");
+            logger.info("\n  reading tuples from " + filename + " ...");
         readTuples(Files.newBufferedReader(new File(filename).toPath(),
                 Charset.forName(this.inputCharacterEncoding)), front, backs);
     }
@@ -1476,7 +1480,7 @@ public final class TupleStore {
      * @return the set of ALL tuples stored in the this TupleStore instance
      */
     protected Set<int[]> readTupleStore(String filename) {
-        System.out.println("\n  reading tuples from " + filename + " ...");
+        logger.info("\n  reading tuples from " + filename + " ...");
         String line, token;
         int noOfTuples = 0, lineNo = 0;
         try {
@@ -1493,16 +1497,16 @@ public final class TupleStore {
                 else if (line.startsWith("&tuples"))
                     readAllTuples(br, noOfLines);
                 else {
-                    System.err.println("\nwrong section name: " + line);
+                    logger.info("\nwrong section name: " + line);
                     throw new RuntimeException("FATAL ERROR");
                 }
             }
         } catch (IOException e) {
-            System.err.println("\nerror while reading tuples from " + filename);
+            logger.error("\nerror while reading tuples from " + filename);
             throw new RuntimeException("FATAL ERROR");
         }
-        System.out.println("\n  read " + noOfTuples + " proper tuples");
-        System.out.println("  overall " + this.allTuples.size() + " unique tuples");
+        logger.info("\n  read " + noOfTuples + " proper tuples");
+        logger.info("  overall " + this.allTuples.size() + " unique tuples");
         return this.allTuples;
     }
 
@@ -1682,7 +1686,7 @@ public final class TupleStore {
      */
     public void writeTuples(Collection<int[]> collection, String filename) {
         if (this.verbose)
-            System.out.println("  writing tuples to " + filename + " ...");
+            logger.info("  writing tuples to " + filename + " ...");
         try {
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(filename),
                     this.outputCharacterEncoding));
@@ -1691,7 +1695,7 @@ public final class TupleStore {
             pw.flush();
             pw.close();
         } catch (IOException e) {
-            System.err.println("Error while writing tuples to " + filename);
+            logger.error("Error while writing tuples to " + filename);
             throw new RuntimeException("FATAL ERROR");
         }
     }
@@ -1702,7 +1706,7 @@ public final class TupleStore {
      */
     public void writeExpandedTuples(String filename) {
         if (this.verbose)
-            System.out.println("  writing tuples to " + filename + " ...");
+            logger.info("  writing tuples to " + filename + " ...");
         try {
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(filename),
                     this.outputCharacterEncoding));
@@ -1711,7 +1715,7 @@ public final class TupleStore {
             pw.flush();
             pw.close();
         } catch (IOException e) {
-            System.err.println("Error while writing tuples to " + filename);
+            logger.error("Error while writing tuples to " + filename);
             throw new RuntimeException("FATAL ERROR");
         }
     }
@@ -1724,7 +1728,7 @@ public final class TupleStore {
      */
     public void writeTupleStore(String filename) {
         if (this.verbose)
-            System.out.println("  writing tuple store to " + filename + " ...");
+            logger.info("  writing tuple store to " + filename + " ...");
         try {
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(filename),
                     this.outputCharacterEncoding));
@@ -1750,7 +1754,7 @@ public final class TupleStore {
             pw.flush();
             pw.close();
         } catch (IOException e) {
-            System.err.println("Error while writing tuples to " + filename);
+            logger.error("Error while writing tuples to " + filename);
             throw new RuntimeException("FATAL ERROR");
         }
     }

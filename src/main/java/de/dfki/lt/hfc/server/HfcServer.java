@@ -7,6 +7,8 @@ import org.apache.xmlrpc.webserver.WebServer;
 import de.dfki.lt.hfc.ForwardChainer;
 import de.dfki.lt.hfc.Query;
 import de.dfki.lt.hfc.WrongFormatException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,6 +24,11 @@ import java.util.ArrayList;
  * @version Thu Jun 30 16:10:04 CEST 2011
  */
 public class HfcServer {
+
+	/**
+	 * A basic LOGGER.
+	 */
+	private static final Logger logger = LoggerFactory.getLogger(HfcServer.class);
 
 	/**
 	 * the port number for the web server
@@ -81,15 +88,15 @@ public class HfcServer {
 		rules = files.toArray(new String[files.size()]);
 		// check whether all dirs contain at least one file
 		if (namespaces.length == 0) {
-			System.err.println("  namespace directory " + args[1] + " is empty");
+			logger.error("  namespace directory " + args[1] + " is empty");
 			System.exit(1);
 		}
 		if (tuples.length == 0) {
-			System.err.println("  tuple directory " + args[2] + " is empty");
+			logger.error("  tuple directory " + args[2] + " is empty");
 			System.exit(1);
 		}
 		if (rules.length == 0) {
-			System.err.println("  rule directory " + args[3] + " is empty");
+			logger.error("  rule directory " + args[3] + " is empty");
 			System.exit(1);
 		}
 		// construct minimal forward chainer
@@ -145,15 +152,15 @@ public class HfcServer {
 			phm.addHandler("HFC", de.dfki.lt.hfc.server.HfcServerApi.class);
 			xmlRpcServer.setHandlerMapping(phm);
 			this.webServer.start();
-			System.out.println("\n  HFC server started, waiting for input ...");
+			logger.info("\n  HFC server started, waiting for input ...");
 		}
 		catch (XmlRpcException exception) {
-			System.err.println("\n  HfcServer: XML-RPC Fault #" +
+			logger.error("\n  HfcServer: XML-RPC Fault #" +
 												 Integer.toString(exception.code) +
 												 ": " + exception.toString());
 		}
 		catch (Exception exception) {
-			System.err.println("\n  HfcServer: " + exception.toString());
+			logger.error("\n  HfcServer: " + exception.toString());
 		}
 	}
 
@@ -172,10 +179,10 @@ public class HfcServer {
 	 */
 	public static void main(String[] args) throws FileNotFoundException, WrongFormatException, IOException {
 		if (args.length != 4) {
-			System.err.println("  wrong number of arguments; required (4): port-no namespace-dir tuple-dir rule-dir");
+			logger.error("  wrong number of arguments; required (4): port-no namespace-dir tuple-dir rule-dir");
 			System.exit(1);
 		}
-		System.out.println("\n  starting HFC Server ... ");
+		logger.info("\n  starting HFC Server ... ");
 		HfcServer hs = new HfcServer(args);
 		hs.startServer();
 	}

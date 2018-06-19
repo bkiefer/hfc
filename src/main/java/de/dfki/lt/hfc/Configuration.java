@@ -1,5 +1,8 @@
 package de.dfki.lt.hfc;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.util.*;
 
@@ -108,6 +111,11 @@ public class Configuration {
 	private HashSet<String> files = new HashSet<String>();
 
 	/**
+	 * A basic LOGGER.
+	 */
+	private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
+
+	/**
 	 * the unary constructor takes a config file as explained above
 	 */
 	public Configuration (String configFile) {
@@ -126,7 +134,7 @@ public class Configuration {
 			br.close();
 		}
 		catch (Exception e) {
-			System.err.println("\nerror while reading configuration file " + configFile);
+			logger.error("\nerror while reading configuration file " + configFile);
 			throw new RuntimeException("FATAL ERROR");
 		}
 	}
@@ -179,7 +187,7 @@ public class Configuration {
 	private void processNames(String namespaceFile)
 	    throws FileNotFoundException, WrongFormatException, IOException {
 		if (this.files.contains(namespaceFile)) {
-			System.out.println(namespaceFile + " used twice");
+			logger.info(namespaceFile + " used twice");
 			return;
 		}
 		if (this.namespace == null)
@@ -196,7 +204,7 @@ public class Configuration {
 	 */
 	private void processTuples(String tupleFile) throws FileNotFoundException, IOException, WrongFormatException {
 		if (this.files.contains(tupleFile)) {
-			System.out.println(tupleFile + " used twice");
+			logger.info(tupleFile + " used twice");
 			return;
 		}
 		if (this.tupleStore == null) {
@@ -216,7 +224,7 @@ public class Configuration {
 	 */
 	private void processRules(String ruleFile) throws IOException {
 		if (this.files.contains(ruleFile)) {
-			System.out.println(ruleFile + " used twice");
+			logger.info(ruleFile + " used twice");
 			return;
 		}
 		if (this.ruleStore == null) {

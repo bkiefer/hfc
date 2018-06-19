@@ -7,9 +7,8 @@ import gnu.trove.set.hash.TCustomHashSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.apache.log4j.Level;
-import org.apache.log4j.LogMF;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The {@link IndexLookup} is created while parsing queries in case the {@link IndexStore}
@@ -21,11 +20,8 @@ public class IndexLookup {
   /**
    * A basic LOGGER.
    */
-  private final static Logger LOGGER = Logger.getLogger(IndexLookup.class.getName());
+  private final static Logger logger = LoggerFactory.getLogger(IndexLookup.class.getName());
 
-  static {
-    LOGGER.setLevel(Level.ERROR);
-  }
 
   private TupleStore tupleStore;
   final Index index;
@@ -79,7 +75,7 @@ public class IndexLookup {
    * @param bindingTable the {@link BindingTable} to be populated.
    */
   void apply(BindingTable bindingTable) {
-    LogMF.debug(LOGGER, "Apply Lookup with relation {0} on index {1}", relation, this.index);
+    logger.debug("Apply Lookup with relation {0} on index {1}", relation, this.index);
     Set<int[]> result = new HashSet<>();
     // The actual index lookup, depending on whether or not relations are used
     if (relation != null) {

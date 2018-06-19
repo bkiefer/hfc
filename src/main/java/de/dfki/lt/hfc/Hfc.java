@@ -9,9 +9,15 @@ import java.util.List;
 import java.util.Map;
 
 import de.dfki.lt.hfc.types.XsdLong;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Hfc {
 
+  /**
+   * A basic LOGGER.
+   */
+  private static final Logger logger = LoggerFactory.getLogger(Hfc.class);
   /**
    * I'm making _all_ the potentially relevant object directly accessable
    */
@@ -72,7 +78,7 @@ public class Hfc {
   // the fields for the rule store and forward chainer are assigned values
   // the first time rules are uploaded to HFC
   public void customizeHfc(Map<String, String> settings) {
-    System.out.println("HFC settings: " + settings);
+    logger.info("HFC settings: " + settings);
     // make the settings available via protected fields in this class;
     // alphabetical order:
     for (Map.Entry<String, String> pair : settings.entrySet()) {
@@ -130,7 +136,7 @@ public class Hfc {
           break;
         default :
           if (this.verbose)
-            System.out.println("  unknown setting option: " + pair.getKey());
+            logger.info("  unknown setting option: " + pair.getKey());
           break;
       }
     }

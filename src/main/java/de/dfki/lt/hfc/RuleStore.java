@@ -5,6 +5,8 @@ import java.nio.file.Files;
 import java.util.*;
 import gnu.trove.set.hash.*;
 import gnu.trove.map.hash.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * a rule consists of an antecedent and a consequent;
@@ -205,6 +207,8 @@ public final class RuleStore {
 	 */
 	protected int lineNo = 0;
 
+	private static final Logger logger = LoggerFactory.getLogger(RuleStore.class);
+
 	/**
 	 * creates an empty rule store
 	 */
@@ -327,21 +331,21 @@ public final class RuleStore {
 	 */
 	private boolean sayItLoud(int lineNo, String message) {
 		if (this.exitOnError) {
-			System.out.println(" FATAL: " + lineNo + message);
+			logger.error(" FATAL: " + lineNo + message);
 			throw new RuntimeException("FATAL ERROR");
 		}
 		if (this.verbose)
-			System.out.println(" ERROR(ignored): " + lineNo + message);
+			logger.info(" ERROR(ignored): " + lineNo + message);
 		return false;
 	}
 
 	private boolean sayItLoud(String rulename, String message) {
 		if (this.exitOnError) {
-			System.out.println(" FATAL: " + rulename + message);
+			logger.error(" FATAL: " + rulename + message);
 			throw new RuntimeException("FATAL ERROR");
 		}
 		if (this.verbose)
-			System.out.println(" ERROR(ignored): " + rulename + message);
+			logger.info(" ERROR(ignored): " + rulename + message);
 		return false;
 	}
 
@@ -462,7 +466,7 @@ public final class RuleStore {
 			}
 		}
 		if ((positions.size() > 1) && this.verbose)
-			System.out.println("  " + rule.name + ": more than 1 LHS cluster found");
+			logger.info("  " + rule.name + ": more than 1 LHS cluster found");
 		// record the position info so that it can be used at run time
 		computeClusters(positions, variables, rule);
 	}
@@ -677,11 +681,11 @@ public final class RuleStore {
 				rule.dontCareVariables.add(i);
 		}
 		if ((rule.dontCareVariables.size() > 0) && this.verbose)
-			System.out.println("  " + rule.name + ": " +
+			logger.info("  " + rule.name + ": " +
 												 rule.dontCareVariables.size() + " don't care variables");
 		rhsVars.removeAll(lhsVars2);
 		if ((rhsVars.size() > 0) && this.verbose)
-			System.out.println("  " + rule.name + ": " + rhsVars.size() + " blank node vars");
+			logger.info("  " + rule.name + ": " + rhsVars.size() + " blank node vars");
 		rule.blankNodeVariables = rhsVars;
 		// make sure that rule.rhsVariables does NOT contain any (RHS) blank node variables
 		rule.rhsVariables.removeAll(rule.blankNodeVariables);
@@ -770,7 +774,7 @@ public final class RuleStore {
 				if (this.verbose) {
 					// check whether URI or atom occurs in initial fact base
 					if (!this.tupleStore.objectToId.containsKey(arg))
-						System.out.println("  " + this.lineNo + ": " + arg + " not in initial fact base");
+						logger.info("  " + this.lineNo + ": " + arg + " not in initial fact base");
 				}
 				id  = this.tupleStore.putObject(arg);
 				intTuple[i] = id;
@@ -855,7 +859,7 @@ public final class RuleStore {
 				rule.inEqConstraints.add(this.tupleStore.objectToId.get(token));
 			else {
 				if (this.verbose)
-					System.out.println("  " + this.lineNo + ": " + token + " not in initial fact base");
+					logger.info("  " + this.lineNo + ": " + token + " not in initial fact base");
 				int id  = this.tupleStore.putObject(token);
 				rule.inEqConstraints.add(id);
 			}
@@ -1015,7 +1019,7 @@ public final class RuleStore {
 						args.add(this.tupleStore.objectToId.get(token));
 					else {
 						if (this.verbose)
-							System.out.println("  " + this.lineNo + ": " + token + " not in initial fact base");
+							logger.info("  " + this.lineNo + ": " + token + " not in initial fact base");
 						int id  = this.tupleStore.putObject(token);
 						args.add(id);
 					}
@@ -1102,7 +1106,7 @@ public final class RuleStore {
 						args.add(this.tupleStore.objectToId.get(token));
 					else {
 						if (this.verbose)
-							System.out.println("  " + this.lineNo + ": " + token + " not in initial fact base");
+							logger.info("  " + this.lineNo + ": " + token + " not in initial fact base");
 						int id  = this.tupleStore.putObject(token);
 						args.add(id);
 					}
@@ -1250,7 +1254,7 @@ public final class RuleStore {
 
   protected ArrayList<Rule> readRules(String filename) throws IOException {
     if (this.verbose)
-      System.out.println("\n  reading rules from " + filename + " ...");
+      logger.info("\n  reading rules from " + filename + " ...");
     return readRules(Files.newBufferedReader(new File(filename).toPath()));
   }
 
@@ -1292,7 +1296,7 @@ public final class RuleStore {
           isNew = true;
           // check whether a rule of this _name_ already exists
           if (this.allRuleNames.contains(line) && this.verbose) {
-            System.out.println("  rule with name " + line + " already exists; skipping definition ...");
+            logger.info("  rule with name " + line + " already exists; skipping definition ...");
             isNew = false;
           }
           else
@@ -1399,7 +1403,7 @@ public final class RuleStore {
 								// generate a test and add it to list of tests
 								generateTest(tuple, ituple[this.tupleStore.predicatePosition], tests, rule.name);
 								if (this.verbose)
-									System.out.println("  " + rule.name + ": equivalence reduction enforces new LHS test");
+									logger.info("  " + rule.name + ": equivalence reduction enforces new LHS test");
 							}
 							else {
 								// generate a binder var and an action;
@@ -1407,7 +1411,7 @@ public final class RuleStore {
 								String varname = generateNewVariableName();
 								generateAction(varname, tuple, ituple[this.tupleStore.predicatePosition], actions, rule.name);
 								if (this.verbose)
-									System.out.println("  " + rule.name + ": equivalence reduction enforces new RHS action");
+									logger.info("  " + rule.name + ": equivalence reduction enforces new RHS action");
 								final ArrayList<String> eqTuple = new ArrayList<String>();
 								// I assume the following tuple representation: EITHER [front] s p o [back+] OR [front] p s o [back+]
 								if (this.tupleStore.objectPosition != 2)
@@ -1458,8 +1462,8 @@ public final class RuleStore {
 			}
 
 		if (this.verbose) {
-			System.out.println("\n  read " + noOfRules + " proper rules");
-			System.out.println("  found " + this.allRules.size() + " unique rules");
+			logger.info("\n  read " + noOfRules + " proper rules");
+			logger.info("  found " + this.allRules.size() + " unique rules");
 		}
 		sortRules();  // sort rule list according to priority value
 		return this.allRules;
@@ -1536,7 +1540,7 @@ public final class RuleStore {
 	 */
 	public void writeRules(String filename) {
 		if (this.verbose)
-			System.out.println("  writing rules to " + filename + " ...");
+			logger.info("  writing rules to " + filename + " ...");
 		try {
       PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(filename)));
 			for (Rule rule : this.allRules) {
@@ -1546,7 +1550,7 @@ public final class RuleStore {
       pw.close();
 		}
 		catch (IOException e) {
-      System.err.println("Error while writing rules to " + filename);
+      logger.error("Error while writing rules to " + filename);
       throw new RuntimeException("FATAL ERROR");
     }
 	}

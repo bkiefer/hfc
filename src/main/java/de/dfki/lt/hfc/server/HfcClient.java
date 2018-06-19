@@ -3,6 +3,9 @@ package de.dfki.lt.hfc.server;
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
 import org.apache.xmlrpc.XmlRpcException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.net.URL;
 
 /**
@@ -24,6 +27,11 @@ import java.net.URL;
  * @version Thu Jun 30 16:10:04 CEST 2011
  */
 public class HfcClient {
+
+	/**
+	 * A basic LOGGER.
+	 */
+	private static final Logger logger = LoggerFactory.getLogger(HfcClient.class);
 	
 	/**
 	 * define the server URL plus port number
@@ -40,11 +48,11 @@ public class HfcClient {
 	 */
 	public static void main (String [] args) {
 		if (args.length == 0) {
-			System.out.println("too less arguments: HfcClient <command> [<serverurl>]");
+			logger.warn("too less arguments: HfcClient <command> [<serverurl>]");
 			return;
 		}
 		else if (args.length > 2) {
-			System.out.println("too much arguments: HfcClient <command> [<serverurl>]");
+			logger.warn("too much arguments: HfcClient <command> [<serverurl>]");
 			return;
 		}
 		else if (args.length == 2)
@@ -61,40 +69,40 @@ public class HfcClient {
 			// 'select', 'selectall', and 'ask' can be executed by ANY USER
 			if (command.startsWith("SELECT") || command.startsWith("SELECTALL")) {
 				String result = (String)client.execute("HFC.query", params);
-				System.out.println(result);
+				logger.info(result);
 			}
 			else if (command.startsWith("ASK")) {
 				Boolean result = (Boolean)client.execute("HFC.ask", params);
-				System.out.println(result);
+				logger.info(result.toString());
 			}
 			// 'upload', 'closure', 'start', and 'stop' reserved to ADMINISTRATORS ONLY
 			else if (command.startsWith("UPLOAD")) {
 				String result = (String)client.execute("HFC.upload", params);
-				System.out.println(result);
+				logger.info(result);
 			}
 			else if (command.startsWith("CLOSURE")) {
 				Boolean result = (Boolean)client.execute("HFC.closure", params);
-				System.out.println(result);
+				logger.info(result.toString());
 			}
 			else if (command.startsWith("START")) {
 				Integer result = (Integer)client.execute("HFC.start", params);
-				System.out.println(result);
+				logger.info(result.toString());
 			}
 			else if (command.startsWith("STOP")) {
 				Integer result = (Integer)client.execute("HFC.stop", params);
-				System.out.println(result);
+				logger.info(result.toString());
 			}
 			else {
-				System.out.println("  unknown command: " + command);
+				logger.info("  unknown command: " + command);
 			}
 		}
 		catch (XmlRpcException exception) {
-			System.err.println("HfcClient: XML-RPC Fault #" +
+			logger.error("HfcClient: XML-RPC Fault #" +
 												 Integer.toString(exception.code) +
 												 ": " + exception.toString());
 		}
 		catch (Exception exception) {
-			System.err.println("HfcClient: " + exception.toString());
+			logger.error("HfcClient: " + exception.toString());
 		}
 	}
 	

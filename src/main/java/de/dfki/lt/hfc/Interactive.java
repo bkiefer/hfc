@@ -3,6 +3,8 @@ package de.dfki.lt.hfc;
 import java.io.*;
 import java.util.*;
 import jline.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * commands start with a keyword and additional arguments (possibly empty),
@@ -47,6 +49,8 @@ public class Interactive {
 	public RuleStore ruleStore = null;
 	public ForwardChainer forwardChainer = null;
 	public Query query = null;
+
+	private static final Logger logger = LoggerFactory.getLogger(Interactive.class);
 
 	/**
 	 * this setting is used for output encoding in Interactive
@@ -159,7 +163,7 @@ public class Interactive {
 			readEvalPrintLoop();
 		}
 		catch (Exception e) {
-			System.err.println(e.getMessage());
+			logger.error(e.getMessage());
 		}
 		// restart loop in case of a query parse exception
 		finally {
@@ -383,7 +387,7 @@ public class Interactive {
 			this.queryOutput = new PrintStream(new FileOutputStream(filename), true);
 		}
 		catch (IOException e) {
-			System.err.println("Error while opening query output file " + filename);
+			logger.error("Error while opening query output file " + filename);
 			throw new RuntimeException("FATAL ERROR");
 		}
 	}
@@ -410,7 +414,7 @@ public class Interactive {
 			readEvalPrintLoop();
 		}
 		catch (IOException e) {
-			System.err.println("\nerror while reading commands from " + filename);
+			logger.error("\nerror while reading commands from " + filename);
 			throw new RuntimeException("FATAL ERROR");
 		}
 	}

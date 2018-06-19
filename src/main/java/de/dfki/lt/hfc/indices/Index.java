@@ -1,12 +1,12 @@
 package de.dfki.lt.hfc.indices;
 
 import de.dfki.lt.hfc.types.AnyType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.Set;
-import org.apache.log4j.Level;
-import org.apache.log4j.LogMF;
-import org.apache.log4j.Logger;
+
 
 /**
  * This interface is used as a baseline for all kinds of indices supported by HFC.
@@ -18,14 +18,12 @@ import org.apache.log4j.Logger;
  */
 public abstract class Index<Key extends AnyType> {
 
+
     /**
      * A basic LOGGER.
      */
-    private final static Logger LOGGER = Logger.getLogger(Index.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(Index.class);
 
-    static {
-        LOGGER.setLevel(Level.ERROR);
-    }
 
     public final int indexedPosition_start;
     public final int indexedPosition_end;
@@ -58,7 +56,7 @@ public abstract class Index<Key extends AnyType> {
      * @param value the value associated with the key
      */
     public void add(Key key, int[] value) {
-      LogMF.debug(LOGGER, "Adding key {0} value {1} mapping", key, Arrays.toString(value));
+      logger.debug("Adding key {0} value {1} mapping", key, Arrays.toString(value));
         numberOfIndexedTuples++;
         structureSpecificAdd(key, value);
     }
@@ -79,7 +77,7 @@ public abstract class Index<Key extends AnyType> {
      * @param value the value to be removed
      */
     public Set<int[]> remove(Key key, int[] value){
-      LogMF.debug(LOGGER, "Removing key {0} value {1} mapping", key, Arrays.toString(value));
+      logger.debug( "Removing key {0} value {1} mapping", key, Arrays.toString(value));
         numberOfIndexedTuples--;
         return structureSpecificRemove(key,value);
     }
@@ -90,7 +88,7 @@ public abstract class Index<Key extends AnyType> {
      * @param key the key the value to be removed is associated with
      */
     public Set<int[]> remove(Key key){
-      LogMF.debug(LOGGER, "Removing all values for key {0} ", key);
+      logger.debug("Removing all values for key {0} ", key);
         numberOfIndexedTuples--;
         return structureSpecificRemove(key, null);
     }
@@ -110,7 +108,7 @@ public abstract class Index<Key extends AnyType> {
      * @return The Values associated with the key.
      */
     public  Set<int[]> search(Key key){
-      LogMF.debug(LOGGER, "Searching values associated with key {0}", key);
+      logger.debug( "Searching values associated with key {0}", key);
       return structureSpecificSearch(key);
     }
 
@@ -119,7 +117,7 @@ public abstract class Index<Key extends AnyType> {
 
 
     public  Set<int[]> searchInterval(Key start, Key end){
-      LogMF.debug(LOGGER, "Searching values associated with interval {0} - {1}", start, end);
+      logger.debug("Searching values associated with interval {0} - {1}", start, end);
       return structureSpecificIntervalSearch(start,end);
     }
 

@@ -5,6 +5,8 @@ import java.util.HashMap;
 
 import de.dfki.lt.hfc.Namespace;
 import de.dfki.lt.hfc.WrongFormatException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * NOTE: if further XSD types are added, class Namespace needs to be extended;
@@ -21,6 +23,11 @@ import de.dfki.lt.hfc.WrongFormatException;
  */
 @SuppressWarnings("rawtypes")
 public abstract class XsdAnySimpleType extends AnyType {
+
+  /**
+   * A basic LOGGER.
+   */
+  private static final Logger logger = LoggerFactory.getLogger(XsdAnySimpleType.class);
 
   static {
     typeToConstructor = new HashMap<String, Constructor<XsdAnySimpleType>>();

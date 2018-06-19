@@ -4,7 +4,8 @@ import java.util.*;
 
 import de.dfki.lt.hfc.qrelations.QRelation;
 import de.dfki.lt.hfc.qrelations.QRelationFactory;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 // TO DO --- IMPLEMENTATION NOTE
@@ -32,6 +33,8 @@ import de.dfki.lt.hfc.qrelations.QRelationFactory;
  * @version Tue Jan  5 11:45:27 CET 2016
  */
 public class Query {
+
+	private static final Logger logger = LoggerFactory.getLogger(Query.class);
 
 	/**
 	 * do we want proxy expansion in the resulting binding table if equivalence reduction
@@ -601,7 +604,7 @@ private boolean parseSelect(StringTokenizer st, HashSet<String> projectedVars)
               // constant _not_ known to tuple store: we no longer will throw an exception:
               //throw new QueryParseException("  unknown constant in predicate: " + next);
               if (verbose)
-                System.out.println("  unknown constant in FILTER predicate: " + next + "\n");
+                logger.info("  unknown constant in FILTER predicate: " + next + "\n");
               this.tupleStore.putObject(next);
               id = this.tupleStore.objectToId.get(next);
               args.add(id);
@@ -633,7 +636,7 @@ private boolean parseSelect(StringTokenizer st, HashSet<String> projectedVars)
             // constant _not_ known to tuple store: we no longer will throw an exception:
             //throw new QueryParseException("  unknown constant in in-eq constraint: " + next);
             if (verbose)
-              System.out.println("  unknown constant in FILTER in-eq constraint: " + next + "\n");
+              logger.info("  unknown constant in FILTER in-eq constraint: " + next + "\n");
             this.tupleStore.putObject(next);
             id = this.tupleStore.objectToId.get(next);
             varconstIneqs.add(id);
@@ -717,7 +720,7 @@ private boolean parseSelect(StringTokenizer st, HashSet<String> projectedVars)
             // constant _not_ known to tuple store: we no longer will throw an exception:
             //throw new QueryParseException("  unknown constant in aggregate: " + elem);
             if (verbose)
-              System.out.println("  unknown constant in AGGREGATE function: " + elem + "\n");
+              logger.info("  unknown constant in AGGREGATE function: " + elem + "\n");
             this.tupleStore.putObject(elem);
             id = this.tupleStore.objectToId.get(elem);
             args[i - eqpos - 2] = id;
@@ -971,7 +974,7 @@ private boolean parseSelect(StringTokenizer st, HashSet<String> projectedVars)
 		//BindingTable bt = q.query("SELECT ?child ?prop ?val ?t WHERE ?child <rdf:type> <dom:Child> ?t1 & ?child <dom:hasLabValue> ?lv ?t2 & ?lv ?prop ?val ?t & AGGREGATE ?measurement ?result ?patient ?time = LGetLatestValues ?prop ?val ?child ?t ?t");
 		// same binder vars in aggregates
 		//q.query("SELECT ?o1 ?o2 WHERE ?s1 <value> ?o1 & ?s2 <value> ?o2 FILTER ?s1 != ?s2 & ILess ?o1 ?o2 AGGREGATE ?minmax = Min ?o1 & ?minmax = Max ?o2");
-		System.out.println(bt.toString());
+		logger.info(bt.toString());
 		//long start = System.currentTimeMillis();
 		//ts.query("select distinct ?x ?y where ?x <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <owl:Class> & ?y <rdf:type> ?x");
 		//ts.query("select * where ?s <rdf:type> <http://www.lt-world.org/ltw.owl#Active_Person>");
