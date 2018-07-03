@@ -80,19 +80,11 @@ public final class XsdString extends XsdAnySimpleType {
 		this.languageTag = languageTag;
 	}
 
-	/**
-	 * depending on shortIsDefault, either the suffix
-	 *   de.dfki.lt.hfc.Namespace.SHORT_NAME
-	 * or
-	 *   de.dfki.lt.hfc.Namespace.LONG_NAME
-	 * is used;
-	 * shortIsDefault is ignored in case a language tag is available
-	 */
-	public String toString(boolean shortIsDefault) {
+	private static String toString(String val, String languageTag, boolean shortIsDefault) {
 		StringBuilder sb = new StringBuilder("\"");
-		sb.append(Utils.stringToExternal(this.value));
+		sb.append(Utils.stringToExternal(val));
 		sb.append("\"");
-		if (this.languageTag != null) {
+		if (languageTag != null) {
 			sb.append("@");
 			sb.append(languageTag);
 		}
@@ -107,17 +99,22 @@ public final class XsdString extends XsdAnySimpleType {
 	}
 
 	/**
+	 * depending on shortIsDefault, either the suffix
+	 *   de.dfki.lt.hfc.Namespace.SHORT_NAME
+	 * or
+	 *   de.dfki.lt.hfc.Namespace.LONG_NAME
+	 * is used;
+	 * shortIsDefault is ignored in case a language tag is available
+	 */
+	public String toString(boolean shortIsDefault) {
+	  return toString(this.value, this.languageTag, shortIsDefault);
+	}
+
+	/**
 	 * binary version is given the value directly;
 	 */
 	public static String toString(String val, boolean shortIsDefault) {
-		StringBuilder sb = new StringBuilder("\"");
-		sb.append(val);
-		sb.append("\"^^");
-		if (shortIsDefault)
-			sb.append(SHORT_NAME);
-		else
-			sb.append(LONG_NAME);
-		return sb.toString();
+	  return toString(val, null, shortIsDefault);
 	}
 
 	/**
@@ -129,13 +126,27 @@ public final class XsdString extends XsdAnySimpleType {
 	}
 
   /**
-   * we return the pure string _without_ the language tag
+   * we return the pure string if there is no the language tag
    */
   public Object toJava() {
+    return this.languageTag == null ? this.value : this;
+  }
+
+  /**
+   * return only the string, ignoring the language tag
+   */
+  public String toCharSequence() {
     return this.value;
   }
 
-  /** Two XsdString objects are equal if value and language tag are equal
+  /**
+   * return the language tag of this XsdString
+   */
+  public String getLanguageTag() {
+    return this.getLanguageTag();
+  }
+
+  /** two XsdString objects are equal if value and language tag are equal
    */
   public boolean equals(Object o) {
     if (o instanceof String)
