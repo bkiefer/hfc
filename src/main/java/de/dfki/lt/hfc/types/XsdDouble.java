@@ -8,7 +8,7 @@ package de.dfki.lt.hfc.types;
  * @since JDK 1.5
  * @version Fri Jan 29 19:28:31 CET 2016
  */
-public final class XsdDouble extends XsdAnySimpleType {
+public final class XsdDouble extends XsdNumber {
 
   public final static String NAME = "double";
 
@@ -85,10 +85,11 @@ public final class XsdDouble extends XsdAnySimpleType {
 			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
 			return minMaxValue.compareTo(this);
 		}
-		if (! (o instanceof  XsdDouble)){
-			throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
-		}
-		return Double.compare(this.value,((XsdDouble) o).value);
+		if (o instanceof  XsdDouble)
+		  return Double.compare(this.value,((XsdDouble) o).value);
+		else if (o instanceof XsdNumber)
+		  return Double.compare(this.value, ((XsdNumber)o).toNumber().doubleValue());
+		throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
 	}
 
 }

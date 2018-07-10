@@ -9,7 +9,7 @@ package de.dfki.lt.hfc.types;
  * @since JDK 1.5
  * @version Fri Jan 29 19:32:15 CET 2016
  */
-public final class XsdLong extends XsdAnySimpleType {
+public final class XsdLong extends XsdNumber {
   public final static String NAME = "long";
 
   public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
@@ -91,10 +91,10 @@ public final class XsdLong extends XsdAnySimpleType {
 			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
 			return minMaxValue.compareTo(this);
 		}
-		int res;
-		if (! (o instanceof  XsdLong)){
-			throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
-		}
-		return Long.compare(this.value,((XsdLong) o).value);
+		if (o instanceof XsdLong)
+		  return Long.compare(this.value,((XsdLong) o).value);
+		else if (o instanceof XsdNumber)
+		  return Long.compare(this.value, ((XsdNumber)o).toNumber().longValue());
+		throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
 	}
 }

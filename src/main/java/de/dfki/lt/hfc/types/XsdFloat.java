@@ -6,7 +6,7 @@ package de.dfki.lt.hfc.types;
  * @since JDK 1.5
  * @version Fri Jan 29 19:29:19 CET 2016
  */
-public final class XsdFloat extends XsdAnySimpleType {
+public final class XsdFloat extends XsdNumber {
   public final static String NAME = "float";
 
   public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
@@ -87,10 +87,11 @@ public final class XsdFloat extends XsdAnySimpleType {
 			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
 			return minMaxValue.compareTo(this);
 		}
-		if (! (o instanceof  XsdFloat)){
-			throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
-		}
-		return Float.compare(this.value,((XsdFloat) o).value);
+		if (o instanceof  XsdFloat)
+		  return Float.compare(this.value,((XsdFloat) o).value);
+		else if (o instanceof XsdNumber)
+		  return Float.compare(this.value, ((XsdNumber)o).toNumber().floatValue());
+		throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
 	}
 
 }

@@ -5,7 +5,7 @@ package de.dfki.lt.hfc.types;
  * @author Christian Willms - Date: 28.11.17 17:11.
  * @version 28.11.17
  */
-public class XsdDecimal extends XsdAnySimpleType{
+public class XsdDecimal extends XsdNumber{
 
   public final static String NAME = "decimal";
 
@@ -73,10 +73,11 @@ public class XsdDecimal extends XsdAnySimpleType{
       AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
       return minMaxValue.compareTo(this);
     }
-    if (! (o instanceof  XsdDecimal)){
-      throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
-    }
-    return Double.compare(this.value,((XsdDecimal) o).value);
+    if (o instanceof XsdDecimal)
+      return Double.compare(this.value,((XsdDecimal) o).value);
+    else if (o instanceof XsdNumber)
+      return Double.compare(this.value, ((XsdNumber)o).toNumber().doubleValue());
+    throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
   }
 
 }
