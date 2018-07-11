@@ -14,6 +14,7 @@ import gnu.trove.map.hash.*;
 import gnu.trove.set.hash.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 /**
  * tuples are represented as int[] in order to save space;
  * although container objects (embodying the int[]) are easier to
@@ -125,6 +126,8 @@ public final class TupleStore {
     public int predicatePosition = 1;
     public int objectPosition = 2;
 
+    private TupleParser parser;
+
     /**
      * this setting is used for input encoding in TupleStore
      *
@@ -225,8 +228,8 @@ public final class TupleStore {
      * use this id generator to append a unique id for each round of reading.
      * TODO: this is not 100% safe.
      */
-    private int blankNodeSuffixNo = 0;
-    private String blankNodeSuffix = null;
+    protected int blankNodeSuffixNo = 0;
+    protected String blankNodeSuffix = null;
 
     /**
      * a namespace object used to expand short form namespaces into full forms
@@ -949,7 +952,7 @@ public final class TupleStore {
             throws WrongFormatException {
         // check against min length
         if (stringTuple.size() < this.minNoOfArgs)
-            return sayItLoud(lineNo, ": tuple too short");
+            return sayItLoud(lineNo, ": tuple too short: " + stringTuple);
         // check against max length
         if (stringTuple.size() > this.maxNoOfArgs)
             return sayItLoud(lineNo, ": tuple too long");
@@ -1039,7 +1042,7 @@ public final class TupleStore {
      * <p>
      * TODO: LONG TO SHORT MAPPINGS MUST HAVE BEEN DONE BEFOREHAND
      */
-    public int[] internalizeTuple(ArrayList<String> stringTuple) {
+    public int[] internalizeTuple(List<String> stringTuple) {
         int[] intTuple = new int[stringTuple.size()];
         for (int i = 0; i < stringTuple.size(); i++)
             intTuple[i] = putObject(stringTuple.get(i));
@@ -1073,7 +1076,7 @@ public final class TupleStore {
      * @return the int[] representation of parameter stringTuple, otherwise
      * @throws WrongFormatException
      */
-    protected int[] addTuple(ArrayList<String> stringTuple, int lineNo)
+    protected int[] addTuple(List<String> stringTuple, int lineNo)
             throws WrongFormatException {
         // check whether external representation is valid for a ground tuple
         if (!isValidTuple(stringTuple, lineNo))
@@ -1255,7 +1258,7 @@ public final class TupleStore {
      *
      * @return the new extended tuple
      */
-    protected ArrayList<String> extendTupleExternally(final ArrayList<String> in, final String front, final String... backs) {
+    protected ArrayList<String> extendTupleExternally(final List<String> in, final String front, final String... backs) {
         // make sure to set etuple directly to the right size
         ArrayList<String> etuple = new ArrayList<String>(in.size() + (front == null ? 0 : 1) + backs.length);
         if (front != null)
@@ -1321,86 +1324,96 @@ public final class TupleStore {
      */
     private void readTuplesReally(BufferedReader br, String front, String... backs)
             throws IOException, WrongFormatException {
-        String line, token;
-        StringTokenizer st;
-        int noOfTuples = 0, lineNo = 0;
-        ArrayList<String> tuple = new ArrayList<String>();
-        boolean eol = true;
-        while ((line = br.readLine()) != null) {
-            // strip of spaces at begin and end of line
-            line = line.trim();
-            ++lineNo;
-            // empty lines are NOT recognized as tuples of length 0
-            if (line.length() == 0)
-                continue;
-            // skip comments
-            if (line.startsWith("#"))
-                continue;
-            // generate a string tuple representation for each line;
-            // note: variables are not allowed in ground tuples (facts)
-            st = new StringTokenizer(line, " <>_\"\\", true);
-            tuple.clear();
-            // iterate over the tokens of the tuple
-            while (st.hasMoreTokens()) {
-                token = st.nextToken();
-                if (token.equals("<"))
-                    parseURI(st, tuple);
-                else if (token.equals("_"))
-                    parseBlankNode(st, tuple);
-                else if (token.equals("\""))
-                    parseAtom(st, tuple);
-                else if (token.equals(" "))  // keep on parsing ...
-                    continue;
-                    // next is optional: tuple needs not end in '.', end of line is also OK
-                else if (token.equals("."))
-                    break;
-                    // something has gone wrong during read in
-                else {
-                    eol = sayItLoud(lineNo, ": tuple misspelled");
-                    break;
-                }
-            }
-            if (eol) {
-                // now add one potential front element and further potential back elements;
-                // but check whether (front == null) & (backs.length == 0) in order to avoid a
-                // useless copy of 'tuple'
-                if ((front != null) || (backs.length != 0))
-                    tuple = extendTupleExternally(tuple, front, backs);
-                // external tuple representation might be misspelled or the tuple is already contained
-                if (addTuple(tuple, lineNo) != null)
-                    ++noOfTuples;  // everything was fine
-            } else
-                eol = true;
-        }
-        if (this.verbose) {
-            logger.info("\n  read " + noOfTuples + " proper tuples");
-            logger.info("  overall " + this.allTuples.size() + " unique tuples");
-            // some further statistics
-            int noOfURIs = 0, noOfBlanks = 0, noOfAtoms = 0;
-            for (int i = 0; i < this.idToObject.size(); i++) {
-                if (this.idToObject.get(i).startsWith("<"))
-                    ++noOfURIs;
-                else if (this.idToObject.get(i).startsWith("_"))
-                    ++noOfBlanks;
-                else
-                    ++noOfAtoms;
-            }
-            logger.info("  found " + noOfURIs + " URIs");
-            logger.info("  found " + noOfBlanks + " blank nodes");
-            logger.info("  found " + noOfAtoms + " XSD atoms");
-        }
-        // finally cleanup
-        if (this.equivalenceClassReduction) {
-            if (this.verbose)
-                logger.info("\n  applying equivalence class reduction ... ");
-            final int all = this.allTuples.size();
-            final int no = cleanUpTupleStore();
-            if (this.verbose) {
-                logger.info("  removing " + no + " equivalence relation instances");
-                logger.info("  removing " + (all - this.allTuples.size()) + " resulting duplicates");
-                logger.info("  number of all tuples: " + this.allTuples.size() + "\n");
-            }
-        }
+        this.parser = new TupleParser(br, this);
+        this.parser.parse(front, backs);
+        logger.info("Store has size {}", allTuples.size());
+
+        //TODO integrate below logic into the rules of the parser
+        //TODO parser populates the the tuplestore on the fly
+        //TODO no return values to be handled by the TupleStore.
+
+        //TODO test performance against existing code
+        //TODO naturally, the new parser has to pass all existing tests
+//        String line, token;
+//        StringTokenizer st;
+//        int noOfTuples = 0, lineNo = 0;
+//        ArrayList<String> tuple = new ArrayList<String>();
+//        boolean eol = true;
+//        while ((line = br.readLine()) != null) {
+//            // strip of spaces at begin and end of line
+//            line = line.trim();
+//            ++lineNo;
+//            // empty lines are NOT recognized as tuples of length 0
+//            if (line.length() == 0)
+//                continue;
+//            // skip comments
+//            if (line.startsWith("#"))
+//                continue;
+//            // generate a string tuple representation for each line;
+//            // note: variables are not allowed in ground tuples (facts)
+//            st = new StringTokenizer(line, " <>_\"\\", true);
+//            tuple.clear();
+//            // iterate over the tokens of the tuple
+//            while (st.hasMoreTokens()) {
+//                token = st.nextToken();
+//                if (token.equals("<"))
+//                    parseURI(st, tuple);
+//                else if (token.equals("_"))
+//                    parseBlankNode(st, tuple);
+//                else if (token.equals("\""))
+//                    parseAtom(st, tuple);
+//                else if (token.equals(" "))  // keep on parsing ...
+//                    continue;
+//                    // next is optional: tuple needs not end in '.', end of line is also OK
+//                else if (token.equals("."))
+//                    break;
+//                    // something has gone wrong during read in
+//                else {
+//                    eol = sayItLoud(lineNo, ": tuple misspelled");
+//                    break;
+//                }
+//            }
+//            if (eol) {
+//                // now add one potential front element and further potential back elements;
+//                // but check whether (front == null) & (backs.length == 0) in order to avoid a
+//                // useless copy of 'tuple'
+//                if ((front != null) || (backs.length != 0))
+//                    tuple = extendTupleExternally(tuple, front, backs);
+//                // external tuple representation might be misspelled or the tuple is already contained
+//                if (addTuple(tuple, lineNo) != null)
+//                    ++noOfTuples;  // everything was fine
+//            } else
+//                eol = true;
+//        }
+//        if (this.verbose) {
+//            logger.info("\n  read " + noOfTuples + " proper tuples");
+//            logger.info("  overall " + this.allTuples.size() + " unique tuples");
+//            // some further statistics
+//            int noOfURIs = 0, noOfBlanks = 0, noOfAtoms = 0;
+//            for (int i = 0; i < this.idToObject.size(); i++) {
+//                if (this.idToObject.get(i).startsWith("<"))
+//                    ++noOfURIs;
+//                else if (this.idToObject.get(i).startsWith("_"))
+//                    ++noOfBlanks;
+//                else
+//                    ++noOfAtoms;
+//            }
+//            logger.info("  found " + noOfURIs + " URIs");
+//            logger.info("  found " + noOfBlanks + " blank nodes");
+//            logger.info("  found " + noOfAtoms + " XSD atoms");
+//        }
+//        // finally cleanup
+//        if (this.equivalenceClassReduction) {
+//            if (this.verbose)
+//                logger.info("\n  applying equivalence class reduction ... ");
+//            final int all = this.allTuples.size();
+//            final int no = cleanUpTupleStore();
+//            if (this.verbose) {
+//                logger.info("  removing " + no + " equivalence relation instances");
+//                logger.info("  removing " + (all - this.allTuples.size()) + " resulting duplicates");
+//                logger.info("  number of all tuples: " + this.allTuples.size() + "\n");
+//            }
+//        }
     }
 
     public void readTuples(BufferedReader br, String front, String... backs)
@@ -1464,7 +1477,7 @@ public final class TupleStore {
      */
     public void readTuples(String filename, String front, String... backs)
             throws FileNotFoundException, IOException, WrongFormatException {
-        if (this.verbose)
+        //if (this.verbose)
             logger.info("\n  reading tuples from " + filename + " ...");
         readTuples(Files.newBufferedReader(new File(filename).toPath(),
                 Charset.forName(this.inputCharacterEncoding)), front, backs);
@@ -1579,6 +1592,7 @@ public final class TupleStore {
         tuple.add(token);
         return token;
     }
+
 
     /**
      * a blank node starts with a "_:" and ends before the next whitespace character,

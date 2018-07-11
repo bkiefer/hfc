@@ -5,11 +5,15 @@ import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
+import de.dfki.lt.hfc.types.XsdDateTime;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -193,24 +197,25 @@ public class TupleStoreTest {
         TupleStore objectToTest = new TupleStore(1, 1);
         objectToTest.readTuples(getTestResource("ReadTest", "testAtoms.nt"));
 
-        assertEquals("Expected 10 tuples but was " + objectToTest.getAllTuples().size(),
+        assertEquals("Expected 12 tuples but was " + objectToTest.getAllTuples().size(),
                 12, objectToTest.getAllTuples().size());
         String[][] expected = {
-                {"\"foo\"^^<xsd:string>"},
-                {"\"fo\\o\"^^<xsd:string>"},
-                {"\"fo_|o\"^^<xsd:string>"},
-                {"\"fo o\"^^<xsd:string>"},
-                {"\"fo<o\"^^<xsd:string>"},
-                {"\"fo>o\"^^<xsd:string>"},
-                {"\"f<oo>\"^^<xsd:string>"},
-                {"\"f<\"o\"o\"^^<xsd:string>"},
-                {"\"fo<o\"^^<xsd:string>"},
-                {"\"f<\"\">o\"o\"^^<xsd:string>"},
-                {"\"f<\"\">o^o\"^^<xsd:string>"},
-                {"\"f<\"\">o^^\"o\"^^<xsd:string>"}
+                {"\"fo>o\"^^<xsd:string>" },
+                {"\"fo<o\"^^<xsd:string>" },
+                {"\"f<\\\"o\\\"o\"^^<xsd:string>" },
+                {"\"f<\\\"\\\">o^o\"^^<xsd:string>" },
+                { "\"foo\"^^<xsd:string>" },
+                { "\"f<oo>\"^^<xsd:string>" },
+                { "\"fo o\"^^<xsd:string>" },
+                { "\"fo<o\"^^<xsd:string>" },
+                { "\"fo\\\\o\"^^<xsd:string>" },
+                { "\"f<\\\"\\\">o^^\\\"o\"^^<xsd:string>" },
+                { "\"fo_|o\"^^<xsd:string>" },
+                { "\"f<\\\"\\\">o\\\"o\"^^<xsd:string>" }
         };
         Query q = new Query(objectToTest);
         BindingTable bt = q.query("SELECT ?o WHERE ?s <test:value> ?o");
+        //printExpected(bt, objectToTest);
         checkResult(expected, bt, "?o");
     }
 
@@ -533,4 +538,30 @@ public class TupleStoreTest {
         assertTrue(objectfortest != objectfortest.copyTupleStore());
 
     }
+
+//    @Test
+//    public void printSystemTime(){
+//        Long millis = System.currentTimeMillis();
+//        System.out.println(millis);
+//        LocalDateTime date =
+//                LocalDateTime.ofInstant(Instant.ofEpochMilli(millis), ZoneId.systemDefault());
+//        System.out.println(new XsdDateTime(date.getYear(), date.getMonthValue(), date.getDayOfMonth(),date.getHour(), date.getMinute(), date.getSecond()).toString(true));
+//        date = LocalDateTime.ofInstant(Instant.ofEpochMilli(millis + 7776000000l), ZoneId.systemDefault());
+//        System.out.println(new XsdDateTime(date.getYear(), date.getMonthValue(), date.getDayOfMonth(),date.getHour(), date.getMinute(), date.getSecond()).toString(true));
+//        date = LocalDateTime.ofInstant(Instant.ofEpochMilli(1530703698l), ZoneId.systemDefault());
+//        System.out.println(new XsdDateTime(date.getYear(), date.getMonthValue(), date.getDayOfMonth(),date.getHour(), date.getMinute(), date.getSecond()).toString(true));
+//        date = LocalDateTime.ofInstant(Instant.ofEpochMilli(1530703698l * 1000l), ZoneId.systemDefault());
+//        System.out.println(1530703698l * 1000l);
+//        System.out.println(new XsdDateTime(date.getYear(), date.getMonthValue(), date.getDayOfMonth(),date.getHour(), date.getMinute(), date.getSecond()).toString(true));
+//
+//        date = LocalDateTime.ofInstant(Instant.ofEpochMilli(1523105628l * 1000l), ZoneId.systemDefault());
+//        System.out.println(1523105628l * 1000l);
+//        System.out.println(new XsdDateTime(date.getYear(), date.getMonthValue(), date.getDayOfMonth(),date.getHour(), date.getMinute(), date.getSecond()).toString(true));
+//
+//
+//
+//        //LocalDateTime datetest = LocalDateTime.ofInstant(Instant.ofEpochMilli(1530703698), ZoneId.systemDefault());
+//        //System.out.println(datetest);
+//
+//    }
 }

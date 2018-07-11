@@ -7,7 +7,7 @@
 
   <groupId>de.dfki.lt.hfc</groupId>
   <artifactId>hfc</artifactId>
-  <version>1.2.3-SNAPSHOT</version>
+  <version>1.2.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <inceptionYear>2015</inceptionYear>
@@ -29,6 +29,26 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>de.jflex</groupId>
+        <artifactId>maven-jflex-plugin</artifactId>
+        <version>1.4.3</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>src/main/java</outputDirectory>
+              <lexDefinitions>
+                <lexDefinition>src/main/java/de/dfki/lt/hfc/Tuple.jflex</lexDefinition>
+                <lexDefinition>src/main/java/de/dfki/lt/hfc/Query.jflex</lexDefinition>
+              </lexDefinitions>
+              <verbose>true</verbose>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>2.10.3</version>
         <executions>
@@ -43,6 +63,7 @@
           <failOnError>false</failOnError>
         </configuration>
       </plugin>
+
 
       <!-- THIS WORKED BUT IS NO LONGER NEEDED
       <plugin>
