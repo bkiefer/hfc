@@ -54,12 +54,16 @@ public final class XsdDateTime extends XsdAnySimpleType {
 
 
 	public XsdDateTime(Date d) {
-	   this.year = d.getYear();
-	   this.month = d.getMonth();
-	   this.day = d.getDay();
+	   this.year = d.getYear() + 1900;
+	   this.month = d.getMonth() + 1;
+	   this.day = d.getDate();
 	   this.hour = d.getHours();
 	   this.minute = d.getMinutes();
 	   this.second = d.getSeconds();
+	}
+
+	public XsdDateTime(long msSinceEpoch) {
+	  this(new Date(msSinceEpoch));
 	}
 
 	/**

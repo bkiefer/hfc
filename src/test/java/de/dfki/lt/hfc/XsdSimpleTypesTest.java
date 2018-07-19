@@ -4,6 +4,9 @@ import static org.junit.Assert.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import org.junit.Test;
 
@@ -95,6 +98,24 @@ public class XsdSimpleTypesTest {
     assertEquals("\"-2009-01-12T01:00:03.456\"^^<xsd:dateTime>", xt.toString(true));
     assertEquals("-2009-01-12T01:00:03.456", xt.toName());
     assertEquals("\"-2009-01-12T01:00:03.456\"^^<http://www.w3.org/2001/XMLSchema#dateTime>", xt.toString(false));
+
+    // Month starts at zero, day at one!
+    Date d = new Date(2001-1900, 8, 11, 11, 30, 00);
+    assertEquals("\"2001-09-11T11:30:00.0\"^^<xsd:dateTime>",
+        new XsdDateTime(d).toString(true));
+
+    assertEquals("\"2001-09-11T11:30:00.0\"^^<xsd:dateTime>",
+        new XsdDateTime(d.getTime()).toString(true));
+
+    Calendar rightNow = new GregorianCalendar();
+    rightNow.set(Calendar.YEAR, 2001);
+    rightNow.set(Calendar.MONTH, Calendar.SEPTEMBER);
+    rightNow.set(Calendar.DAY_OF_MONTH, 11);
+    rightNow.set(Calendar.HOUR_OF_DAY, 11);
+    rightNow.set(Calendar.MINUTE, 30);
+    rightNow.set(Calendar.SECOND, 00);
+    assertEquals("\"2001-09-11T11:30:00.0\"^^<xsd:dateTime>",
+        new XsdDateTime(rightNow.getTimeInMillis()).toString(true));
   }
 
   @Test
