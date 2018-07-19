@@ -1,6 +1,6 @@
 package de.dfki.lt.hfc.operators;
 
-import de.dfki.lt.hfc.FunctionalOperator;
+import de.dfki.lt.hfc.BooleanOperator;
 import de.dfki.lt.hfc.Namespace;
 
 /**
@@ -14,7 +14,7 @@ import de.dfki.lt.hfc.Namespace;
  *   (arg1 > arg2) | (arg1 & arg2 = bottom) <==>
  *   ((arg1 != arg2) & (arg2 <rdfs:subClassOf> arg1)) | (arg1 <owl:disjointWith> arg2)
  *
- * @see de.dfki.lt.hfc.FunctionalOperator
+ * @see de.dfki.lt.hfc.BooleanOperator
  * @see de.dfki.lt.hfc.operators.NoSubClassOf
  *      an operator that assumes a closed world, testing for the non-existence of information
  *
@@ -22,15 +22,15 @@ import de.dfki.lt.hfc.Namespace;
  * @since JDK 1.5
  * @version Wed Sep 23 16:44:53 CEST 2009
  */
-public final class IsNotSubtypeOf extends FunctionalOperator {
-	
+public final class IsNotSubtypeOf extends BooleanOperator {
+
 	/**
 	 *
 	 */
-	public int apply(int[] args) {
-		return ((args[0] != args[1] && ask(new int[] {args[1], Namespace.RDFS_SUBCLASSOF_ID, args[0]})) ||
-						ask(new int[] {args[0], Namespace.OWL_DISJOINTWITH_ID, args[1]})
-						) ?	FunctionalOperator.TRUE : FunctionalOperator.FALSE;
+  protected boolean holds(int[] args) {
+		return ((args[0] != args[1]
+		    && ask(new int[] {args[1], Namespace.RDFS_SUBCLASSOF_ID, args[0]}))
+		    || ask(new int[] {args[0], Namespace.OWL_DISJOINTWITH_ID, args[1]}));
 	}
 
 }

@@ -1,6 +1,6 @@
 package de.dfki.lt.hfc.operators;
 
-import de.dfki.lt.hfc.FunctionalOperator;
+import de.dfki.lt.hfc.BooleanOperator;
 import de.dfki.lt.hfc.Namespace;
 
 /**
@@ -39,8 +39,8 @@ import de.dfki.lt.hfc.Namespace;
  * @since JDK 1.5
  * @version Wed Sep 23 16:44:37 CEST 2009
  */
-public final class NoSubClassOf extends FunctionalOperator {
-	
+public final class NoSubClassOf extends BooleanOperator {
+
 	/**
 	 * since this constraint is usually only applied at the very end of forward chaining
 	 * or in a separate reasoning stage, we do _only_ check whether
@@ -48,11 +48,9 @@ public final class NoSubClassOf extends FunctionalOperator {
 	 * is NOT present, assuming that total materialization has made the subclass hierarchy
 	 * explicit
 	 */
-	public int apply(int[] args) {
+	protected boolean holds(int[] args) {
 		// do we need to check whether '<rdfs:subClassOf>' is a valid literal?  NO!
-		//if (id == -1)
-		//	return FunctionalOperator.FALSE;
-		return ask(new int[] {args[0], Namespace.RDFS_SUBCLASSOF_ID, args[1]}) ? FunctionalOperator.FALSE : FunctionalOperator.TRUE;
+		return !ask(new int[] {args[0], Namespace.RDFS_SUBCLASSOF_ID, args[1]});
 	}
 
 }

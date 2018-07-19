@@ -1,5 +1,6 @@
 package de.dfki.lt.hfc.operators;
 
+import de.dfki.lt.hfc.BooleanOperator;
 import de.dfki.lt.hfc.FunctionalOperator;
 import de.dfki.lt.hfc.types.XsdString;
 
@@ -13,7 +14,7 @@ import de.dfki.lt.hfc.types.XsdString;
  * @since JDK 1.5
  * @version Wed Jun 23 11:04:27 CEST 2010
  */
-public final class SContains extends FunctionalOperator {
+public final class SContains extends BooleanOperator {
 
 	/**
 	 * note that apply() does NOT check at the moment whether the int args
@@ -22,12 +23,9 @@ public final class SContains extends FunctionalOperator {
    *
    * @return FunctionalOperator.TRUE or FunctionalOperator.FALSE
    */
-	public int apply(int[] args) {
-		if (getObject(args[0]).toString()
-        .contains((String)((XsdString)getObject(args[1])).toJava()))
-			return FunctionalOperator.TRUE;
-		else
-			return FunctionalOperator.FALSE;
+	protected boolean holds(int[] args) {
+	  return ((XsdString)getObject(args[0])).toCharSequence()
+	      .contains(((XsdString)getObject(args[1])).toCharSequence());
 	}
 
 }

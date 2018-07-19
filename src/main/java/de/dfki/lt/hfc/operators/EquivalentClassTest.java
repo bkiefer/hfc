@@ -1,7 +1,6 @@
 package de.dfki.lt.hfc.operators;
 
-import de.dfki.lt.hfc.FunctionalOperator;
-import de.dfki.lt.hfc.Namespace;
+import de.dfki.lt.hfc.BooleanOperator;
 
 /**
  * an EquivalentClassTest call can be used for replacing an equivalentClass LHS pattern in a rule;
@@ -24,7 +23,7 @@ import de.dfki.lt.hfc.Namespace;
  *
  * NOTE: the apply() call is always given instantiations to the variables
  *
- * @see de.dfki.lt.hfc.FunctionalOperator
+ * @see de.dfki.lt.hfc.BooleanOperator
  * @see de.dfki.lt.hfc.operators.EquivalentClassAction
  *      for handling equivalentClass patterns on the RHS of a rule
  *
@@ -32,17 +31,14 @@ import de.dfki.lt.hfc.Namespace;
  * @since JDK 1.5
  * @version Wed Sep  8 15:21:54 CEST 2010
  */
-public final class EquivalentClassTest extends FunctionalOperator {
-	
+public final class EquivalentClassTest extends BooleanOperator {
+
 	/**
 	 * checks whether the first and the second arg have the same proxy
 	 */
-	public int apply(int[] args) {
-		if (getProxy(args[0]) == getProxy(args[1]) &&
-				getRelation(args[0]) == getRelation(args[1]))
-			return FunctionalOperator.TRUE;
-		else
-			return FunctionalOperator.FALSE;
+  protected boolean holds(int[] args) {
+    return getProxy(args[0]) == getProxy(args[1]) &&
+        getRelation(args[0]) == getRelation(args[1]);
 	}
-	
+
 }

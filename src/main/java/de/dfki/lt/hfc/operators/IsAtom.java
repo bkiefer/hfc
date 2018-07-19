@@ -1,6 +1,6 @@
 package de.dfki.lt.hfc.operators;
 
-import de.dfki.lt.hfc.FunctionalOperator;
+import de.dfki.lt.hfc.BooleanOperator;
 import de.dfki.lt.hfc.types.*;
 
 /**
@@ -12,13 +12,13 @@ import de.dfki.lt.hfc.types.*;
  * @since JDK 1.5
  * @version Thu Dec  9 14:01:09 CET 2010
  */
-public final class IsAtom extends FunctionalOperator {
-	
+public final class IsAtom extends BooleanOperator {
+
 	/**
 	 *
 	 */
-	public int apply(int[] args) {
-		return (getObject(args[0]) instanceof XsdAnySimpleType) ? FunctionalOperator.TRUE : FunctionalOperator.FALSE;
+  protected boolean holds(int[] args) {
+		return (getObject(args[0]) instanceof XsdAnySimpleType);
 	}
-	
+
 }

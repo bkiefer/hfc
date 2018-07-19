@@ -1,7 +1,6 @@
 package de.dfki.lt.hfc.operators;
 
-import de.dfki.lt.hfc.FunctionalOperator;
-import de.dfki.lt.hfc.Namespace;
+import de.dfki.lt.hfc.BooleanOperator;
 
 /**
  * a SameAsTest call can be used for replacing a sameAs LHS pattern in a rule;
@@ -32,18 +31,15 @@ import de.dfki.lt.hfc.Namespace;
  * @since JDK 1.5
  * @version Wed Sep  8 13:50:59 CEST 2010
  */
-public final class SameAsTest extends FunctionalOperator {
-	
+public final class SameAsTest extends BooleanOperator {
+
 	/**
 	 * checks whether the first and the second arg have the same proxy and the
 	 * same equivalence relation
 	 */
-	public int apply(int[] args) {
-		if (getProxy(args[0]) == getProxy(args[1]) &&
-				getRelation(args[0]) == getRelation(args[1]))
-			return FunctionalOperator.TRUE;
-		else
-			return FunctionalOperator.FALSE;
+	protected boolean holds(int[] args) {
+		return getProxy(args[0]) == getProxy(args[1]) &&
+		    getRelation(args[0]) == getRelation(args[1]);
 	}
-	
+
 }
