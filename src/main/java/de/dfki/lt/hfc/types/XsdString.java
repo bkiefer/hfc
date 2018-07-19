@@ -143,7 +143,7 @@ public final class XsdString extends XsdAnySimpleType {
    * return the language tag of this XsdString
    */
   public String getLanguageTag() {
-    return this.getLanguageTag();
+    return this.languageTag;
   }
 
   /** two XsdString objects are equal if value and language tag are equal
