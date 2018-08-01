@@ -141,7 +141,7 @@ public class Hfc {
       }
     }
     // _namespace already bound in constructor
-    _namespace.verbose = this.verbose;
+    //_namespace.verbose = this.verbose;
     _namespace.shortIsDefault = this.shortIsDefault;
     // _tupleStore already bound in constructor
     _tupleStore.verbose = this.verbose;
@@ -161,25 +161,26 @@ public class Hfc {
     _tupleStore.outputCharacterEncoding = this.characterEncoding;
   }
 
-  /**
-   *
-   * @param nameSpaceReader
-   * @throws WrongFormatException
-   * @throws IOException
-   */
-  public void readNamespaces(BufferedReader nameSpaceReader)
-      throws WrongFormatException, IOException {
-    _namespace.readNamespaces(nameSpaceReader);
-  }
+//  /**
+//   *
+//   * @param nameSpaceReader
+//   * @throws WrongFormatException
+//   * @throws IOException
+//   */
+//  public void readNamespaces(BufferedReader nameSpaceReader)
+//      throws WrongFormatException, IOException {
+//    _namespace.readNamespaces(nameSpaceReader);
+//  }
 
-  public void readNamespaces(File namespace)
-      throws WrongFormatException, IOException {
-    readNamespaces(Files.newBufferedReader(namespace.toPath(),
-        Charset.forName(_tupleStore.inputCharacterEncoding)));
-  }
+//  public void readNamespaces(File namespace)
+//      throws WrongFormatException, IOException {
+//    readNamespaces(Files.newBufferedReader(namespace.toPath(),
+//        Charset.forName(_tupleStore.inputCharacterEncoding)));
+//  }
 
   public void addNamespace(String shortForm, String longForm) {
-    _namespace.putForm(shortForm, longForm);
+
+    _namespace.putForm(shortForm, longForm, shortIsDefault);
   }
 
   public void readTuples(BufferedReader tupleReader)
@@ -189,7 +190,7 @@ public class Hfc {
 
   public void readTuples(BufferedReader tupleReader, BufferedReader nameSpaceReader)
       throws WrongFormatException, IOException {
-    _namespace.readNamespaces(nameSpaceReader);
+//    _namespace.readNamespaces(nameSpaceReader);
     _tupleStore.readTuples(tupleReader);
   }
 

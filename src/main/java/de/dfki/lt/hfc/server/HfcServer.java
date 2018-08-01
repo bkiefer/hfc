@@ -102,9 +102,10 @@ public class HfcServer {
 		// construct minimal forward chainer
 		this.hfc = new ForwardChainer(args[2] + tuples[0], args[3] + rules[0], args[1] + namespaces[0]);
 		// upload additional namespace, tuple, and rule files, if specified
-		for (int i = 1; i < namespaces.length; i++) {
-			this.hfc.uploadNamespaces(args[1] + namespaces[i]);
-		}
+		//TODO fix this
+//		for (int i = 1; i < namespaces.length; i++) {
+//			this.hfc.uploadNamespaces(args[1] + namespaces[i]);
+//		}
 		for (int i = 1; i < tuples.length; i++) {
 			this.hfc.uploadTuples(args[2] + tuples[i]);
 		}

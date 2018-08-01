@@ -2050,19 +2050,19 @@ public final class TupleStore {
         return copy;
     }
 
-    /**
-     * uploads further namespaces stored in a file to an already established forward chainer;
-     * this method directly calls readNamespaces() from class Namespace
-     *
-     * @throws IOException
-     * @throws WrongFormatException
-     * @throws FileNotFoundException
-     * @see Namespace.readNamespaces()
-     */
-    public void uploadNamespaces(String filename)
-            throws FileNotFoundException, WrongFormatException, IOException {
-        this.namespace.readNamespaces(filename);
-    }
+//    /**
+//     * uploads further namespaces stored in a file to an already established forward chainer;
+//     * this method directly calls readNamespaces() from class Namespace
+//     *
+//     * @throws IOException
+//     * @throws WrongFormatException
+//     * @throws FileNotFoundException
+//     * @see Namespace.readNamespaces()
+//     */
+//    public void uploadNamespaces(String filename)
+//            throws FileNotFoundException, WrongFormatException, IOException {
+//        this.namespace.readNamespaces(filename);
+//    }
 
 
     /**
@@ -2083,72 +2083,7 @@ public final class TupleStore {
         return copy;
     }
 
-    /**
-     * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-     * !!! FOR TEST PURPOSES ONLY !!!
-     * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-     */
-    public static void main(String[] args) throws Exception {
-        Namespace ns = new Namespace("/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.ns");
-        TupleStore ts = new TupleStore(100000, 250000, ns, "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.nt");
-        ts.readTuples("/Users/krieger/Desktop/Java/HFC/hfc/src/resources/ltworld.jena.nt");
-		/*
-		long start = System.currentTimeMillis();
-		ts.readTuples("/Users/krieger/Desktop/Java/HFC/hfc/resources/ltworld.jena.nt");
-		System.out.println((System.currentTimeMillis() - start)/1000.0);
-		*/
-		/*
-		ts.addEquivalentElements(1, 2);
-		System.out.println(ts.uriToProxy);
-		System.out.println(ts.proxyToUris);
-		ts.addEquivalentElements(3, 2);
-		System.out.println(ts.uriToProxy);
-		System.out.println(ts.proxyToUris);
-		ts.addEquivalentElements(11, 12);
-		System.out.println(ts.uriToProxy);
-		System.out.println(ts.proxyToUris);
-		ts.addEquivalentElements(1, 12);
-		System.out.println(ts.uriToProxy);
-		System.out.println(ts.proxyToUris);
-		ts.addEquivalentElements(2, 12);
-		System.out.println(ts.uriToProxy);
-		System.out.println(ts.proxyToUris);
-		*/
-		/*
-		long start;
-		int atoms = Integer.parseInt(args[0]);
-		int tuples = Integer.parseInt(args[1]);
-		TupleStore ts = new TupleStore(atoms, tuples);
-		Random rnd = new Random();
-		int[] tuple;
-		System.out.println();
-		Runtime runtime = Runtime.getRuntime();
-		System.out.println("free memory: " + (runtime.freeMemory()/1048576) + "MB");  // 1024 * 1024
-		System.out.println("total memory: " + (runtime.totalMemory()/1048576) + "MB");
-		System.out.println("max memory: " + (runtime.maxMemory()/1048576) + "MB");
-		System.out.println();
-		for (int i = 0; i < (tuples/1000000); i++) {
-			start = System.currentTimeMillis();
-			for (int j = 0; j < 1000000; j++) {
-				tuple = new int[3];
-				tuple[0] = rnd.nextInt(atoms);
-				tuple[1] = rnd.nextInt(atoms);
-				tuple[2] = rnd.nextInt(atoms);
-				ts.addTuple(tuple);
-			}
-			System.out.println((1000000 * (i + 1)) + ": " +
-												 ((System.currentTimeMillis() - start)/1000.0) + "s " +
-												 (runtime.freeMemory()/1048576) + "MB " +
-												 (runtime.totalMemory()/1048576) + "MB " +
-												 (runtime.maxMemory()/1048576) + "MB");
-		}
-		System.out.println();
-		int no = Integer.parseInt(args[2]);
-		System.out.println(args[2] + " in subject position: " + (ts.index[0].get(no) == null ? 0 : ts.index[0].get(no).size()) + " times");
-		System.out.println(args[2] + " in predicate position: " + (ts.index[1].get(no) == null ? 0 : ts.index[1].get(no).size()) + " times");
-		System.out.println(args[2] + " in object position: " + (ts.index[2].get(no) == null ? 0 : ts.index[2].get(no).size()) + " times");
-		*/
-    }
+
 
     public Operator getOperator(String name) {
         return this.operatorRegistry.checkAndRegister(name);

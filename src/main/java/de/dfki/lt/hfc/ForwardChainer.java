@@ -211,7 +211,7 @@ public final class ForwardChainer {
 	public ForwardChainer(String tupleFile, String ruleFile,	String namespaceFile)
 	    throws FileNotFoundException, WrongFormatException, IOException {
 		this();
-		Namespace namespace = new Namespace(namespaceFile);
+		Namespace namespace = new Namespace();
 		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
 		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
 		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
@@ -250,7 +250,7 @@ public final class ForwardChainer {
 		this();
 		this.noOfAtoms = noOfAtoms;
 	  this.noOfTuples = noOfTuples;
-		Namespace namespace = new Namespace(namespaceFile);
+		Namespace namespace = new Namespace();
 		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
 		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
 		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
@@ -290,7 +290,7 @@ public final class ForwardChainer {
 		this(noOfCores, verbose);
 		this.noOfAtoms = noOfAtoms;
 	  this.noOfTuples = noOfTuples;
-		Namespace namespace = new Namespace(namespaceFile, verbose);
+		Namespace namespace = new Namespace();
 		this.tupleStore = new TupleStore(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
 																		 this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
 		this.ruleStore = new RuleStore(verbose, rdfCheck, minNoOfArgs, maxNoOfArgs,
@@ -323,7 +323,7 @@ public final class ForwardChainer {
 		this(noOfCores, verbose);
 		this.noOfAtoms = noOfAtoms;
 		this.noOfTuples = noOfTuples;
-		Namespace namespace = new Namespace(namespaceFile, verbose);
+		Namespace namespace = new Namespace();
 		this.tupleStore = new TupleStore(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
 						                             subjectPosition, predicatePosition, objectPosition,
 						                             this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
@@ -361,8 +361,9 @@ public final class ForwardChainer {
 	public ForwardChainer(String tupleFile, String ruleFile,	String namespaceFile, String indexFile)
 			throws FileNotFoundException, WrongFormatException, IOException, IndexingException {
 		this();
-		Namespace namespace = new Namespace(namespaceFile);
-		IndexStore indexStore = new IndexStore(indexFile, this.verbose);
+		Namespace namespace = new Namespace();
+		//IndexStore indexStore = new IndexStore(indexFile, this.verbose);
+		IndexStore indexStore = null;
 		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, namespace, tupleFile, indexStore);
 		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
 		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
@@ -385,8 +386,9 @@ public final class ForwardChainer {
 		this(noOfCores, verbose);
 		this.noOfAtoms = noOfAtoms;
 		this.noOfTuples = noOfTuples;
-		Namespace namespace = new Namespace(namespaceFile, verbose);
-		IndexStore indexStore = new IndexStore(indexFile,this.verbose);
+		Namespace namespace = new Namespace();
+//		IndexStore indexStore = new IndexStore(indexFile,this.verbose);
+		IndexStore indexStore = null;
 		this.tupleStore = new TupleStore(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
 				this.noOfAtoms, this.noOfTuples, namespace, tupleFile, indexStore);
 		this.ruleStore = new RuleStore(verbose, rdfCheck, minNoOfArgs, maxNoOfArgs,
@@ -1074,18 +1076,18 @@ public final class ForwardChainer {
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	/**
-	 * uploads further namespaces stored in a file to an already established forward chainer;
-	 * this method directly calls readNamespaces() from class Namespace
-	 * @throws IOException
-	 * @throws WrongFormatException
-	 * @throws FileNotFoundException
-	 * @see Namespace.readNamespaces()
-	 */
-	public void uploadNamespaces(String filename)
-	    throws FileNotFoundException, WrongFormatException, IOException {
-		this.tupleStore.uploadNamespaces(filename);
-	}
+//	/**
+//	 * uploads further namespaces stored in a file to an already established forward chainer;
+//	 * this method directly calls readNamespaces() from class Namespace
+//	 * @throws IOException
+//	 * @throws WrongFormatException
+//	 * @throws FileNotFoundException
+//	 * @see Namespace.readNamespaces()
+//	 */
+//	public void uploadNamespaces(String filename)
+//	    throws FileNotFoundException, WrongFormatException, IOException {
+//		this.tupleStore.uploadNamespaces(filename);
+//	}
 
 
 	/**

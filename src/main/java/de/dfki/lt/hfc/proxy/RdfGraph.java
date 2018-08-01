@@ -239,45 +239,45 @@ public class RdfGraph {
     return false;
   }
 
-  /**
-   * for test purposes only
-   */
-  public static void main(String[] args) throws Exception {
-    Namespace ns = new Namespace("/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.ns");
-    TupleStore ts = new TupleStore(ns, "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.eqred.nt");
-    RdfGraph rg = new RdfGraph(ts);
-    // add info for child
-    rg.addToRdfGraph(new String[] {"<test:child_0>", "<rdf:type>", "<test:Child>"});
-    rg.addToRdfGraph(new String[] {"<test:child_0>", "<rdf:type>", "<test:Human>"});
-    // the next two statements should not add further info
-    rg.addToRdfGraph(new String[] {"<test:child_0>", "<rdf:type>", "<test:Child>"});
-    rg.addToRdfGraph(new String[] {"<test:child_0>", "<rdf:type>", "<test:Human>"});
-    //
-    rg.addToRdfGraph(new String[] {"<test:child_0>", "<test:forename>", "\"Henk\"^^<xsd:string>"});
-    rg.addToRdfGraph(new String[] {"<test:child_0>", "<test:lastname>", "\"Jansen\"^^<xsd:string>"});
-    rg.addToRdfGraph(new String[] {"<test:child_0>", "<test:hasLabValue>", "<test:labval_1>"});
-    rg.addToRdfGraph(new String[] {"<test:labval_1>", "<rdf:type>", "<test:LabValue>"});
-    rg.addToRdfGraph(new String[] {"<test:labval_1>", "<test:hr>", "\"62\"^^<xsd:min-1>"});
-    rg.addToRdfGraph(new String[] {"<test:labval_1>", "<test:height>", "\"178\"^^<xsd:cm>"});
-    rg.addToRdfGraph(new String[] {"<test:labval_1>", "<test:weight>", "\"63\"^^<xsd:kg>"});
-    rg.addToRdfGraph(new String[] {"<test:labval_1>", "<test:time>", "\"1234567890\"^^<xsd:long>"});
-    // check RDF graph
-    logger.info(rg.nameToLiteral.toString());
-    // remove all information in a different order
-    rg.removeFromRdfGraph(new String[] {"<test:child_0>", "<rdf:type>", "<test:Human>"});
-    rg.removeFromRdfGraph(new String[] {"<test:child_0>", "<test:forename>", "\"Henk\"^^<xsd:string>"});
-    rg.removeFromRdfGraph(new String[] {"<test:child_0>", "<test:lastname>", "\"Jansen\"^^<xsd:string>"});
-    rg.removeFromRdfGraph(new String[] {"<test:labval_1>", "<test:hr>", "\"62\"^^<xsd:min-1>"});
-    rg.removeFromRdfGraph(new String[] {"<test:labval_1>", "<test:height>", "\"178\"^^<xsd:cm>"});
-    rg.removeFromRdfGraph(new String[] {"<test:child_0>", "<test:hasLabValue>", "<test:labval_1>"});
-    rg.removeFromRdfGraph(new String[] {"<test:child_0>", "<rdf:type>", "<test:Child>"});
-    rg.removeFromRdfGraph(new String[] {"<test:labval_1>", "<test:weight>", "\"63\"^^<xsd:kg>"});
-    rg.removeFromRdfGraph(new String[] {"<test:labval_1>", "<test:time>", "\"1234567890\"^^<xsd:long>"});
-    rg.removeFromRdfGraph(new String[] {"<test:labval_1>", "<rdf:type>", "<test:LabValue>"});
-    // check RDF graph again
-    logger.info(rg.nameToLiteral.toString());
-    // nevertheless information remains in the RDF graph that is not accessable via links from URIs,
-    // similar to chunks of memory that need to be reclaimed by a garbage collector
-  }
+//  /**
+//   * for test purposes only
+//   */
+//  public static void main(String[] args) throws Exception {
+//    Namespace ns = new Namespace("/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.ns");
+//    TupleStore ts = new TupleStore(ns, "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.eqred.nt");
+//    RdfGraph rg = new RdfGraph(ts);
+//    // add info for child
+//    rg.addToRdfGraph(new String[] {"<test:child_0>", "<rdf:type>", "<test:Child>"});
+//    rg.addToRdfGraph(new String[] {"<test:child_0>", "<rdf:type>", "<test:Human>"});
+//    // the next two statements should not add further info
+//    rg.addToRdfGraph(new String[] {"<test:child_0>", "<rdf:type>", "<test:Child>"});
+//    rg.addToRdfGraph(new String[] {"<test:child_0>", "<rdf:type>", "<test:Human>"});
+//    //
+//    rg.addToRdfGraph(new String[] {"<test:child_0>", "<test:forename>", "\"Henk\"^^<xsd:string>"});
+//    rg.addToRdfGraph(new String[] {"<test:child_0>", "<test:lastname>", "\"Jansen\"^^<xsd:string>"});
+//    rg.addToRdfGraph(new String[] {"<test:child_0>", "<test:hasLabValue>", "<test:labval_1>"});
+//    rg.addToRdfGraph(new String[] {"<test:labval_1>", "<rdf:type>", "<test:LabValue>"});
+//    rg.addToRdfGraph(new String[] {"<test:labval_1>", "<test:hr>", "\"62\"^^<xsd:min-1>"});
+//    rg.addToRdfGraph(new String[] {"<test:labval_1>", "<test:height>", "\"178\"^^<xsd:cm>"});
+//    rg.addToRdfGraph(new String[] {"<test:labval_1>", "<test:weight>", "\"63\"^^<xsd:kg>"});
+//    rg.addToRdfGraph(new String[] {"<test:labval_1>", "<test:time>", "\"1234567890\"^^<xsd:long>"});
+//    // check RDF graph
+//    logger.info(rg.nameToLiteral.toString());
+//    // remove all information in a different order
+//    rg.removeFromRdfGraph(new String[] {"<test:child_0>", "<rdf:type>", "<test:Human>"});
+//    rg.removeFromRdfGraph(new String[] {"<test:child_0>", "<test:forename>", "\"Henk\"^^<xsd:string>"});
+//    rg.removeFromRdfGraph(new String[] {"<test:child_0>", "<test:lastname>", "\"Jansen\"^^<xsd:string>"});
+//    rg.removeFromRdfGraph(new String[] {"<test:labval_1>", "<test:hr>", "\"62\"^^<xsd:min-1>"});
+//    rg.removeFromRdfGraph(new String[] {"<test:labval_1>", "<test:height>", "\"178\"^^<xsd:cm>"});
+//    rg.removeFromRdfGraph(new String[] {"<test:child_0>", "<test:hasLabValue>", "<test:labval_1>"});
+//    rg.removeFromRdfGraph(new String[] {"<test:child_0>", "<rdf:type>", "<test:Child>"});
+//    rg.removeFromRdfGraph(new String[] {"<test:labval_1>", "<test:weight>", "\"63\"^^<xsd:kg>"});
+//    rg.removeFromRdfGraph(new String[] {"<test:labval_1>", "<test:time>", "\"1234567890\"^^<xsd:long>"});
+//    rg.removeFromRdfGraph(new String[] {"<test:labval_1>", "<rdf:type>", "<test:LabValue>"});
+//    // check RDF graph again
+//    logger.info(rg.nameToLiteral.toString());
+//    // nevertheless information remains in the RDF graph that is not accessable via links from URIs,
+//    // similar to chunks of memory that need to be reclaimed by a garbage collector
+//  }
 
 }

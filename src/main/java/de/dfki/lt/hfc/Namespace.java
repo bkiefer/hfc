@@ -114,103 +114,55 @@ public final class Namespace {
 	public static final String OWL_DISJOINTWITH_LONG = "<http://www.w3.org/2002/07/owl#disjointWith>";
 	public static final int OWL_DISJOINTWITH_ID = 5;
 
-	/**
-	 * determines whether short (= true) or long (= false) namespaces are the cannonical form
-	 */
-	public boolean shortIsDefault = true;
-
-	/**
-	 * if true, some statistics are printed out
-	 */
-	public boolean verbose = false;
 
 	/**
 	 * translation table for establishing mappings between short and long form
 	 * namespace strings
 	 */
-	public HashMap<String, String> shortToLong = new HashMap<String, String>();
+	public HashMap<String, NamespaceObject> shortToNs = new HashMap<String, NamespaceObject>();
 
 	/**
 	 * translation table for establishing mappings between long and short form
 	 * namespace strings
 	 */
-	public HashMap<String, String> longToShort = new HashMap<String, String>();
+	public HashMap<String, NamespaceObject> longToNs = new HashMap<String, NamespaceObject>();
 
-  /**
+	public boolean shortIsDefault = false;
+
+
+
+	/**
    * a mapping between XSD type specifiers and Java classes representing these types
 	 * in HFC; now in XsdAnySimpleType, where it belongs
    */
   //protected HashMap<String, Constructor<XsdAnySimpleType>> typeToConstructor = new HashMap<String, Constructor<XsdAnySimpleType>>();
 
-	/**
-	 * creates a namespace, consisting of mappings for XSD, RDF, RDFS, and OWL (1.0)
-	 */
-	public Namespace() {
-		putForm(Namespace.XSD_SHORT, Namespace.XSD_LONG);
-		putForm(Namespace.RDF_SHORT, Namespace.RDF_LONG);
-		putForm(Namespace.RDFS_SHORT, Namespace.RDFS_LONG);
-		putForm(Namespace.OWL_SHORT, Namespace.OWL_LONG);
-	}
-
-	/**
-	 * furthermore sets the verbose level
-	 */
-	public Namespace(boolean verbose) {
-		this.verbose = verbose;
-		putForm(Namespace.XSD_SHORT, Namespace.XSD_LONG);
-		putForm(Namespace.RDF_SHORT, Namespace.RDF_LONG);
-		putForm(Namespace.RDFS_SHORT, Namespace.RDFS_LONG);
-		putForm(Namespace.OWL_SHORT, Namespace.OWL_LONG);
-		if (verbose)
-			logger.info("\n  defining default namespace for XSD, RDF, RDFS, and OWL ...");
-	}
-
-	/**
-	 * creates a new namespace, whereas the mappings are specified in the
-	 * namesapace file;
-	 * default settings for RDF, RDFS, and OWL are _not_ entered, thus _must_ be
-	 * specified explicitly in the file
-	 * @throws IOException
-	 * @throws WrongFormatException
-	 * @throws FileNotFoundException
-	 */
-	public Namespace(String namespaceFile)
-	    throws FileNotFoundException, WrongFormatException, IOException {
-		readNamespaces(namespaceFile);
-	}
-
-	/**
-	 * @throws IOException
-	 * @throws WrongFormatException
-	 * @throws FileNotFoundException
-	 *
-	 */
-	public Namespace(String namespaceFile, boolean verbose)
-	    throws FileNotFoundException, WrongFormatException, IOException {
-		this.verbose = verbose;
-		readNamespaces(namespaceFile);
+	public void addNamespace(NamespaceObject ns){
+		this.shortToNs.put(ns.SHORT_NAMESPACE, ns);
+		this.longToNs.put(ns.LONG_NAMESPACE, ns);
 	}
 
 	/**
 	 * adds a new mapping to the namespace
 	 */
-	public void putForm(String shortForm, String longForm) {
-		this.shortToLong.put(shortForm, longForm);
-		this.longToShort.put(longForm, shortForm);
+	public void putForm(String shortForm, String longForm, boolean shortIsDefault) {
+		NamespaceObject ns = new NamespaceObject(shortForm,longForm,shortIsDefault);
+		this.shortToNs.put(shortForm, ns);
+		this.longToNs.put(longForm, ns);
 	}
 
 	/**
 	 * obtains the short form, if present; null otherwise
 	 */
 	public String getShortForm(String longForm) {
-		return this.longToShort.get(longForm);
+		return this.longToNs.get(longForm).SHORT_NAMESPACE;
 	}
 
 	/**
 	 * obtains the long form, if present; null otherwise
 	 */
 	public String getLongForm(String shortForm) {
-		return this.shortToLong.get(shortForm);
+		return this.shortToNs.get(shortForm).LONG_NAMESPACE;
 	}
 
 	/**
@@ -230,7 +182,7 @@ public final class Namespace {
 				return uri;
 			String prefix = uri.substring(0, pos + 1);
 			String suffix = uri.substring(pos + 1);
-			String expansion = getShortForm(prefix);
+			String expansion = longToNs.get(prefix).SHORT_NAMESPACE;
 			if (expansion == null)
 				// there is no namespace mapping
 				return uri;
@@ -245,7 +197,7 @@ public final class Namespace {
 				return uri;
 			String prefix = uri.substring(0, pos);
 			String suffix = uri.substring(pos + 1);
-			String expansion = getLongForm(prefix);
+			String expansion = shortToNs.get(prefix).LONG_NAMESPACE;
 			if (expansion == null)
 				// there is no namespace maping
 				return uri;
@@ -294,7 +246,7 @@ public final class Namespace {
 		// URI _not_ expanded, otherwise
 		String prefix = uri.substring(1, pos);  // skip '<'
 		String suffix = uri.substring(pos + 1);
-		String expansion = getLongForm(prefix);
+		String expansion = shortToNs.get(prefix).LONG_NAMESPACE;
 		// namespace maping specified?
 		if (expansion == null)
 			return uri;
@@ -302,113 +254,91 @@ public final class Namespace {
 			return "<" + expansion + suffix;
 	}
 
-	/**
-   * namespace files define two mappings:
-   *   (1) short to long namespace name mappings, using directive &short2long
-   *   (2) short namespace type URIs to HFC classes, using directive &type2class
-   * usually, one starts
-	 * @throws WrongFormatException In case the section name is missing, this
-	 *         exception is thrown
-	 * @throws IOException
-	 */
-	public void readNamespaces(final BufferedReader br) throws WrongFormatException, IOException {
-    String line;
-    StringTokenizer st;
-		int noOfNamespaces = 0;
-    // int noOfTypes = 0;  // no longer necessary
-    // section number:
-    //   0 : no directive read
-    //   1 : SHORT_TO_LONG
-    //   2 : TYPE_TO_CLASS
-    int sectionNo = 1;  // no directive so far
-    // BK: set to one to be compatible with old version
-    // the class object for the class String which is used to specify the unary XSD type constructor (string arg)
-    while ((line = br.readLine()) != null) {
-      line = line.trim();
-      // allow empty lines and comments in lines
-      if ((line.length() == 0) || (line.startsWith("#"))) {
-        continue;
-      }
-      if (line.startsWith(Namespace.SHORT_TO_LONG)) {
-        sectionNo = 1;
-        continue;
-      }
-      if (line.startsWith(Namespace.TYPE_TO_CLASS)) {
-        sectionNo = 2;
-        continue;
-      }
-      if (sectionNo == 1) {
-        st = new StringTokenizer(line);
-        putForm(st.nextToken(), st.nextToken());
-        ++noOfNamespaces;
-      }
-      else if (sectionNo == 2) {
-        /* TODO: obsolete, we should go back to the namespace only files
-        st = new StringTokenizer(line);
-        String first = "<" + st.nextToken() + ">";  // add the angle brackets
-        String second = st.nextToken();
-        try {
-          @SuppressWarnings("rawtypes")
-          Class clazz = Class.forName(Namespace.TYPE_PATH + second);
-          // choose the unary constructor taking String arguments
-          @SuppressWarnings("unchecked")
-          Constructor<XsdAnySimpleType> constructor = clazz.getConstructor(String.class);
-          this.typeToConstructor.put(first, constructor);
-          ++noOfTypes;
-        }
-        catch (SecurityException ex) {
-          throw new WrongFormatException(
-              "XSD to Java class mapping failed for: " + line, ex);
-        }
-        catch (NoSuchMethodException ex) {
-          throw new WrongFormatException(
-              "XSD to Java class mapping failed for: " + line, ex);
-        }
-        catch (ClassNotFoundException ex) {
-          throw new WrongFormatException(
-              "XSD to Java class mapping failed for: " + line, ex);
-        }
-        */
-      }
-      else {
-        throw new WrongFormatException(
-            "Missing directive reading namespace file in line " + line);
-      }
-    }
-    if (this.verbose) {
-			logger.info("\n  read " + noOfNamespaces + " namespace mappings");
-      //System.out.println("  read " + noOfTypes + " type mappings");  // no longer necessary
-    }
-	}
+//	/**
+//   * namespace files define two mappings:
+//   *   (1) short to long namespace name mappings, using directive &short2long
+//   *   (2) short namespace type URIs to HFC classes, using directive &type2class
+//   * usually, one starts
+//	 * @throws WrongFormatException In case the section name is missing, this
+//	 *         exception is thrown
+//	 * @throws IOException
+//	 */
+//	public void readNamespaces(final BufferedReader br) throws WrongFormatException, IOException {
+//    String line;
+//    StringTokenizer st;
+//		int noOfNamespaces = 0;
+//    // int noOfTypes = 0;  // no longer necessary
+//    // section number:
+//    //   0 : no directive read
+//    //   1 : SHORT_TO_LONG
+//    //   2 : TYPE_TO_CLASS
+//    int sectionNo = 1;  // no directive so far
+//    // BK: set to one to be compatible with old version
+//    // the class object for the class String which is used to specify the unary XSD type constructor (string arg)
+//    while ((line = br.readLine()) != null) {
+//      line = line.trim();
+//      // allow empty lines and comments in lines
+//      if ((line.length() == 0) || (line.startsWith("#"))) {
+//        continue;
+//      }
+//      if (line.startsWith(Namespace.SHORT_TO_LONG)) {
+//        sectionNo = 1;
+//        continue;
+//      }
+//      if (line.startsWith(Namespace.TYPE_TO_CLASS)) {
+//        sectionNo = 2;
+//        continue;
+//      }
+//      if (sectionNo == 1) {
+//        st = new StringTokenizer(line);
+//        putForm(st.nextToken(), st.nextToken());
+//        ++noOfNamespaces;
+//      }
+//      else if (sectionNo == 2) {
+//        /* TODO: obsolete, we should go back to the namespace only files
+//        st = new StringTokenizer(line);
+//        String first = "<" + st.nextToken() + ">";  // add the angle brackets
+//        String second = st.nextToken();
+//        try {
+//          @SuppressWarnings("rawtypes")
+//          Class clazz = Class.forName(Namespace.TYPE_PATH + second);
+//          // choose the unary constructor taking String arguments
+//          @SuppressWarnings("unchecked")
+//          Constructor<XsdAnySimpleType> constructor = clazz.getConstructor(String.class);
+//          this.typeToConstructor.put(first, constructor);
+//          ++noOfTypes;
+//        }
+//        catch (SecurityException ex) {
+//          throw new WrongFormatException(
+//              "XSD to Java class mapping failed for: " + line, ex);
+//        }
+//        catch (NoSuchMethodException ex) {
+//          throw new WrongFormatException(
+//              "XSD to Java class mapping failed for: " + line, ex);
+//        }
+//        catch (ClassNotFoundException ex) {
+//          throw new WrongFormatException(
+//              "XSD to Java class mapping failed for: " + line, ex);
+//        }
+//        */
+//      }
+//      else {
+//        throw new WrongFormatException(
+//            "Missing directive reading namespace file in line " + line);
+//      }
+//    }
+//    if (this.verbose) {
+//			logger.info("\n  read " + noOfNamespaces + " namespace mappings");
+//      //System.out.println("  read " + noOfTypes + " type mappings");  // no longer necessary
+//    }
+//	}
+//
+//	 public void readNamespaces(String filename)
+//	     throws WrongFormatException, IOException {
+//	   if (this.verbose)
+//	     logger.info("\n  reading namespace & type mappings from " + filename + " ...");
+//     readNamespaces(Files.newBufferedReader(new File(filename).toPath()));
+//	 }
 
-	 public void readNamespaces(String filename)
-	     throws WrongFormatException, IOException {
-	   if (this.verbose)
-	     logger.info("\n  reading namespace & type mappings from " + filename + " ...");
-     readNamespaces(Files.newBufferedReader(new File(filename).toPath()));
-	 }
-
-	/**
-	 * FOR TEST PURPOSES ONLY
-	 */
-	/*
-	public static void main(String[] args) {
-		Namespace ns = new Namespace();
-		ns.shortIsDefault = false;
-		String s1 = "owl:Class";
-		String l1 = "http://www.w3.org/2002/07/owl#Class";
-		// unknown short form namespace
-		String s2 = "foo:Bar";
-		// unknown long form namespace
-		String l2 = "http://www.w3.org/2002/07/baz#yummi";
-		// neither short nor long form
-		String nsnl = "sfhsdkjhfwufwiuehfhi";
-		System.out.println(s1 + " --> " + ns.normalizeNamespace(s1));
-		System.out.println(l1 + " --> " + ns.normalizeNamespace(l1));
-		System.out.println(s2 + " --> " + ns.normalizeNamespace(s2));
-		System.out.println(l2 + " --> " + ns.normalizeNamespace(l2));
-		System.out.println(nsnl + " --> " + ns.normalizeNamespace(nsnl));
-	}
-	 */
 
 }

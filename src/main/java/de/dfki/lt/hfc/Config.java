@@ -43,8 +43,6 @@ public class Config {
     public final boolean eqReduction;
     public final List<String> tupleFiles;
     public final List<String> ruleFiles;
-    public final Map<String, NamespaceObject> shortToNs = new HashMap<>();
-    public final Map<String, NamespaceObject> longToNs = new HashMap<>();
     public final boolean shortIsDefault;
     public final int maxArgs;
     public final int minArgs;
@@ -56,6 +54,8 @@ public class Config {
     public final String characterEncoding;
     public final int noOfIterations;
     public final IndexStore indexStore;
+
+    public final Namespace namespace = new Namespace();
 
 
     public Config(Map<String, Object> configs) {IndexStore indexStore1;
@@ -73,8 +73,7 @@ public class Config {
         NamespaceObject ns;
         for (Map.Entry<String, String> mapping : shortToLong.entrySet()){
             ns = new NamespaceObject(mapping.getKey(), mapping.getValue(), shortIsDefault);
-            shortToNs.put(mapping.getKey(), ns);
-            longToNs.put(mapping.getValue(),ns);
+            namespace.addNamespace(ns);
         }
         this.minArgs = (int) configs.get("MinArgs");
         this.maxArgs = (int) configs.get("MaxArgs");
@@ -127,15 +126,15 @@ public class Config {
         strb.append("RuleFiles: " + this.ruleFiles+ "\n");
         strb.append("shortIsDefault: " + this.shortIsDefault+ "\n");
         strb.append("Namespaces:"+ "\n");
-        strb.append("shortToNamespace: " + shortToNs+ "\n");
-        strb.append("longToNamespace: " + longToNs+ "\n");
+        strb.append("shortToNamespace: " + namespace.shortToNs+ "\n");
+        strb.append("longToNamespace: " + namespace.longToNs+ "\n");
         return strb.toString();
     }
 
     public void addNamespace(String shortForm, String longForm){
         NamespaceObject ns = new NamespaceObject(shortForm,longForm,shortIsDefault);
-        shortToNs.put(shortForm,ns);
-        longToNs.put(longForm,ns);
+        namespace.shortToNs.put(shortForm,ns);
+        namespace.longToNs.put(longForm,ns);
     }
 
 

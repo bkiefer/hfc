@@ -962,48 +962,8 @@ public class Query {
                 aggregate.nameToExternalName);
     }
 
-    /**
-     * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-     * !!! FOR TEST PURPOSES ONLY !!!
-     * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-     * <p>
-     * goto HFC's bin directory
-     * krieger$ java -cp .:../lib/trove-2.1.0.jar -Xms800m -Xmx1200m de/dfki/lt/hfc/Interactive
-     * > new ../resources/default.ns ../resources/default.nt ../resources/default.rdl
-     * > tuples ../resources/ltworld.jena.nt
-     * > closure
-     * > select ...
-     */
 
-    public static void main(String[] args) throws Exception {
-        Namespace ns = new Namespace("/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.ns");
-        TupleStore ts = new TupleStore(100000, 250000, ns,
-                "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.nt");
-        //ts.readTuples("/Users/krieger/Desktop/Java/HFC/hfc/src/resources/test.child.labvalues.nt");
-        ts.readTuples("/Users/krieger/Desktop/Java/HFC/hfc/src/resources/ltworld.jena.nt");
-        Query q = new Query(ts);
-        // different binder vars in aggregates
-        BindingTable bt = q.query("SELECT DISTINCT ?p WHERE ?s ?p ?o AGGREGATE ?number = Count ?p & ?subject = Identity ?p");
-        //BindingTable bt = q.query("SELECT ?child ?prop ?val ?t WHERE ?child <rdf:type> <dom:Child> ?t1 & ?child <dom:hasLabValue> ?lv ?t2 & ?lv ?prop ?val ?t & AGGREGATE ?measurement ?result ?patient ?time = LGetLatestValues ?prop ?val ?child ?t ?t");
-        // same binder vars in aggregates
-        //q.query("SELECT ?o1 ?o2 WHERE ?s1 <value> ?o1 & ?s2 <value> ?o2 FILTER ?s1 != ?s2 & ILess ?o1 ?o2 AGGREGATE ?minmax = Min ?o1 & ?minmax = Max ?o2");
-        logger.info(bt.toString());
-        //long start = System.currentTimeMillis();
-        //ts.query("select distinct ?x ?y where ?x <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <owl:Class> & ?y <rdf:type> ?x");
-        //ts.query("select * where ?s <rdf:type> <http://www.lt-world.org/ltw.owl#Active_Person>");
-        //ts.query("select * where ?s <rdfs:subClassOf> ?t");
-        //q.query("select distinct * where ?s <rdf:type> <owl:Class>");
-        //q.query("select distinct ?s where ?s ?p ?o");
-        //q.query("select ?s where ?s ?p ?o . ?o ?q ?s");  // -> 271
-        //q.query("select distinct ?s where ?s ?p ?o & ?o ?p ?s");  // -> 206
-        //q.query("select distinct * where ?s ?p ?o");
-        //q.query("select * where ?s ?p ?o");
-        //BindingTable bt = q.query("select distinct ?s where ?s ?p ?o & ?o ?p ?s");
-        //bt.tupleStore = ts;
-        //System.out.println(bt.toString(30));
-        //System.out.println(bt.toString());
-        //System.out.println((System.currentTimeMillis() - start)/1000.0);
-    }
+
 
 
 }

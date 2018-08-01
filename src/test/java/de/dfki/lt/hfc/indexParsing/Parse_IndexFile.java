@@ -25,55 +25,59 @@ public class Parse_IndexFile {
     @Test
     public void noSecIndex(){
         IndexStore indexStore = null;
-        try {
-            indexStore = new IndexStore(getResource("index_Parsing1.idx"), true);
-        } catch (IndexingException e) {
-            e.printStackTrace();
-            fail();
-        }
-        assertTrue(indexStore.getPrimIndex() instanceof BTreeIndex);
-        assertEquals(0, indexStore.getPrimIndex().indexedPosition_start);
-        assertTrue(indexStore.primIndexKey != null);
-        assertTrue(indexStore.primIndexKey == XsdLong.class);
+//        try {
+//            indexStore = new IndexStore(getResource("index_Parsing1.idx"), true);
+//        } catch (IndexingException e) {
+//            e.printStackTrace();
+//            fail();
+//        }
+//        assertTrue(indexStore.getPrimIndex() instanceof BTreeIndex);
+//        assertEquals(0, indexStore.getPrimIndex().indexedPosition_start);
+//        assertTrue(indexStore.primIndexKey != null);
+//        assertTrue(indexStore.primIndexKey == XsdLong.class);
+        fail();
     }
 
     @Test
     public void withSecIndex(){
         IndexStore indexStore = null;
-        try {
-            indexStore = new IndexStore(getResource("index_Parsing2.idx"), true);
-        } catch (IndexingException e) {
-            e.printStackTrace();
-            fail();
-        }
-        assertTrue(indexStore.getPrimIndex() instanceof BPlusTreeIndex);
-        assertTrue(indexStore.getSecIndex() instanceof IntervalTreeIndex);
-        assertEquals(3, indexStore.getPrimIndex().indexedPosition_start);
-        assertTrue(indexStore.primIndexKey != null);
-        assertTrue(indexStore.primIndexKey == XsdDate.class);
+//        try {
+//            indexStore = new IndexStore(getResource("index_Parsing2.idx"), true);
+//        } catch (IndexingException e) {
+//            e.printStackTrace();
+//            fail();
+//        }
+//        assertTrue(indexStore.getPrimIndex() instanceof BPlusTreeIndex);
+//        assertTrue(indexStore.getSecIndex() instanceof IntervalTreeIndex);
+//        assertEquals(3, indexStore.getPrimIndex().indexedPosition_start);
+//        assertTrue(indexStore.primIndexKey != null);
+//        assertTrue(indexStore.primIndexKey == XsdDate.class);
+        fail();
     }
 
     @Test
     public void comments(){
         IndexStore indexStore = null;
-        try {
-            indexStore = new IndexStore(getResource("index_Parsing3.idx"), true);
-        } catch (IndexingException e) {
-            e.printStackTrace();fail();
-        }
-        assertTrue(indexStore.getPrimIndex() instanceof BPlusTreeIndex);
-        assertEquals(3, indexStore.getPrimIndex().indexedPosition_start);
-        assertTrue(indexStore.primIndexKey != null);
-        assertTrue(indexStore.primIndexKey == XsdDate.class);
+//        try {
+//            indexStore = new IndexStore(getResource("index_Parsing3.idx"), true);
+//        } catch (IndexingException e) {
+//            e.printStackTrace();fail();
+//        }
+//        assertTrue(indexStore.getPrimIndex() instanceof BPlusTreeIndex);
+//        assertEquals(3, indexStore.getPrimIndex().indexedPosition_start);
+//        assertTrue(indexStore.primIndexKey != null);
+//        assertTrue(indexStore.primIndexKey == XsdDate.class);
+        fail();
     }
 
     @Test
     public void missingParameters(){
-        try {
-            IndexStore indexStore = new IndexStore(getResource("index_Parsing4.idx"), true);
-            fail();
-        } catch (IndexingException e) {
-            // everything ok
-        }
+        fail();
+//        try {
+//            IndexStore indexStore = new IndexStore(getResource("index_Parsing4.idx"), true);
+//            fail();
+//        } catch (IndexingException e) {
+//            // everything ok
+//        }
     }
 }

@@ -90,13 +90,18 @@ public class IndexStore {
   private TupleStore tupleStore;
 
 
-  /**
-   * Creates a new instance of {@link IndexStore} according to the specification in the given file.
-   */
-  public IndexStore(String indexFile, boolean verbose) throws IndexingException {
-    logger.debug("Initializing indexStore ...");
-    readIndex(indexFile);
-    logger.debug( "... successfully initialized");
+//  /**
+//   * Creates a new instance of {@link IndexStore} according to the specification in the given file.
+//   */
+//  public IndexStore(String indexFile, boolean verbose) throws IndexingException {
+//    logger.debug("Initializing indexStore ...");
+//    readIndex(indexFile);
+//    logger.debug( "... successfully initialized");
+//  }
+
+
+  public IndexStore(Map<String, Object> config) throws IndexingException {
+    readIndex(config);
   }
 
 
@@ -137,87 +142,77 @@ public class IndexStore {
    * representing the key's position> 3) The Indexing structure to be used -> Structure: One of
    * <Simple>, <B-Tree>,<B+Tree>, <R-Tree> or<R+Tree> 4) A simple time stamp for more convenience
    */
-  private void readIndex(String fileName) throws IndexingException {
+  private void readIndex(Map<String, Object> config) throws IndexingException {
     // These int values define the positions in the tuples where the terms to be indexed by the primary index should be located.
     // In case atomic types are indexed, both values are the same.
     int position_prime_start = -1, position_prime_end = -1;
     // These int values define the positions in the tuples where the terms to be indexed by the secondary index should be located.
     // In case atomic types are indexed, both values are the same.
     int position_second_start = -1, position_second_end = -1;
-    String line;
-    String[] splitline;
-    try (BufferedReader bufferedReader = Files.newBufferedReader(Paths.get(fileName), Charset.forName(inputCharacterEncoding))) {
-      while ((line = bufferedReader.readLine()) != null) {
-        splitline = line.split(":");
-        switch (splitline[0]) {
-          case "Key1": {
-            try {
-              this.primIndexKey = Class.forName(TYPE_PATH + splitline[1].trim());
-            } catch (ClassNotFoundException e) {
-              logger.error(e.getStackTrace().toString());
-            }
-            break;
+    for(Map.Entry<String, Object> entry : config.entrySet()){
+      switch (entry.getKey()) {
+        case "Key1": {
+          try {
+            this.primIndexKey = Class.forName(TYPE_PATH + entry.getValue());
+          } catch (ClassNotFoundException e) {
+            logger.error(e.getStackTrace().toString());
           }
-          case "Key2": {
-            try {
-              this.secIndexKey = Class.forName(TYPE_PATH + splitline[1].trim());
-            } catch (ClassNotFoundException e) {
-              logger.error(e.getStackTrace().toString());
-            }
-            break;
+          break;
+        }
+        case "Key2": {
+          try {
+            this.secIndexKey = Class.forName(TYPE_PATH + entry.getValue());
+          } catch (ClassNotFoundException e) {
+            logger.error(e.getStackTrace().toString());
           }
-          case "Position1": {
-            String value = splitline[1].trim();
-            if (value.contains(",")) {
-              String[] interval = value.split(",");
-              position_prime_start = Integer.parseInt(interval[0]);
-              position_prime_end = Integer.parseInt(interval[1]);
-            } else {
-              position_prime_start = position_prime_end = Integer.parseInt(splitline[1].trim());
-            }
-            break;
+          break;
+        }
+        case "Position1": {
+          String value = (String) entry.getValue();
+          if (value.contains(",")) {
+            String[] interval = value.split(",");
+            position_prime_start = Integer.parseInt(interval[0]);
+            position_prime_end = Integer.parseInt(interval[1]);
+          } else {
+            position_prime_start = position_prime_end = Integer.parseInt(value);
           }
-          case "Position2": {
-            String value = splitline[1].trim();
-            if (value.contains(",")) {
-              String[] interval = value.split(",");
-              position_second_start = Integer.parseInt(interval[0]);
-              position_second_end = Integer.parseInt(interval[1]);
-            } else {
-              position_second_start = position_second_end = Integer.parseInt(splitline[1].trim());
-            }
-            break;
+          break;
+        }
+        case "Position2": {
+          String value = (String) entry.getValue();
+          if (value.contains(",")) {
+            String[] interval = value.split(",");
+            position_second_start = Integer.parseInt(interval[0]);
+            position_second_end = Integer.parseInt(interval[1]);
+          } else {
+            position_second_start = position_second_end = Integer.parseInt(value);
           }
-          case "Structure1": {
-            try {
-              this.primIndexBackend = Class.forName(INDEX_PATH + splitline[1].trim());
+          break;
+        }
+        case "Structure1": {
+          try {
+            this.primIndexBackend = Class.forName(INDEX_PATH + entry.getValue());
 
-            } catch (ClassNotFoundException e) {
-              logger.error(e.getStackTrace().toString());
-            }
-            break;
+          } catch (ClassNotFoundException e) {
+            logger.error(e.getStackTrace().toString());
           }
-          case "Structure2": {
-            try {
-              this.secIndexBackend = Class.forName(INDEX_PATH + splitline[1].trim());
+          break;
+        }
+        case "Structure2": {
+          try {
+            this.secIndexBackend = Class.forName(INDEX_PATH + entry.getValue());
 
-            } catch (ClassNotFoundException e) {
-              logger.error(e.getStackTrace().toString());
-            }
-            break;
+          } catch (ClassNotFoundException e) {
+            logger.error(e.getStackTrace().toString());
           }
-          default: {
-            if (splitline[0].trim().startsWith("#")) {
-              continue;
-            }
-            logger.warn("Unknown parameter" + line );
-          }
+          break;
+        }
+        default: {
+          logger.warn("Unknown parameter" + entry.getKey() );
         }
       }
-      bufferedReader.close();
-    } catch (IOException e) {
-      logger.error(e.getStackTrace().toString());
     }
+
     //check whether all necessary values are present
     if (primIndexBackend == null || position_prime_start == -1 || primIndexKey == null) {
       throw new IndexingException("Not able to create Index. Important parameter(s) missing.");
@@ -231,11 +226,11 @@ public class IndexStore {
 
     try {
       this.primaryIndex = (Index) primIndexBackend.getConstructor(Class.class, int.class, int.class)
-          .newInstance(primIndexKey, position_prime_start, position_prime_end);
+              .newInstance(primIndexKey, position_prime_start, position_prime_end);
       if (secIndexBackend != null) {
         this.secundaryIndex = (Index) secIndexBackend
-            .getConstructor(Class.class, int.class, int.class)
-            .newInstance(secIndexKey, position_second_start, position_second_end);
+                .getConstructor(Class.class, int.class, int.class)
+                .newInstance(secIndexKey, position_second_start, position_second_end);
       }
     } catch (Exception e) {
       logger.error(e.getStackTrace().toString());
@@ -363,8 +358,8 @@ public class IndexStore {
    * @return A Set of {@link IndexLookup}s associated with the given clause.
    */
   public boolean prepareLookup(List<Integer> clause,
-                                      Map<Integer, QRelation> idToRelation,
-                                      Set<IndexLookup> lkps, Set<QRelation> relationsToBeRewritten) {
+                               Map<Integer, QRelation> idToRelation,
+                               Set<IndexLookup> lkps, Set<QRelation> relationsToBeRewritten) {
     boolean isApplicable;
     isApplicable = checkIndexApplicability(primaryIndex, clause, idToRelation, lkps, relationsToBeRewritten);
     if (secundaryIndex != null) {
@@ -394,7 +389,7 @@ public class IndexStore {
    * @param notApplicableRelations
    */
   private boolean createAtomLookup(Index index, List<Integer> clause, Set<IndexLookup> lkps,
-                                     Map<Integer, QRelation> idToRelation, Set<QRelation> notApplicableRelations) {
+                                   Map<Integer, QRelation> idToRelation, Set<QRelation> notApplicableRelations) {
     int id = clause.get(index.indexedPosition_start);
     logger.debug( "Create A lookup for {0}",clause);
     QRelation r;
@@ -437,7 +432,7 @@ public class IndexStore {
    * @param notApplicableRelations
    */
   private boolean createIntervalLookup(Index index, List<Integer> clause,
-                                         Set<IndexLookup> lkps, Map<Integer, QRelation> idToRelation, Set<QRelation> notApplicableRelations) {
+                                       Set<IndexLookup> lkps, Map<Integer, QRelation> idToRelation, Set<QRelation> notApplicableRelations) {
     int ids = clause.get(index.indexedPosition_start);
     int ide = clause.get(index.indexedPosition_end);
     QRelation r;
@@ -459,7 +454,7 @@ public class IndexStore {
             return false;
           }
           lkps.add(
-              new IndexLookup(this.tupleStore, index, clause, index.indexedPosition_start, index.indexedPosition_end, r));
+                  new IndexLookup(this.tupleStore, index, clause, index.indexedPosition_start, index.indexedPosition_end, r));
           idToRelation.remove(ids);
           idToRelation.remove(ide);
         }
@@ -467,10 +462,10 @@ public class IndexStore {
     } else {
       // if the id is no variable but a constant and the constant has the correct type, create a lookup for this constant.
       if (tupleStore.getJavaObject(ids).getClass() == index.key
-          && tupleStore.getJavaObject(ide).getClass() == index.key) {
+              && tupleStore.getJavaObject(ide).getClass() == index.key) {
         lkps.add(
-            new IndexLookup(this.tupleStore, index, clause, index.indexedPosition_start, index.indexedPosition_end,
-                null));
+                new IndexLookup(this.tupleStore, index, clause, index.indexedPosition_start, index.indexedPosition_end,
+                        null));
       }
     }
     return true;
