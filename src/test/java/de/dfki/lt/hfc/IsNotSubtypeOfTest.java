@@ -71,7 +71,7 @@ public class IsNotSubtypeOfTest {
         { "<test:a180>", "<test:isAffiliatedWith>", "<test:db>" },
         { "_:de.dfki.lt.hfc.ForwardChainer@45283ce20", "<rdf:type>", "<owl:Nothing>" },
         { "_:de.dfki.lt.hfc.ForwardChainer@45283ce20", "<rdf:object>", "<test:a180>" },
-        { "<test:uno>", "<type>", "<test:Institution>" },
+        { "<test:uno>", "<rdf:type>", "<test:Institution>" },
         { "_:de.dfki.lt.hfc.ForwardChainer@45283ce21", "<hfc:reason>", "\"$domainRestrictionViolated\"^^<xsd:string>" },
         { "_:de.dfki.lt.hfc.ForwardChainer@45283ce21", "<rdf:predicate>", "<test:isAffiliatedWith>" },
         { "_:de.dfki.lt.hfc.ForwardChainer@45283ce20", "<rdf:subject>", "<test:db>" },

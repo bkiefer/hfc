@@ -28,7 +28,7 @@
 
 <test:livinge>  <rdf:type> <test:Company>
 
-<test:uno> <type> <test:Institution>
+<test:uno> <rdf:type> <test:Institution>
 
 <test:db> <rdf:type> <test:Company>
 <test:a180> <rdf:type> <test:Car>

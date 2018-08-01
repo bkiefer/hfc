@@ -1,12 +1,12 @@
 <test:a1> <test:value> "foo"^^<xsd:string> .
-<test:a2> <test:value> "fo\o"^^<xsd:string> .
+<test:a2> <test:value> "fo\\o"^^<xsd:string> .
 <test:a3> <test:value> "fo_|o"^^<xsd:string> .
 <test:a4> <test:value> "fo o"^^<xsd:string> .
 <test:a5> <test:value> "fo<o"^^<xsd:string> .
 <test:a6> <test:value> "fo>o"^^<xsd:string> .
 <test:a7> <test:value> "f<oo>"^^<xsd:string> .
-<test:a8> <test:value> "f<"o"o"^^<xsd:string> .
+<test:a8> <test:value> "f<\"o\"o"^^<xsd:string> .
 <test:a9> <test:value> "fo<o"^^<xsd:string> .
-<test:a10> <test:value> "f<"">o"o"^^<xsd:string> .
-<test:a11> <test:value> "f<"">o^o"^^<xsd:string> .
-<test:a12> <test:value>  "f<"">o^^"o"^^<xsd:string> .
+<test:a10> <test:value> "f<\"\">o\"o"^^<xsd:string> .
+<test:a11> <test:value> "f<\"\">o^o"^^<xsd:string> .
+<test:a12> <test:value>  "f<\"\">o^^\"o"^^<xsd:string> .
