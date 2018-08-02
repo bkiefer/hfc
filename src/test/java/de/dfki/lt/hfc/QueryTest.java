@@ -26,18 +26,7 @@ public class QueryTest {
 
   @Before
   public void setUp() throws IOException, WrongFormatException {
-    fc =  new ForwardChainer(4,                                                    // #cores
-        false,                                                    // verbose
-        false,                                                   // RDF Check
-        false,                                                 // EQ reduction disabled
-        3,                                                    // min #args
-        4,                                                    // max #args
-        100000,                                                 // #atoms
-        500000,                                                 // #tuples
-        getResource("default.nt"),                                  // tuple file
-        getResource("default.rdl"),                                 // rule file
-        getResource("default.ns")                                   // index file
-    );
+    fc =  new ForwardChainer(Config.getDefaultConfig());
     fc.uploadTuples(getResource("test.child.labvalues.nt"));
   }
 

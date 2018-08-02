@@ -22,19 +22,7 @@ public class QueryTest_LookupPointInTime {
     @BeforeClass
     public static void init() throws Exception {
 
-        fc =  new ForwardChainer(4,                                                    // #cores
-                false,                                                 // verbose
-                false,                                                 // RDF Check
-                false,                                                // EQ reduction disabled
-                4,                                                    // min #args
-                4,                                                    // max #args
-                100000,                                               // #atoms
-                500000,                                               // #tuples
-                getResource("lookupAtomTest.nt"),                 // tuple file
-                getResource("intervalTest.rdl"),                           // rule file  TODO
-                getResource("default.ns"),                            // namespace file
-                getResource("lookupAtom.idx")
-        );
+        fc =  new ForwardChainer(Config.getInstance(getResource("LookupPointInTime.yml")));
 
         // compute deductive closure
         // TODO move this into extra tests -> fcInterval.computeClosure();

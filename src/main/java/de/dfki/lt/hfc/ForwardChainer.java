@@ -43,6 +43,8 @@ public final class ForwardChainer {
 	 */
 	public static final String INFO = "v" + ForwardChainer.VERSION + " (Fri Jul  8 15:36:17 CEST 2016)";
 
+	protected final Config config;
+
 	/**
 	 * a pointer to the tuple store for this forward chainer
 	 */
@@ -53,22 +55,7 @@ public final class ForwardChainer {
 	 */
 	public RuleStore ruleStore;
 
-	/**
-	 * the namespace object, whose namespaces are used in rules and tuples
-	 *
-	 * TODO: Should be removed here, and only accessible through the tupleStore
-	 */
-	// public Namespace namespace;
 
-	/**
-	 * default settings that might speed up the forward chainer (actually the tuple store)
-	 */
-	protected int noOfAtoms = 100000;
-
-	/**
-	 * default settings that might speed up the forward chainer (actually the tuple store)
-	 */
-	protected int noOfTuples = 500000;
 
 	/**
 	 * the default hashing and equals strategy for tuples from the rule output set of the current
@@ -76,21 +63,7 @@ public final class ForwardChainer {
 	 */
 	protected static TIntArrayHashingStrategy DEFAULT_HASHING_STRATEGY = new TIntArrayHashingStrategy();
 
-	/**
-	 * tells the forward chainer how many top-level loops should be performed
-	 * during the computation of the deductive closure;
-	 * Integer.MAX_VALUE indicates that the fixpoint iteration is not restricted by
-	 * any number
-	 */
-	public int noOfIterations = Integer.MAX_VALUE;
 
-	/**
-	 * this Boolean flag is only considered in the closure computation, when the
-	 * equivalence class reduction is turned on in the tuple store
-	 * @see TupleStore.equivalenceClassReduction
-	 * @see computeClosure()
-	 */
-	public boolean cleanUpRepository = true;
 
 	/**
 	 * generation counter is incremented during each iteration, independent of how
@@ -105,28 +78,10 @@ public final class ForwardChainer {
 	 * a constant that controls whether a warning is printed in case an invalid
 	 * tuple is read in;
 	 * a similar variable exists in class RuleStore
-	 * @see #exitOnError
 	 */
 	public boolean verbose = false;
 
-	/**
-	 * a constant that controls whether the system is terminated in case an invalid
-	 * tuple is read in (exit code = 1);
-	 * a similar variable exists in class RuleStore
-	 * @see #verbose
-	 */
-	public boolean exitOnError = false;
 
-	/**
-	 * call the garbage collector after each iteration step
-	 */
-	public boolean gc = false;
-
-	/**
-	 * specifies the number of parallel executed rule threads;
-	 * do not specify a number larger than the sum of all cores of your computer
-	 */
-	public int noOfCores = 4;
 
 	/**
 	 * specifies the number of tasks (= #rules) that are executed within a single
@@ -154,6 +109,8 @@ public final class ForwardChainer {
 	 */
 	private int blankCounter = 0;
 
+
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
@@ -162,10 +119,9 @@ public final class ForwardChainer {
 	 */
 	private void init() {
 		if (this.verbose) {
-			//System.out.println();
 			logger.info("  Welcome to HFC, HUK's Forward Chainer");
 			logger.info("  " + ForwardChainer.INFO);
-			logger.info("  # CPU cores: " + this.noOfCores);
+			logger.info("  # CPU cores: " + config.noOfCores);
 			logger.info("  " + this.toString());
 		}
 	}
@@ -173,229 +129,265 @@ public final class ForwardChainer {
 	/**
 	 * prints a welcome message to standard out
 	 */
-	private ForwardChainer() {
+	private ForwardChainer() throws FileNotFoundException {
+		this.config = Config.getDefaultConfig();
 		init();
 	}
 
-	/**
-	 * only used by copyForwardChainer() -- that's why it is private
-	 */
-	private ForwardChainer(int noOfCores, boolean verbose) {
-		this.noOfCores = noOfCores;
-		this.verbose = verbose;
-		init();
-	}
-
-	/**
-	 * generates a new forward chainer with the default namespace for XSD, RDF, RDFS, and OWL
-	 * @throws IOException
-	 * @throws FileNotFoundException
-	 * @throws WrongFormatException
-	 */
-	public ForwardChainer(String tupleFile, String ruleFile)
-	    throws FileNotFoundException, IOException, WrongFormatException {
-		this();
-		Namespace namespace = new Namespace();
-		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
-		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
-		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
-		this.noOfTasks = this.ruleStore.allRules.size();
-	}
-
-	/**
-	 * this version allows to explicitly define the namespace
-	 * @throws IOException
-	 * @throws WrongFormatException
-	 * @throws FileNotFoundException
-	 */
-	public ForwardChainer(String tupleFile, String ruleFile,	String namespaceFile)
-	    throws FileNotFoundException, WrongFormatException, IOException {
-		this();
-		Namespace namespace = new Namespace();
-		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
-		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
-		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
-		this.noOfTasks = this.ruleStore.allRules.size();
-	}
-
-	/**
-	 * generates a new forward chainer with the default namespace for XSD, RDF, RDFS, and OWL;
-	 * noOfAtoms and noOfTuples are important parameters that affects the performance of the
-	 * tuple store used by the forward chainer
-	 * @throws IOException
-	 * @throws FileNotFoundException
-	 * @throws WrongFormatException
-	 */
-	public ForwardChainer(int noOfAtoms, int noOfTuples, String tupleFile, String ruleFile)
-	    throws FileNotFoundException, IOException, WrongFormatException {
-		this();
-		this.noOfAtoms = noOfAtoms;
-	  this.noOfTuples = noOfTuples;
-		//this.namespace = new Namespace();
-		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples);
-		this.tupleStore.readTuples(tupleFile);
-		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
-		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
-		this.noOfTasks = this.ruleStore.allRules.size();
-	}
-
-	/**
-	 * this version allows to explicitly define the namespace
-	 * @throws IOException
-	 * @throws WrongFormatException
-	 * @throws FileNotFoundException
-	 */
-	public ForwardChainer(int noOfAtoms, int noOfTuples, String tupleFile, String ruleFile, String namespaceFile)
-	    throws FileNotFoundException, WrongFormatException, IOException {
-		this();
-		this.noOfAtoms = noOfAtoms;
-	  this.noOfTuples = noOfTuples;
-		Namespace namespace = new Namespace();
-		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
-		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
-		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
-		this.noOfTasks = this.ruleStore.allRules.size();
-	}
 
 
-	/**
-	 *  assumes a default of 100,000 atoms and 500,000 tuples
-	 */
-	public ForwardChainer(TupleStore tupleStore, RuleStore ruleStore) {
-		this();
+	public ForwardChainer(Config config, TupleStore tupleStore, RuleStore ruleStore) {
 		this.tupleStore = tupleStore;
 		this.ruleStore = ruleStore;
-		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
-		this.noOfTasks = this.ruleStore.allRules.size();
+		this.config = config;
+
 	}
 
-	/**
-	 * more options that will also affect namespace, tuple store, and rule store
-	 * @throws IOException
-	 * @throws WrongFormatException
-	 * @throws FileNotFoundException
-	 */
-	public ForwardChainer(int noOfCores,
-												boolean verbose,
-												boolean rdfCheck,
-												boolean eqReduction,
-												int minNoOfArgs,
-												int maxNoOfArgs,
-												int noOfAtoms,
-												int noOfTuples,
-												String tupleFile,
-												String ruleFile,
-												String namespaceFile)
-			throws FileNotFoundException, WrongFormatException, IOException {
-		this(noOfCores, verbose);
-		this.noOfAtoms = noOfAtoms;
-	  this.noOfTuples = noOfTuples;
-		Namespace namespace = new Namespace();
-		this.tupleStore = new TupleStore(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
-																		 this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
-		this.ruleStore = new RuleStore(verbose, rdfCheck, minNoOfArgs, maxNoOfArgs,
-																	 this.tupleStore, ruleFile);
-		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
-		this.noOfTasks = this.ruleStore.allRules.size();
+	public ForwardChainer(Config config) throws IOException, WrongFormatException {
+		this.config = config;
+		this.tupleStore = new TupleStore(config.namespace);
+		for(String ts : config.tupleFiles){
+			tupleStore.readTuples(ts);
+		}
+		this.ruleStore = new RuleStore(tupleStore);
+		for(String rls: config.ruleFiles){
+			ruleStore.readRules(rls);
+		}
 	}
 
-	/**
-		* more options that will also affect namespace, tuple store, and rule store
-		* @throws IOException
-		* @throws WrongFormatException
-		* @throws FileNotFoundException
-		*/
-	public ForwardChainer(int noOfCores,
-												boolean verbose,
-												boolean rdfCheck,
-												boolean eqReduction,
-												int minNoOfArgs,
-												int maxNoOfArgs,
-												int subjectPosition,
-												int predicatePosition,
-												int objectPosition,
-												int noOfAtoms,
-												int noOfTuples,
-												String tupleFile,
-												String ruleFile,
-												String namespaceFile)
-					throws FileNotFoundException, WrongFormatException, IOException {
-		this(noOfCores, verbose);
-		this.noOfAtoms = noOfAtoms;
-		this.noOfTuples = noOfTuples;
-		Namespace namespace = new Namespace();
-		this.tupleStore = new TupleStore(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
-						                             subjectPosition, predicatePosition, objectPosition,
-						                             this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
-		this.ruleStore = new RuleStore(verbose, rdfCheck, minNoOfArgs, maxNoOfArgs,
-						this.tupleStore, ruleFile);
-		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
-		this.noOfTasks = this.ruleStore.allRules.size();
-	}
 
-	/**
-	 * slightly less options as before, but namespace, tuple store, and rule store have already
-	 * been created
-	 */
-	public ForwardChainer(int noOfCores,
-												boolean verbose,
-												int noOfAtoms,
-												int noOfTuples,
-												TupleStore tupleStore,
-												RuleStore ruleStore) {
-		this(noOfCores, verbose);
-		this.noOfAtoms = noOfAtoms;
-	  this.noOfTuples = noOfTuples;
-		this.tupleStore = tupleStore;
-		this.ruleStore = ruleStore;
-		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
-		this.noOfTasks = this.ruleStore.allRules.size();
-	}
+	public ForwardChainer(int noOfCores, boolean verbose, boolean rdfCheck, boolean eqReduction, int minArgs, int maxArgs, int atoms, int tuples, String tupleFile, String ruleFile) throws IOException, WrongFormatException {
+		this.config = Config.getDefaultConfig();
+		config.noOfCores = noOfCores;
+		config.verbose = verbose;
+		config.rdfCheck = rdfCheck;
+		config.eqReduction = eqReduction;
+		config.minArgs = minArgs;
+		config.maxArgs = maxArgs;
+		config.noOfAtoms = atoms;
+		config.noOfTuples = tuples;
 
-	/**
-	 * this version allows to explicitly define the namespace
-	 * @throws IOException
-	 * @throws WrongFormatException
-	 * @throws FileNotFoundException
-	 */
-	public ForwardChainer(String tupleFile, String ruleFile,	String namespaceFile, String indexFile)
-			throws FileNotFoundException, WrongFormatException, IOException, IndexingException {
-		this();
-		Namespace namespace = new Namespace();
-		//IndexStore indexStore = new IndexStore(indexFile, this.verbose);
-		IndexStore indexStore = null;
-		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, namespace, tupleFile, indexStore);
-		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
-		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
-		this.noOfTasks = this.ruleStore.allRules.size();
-	}
-
-	public ForwardChainer(int noOfCores,
-						  boolean verbose,
-						  boolean rdfCheck,
-						  boolean eqReduction,
-						  int minNoOfArgs,
-						  int maxNoOfArgs,
-						  int noOfAtoms,
-						  int noOfTuples,
-						  String tupleFile,
-						  String ruleFile,
-						  String namespaceFile,
-						  String indexFile)
-			throws FileNotFoundException, WrongFormatException, IOException, IndexingException {
-		this(noOfCores, verbose);
-		this.noOfAtoms = noOfAtoms;
-		this.noOfTuples = noOfTuples;
 		Namespace namespace = new Namespace();
 //		IndexStore indexStore = new IndexStore(indexFile,this.verbose);
 		IndexStore indexStore = null;
-		this.tupleStore = new TupleStore(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
-				this.noOfAtoms, this.noOfTuples, namespace, tupleFile, indexStore);
-		this.ruleStore = new RuleStore(verbose, rdfCheck, minNoOfArgs, maxNoOfArgs,
+		this.tupleStore = new TupleStore(verbose, rdfCheck, eqReduction, minArgs, maxArgs,
+				atoms, tuples, namespace, tupleFile, indexStore);
+		this.ruleStore = new RuleStore(verbose, rdfCheck, minArgs, maxArgs,
 				this.tupleStore, ruleFile);
-		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
+		this.threadPool = Executors.newFixedThreadPool(noOfCores);
 		this.noOfTasks = this.ruleStore.allRules.size();
 	}
+
+//	/**
+//	 * generates a new forward chainer with the default namespace for XSD, RDF, RDFS, and OWL
+//	 * @throws IOException
+//	 * @throws FileNotFoundException
+//	 * @throws WrongFormatException
+//	 */
+//	public ForwardChainer(String tupleFile, String ruleFile)
+//	    throws FileNotFoundException, IOException, WrongFormatException {
+//		this();
+//		Namespace namespace = new Namespace();
+//		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
+//		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
+//		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
+//		this.noOfTasks = this.ruleStore.allRules.size();
+//	}
+//
+//	/**
+//	 * this version allows to explicitly define the namespace
+//	 * @throws IOException
+//	 * @throws WrongFormatException
+//	 * @throws FileNotFoundException
+//	 */
+//	public ForwardChainer(String tupleFile, String ruleFile,	String namespaceFile)
+//	    throws FileNotFoundException, WrongFormatException, IOException {
+//		this();
+//		Namespace namespace = new Namespace();
+//		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
+//		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
+//		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
+//		this.noOfTasks = this.ruleStore.allRules.size();
+//	}
+//
+//	/**
+//	 * generates a new forward chainer with the default namespace for XSD, RDF, RDFS, and OWL;
+//	 * noOfAtoms and noOfTuples are important parameters that affects the performance of the
+//	 * tuple store used by the forward chainer
+//	 * @throws IOException
+//	 * @throws FileNotFoundException
+//	 * @throws WrongFormatException
+//	 */
+//	public ForwardChainer(int noOfAtoms, int noOfTuples, String tupleFile, String ruleFile)
+//	    throws FileNotFoundException, IOException, WrongFormatException {
+//		this();
+//		this.noOfAtoms = noOfAtoms;
+//	  this.noOfTuples = noOfTuples;
+//		//this.namespace = new Namespace();
+//		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples);
+//		this.tupleStore.readTuples(tupleFile);
+//		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
+//		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
+//		this.noOfTasks = this.ruleStore.allRules.size();
+//	}
+//
+//	/**
+//	 * this version allows to explicitly define the namespace
+//	 * @throws IOException
+//	 * @throws WrongFormatException
+//	 * @throws FileNotFoundException
+//	 */
+//	public ForwardChainer(int noOfAtoms, int noOfTuples, String tupleFile, String ruleFile, String namespaceFile)
+//	    throws FileNotFoundException, WrongFormatException, IOException {
+//		this();
+//		this.noOfAtoms = noOfAtoms;
+//	  this.noOfTuples = noOfTuples;
+//		Namespace namespace = new Namespace();
+//		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
+//		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
+//		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
+//		this.noOfTasks = this.ruleStore.allRules.size();
+//	}
+//
+//
+//	/**
+//	 *  assumes a default of 100,000 atoms and 500,000 tuples
+//	 */
+//	public ForwardChainer(TupleStore tupleStore, RuleStore ruleStore) {
+//		this();
+//		this.tupleStore = tupleStore;
+//		this.ruleStore = ruleStore;
+//		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
+//		this.noOfTasks = this.ruleStore.allRules.size();
+//	}
+//
+//	/**
+//	 * more options that will also affect namespace, tuple store, and rule store
+//	 * @throws IOException
+//	 * @throws WrongFormatException
+//	 * @throws FileNotFoundException
+//	 */
+//	public ForwardChainer(int noOfCores,
+//												boolean verbose,
+//												boolean rdfCheck,
+//												boolean eqReduction,
+//												int minNoOfArgs,
+//												int maxNoOfArgs,
+//												int noOfAtoms,
+//												int noOfTuples,
+//												String tupleFile,
+//												String ruleFile,
+//												String namespaceFile)
+//			throws FileNotFoundException, WrongFormatException, IOException {
+//		this(noOfCores, verbose);
+//		this.noOfAtoms = noOfAtoms;
+//	  this.noOfTuples = noOfTuples;
+//		Namespace namespace = new Namespace();
+//		this.tupleStore = new TupleStore(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
+//																		 this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
+//		this.ruleStore = new RuleStore(verbose, rdfCheck, minNoOfArgs, maxNoOfArgs,
+//																	 this.tupleStore, ruleFile);
+//		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
+//		this.noOfTasks = this.ruleStore.allRules.size();
+//	}
+//
+//	/**
+//		* more options that will also affect namespace, tuple store, and rule store
+//		* @throws IOException
+//		* @throws WrongFormatException
+//		* @throws FileNotFoundException
+//		*/
+//	public ForwardChainer(int noOfCores,
+//												boolean verbose,
+//												boolean rdfCheck,
+//												boolean eqReduction,
+//												int minNoOfArgs,
+//												int maxNoOfArgs,
+//												int subjectPosition,
+//												int predicatePosition,
+//												int objectPosition,
+//												int noOfAtoms,
+//												int noOfTuples,
+//												String tupleFile,
+//												String ruleFile,
+//												String namespaceFile)
+//					throws FileNotFoundException, WrongFormatException, IOException {
+//		this(noOfCores, verbose);
+//		this.noOfAtoms = noOfAtoms;
+//		this.noOfTuples = noOfTuples;
+//		Namespace namespace = new Namespace();
+//		this.tupleStore = new TupleStore(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
+//						                             subjectPosition, predicatePosition, objectPosition,
+//						                             this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
+//		this.ruleStore = new RuleStore(verbose, rdfCheck, minNoOfArgs, maxNoOfArgs,
+//						this.tupleStore, ruleFile);
+//		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
+//		this.noOfTasks = this.ruleStore.allRules.size();
+//	}
+//
+//	/**
+//	 * slightly less options as before, but namespace, tuple store, and rule store have already
+//	 * been created
+//	 */
+//	public ForwardChainer(int noOfCores,
+//												boolean verbose,
+//												int noOfAtoms,
+//												int noOfTuples,
+//												TupleStore tupleStore,
+//												RuleStore ruleStore) {
+//		this(noOfCores, verbose);
+//		this.noOfAtoms = noOfAtoms;
+//	  this.noOfTuples = noOfTuples;
+//		this.tupleStore = tupleStore;
+//		this.ruleStore = ruleStore;
+//		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
+//		this.noOfTasks = this.ruleStore.allRules.size();
+//	}
+//
+//	/**
+//	 * this version allows to explicitly define the namespace
+//	 * @throws IOException
+//	 * @throws WrongFormatException
+//	 * @throws FileNotFoundException
+//	 */
+//	public ForwardChainer(String tupleFile, String ruleFile,	String namespaceFile, String indexFile)
+//			throws FileNotFoundException, WrongFormatException, IOException, IndexingException {
+//		this();
+//		Namespace namespace = new Namespace();
+//		//IndexStore indexStore = new IndexStore(indexFile, this.verbose);
+//		IndexStore indexStore = null;
+//		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, namespace, tupleFile, indexStore);
+//		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
+//		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
+//		this.noOfTasks = this.ruleStore.allRules.size();
+//	}
+//
+//	public ForwardChainer(int noOfCores,
+//						  boolean verbose,
+//						  boolean rdfCheck,
+//						  boolean eqReduction,
+//						  int minNoOfArgs,
+//						  int maxNoOfArgs,
+//						  int noOfAtoms,
+//						  int noOfTuples,
+//						  String tupleFile,
+//						  String ruleFile,
+//						  String namespaceFile,
+//						  String indexFile)
+//			throws FileNotFoundException, WrongFormatException, IOException, IndexingException {
+//		this(noOfCores, verbose);
+//		this.noOfAtoms = noOfAtoms;
+//		this.noOfTuples = noOfTuples;
+//		Namespace namespace = new Namespace();
+////		IndexStore indexStore = new IndexStore(indexFile,this.verbose);
+//		IndexStore indexStore = null;
+//		this.tupleStore = new TupleStore(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
+//				this.noOfAtoms, this.noOfTuples, namespace, tupleFile, indexStore);
+//		this.ruleStore = new RuleStore(verbose, rdfCheck, minNoOfArgs, maxNoOfArgs,
+//				this.tupleStore, ruleFile);
+//		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
+//		this.noOfTasks = this.ruleStore.allRules.size();
+//	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -403,15 +395,14 @@ public final class ForwardChainer {
 	 * to (dynamically) change the number of processor cores at runtime, use this method
 	 */
 	public void setNoOfCores(int noOfCores) {
-		this.noOfCores = noOfCores;
-		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
+		config.noOfCores = noOfCores;
+		this.threadPool = Executors.newFixedThreadPool(noOfCores);
 	}
 
 	/**
 	 * generates a new unique blank node id (an int);
 	 * used during forward chaining when unbounded right-hand side variables are introduced;
 	 * it is important that the method is synchronized to exclusively lock the blank counter;
-	 * @see de.dfki.lt.hfc.ForwardChainer.blankCounter
 	 */
 	public int nextBlankNode () {
 		synchronized (this.tupleStore) {
@@ -533,6 +524,18 @@ public final class ForwardChainer {
 				}
 			}
 		}
+	}
+
+	public boolean getCleanUpRepository() {
+		return config.cleanUpRepository;
+	}
+
+	public boolean isCleanUpRepository() {
+		return config.cleanUpRepository;
+	}
+
+	public boolean isEquivalenceClassReduction() {
+		return config.eqReduction;
 	}
 
 
@@ -1007,7 +1010,7 @@ public final class ForwardChainer {
 				time = System.currentTimeMillis();
 			}
 			// perhaps trigger a GC after each iteration step
-			if (this.gc)
+			if (config.gc)
 				System.gc();
 		} while (newInfo && (currentIteration != noOfIterations));
 		// increment the generation  counter for deltion again for further upload
@@ -1020,7 +1023,7 @@ public final class ForwardChainer {
 			logger.info("  closure computation took " + (System.currentTimeMillis() - fullTime) + "msec");
 		}
 		// possibly cleanup
-		if (this.tupleStore.equivalenceClassReduction && this.cleanUpRepository) {
+		if (config.eqReduction && config.cleanUpRepository) {
 		  if (this.verbose) { logger.info("\n  cleaning up repository ... "); }
 			this.tupleStore.cleanUpTupleStore();
 			if (this.verbose) {
@@ -1041,7 +1044,7 @@ public final class ForwardChainer {
 	 * and TupleStore.equivalenceClassReduction
 	 */
 	public boolean computeClosure() {
-		return computeClosure(this.noOfIterations, this.cleanUpRepository);
+		return computeClosure(config.noOfIterations, config.cleanUpRepository);
 	}
 
 	/**
@@ -1071,7 +1074,7 @@ public final class ForwardChainer {
 	 * the number of iterations is given by field noOfIterations
 	 */
 	public boolean computeClosure(Set<int[]> newTuples) {
-		return computeClosure(newTuples, this.noOfIterations, this.cleanUpRepository);
+		return computeClosure(newTuples, config.noOfIterations, config.cleanUpRepository);
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1098,7 +1101,6 @@ public final class ForwardChainer {
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 * @throws WrongFormatException
-	 * @see TupleStore.readTuples()
 	 */
 	public void uploadTuples(String filename) throws FileNotFoundException, IOException, WrongFormatException {
 		this.tupleStore.readTuples(filename);
@@ -1126,7 +1128,6 @@ public final class ForwardChainer {
 	 * add tuples, represented as int[], to the set of all tuples;
 	 * if tuple deletion is enabled in the forward chainer, the tuples from the set are
 	 * assigned the actual generation TupleStore.generation
-	 * @see TupleStore.addTuple()
 	 */
 	public void addTuples(Collection<int[]> tuples) {
 		for (int[] tuple : tuples)
@@ -1137,7 +1138,6 @@ public final class ForwardChainer {
 	 * remove tuples, represented as int[], from the set of all tuples;
 	 * if tuple deletion is enabled in the forward chainer, the tuples from the set are
 	 * removed from TupleStore.generation
-	 * @see TupleStore.addTuple()
 	 */
 	public void removeTuples(Collection<int[]> tuples) {
 		for (int[] tuple : tuples)
@@ -1150,7 +1150,6 @@ public final class ForwardChainer {
 	 * NOTE: a similar method readRules() is defined in class RuleStore;
 	 *       however, uploadRules set the field noOfTasks in ForwardChainer to the proper value
 	 * @throws IOException
-	 * @see RuleStore.readRules()
 	 */
 	public void uploadRules(String filename) throws IOException {
 		this.ruleStore.lineNo = 0;
@@ -1259,17 +1258,16 @@ public final class ForwardChainer {
 	 * tuples are taken over, but nearly everything else is copied
 	 * @param noOfCores an integer, specifying how many parallel threads are used during
 	 *        the computation of the deductive closure for the copy of this forward chainer
-	 * @see de.dfki.lt.hfc.TupleStore.copyTupleStore()
-	 * @see de.dfki.lt.hfc.TupleStore.copyRuleStore()
 	 */
 	public ForwardChainer copyForwardChainer(int noOfCores, boolean verbose) {
-		ForwardChainer copy = new ForwardChainer(noOfCores, verbose);
+		Config configCopy = this.config.getCopy(noOfCores,verbose);
+		TupleStore tupleStoreCopy = this.tupleStore.copyTupleStore();
+		RuleStore ruleStoreCopy = this.ruleStore.copyRuleStore(tupleStoreCopy);
+		ForwardChainer copy = new ForwardChainer(config, tupleStoreCopy, ruleStoreCopy);
 		// take over namespace object and generation counter
 		// copy.namespace = this.namespace;
 		copy.generationCounter = this.generationCounter;
 		// copy tuple store and rule store
-		copy.tupleStore = this.tupleStore.copyTupleStore();
-		copy.ruleStore = this.ruleStore.copyRuleStore(copy.tupleStore);
 		// ***WARNING***: do not let work this and copy in PARALLEL !!!!!
 		// reuse thread pool of this object
 		copy.threadPool = this.threadPool;
@@ -1294,7 +1292,6 @@ public final class ForwardChainer {
 	 * @return false otherwise
 	 *
 	 * there is a similar method in class TupleStore
-	 * @see TupleStore.tupleDeletionEnabled()
 	 */
 	public boolean tupleDeletionEnabled() {
 		return (this.tupleStore.tupleToGeneration != null);
@@ -1305,7 +1302,6 @@ public final class ForwardChainer {
 	 * from tuples (int[]) to generations (Integer);
 	 * this field is localized in class TupleStore, since it interacts with the equivalence
 	 * class reduction mechanism that is also located in TupleStore;
-	 * @see TupleStore.tupleToGeneration
 	 *
 	 * this special case of tuple deletion differs from the functionality in class TupleStore
 	 * which only deletes tuples given to method removeTuple(), in that _entailed_ tuples t'
@@ -1545,7 +1541,6 @@ public final class ForwardChainer {
 	 * in case closure computation is never called, i.e., the repository is only used for
 	 * querying the explicit uploaded information, use this method instead of nethod below;
 	 * this quasi-synchronized method obtains a lock on this.tupleStore
-	 * @see ForwardChainer.deleteTuplesFromRepository()
 	 * @return true iff the transaction was successful
 	 * @return false iff an error happened during the transaction or in case tuple deletion
 	 *         has NOT been enabled;
@@ -1661,7 +1656,6 @@ public final class ForwardChainer {
 	 * are deleted, but also the entailed tuples which solely depend on the deleted
 	 * tuples;
 	 * this quasi-synchronized method obtains a lock on this.tupleStore
-	 * @see ForwardChainer.removeTuplesFromRepository()
 	 * @return true iff the transaction was successful
 	 * @return false iff an error appeared during the transaction or in case tuple deletion
 	 *         has NOT been enabled;
@@ -1699,7 +1693,6 @@ public final class ForwardChainer {
 	 * transaction 4: computeClosureFromRepository()
 	 * a `nullary' transaction that computes the deductive closure for the repository;
 	 * this quasi-synchronized method obtains a lock on this.tupleStore
-	 * @see ForwardChainer.removeFromRepository()
 	 * @return true iff the transaction was successful
 	 * @return false iff an error appeared during the transaction;
 	 *         note that we gurantee that the effects which have happended during the
@@ -1729,128 +1722,6 @@ public final class ForwardChainer {
 		// tuple deletion NOT enabled
 		else
 			return false;
-	}
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	/**
-	 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	 * !!! FOR TEST PURPOSES ONLY !!!
-	 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	 */
-	public static void main(String[] args) throws Exception {
-		// for testing the -server option of the JVM:
-		//   time java -server -cp .:../lib/trove-2.1.0.jar -Xms800m -Xmx1200m de/dfki/lt/hfc/ForwardChainer
-
-    //Namespace.shortIsDefault = false;
-
-    // call THIS with equivalence class reduction DISABLED
-    /*
-    ForwardChainer fc =	new ForwardChainer(100000, 500000,
-                                           "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.nt",
-                                           "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.rdl",
-                                           "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.ns");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/src/resources/ltworld.jena.nt");
-		fc.computeClosure();
-		fc.shutdown();
-		*/
-
-		// call THIS with equivalence class reduction ENABLED
-
-		//Namespace.shortIsDefault = false;
-
-		ForwardChainer fc =	new ForwardChainer(100000, 500000,
-																					 "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.eqred.nt",
-																					 "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.eqred.rdl",
-																					 "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.ns");
-		fc.uploadTuples("/Users/krieger/Desktop/Java/HFC/hfc/src/resources/ltworld.jena.nt");
-		fc.computeClosure();
-		Query q = new Query(fc.tupleStore);
-		// different binder vars in aggregates
-		BindingTable bt = q.query("SELECT DISTINCT ?p WHERE ?s ?p ?o FILTER ?p != <rdf:type> AGGREGATE ?number = Count ?p & ?subject = Identity ?p");
-		logger.info(bt.toString());
-		fc.shutdown();
-
-		/*
-		ForwardChainer fc =	new ForwardChainer(100000, 500000,
-																					 "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/tests/RelationalVariable/relvar.nt",
-																					 "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/tests/RelationalVariable/relvar.rdl",
-																					 "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/tests/RelationalVariable/relvar.ns");
-		fc.computeClosure();
-		Query q = new Query(fc.tupleStore);
-		BindingTable bt = q.query("select ?s where ?s <rdf:type> <owl:Nothing>");
-		System.out.println(bt.toString());
-		fc.shutdown();
-		*/
-
-		/*
-		ForwardChainer fc =	new ForwardChainer(100000, 500000,
-																					 "/Users/krieger/Desktop/MONNET/server/resources/tuples/0default.eqred.nt",
-																					 "/Users/krieger/Desktop/MONNET/server/resources/rules/0default.time.datetime.eqred.quintuple.rdl",
-																					 "/Users/krieger/Desktop/MONNET/server/resources/namespaces/0default.ns");
-		fc.uploadNamespaces("/Users/krieger/Desktop/MONNET/server/resources/namespaces/custom.ns");
-		fc.uploadRules("/Users/krieger/Desktop/MONNET/server/resources/rules/custom.rdl");
-		fc.uploadTuples("/Users/krieger/Desktop/MONNET/server/resources/tuples/dax.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/MONNET/server/resources/tuples/nace.nt");
-		fc.uploadTuples("/Users/krieger/Desktop/MONNET/server/resources/tuples/dc.nt");
-		fc.enableTupleDeletion();
-		System.out.println("********* GENERATION 0 *********");
-		fc.computeClosure();
-		fc.uploadTuples("/Users/krieger/Desktop/MONNET/server/resources/tuples/company.2011-07-01.nt");
-		System.out.println("********* GENERATION 2 *********");
-		fc.computeClosure();
-		fc.uploadTuples("/Users/krieger/Desktop/MONNET/server/resources/tuples/company.2011-07-08.nt");
-		System.out.println("********* GENERATION 4 *********");
-		fc.computeClosure();
-		fc.uploadTuples("/Users/krieger/Desktop/MONNET/server/resources/tuples/company.2011-08-02.nt");
-		System.out.println("********* GENERATION 6 *********");
-		fc.computeClosure();
-		fc.uploadTuples("/Users/krieger/Desktop/MONNET/server/resources/tuples/company.2011-08-22.nt");
-		System.out.println("********* GENERATION 8 *********");
-		fc.computeClosure();
-		fc.uploadTuples("/Users/krieger/Desktop/MONNET/server/resources/tuples/company.2011-08-30.nt");
-		System.out.println("********* GENERATION 10 *********");
-		fc.computeClosure();
-		Integer gennum;
-		// delete 3 tuples from generation 6 (file company.2011-08-02.nt)
-		ArrayList<int[]> toBeDeleted = new ArrayList<int[]>();
-		toBeDeleted.add(fc.tupleStore.internalizeTuple(new String[]{"<dax:DE0005190003_1312280572342>", "<dax:transparencyStandard>", "<dax:primeStandard>", "\"2011-08-02T12:22:52\"^^<xsd:dateTime>", "\"2011-08-02T12:22:52\"^^<xsd:dateTime>"}));
-		toBeDeleted.add(fc.tupleStore.internalizeTuple(new String[]{"<dax:DE0005190003_1312280572342>", "<dax:sector>", "\"DAXsector All Automobile (Performance)\"@de ", "\"2011-08-02T12:22:52\"^^<xsd:dateTime>", "\"2011-08-02T12:22:52\"^^<xsd:dateTime>"}));
-		toBeDeleted.add(fc.tupleStore.internalizeTuple(new String[]{"<dax:Norbert_Reithofer_1312280569356>", "<dax:lastName>", "\"Reithofer\"^^<xsd:string>", "\"2011-08-02T12:22:52\"^^<xsd:dateTime>", "\"2011-08-02T12:22:52\"^^<xsd:dateTime>"}));
-		fc.deleteTuples(toBeDeleted);
-		// NOTE (very important):
-		// even though deleteTuples() calls computeClosure(), if equivalence class reduction is turned on
-		// and a cleanup has been performed, FURTHER closure computations might be necessary, since cleanups
-		// are performed after a closure computation which potentially make passive rules active again;
-		// @see de.dfki.lt.hfc.server.HfcServer() how this is supposed to be properly handled !!
-		fc.computeClosure();
-		Query q = new Query(fc.tupleStore);
-		BindingTable bt = q.query("select * where <dax:Igor_Landau_1310132885939> <dax:worksFor> ?c ?s ?e");
-		System.out.println(bt.toString());
-	  fc.shutdown();
-		*/
-
-		/*
-		Query q = new Query(fc.tupleStore);
-		BindingTable bt = q.query("SELECT DISTINCT * WHERE ?s <owl:sameAs> <http://www.lt-world.org/ltw.owl#lt-world_Individual_293>");
-		//BindingTable bt = q.query("SELECT DISTINCT * WHERE ?s ?p ?o");
-		//System.out.println(bt.table.size());
-		//bt.expandBindingTable();
-		//System.out.println(bt.table.size());
-		System.out.println(bt.toString(false));
-		System.out.println(bt.toString(true));
-		fc.shutdown();
-		*/
-		//fc.compress(3);
-		//fc.uncompressIndex();
-		//fc.computeClosure();
-
-		// use integrity constraints at the very end ...
-		//fc.uploadRules("/Users/krieger/Desktop/Java/HFC/hfc/resources/idefault.rdl");
-		// ... and start closure computation again
-		//fc.computeClosure();
-		//fc.shutdown();
-
 	}
 
 }

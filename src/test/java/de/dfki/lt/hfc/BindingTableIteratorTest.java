@@ -22,7 +22,7 @@ public class BindingTableIteratorTest {
 
   @Before
   public void setup() throws FileNotFoundException, IOException, WrongFormatException {
-    ns = new Namespace(getTestResource("default.ns"), false);
+    ns = Namespace.defaultNamespace();
     ts = new TupleStore(100000, 250000, ns);
     ts.verbose = false;
     ts.readTuples(getTestResource("default.nt"));

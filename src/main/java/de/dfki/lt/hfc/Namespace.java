@@ -75,6 +75,9 @@ public final class Namespace {
 	public static final String OWL_SHORT = "owl";
 	public static final String OWL_LONG = "http://www.w3.org/2002/07/owl#";
 
+	public static final String TEST_SHORT = "test";
+	public static final String TEST_LONG = "http://www.dfki.de/lt/onto/test.owl";
+
 	// RDF: type
 
 	public static final String RDF_TYPE_SHORT = "<rdf:type>";
@@ -125,6 +128,20 @@ public final class Namespace {
 	public HashMap<String, NamespaceObject> longToNs = new HashMap<String, NamespaceObject>();
 
 	public final boolean shortIsDefault = false;
+
+	/**
+	 * @deprecated for test only
+	 * @return
+	 */
+	public static Namespace defaultNamespace(){
+		Namespace namespace = new Namespace();
+		namespace.putForm(XSD_SHORT,XSD_LONG,false);
+		namespace.putForm(RDF_SHORT, RDF_LONG, false);
+		namespace.putForm(RDFS_SHORT, RDFS_LONG, false);
+		namespace.putForm(OWL_SHORT, OWL_LONG, false);
+		namespace.putForm(TEST_SHORT, TEST_LONG, false);
+		return namespace;
+	}
 
 	/**
    * a mapping between XSD type specifiers and Java classes representing these types

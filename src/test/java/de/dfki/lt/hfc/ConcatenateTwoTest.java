@@ -28,9 +28,9 @@ public class ConcatenateTwoTest {
         100000,                                               // #atoms
         500000,                                               // #tuples
         getResource("concatenate.nt"),                            // tuple file
-        getResource("concatenate.rdl"),                           // rule file
-        getResource("concatenate.ns")                             // namespace file
+        getResource("concatenate.rdl")                          // rule file
         );
+
 
     // compute deductive closure
     fc.computeClosure();

@@ -70,7 +70,7 @@ public class ForwardChainerTest {
   @Test
   public void testForwardChainer4() throws FileNotFoundException, WrongFormatException, IOException {
     //test constructor ForwardChainer(Namespace namespace, TupleStore tupleStore, RuleStore ruleStore)
-    Namespace namespace = new Namespace(getTestResource("default.ns"));
+    Namespace namespace = Namespace.defaultNamespace();;
     TupleStore tupleStore = new TupleStore(1, 2, namespace);
     RuleStore ruleStore = new RuleStore(tupleStore);
     ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);
@@ -128,7 +128,7 @@ public class ForwardChainerTest {
     boolean verboseF = false;
     int noOfAtoms = 3;
     int noOfTuples = 4;
-    Namespace namespace = new Namespace(getTestResource("default.ns"));
+    Namespace namespace = Namespace.defaultNamespace();;
     TupleStore tupleStore = new TupleStore(2, 4, namespace);
     RuleStore ruleStore = new RuleStore(tupleStore);
     ForwardChainer fc = new ForwardChainer(noOfCores, false, noOfAtoms, noOfTuples, tupleStore,
@@ -189,7 +189,7 @@ public class ForwardChainerTest {
     int[] tuple = new int[2];
     tuple[0] = 2;
     tuple[1] = 2;
-    Namespace namespace = new Namespace(getTestResource("default.ns"));
+    Namespace namespace = Namespace.defaultNamespace();;
     TupleStore tupleStore = new TupleStore(2, 2, namespace);
     RuleStore ruleStore = new RuleStore(tupleStore);
     ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);
@@ -204,7 +204,7 @@ public class ForwardChainerTest {
     e[0] = 1;
     e[1] = 2;
     tuples.add(e);
-    Namespace namespace = new Namespace(getTestResource("default.ns"));
+    Namespace namespace = Namespace.defaultNamespace();;
     TupleStore tupleStore = new TupleStore(1, 2, namespace);
     RuleStore ruleStore = new RuleStore(tupleStore);
     ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);
@@ -236,7 +236,7 @@ public class ForwardChainerTest {
     assertEquals(fc1.computeClosure(1, true), true);
     assertEquals(fc1.computeClosure(2, false), true);
     //
-    Namespace namespace = new Namespace(getTestResource("default.ns"));
+    Namespace namespace = Namespace.defaultNamespace();;
     TupleStore tupleStore = new TupleStore(false, true, true, 2, 5, 4, 2, namespace, getTestResource("default.nt"));
     RuleStore ruleStore = new RuleStore(tupleStore);
     ForwardChainer fc2 = new ForwardChainer(tupleStore, ruleStore);
@@ -251,7 +251,7 @@ public class ForwardChainerTest {
   @Test
   public void testcomputeClosure1() throws FileNotFoundException, WrongFormatException, IOException {
     //test method computeClosure() that returns a boolean
-    Namespace namespace = new Namespace(getTestResource("default.ns"));
+    Namespace namespace = Namespace.defaultNamespace();;
     TupleStore tupleStore = new TupleStore(false, true, true, 2, 5, 4, 2, namespace, getTestResource("default.nt"));
     RuleStore ruleStore = new RuleStore(tupleStore);
     ForwardChainer fc2 = new ForwardChainer(tupleStore, ruleStore);
@@ -264,7 +264,7 @@ public class ForwardChainerTest {
     Set<int[]> newTuples = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     int noOfIterations = 2;
     boolean cleanUpRepository = true;
-    Namespace namespace = new Namespace(getTestResource("default.ns"));
+    Namespace namespace = Namespace.defaultNamespace();;
     TupleStore tupleStore = new TupleStore(false, true, true, 2, 5, 4, 2, namespace, getTestResource("default.nt"));
     RuleStore ruleStore = new RuleStore(tupleStore);
     ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);
@@ -331,7 +331,7 @@ public class ForwardChainerTest {
   public void testuploadTuples() throws FileNotFoundException, WrongFormatException, IOException {
     //test method uploadTuples(string filename)
     String filename = getTestResource("default.nt");
-    Namespace namespace = new Namespace(getTestResource("default.ns"));
+    Namespace namespace = Namespace.defaultNamespace();;
     TupleStore tupleStore = new TupleStore(1, 2, namespace);
     RuleStore ruleStore = new RuleStore(tupleStore);
     ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);
@@ -348,7 +348,7 @@ public class ForwardChainerTest {
     e[1] = 2;
     tuples.add(e);
 
-    Namespace namespace = new Namespace(getTestResource("default.ns"));
+    Namespace namespace = Namespace.defaultNamespace();;
     TupleStore tupleStore = new TupleStore(1, 2, namespace);
     RuleStore ruleStore = new RuleStore(tupleStore);
     ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);
@@ -360,7 +360,7 @@ public class ForwardChainerTest {
     //test method removeTuplesFromRepository(Collection<int[]> tuples)
     Collection<int[]> tuples = new THashSet<int[]>();
 
-    Namespace namespace = new Namespace(getTestResource("default.ns"));
+    Namespace namespace = Namespace.defaultNamespace();;
     TupleStore tupleStore = new TupleStore(1, 2, namespace);
     RuleStore ruleStore = new RuleStore(tupleStore);
     ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);
@@ -378,7 +378,7 @@ public class ForwardChainerTest {
     e[1] = 2;
     tuples.add(e);
 
-    Namespace namespace = new Namespace(getTestResource("default.ns"));
+    Namespace namespace = Namespace.defaultNamespace();;
     TupleStore tupleStore = new TupleStore(1, 2, namespace);
     RuleStore ruleStore = new RuleStore(tupleStore);
     ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);
@@ -393,7 +393,7 @@ public class ForwardChainerTest {
     e[0] = 1;
     e[1] = 2;
     tuples.add(e);
-    Namespace namespace = new Namespace(getTestResource("default.ns"));
+    Namespace namespace = Namespace.defaultNamespace();;
     TupleStore tupleStore = new TupleStore(1, 2, namespace);
     RuleStore ruleStore = new RuleStore(tupleStore);
     ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);
@@ -403,7 +403,7 @@ public class ForwardChainerTest {
   @Test
   public void testcomputeClosureFromRepository() throws FileNotFoundException, WrongFormatException, IOException{
     //test method computeClosureFromRepository()
-    Namespace namespace = new Namespace(getTestResource("default.ns"));
+    Namespace namespace = Namespace.defaultNamespace();;
     TupleStore tupleStore = new TupleStore(1, 2, namespace);
     RuleStore ruleStore = new RuleStore(tupleStore);
     ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);
@@ -411,7 +411,7 @@ public class ForwardChainerTest {
   }
 
   /* Don't know where this belongs
-    Namespace namespace = new Namespace(getTestResource("default.ns"));
+    Namespace namespace = Namespace.defaultNamespace();;
     TupleStore tupleStore = new TupleStore(1, 2, namespace);
     RuleStore ruleStore = new RuleStore(namespace, tupleStore);
     ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);
@@ -424,7 +424,7 @@ public class ForwardChainerTest {
   public void testuploadRules() throws FileNotFoundException, WrongFormatException, IOException {
     //test method uploadRules(String filename)
     String filename = getTestResource("default.eqred.rdl");
-    Namespace namespace = new Namespace(getTestResource("default.ns"));
+    Namespace namespace = Namespace.defaultNamespace();;
     TupleStore tupleStore = new TupleStore(1, 2, namespace);
     RuleStore ruleStore = new RuleStore(tupleStore);
     ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);
@@ -501,7 +501,7 @@ public class ForwardChainerTest {
 
   @Test
   public void testuncompressIndex() throws FileNotFoundException, WrongFormatException, IOException {
-    Namespace namespace = new Namespace(getTestResource("default.ns"));
+    Namespace namespace = Namespace.defaultNamespace();;
     TupleStore tupleStore = new TupleStore(1, 2, namespace);
     RuleStore ruleStore = new RuleStore(tupleStore);
     ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);

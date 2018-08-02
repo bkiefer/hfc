@@ -19,7 +19,7 @@ public final class IIntersectionNotEmptyTest {
       WrongFormatException, IOException, InterruptedException {
 
     // load Namespace
-    Namespace namespace = new Namespace(getTestResource("default.ns"));
+    Namespace namespace = Namespace.defaultNamespace();;
 
     // create TupleStore
     TupleStore store =

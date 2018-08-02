@@ -17,18 +17,7 @@ public class PrintTrueTest {
   @BeforeClass
   public static void init() throws Exception {
 
-    fc =  new ForwardChainer(1,                                                    // #cores
-        false,                                                 // verbose
-        true,                                                 // RDF Check
-        false,                                                // EQ reduction disabled
-        3,                                                    // min #args
-        3,                                                    // max #args
-        100000,                                               // #atoms
-        500000,                                               // #tuples
-        getResource("printtrue.nt"),                            // tuple file
-        getResource("printtrue.rdl"),                           // rule file
-        getResource("printtrue.ns")                             // namespace file
-        );
+    fc =  new ForwardChainer(Config.getInstance(getResource("PrintTrue.yml")));
 
     // compute deductive closure
 

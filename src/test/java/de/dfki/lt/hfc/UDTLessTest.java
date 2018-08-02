@@ -19,8 +19,7 @@ public final class UDTLessTest {
       WrongFormatException, IOException, InterruptedException {
 
     // load Namespace
-    Namespace namespace = new Namespace(getTestResource("default.ns"));
-
+    Namespace namespace = Namespace.defaultNamespace();
     // create TupleStore
     TupleStore store =
         new TupleStore(false, true, true, 2, 5, 4, 2, namespace,

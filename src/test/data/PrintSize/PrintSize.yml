@@ -1,0 +1,31 @@
+verbose: false
+characterEncoding: UTF-8
+noOfCores: 4
+noOfTuples: 500000
+noOfAtoms: 100000
+eqReduction: true
+
+shortIsDefault:  false
+namespaces:
+  xsd:  http://www.w3.org/2001/XMLSchema#
+  rdf:  http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  rdfs:  http://www.w3.org/2000/01/rdf-schema#
+  owl:  http://www.w3.org/2002/07/owl#
+  test: http://www.dfki.de/lt/onto/test.owl#
+
+tupleFiles:
+  - printSize.nt
+
+MinArgs: 3
+MaxArgs: 5
+subjectPosition: 0
+
+predicatePosition: 1
+objectPosition: 2
+rdfCheck: true
+exitOnError: true
+
+ruleFiles:
+  - printSize.rdl
+
+iterations: 2147483647

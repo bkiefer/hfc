@@ -23,7 +23,7 @@ import gnu.trove.set.hash.*;
 public class BindingTableTest {
 
   private Namespace getNS() throws FileNotFoundException, WrongFormatException, IOException {
-    return new Namespace(getTestResource("default.ns"), false);
+    return Namespace.defaultNamespace();
   }
 
   private TupleStore getTS() throws FileNotFoundException, WrongFormatException, IOException {

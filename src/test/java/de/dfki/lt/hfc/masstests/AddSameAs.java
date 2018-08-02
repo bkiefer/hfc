@@ -1,5 +1,6 @@
 package de.dfki.lt.hfc.masstests;
 
+import de.dfki.lt.hfc.Config;
 import de.dfki.lt.hfc.ForwardChainer;
 import de.dfki.lt.hfc.WrongFormatException;
 import static org.junit.Assert.*;
@@ -20,12 +21,10 @@ public class AddSameAs {
   // shortIsDefault no longer a static field in class Namespace
   public static ForwardChainer getFwChainer(boolean eqRed)
       throws FileNotFoundException, WrongFormatException, IOException {
-    ForwardChainer fc = new ForwardChainer(16,
-        false, false, eqRed, 3, 5, 100000, 500000,
-        getTestResource(eqRed ? "default.eqred.nt" : "default.nt"),
-        getTestResource(eqRed ? "default.eqred.rdl" : "default.rdl"),
-        getTestResource("AddSameAs", "default.sameAs.test.ns"));
+    ForwardChainer fc_eq = new ForwardChainer(Config.getInstance(getTestResource("AdSameAs_eqRed.yml")));
+    ForwardChainer fc = new ForwardChainer(Config.getInstance(getTestResource("AdSameAs.yml")));
     fc.uploadTuples(getTestResource("ltworld.jena.nt"));
+    fc_eq.uploadTuples(getTestResource("ltworld.jena.nt"));
     fc.computeClosure();
     return fc;
   }

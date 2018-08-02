@@ -105,7 +105,7 @@ public class IndexStore {
   }
 
 
-
+  private IndexStore(){};
 
   /**
    * Lookup the values associated with a specific key, by searching the given key in the Index.
@@ -482,4 +482,14 @@ public class IndexStore {
     return false;
   }
 
+  public IndexStore copy(){
+    IndexStore copy = new IndexStore();
+    copy.primaryIndex = this.primaryIndex;
+    copy.primIndexKey = this.primIndexKey;
+    copy.primIndexBackend = this.primIndexBackend;
+    copy.secundaryIndex = this.secundaryIndex;
+    copy.secIndexKey = this.secIndexKey;
+    copy.secIndexBackend = this.secIndexBackend;
+    return copy;
+  }
 }

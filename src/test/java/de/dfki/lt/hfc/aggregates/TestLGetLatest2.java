@@ -40,18 +40,7 @@ public class TestLGetLatest2 {
   @BeforeClass
   public static void init() throws Exception {
 
-    fc =	new ForwardChainer(4,                                                    // #cores
-        false,                                                 // verbose
-        true,                                                 // RDF Check
-        false,                                                // EQ reduction disabled
-        3,                                                    // min #args
-        3,                                                    // max #args
-        100000,                                               // #atoms
-        500000,                                               // #tuples
-        getResource("default.nt"),                            // tuple file
-        getResource("default.rdl"),                           // rule file
-        getResource("default.ns")                             // namespace file
-        );
+    fc =	new ForwardChainer(Config.getDefaultConfig());
 
     // upload instance test files
     fc.uploadTuples(getResource("time.nt"));
@@ -227,18 +216,7 @@ public class TestLGetLatest2 {
         {"<hst:da77>", "<rdf:type>", "<dafn:DialogueAct>"},
         {"<hst:da77>", "<dafn:happens>", "\"731\"^^<xsd:long>"},
     };
-    ForwardChainer localfc =  new ForwardChainer(4,           // #cores
-        false,                                                // verbose
-        true,                                                 // RDF Check
-        false,                                                // EQ reduction disabled
-        3,                                                    // min #args
-        5,                                                    // max #args
-        100000,                                               // #atoms
-        500000,                                               // #tuples
-        getResource("default.nt"),                            // tuple file
-        getResource("default.rdl"),                           // rule file
-        getResource("default.ns")                             // namespace file
-        );
+    ForwardChainer localfc =  new ForwardChainer(Config.getDefaultConfig());
 
     // upload instance test files
     localfc.uploadTuples(getResource("time.nt"));

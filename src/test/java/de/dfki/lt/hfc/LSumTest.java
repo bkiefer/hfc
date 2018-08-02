@@ -15,7 +15,7 @@ public final class LSumTest {
       WrongFormatException, IOException {
 
     // load Namespace
-    Namespace namespace = new Namespace(getTestResource("default.ns"));
+    Namespace namespace = Namespace.defaultNamespace();
 
     // create TupleStore
     TupleStore store

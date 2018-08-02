@@ -38,18 +38,7 @@ public class TestRemoveSupers {
   @BeforeClass
   public static void init() throws Exception {
 
-    fc =	new ForwardChainer(4,                                                    // #cores
-        false,                                                 // verbose
-        true,                                                 // RDF Check
-        false,                                                // EQ reduction disabled
-        3,                                                    // min #args
-        3,                                                    // max #args
-        100000,                                               // #atoms
-        500000,                                               // #tuples
-        getResource("default.nt"),                            // tuple file
-        getResource("default.rdl"),                           // rule file
-        getResource("default.ns")                             // namespace file
-        );
+    fc =	new ForwardChainer(Config.getDefaultConfig());
 
     // upload instance test files
     fc.uploadTuples(getResource("dialframe.nt"));

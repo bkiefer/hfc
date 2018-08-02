@@ -21,32 +21,10 @@ public class QueryTest_AllenRelations {
     @BeforeClass
     public static void init() throws Exception {
 
-        fcInterval =  new ForwardChainer(4,                                                     // #cores
-                false,                                                                    // verbose
-                false,                                                                  // RDF Check
-                false,                                                                // EQ reduction disabled
-                5,                                                    // min #args
-                5,                                                    // max #args
-                100000,                                               // #atoms
-                500000,                                               // #tuples
-                getResource("lookupIntervalTest.nt"),                 // tuple file
-                getResource("allenTest.rdl"),                           // rule file
-                getResource("default.ns"),                            // namespace file
-                getResource("allenTest.idx")
-        );
+        fcInterval =  new ForwardChainer(Config.getInstance(getResource("lookupIntervalTestIndex.yml")) );
 
-        fcNoIndex = new ForwardChainer(4,                                                    // #cores
-                false,                                                 // verbose
-                false,                                                 // RDF Check
-                false,                                                // EQ reduction disabled
-                5,                                                    // min #args
-                5,                                                    // max #args
-                100000,                                               // #atoms
-                500000,                                               // #tuples
-                getResource("lookupIntervalTest.nt"),                 // tuple file
-                getResource("allenTest.rdl"),                           // rule file
-                getResource("default.ns")                            // namespace file
-        );
+        fcNoIndex = new ForwardChainer(Config.getInstance(getResource("lookupIntervalTestNoIndex.yml")) );
+
 
 
     }

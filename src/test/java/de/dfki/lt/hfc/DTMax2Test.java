@@ -19,7 +19,7 @@ public final class DTMax2Test {
       WrongFormatException, IOException, InterruptedException {
 
     // load Namespace
-    Namespace namespace = new Namespace(getTestResource("default.ns"), false);
+    Namespace namespace = Namespace.defaultNamespace();
 
     // create TupleStore
     TupleStore store =

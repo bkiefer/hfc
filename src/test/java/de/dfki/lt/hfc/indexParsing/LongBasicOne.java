@@ -1,5 +1,6 @@
 package de.dfki.lt.hfc.indexParsing;
 
+import de.dfki.lt.hfc.Config;
 import de.dfki.lt.hfc.ForwardChainer;
 
 import de.dfki.lt.hfc.TestingUtils;
@@ -32,19 +33,7 @@ public class LongBasicOne {
     @BeforeClass
     public static void init() throws Exception {
 
-        fc =  new ForwardChainer(4,                                                    // #cores
-                false,                                                 // verbose
-                false,                                                 // RDF Check
-                false,                                                // EQ reduction disabled
-                4,                                                    // min #args
-                4,                                                    // max #args
-                100000,                                               // #atoms
-                500000,                                               // #tuples
-                getResource("basic_transaction_long0.nt"),                            // tuple file
-                getResource("transaction0.rdl"),                           // rule file  TODO
-                getResource("Transaction.ns"),                             // namespace file
-                getResource("basic_transaction_long0.idx")
-        );
+        fc =  new ForwardChainer(Config.getInstance(getResource("basic_transaction_long0.yml")));
 
         // compute deductive closure
         // TODO move this into extra tests -> fc.computeClosure();

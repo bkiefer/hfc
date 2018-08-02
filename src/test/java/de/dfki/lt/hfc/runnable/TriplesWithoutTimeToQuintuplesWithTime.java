@@ -29,17 +29,7 @@ public class TriplesWithoutTimeToQuintuplesWithTime {
 	public static void main(String[] args) throws Exception {
 
 		//   time java -server -cp .:../lib/trove-2.1.0.jar -Xmx1024m de/dfki/lt/hfc/tests/MaterializedTriplesToQuintuples
-		ForwardChainer fc =	new ForwardChainer(2,      // noOfCores
-																					 true,   // verbose
-																					 false,  // rdfCheck
-																					 true,
-																					 3,      // minNoOfArgs
-																					 5,      // maxNoOfArgs
-																					 NO_OF_ATOMS,
-																					 NO_OF_TUPLES,
-																					 getResource("default.nt"),
-																					 getResource("default.rdl"),
-																					 getResource("default.ns"));
+		ForwardChainer fc =	new ForwardChainer(Config.getDefaultConfig());
 		fc.uploadTuples(IN_FILE);
 		TupleStore ts = fc.tupleStore;
 		int start, end;

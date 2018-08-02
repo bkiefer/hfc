@@ -25,8 +25,7 @@ public class GetCurrentTimeTest {
         100000,                                               // #atoms
         500000,                                               // #tuples
         getResource("getcurrenttime.nt"),                            // tuple file
-        getResource("getcurrenttime.rdl"),                           // rule file
-        getResource("getcurrenttime.ns")                             // namespace file
+        getResource("getcurrenttime.rdl")                           // rule file
         );
 
     // compute deductive closure

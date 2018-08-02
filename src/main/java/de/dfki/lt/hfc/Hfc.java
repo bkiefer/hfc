@@ -2,9 +2,11 @@ package de.dfki.lt.hfc;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +23,6 @@ public class Hfc {
   /**
    * I'm making _all_ the potentially relevant object directly accessable
    */
-  private Namespace _namespace = null;
   public TupleStore _tupleStore = null;
   private RuleStore _ruleStore = null;
   private ForwardChainer _forwardChainer = null;
@@ -37,23 +38,24 @@ public class Hfc {
    * in the settings map;
    * the DEFAULT settings basically address the RDF triple case without equivalence class reduction
    */
-  protected String characterEncoding = "UTF-8";
-  protected boolean cleanUpRepository = true;
-  protected boolean equivalenceClassReduction = false;
-  protected boolean gc = false;
-  protected int maxNoOfArgs = 4;
-  protected int minNoOfArgs = 3;
-  protected int noOfAtoms = 10000;
-  protected int noOfCores = 2;
-  protected int noOfIterations = Integer.MAX_VALUE;  // aprox. complete materialization
-  protected int noOfTuples = 100000;
-  protected int objectPosition = 2;
-  protected String persistencyFile = "/tmp/tuples.nt";  // not used at the moment
-  protected int predicatePosition = 1;
-  protected boolean rdfCheck = true;
-  protected boolean shortIsDefault = true;
-  protected int subjectPosition = 0;
-  protected boolean verbose = false;
+//  protected String characterEncoding = "UTF-8";
+//  protected boolean cleanUpRepository = true;
+//  protected boolean equivalenceClassReduction = false;
+//  protected boolean gc = false;
+//  protected int maxNoOfArgs = 4;
+//  protected int minNoOfArgs = 3;
+//  protected int noOfAtoms = 10000;
+//  protected int noOfCores = 2;
+//  protected int noOfIterations = Integer.MAX_VALUE;  // aprox. complete materialization
+//  protected int noOfTuples = 100000;
+//  protected int objectPosition = 2;
+//  protected String persistencyFile = "/tmp/tuples.nt";  // not used at the moment
+//  protected int predicatePosition = 1;
+//  protected boolean rdfCheck = true;
+//  protected boolean shortIsDefault = true;
+//  protected int subjectPosition = 0;
+//  protected boolean verbose = false;
+  protected Config config;
 
   /**
    * transaction time time stamp used by Hfc.readTuples(BufferedReader tupleReader)
@@ -65,8 +67,13 @@ public class Hfc {
    * a namespace and a tuple store are guaranteed to exist
    */
   public Hfc() {
-    _namespace = new Namespace();
-    _tupleStore = new TupleStore(_namespace);
+    try {
+      this.config = Config.getDefaultConfig();
+      _tupleStore = new TupleStore(config.namespace);
+    } catch (FileNotFoundException e) {
+      logger.error("Was not able to load default configuration");
+      e.printStackTrace();
+    }
   }
 
   public void shutdown() {
@@ -81,84 +88,24 @@ public class Hfc {
     logger.info("HFC settings: " + settings);
     // make the settings available via protected fields in this class;
     // alphabetical order:
-    for (Map.Entry<String, String> pair : settings.entrySet()) {
-      switch (pair.getKey()) {
-        case "CHARACTER_ENCODING" :
-          this.characterEncoding = pair.getValue();
-          break;
-        case "CLEAN_UP_REPOSITORY" :
-          this.cleanUpRepository = Boolean.parseBoolean(pair.getValue());
-          break;
-        case "EQUIVALENCE_REDUCTION" :
-          this.equivalenceClassReduction = Boolean.parseBoolean(pair.getValue());
-          break;
-        case "GARBAGE_COLLECTION" :
-          this.gc = Boolean.parseBoolean(pair.getValue());
-          break;
-        case "MAX_NO_OF_ARGS" :
-          this.maxNoOfArgs = Integer.parseInt(pair.getValue());
-          break;
-        case "MIN_NO_OF_ARGS" :
-          this.minNoOfArgs = Integer.parseInt(pair.getValue());
-          break;
-        case "NO_OF_ATOMS" :
-          this.noOfAtoms = Integer.parseInt(pair.getValue());
-          break;
-        case "NO_OF_CORES" :
-          this.noOfCores = Integer.parseInt(pair.getValue());
-          break;
-        case "NO_OF_ITERATIONS" :
-          this.noOfIterations = Integer.parseInt(pair.getValue());
-          break;
-        case "NO_OF_TUPLES" :
-          this.noOfTuples = Integer.parseInt(pair.getValue());
-          break;
-        case "OBJECT_POSITION" :
-          this.objectPosition = Integer.parseInt(pair.getValue());
-          break;
-        case "PERSISTENCY_FILE" :
-          this.persistencyFile = pair.getValue();
-          break;
-        case "PREDICATE_POSITION" :
-          this.predicatePosition = Integer.parseInt(pair.getValue());
-          break;
-        case "RDF_CHECK" :
-          this.rdfCheck = Boolean.parseBoolean(pair.getValue());
-          break;
-        case "SHORT_IS_DEFAULT" :
-          this.shortIsDefault = Boolean.parseBoolean(pair.getValue());
-          break;
-        case "SUBJECT_POSITION" :
-          this.subjectPosition = Integer.parseInt(pair.getValue());
-          break;
-        case "VERBOSE" :
-          this.verbose = Boolean.parseBoolean(pair.getValue());
-          break;
-        default :
-          if (this.verbose)
-            logger.info("  unknown setting option: " + pair.getKey());
-          break;
-      }
-    }
-    // _namespace already bound in constructor
-    //_namespace.verbose = this.verbose;
-    _namespace.shortIsDefault = this.shortIsDefault;
+    this.config.updateConfig(settings);
+
     // _tupleStore already bound in constructor
-    _tupleStore.verbose = this.verbose;
-    _tupleStore.rdfCheck = this.rdfCheck;
-    _tupleStore.equivalenceClassReduction = this.equivalenceClassReduction;
+    _tupleStore.verbose = config.verbose;
+    _tupleStore.rdfCheck = config.rdfCheck;
+    _tupleStore.equivalenceClassReduction = config.eqReduction;
     if (_tupleStore.equivalenceClassReduction) {
-      _forwardChainer.cleanUpRepository = true;
+      _forwardChainer.config.cleanUpRepository = true;
     }
-    _tupleStore.minNoOfArgs = this.minNoOfArgs;
-    _tupleStore.maxNoOfArgs = this.maxNoOfArgs;
-    _tupleStore.subjectPosition = this.subjectPosition;
-    _tupleStore.predicatePosition = this.predicatePosition;
-    _tupleStore.objectPosition = this.objectPosition;
-    _tupleStore.noOfAtoms = this.noOfAtoms;
-    _tupleStore.noOfTuples = this.noOfTuples;
-    _tupleStore.inputCharacterEncoding = this.characterEncoding;
-    _tupleStore.outputCharacterEncoding = this.characterEncoding;
+    _tupleStore.minNoOfArgs = config.minArgs;
+    _tupleStore.maxNoOfArgs = config.maxArgs;
+    _tupleStore.subjectPosition = config.subjectPosition;
+    _tupleStore.predicatePosition = config.predicatePosition;
+    _tupleStore.objectPosition = config.objectPosition;
+    _tupleStore.noOfAtoms = config.noOfAtoms;
+    _tupleStore.noOfTuples = config.noOfTuples;
+    _tupleStore.inputCharacterEncoding = config.characterEncoding;
+    _tupleStore.outputCharacterEncoding = config.characterEncoding;
   }
 
 //  /**
@@ -179,8 +126,7 @@ public class Hfc {
 //  }
 
   public void addNamespace(String shortForm, String longForm) {
-
-    _namespace.putForm(shortForm, longForm, shortIsDefault);
+    config.putNamespace(shortForm,longForm);
   }
 
   public void readTuples(BufferedReader tupleReader)
@@ -188,18 +134,11 @@ public class Hfc {
     _tupleStore.readTuples(tupleReader);
   }
 
-  public void readTuples(BufferedReader tupleReader, BufferedReader nameSpaceReader)
-      throws WrongFormatException, IOException {
-//    _namespace.readNamespaces(nameSpaceReader);
+  public void readTuples(BufferedReader tupleReader, HashMap<String,String> namespaceMappings)
+    throws  WrongFormatException, IOException {
+    for (Map.Entry<String, String> e : namespaceMappings.entrySet())
+      config.putNamespace(e.getKey(), e.getValue());
     _tupleStore.readTuples(tupleReader);
-  }
-
-  public void readTuples(File tuples, File namespace)
-      throws WrongFormatException, IOException {
-    readTuples(Files.newBufferedReader(tuples.toPath(),
-        Charset.forName(_tupleStore.inputCharacterEncoding)),
-        Files.newBufferedReader(namespace.toPath(),
-            Charset.forName(_tupleStore.inputCharacterEncoding)));
   }
 
   public void readTuples(File tuples)
@@ -208,18 +147,22 @@ public class Hfc {
         Charset.forName(_tupleStore.inputCharacterEncoding)));
   }
 
+
+
   public void readTuples(File tuples, long timestamp)
       throws WrongFormatException, IOException {
     _tupleStore.readTuples(Files.newBufferedReader(tuples.toPath(),
         Charset.forName(_tupleStore.inputCharacterEncoding)),
-        null, new XsdLong(timestamp).toString(shortIsDefault));
+        null, new XsdLong(timestamp).toString());
   }
 
+
   String myNormalizeNamespaces(String s) {
+    //TODO
     switch (s.charAt(0)) {
     case '<' :
       return '<'
-          + _namespace.normalizeNamespaceUri(
+          + config.namespace.normalizeNamespaceUri(
               s.substring(1, s.length() - 1))
           + '>';
     case '"' :
@@ -227,7 +170,7 @@ public class Hfc {
       int pos = s.lastIndexOf('^');
       if (pos > 0 && s.charAt(pos - 1) == '^') {
         return s.substring(0, pos + 2)
-            + _namespace.normalizeNamespaceUri(s.substring(pos + 2, s.length() - 1))
+            + config.namespace.normalizeNamespaceUri(s.substring(pos + 2, s.length() - 1))
             + '>';
       }
     }
@@ -307,20 +250,14 @@ public class Hfc {
       // sexternary constructor would suffice here
       _ruleStore = new RuleStore(_tupleStore);
       // customize rule store settings
-      _ruleStore.minNoOfArgs = this.minNoOfArgs;
-      _ruleStore.maxNoOfArgs = this.maxNoOfArgs;
-      _ruleStore.verbose = this.verbose;
-      _ruleStore.rdfCheck = this.rdfCheck;
+      _ruleStore.minNoOfArgs = config.minArgs;
+      _ruleStore.maxNoOfArgs = config.maxArgs;
+      _ruleStore.verbose = config.verbose;
+      _ruleStore.rdfCheck = config.rdfCheck;
       // after defining the approapriate settings, load the _first_ rule file
       _ruleStore.readRules(rules.getAbsolutePath());
       // create forward chainer
-      _forwardChainer = new ForwardChainer(_tupleStore, _ruleStore);
-      // customize forward chainer
-      _forwardChainer.gc = this.gc;
-      _forwardChainer.noOfCores = this.noOfCores;
-      _forwardChainer.noOfIterations = this.noOfIterations;
-      _forwardChainer.cleanUpRepository = this.cleanUpRepository;
-      _forwardChainer.verbose = this.verbose;
+      _forwardChainer = new ForwardChainer(config, _tupleStore, _ruleStore);
     }
     else {
       // value of noOfTask in the forward chainer needs to be adapted every time
@@ -341,7 +278,7 @@ public class Hfc {
 
   public void computeClosure() {
     if (null != _forwardChainer) {
-      _forwardChainer.cleanUpRepository = true;
+      _forwardChainer.config.cleanUpRepository = true;
       _forwardChainer.computeClosure();
     } else {
       _tupleStore.cleanUpTupleStore();

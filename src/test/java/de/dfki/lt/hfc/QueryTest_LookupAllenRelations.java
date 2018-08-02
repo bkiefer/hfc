@@ -27,19 +27,7 @@ public class QueryTest_LookupAllenRelations {
     @BeforeClass
     public static void init() throws Exception {
 
-        fc =  new ForwardChainer(4,                                                    // #cores
-                false,                                                 // verbose
-                false,                                                 // RDF Check
-                false,                                                // EQ reduction disabled
-                5,                                                    // min #args
-                5,                                                    // max #args
-                100000,                                               // #atoms
-                500000,                                               // #tuples
-                getResource("lookupIntervalTest.nt"),                 // tuple file
-                getResource("allenTest.rdl"),                           // rule file  TODO
-                getResource("default.ns"),                            // namespace file
-                getResource("allenTest.idx")
-        );
+        fc =  new ForwardChainer(Config.getInstance(getResource("LookupAllenRelations.yml")));
 
 
         // compute deductive closure

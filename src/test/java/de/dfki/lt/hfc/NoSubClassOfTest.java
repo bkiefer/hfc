@@ -16,18 +16,7 @@ public class NoSubClassOfTest {
   @BeforeClass
   public static void init() throws Exception {
 
-    fc =  new ForwardChainer(4,                                                    // #cores
-        false,                                                 // verbose
-        true,                                                 // RDF Check
-        false,                                                // EQ reduction disabled
-        3,                                                    // min #args
-        3,                                                    // max #args
-        100000,                                               // #atoms
-        500000,                                               // #tuples
-        getResource("nosubclassof.nt"),                            // tuple file
-        getResource("nosubclassof.rdl"),                           // rule file
-        getResource("nosubclassof.ns")                             // namespace file
-        );
+    fc =  new ForwardChainer(Config.getInstance(getResource("NoSubclassOf.yml")));
 
     // compute deductive closure
 

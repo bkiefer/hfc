@@ -42,24 +42,8 @@ public class TransactionTimeTest {
 
   @BeforeClass
   public static void init() throws Exception {
-    fc =	new ForwardChainer(
-      4,                                                                   // #cores
-      false,                                                               // verbose
-      true,                                                                // RDF Check
-      true,                                                                // EQ reduction enabled
-      5,                                                                   // min #args
-      5,                                                                   // max #args
-      1,                                                                   // subject position
-      2,                                                                   // predicate position
-      3,                                                                   // object position
-      10000,                                                               // #atoms
-      50000,                                                               // #tuples
-      getResource("default.polarity.transtime.long.quintuple.eqred.nt"),   // initial tuple file (5-tuples)
-      getResource("default.polarity.transtime.long.quintuple.eqred.rdl"),  // initial rule file, (5-tuples)
-      getResource("default.ns")                                            // initial namespace file
-      );
+    fc =	new ForwardChainer(Config.getInstance(getResource("TestTransaction.yml")));
     // further PAL-specific namespaces (short-to-long mappings, XSD DTs-to-Java class mappings)
-    fc.uploadNamespaces(getResource("pal.ns"));
     // further PAL-specific tuples (special XSD DT)
     fc.uploadTuples(getResource("pal.polarity.transtime.long.quintuple.eqred.nt"));  // already 5-tuples
     // further PAL-specific triples from the inidividual sub-ontologies: make them 5-tuples

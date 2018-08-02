@@ -15,7 +15,7 @@ public final class LNotEqualTest {
       WrongFormatException, IOException {
 
     // load Namespace
-    Namespace namespace = new Namespace(getTestResource("default.ns"), false);
+    Namespace namespace = Namespace.defaultNamespace();
 
     // create TupleStore
     TupleStore store =

@@ -45,18 +45,7 @@ public class TestGetEvents {
     @Before
     public void init() throws Exception {
 
-        fc = new ForwardChainer(4,                                                    // #cores
-                false,                                                 // verbose
-                false,                                                 // RDF Check
-                false,                                                // EQ reduction disabled
-                3,                                                    // min #args, the 4th arg is an instance of xsd:long encoding the transaction time
-                4,                                                    // max #args
-                100000,                                               // #atoms
-                500000,                                               // #tuples
-                getResource("default.nt"),                            // tuple file
-                getResource("default.rdl"),                           // rule file
-                getResource("default.ns")                             // namespace file
-        );
+        fc = new ForwardChainer(Config.getDefaultConfig() );
 
         fc.uploadTuples(getResource("test.child.labvalues.nt"));
     }

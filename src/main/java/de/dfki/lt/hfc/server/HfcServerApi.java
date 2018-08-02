@@ -3,10 +3,8 @@ package de.dfki.lt.hfc.server;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-import de.dfki.lt.hfc.ForwardChainer;
-import de.dfki.lt.hfc.Query;
-import de.dfki.lt.hfc.BindingTable;
-import de.dfki.lt.hfc.QueryParseException;
+
+import de.dfki.lt.hfc.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -116,7 +114,7 @@ public class HfcServerApi {
 		// if equivalence class reduction is turned on and a cleanup has been performed,
 		// further closure computations might be necessary, since cleanups are performed
 		// after a closure computation which potentially make passive rules again active
-		if (HfcServerApi.HFC.tupleStore.equivalenceClassReduction && HfcServerApi.HFC.cleanUpRepository) {
+		if (HfcServerApi.HFC.tupleStore.equivalenceClassReduction && HfcServerApi.HFC.getCleanUpRepository()) {
 			while (HfcServerApi.HFC.computeClosure()) {
 			}
 		}
@@ -146,11 +144,10 @@ public class HfcServerApi {
 			// get rid of 'start'
 			StringTokenizer st = new StringTokenizer(command);
 			st.nextToken();
-			final String namespaces = st.nextToken();
-			final String rules = st.nextToken();
-			final String tuples = st.nextToken();
+			final String configName = st.nextToken();
+			Config config = Config.getInstance(configName);
 			// new HFC
-			HfcServerApi.HFC = new ForwardChainer(tuples, rules, namespaces);
+			HfcServerApi.HFC = new ForwardChainer(config);
 			// further tuples to upload
 			while (st.hasMoreTokens()) {
 				HfcServerApi.HFC.uploadTuples(st.nextToken());

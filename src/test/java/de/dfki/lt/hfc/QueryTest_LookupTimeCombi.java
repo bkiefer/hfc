@@ -33,9 +33,7 @@ public class QueryTest_LookupTimeCombi {
         100000,                                               // #atoms
         500000,                                               // #tuples
         getResource("lookupAtomIntervalTest.nt"),                 // tuple file
-        getResource("combiTest.rdl"),                           // rule file  TODO
-        getResource("default.ns"),                            // namespace file
-        getResource("lookupCombi.idx")
+        getResource("combiTest.rdl")
     );
 
     // compute deductive closure

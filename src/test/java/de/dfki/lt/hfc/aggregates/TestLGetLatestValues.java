@@ -42,18 +42,7 @@ public class TestLGetLatestValues {
   public static void init() throws Exception {
 
     // forward chainer actually not needed -- tuple store and query object would suffice !
-    fc =	new ForwardChainer(4,                                // #cores
-        false,                                                // verbose
-        true,                                                 // RDF Check
-        false,                                                // EQ reduction disabled
-        3,                                                    // min #args
-        4,                                                    // max #args
-        10000,                                               // #atoms
-        50000,                                               // #tuples
-        getResource("default.nt"),                            // tuple file
-        getResource("default.rdl"),                           // rule file
-        getResource("default.ns")                             // namespace file
-        );
+    fc =	new ForwardChainer(Config.getDefaultConfig());
 
     // manually-constructed child test data from PAL
     //   <pal:lisa> <rdf:type> <dom:Child> "5544"^^<xsd:long> .

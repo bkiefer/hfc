@@ -21,33 +21,10 @@ public class TestApplicabilityOfAllenRelations {
   @BeforeClass
   public static void init() throws Exception {
 
-    fcWithIntervalTree_Index = new ForwardChainer(4,                                                    // #cores
-        false,                                                 // verbose
-        false,                                                 // RDF Check
-        false,                                                // EQ reduction disabled
-        6,                                                    // min #args
-        6,                                                    // max #args
-        100000,                                               // #atoms
-        500000,                                               // #tuples
-        getResource("lookupAtomIntervalTest.nt"),                 // tuple file
-        getResource("combiTest.rdl"),                           // rule file  TODO
-        getResource("default.ns"),                            // namespace file
-        getResource("lookupCombi.idx")
-    );
+    fcWithIntervalTree_Index = new ForwardChainer(Config.getInstance(getResource("AllenRelationIndex.yml")));
 
-    fcWithoutIntervalTree_Index = new ForwardChainer(4,                                                    // #cores
-        false,                                                 // verbose
-        false,                                                 // RDF Check
-        false,                                                // EQ reduction disabled
-        6,                                                    // min #args
-        6,                                                    // max #args
-        100000,                                               // #atoms
-        500000,                                               // #tuples
-        getResource("lookupAtomIntervalTest.nt"),                 // tuple file
-        getResource("combiTest.rdl"),                           // rule file  TODO
-        getResource("default.ns"),                            // namespace file
-        getResource("testApplicabilityFalse.idx")
-    );
+    fcWithoutIntervalTree_Index = new ForwardChainer(Config.getInstance(getResource("AllenRelationNoIndex.yml")));
+
   }
 
   @Test

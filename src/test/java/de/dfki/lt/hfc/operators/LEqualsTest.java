@@ -19,7 +19,10 @@ public class LEqualsTest {
 
   @BeforeClass
   public static void init() throws FileNotFoundException, WrongFormatException, IOException {
-    Namespace ns = new Namespace(getResource("namespaces.ns"), false);
+    Namespace ns = Namespace.defaultNamespace();
+    ns.putForm("logic", "http://www.dfki.de/lt/onto/common/logic.owl#", ns.shortIsDefault);
+    ns.putForm("dom", "http://www.dfki.de/lt/onto/pal/domain.owl#", ns.shortIsDefault);
+    ns.putForm("pal", "http://www.dfki.de/lt/onto/pal/pal.owl#",ns.shortIsDefault);
     ts = new TupleStore(1000, 5000, ns);
     ts.verbose = false;
     ts.readTuples(getResource("tuples.nt"));

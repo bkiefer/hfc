@@ -1,5 +1,6 @@
 package de.dfki.lt.hfc;
 
+import de.dfki.lt.hfc.operators.PrintSize;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -33,18 +34,7 @@ public class PrintSizeTest {
   @BeforeClass
   public static void init() throws Exception {
 
-    fc =  new ForwardChainer(4,                                                    // #cores
-        false,                                                 // verbose
-        true,                                                 // RDF Check
-        false,                                                // EQ reduction disabled
-        3,                                                    // min #args
-        3,                                                    // max #args
-        100000,                                               // #atoms
-        500000,                                               // #tuples
-        getResource("printsize.nt"),                            // tuple file
-        getResource("printsize.rdl"),                           // rule file
-        getResource("printsize.ns")                             // namespace file
-        );
+    fc =  new ForwardChainer(Config.getInstance(getResource("PrintSize.yml")));
 
     // compute deductive closure
 
@@ -57,7 +47,7 @@ public class PrintSizeTest {
     // TODO: FIX EXPECTED DATA
 
      // load Namespace
-    Namespace namespace = new Namespace(getTestResource("default.ns"));
+    Namespace namespace = Namespace.defaultNamespace();
 
     // create TupleStore
     TupleStore store =

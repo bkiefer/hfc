@@ -1,5 +1,6 @@
 package de.dfki.lt.hfc.server;
 
+import de.dfki.lt.hfc.Config;
 import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.server.PropertyHandlerMapping;
 import org.apache.xmlrpc.server.XmlRpcServer;
@@ -18,7 +19,6 @@ import java.util.ArrayList;
 /**
  * establishes an XML-RPC server for querying information from the repository;
  * starting the server means to call the main method with exactly four arguments
- * @see main()
  *
  * @author Hans-Ulrich Krieger
  * @version Thu Jun 30 16:10:04 CEST 2011
@@ -63,61 +63,26 @@ public class HfcServer {
 	 * @throws WrongFormatException
 	 * @throws FileNotFoundException
 	 *
-	 * @see main()
 	 */
 	private HfcServer(String[] args) throws FileNotFoundException, WrongFormatException, IOException {
 		this.port = Integer.parseInt(args[0]);
-		String[] namespaces = (new File(args[1])).list();
+		String configFile = args[1];
 		String[] tuples = (new File(args[2])).list();
 		String[] rules = (new File(args[3])).list();
 		// remove files which start with '.' or end with '~'
-		ArrayList<String> files = new ArrayList<String>();
-		for (String file : namespaces)
-			if (isProperFile(file))
-				files.add(file);
-		namespaces = files.toArray(new String[files.size()]);
-		files.clear();
-		for (String file : tuples)
-			if (isProperFile(file))
-				files.add(file);
-		tuples = files.toArray(new String[files.size()]);
-		files.clear();
-		for (String file : rules)
-			if (isProperFile(file))
-				files.add(file);
-		rules = files.toArray(new String[files.size()]);
-		// check whether all dirs contain at least one file
-		if (namespaces.length == 0) {
-			logger.error("  namespace directory " + args[1] + " is empty");
-			System.exit(1);
-		}
-		if (tuples.length == 0) {
-			logger.error("  tuple directory " + args[2] + " is empty");
-			System.exit(1);
-		}
-		if (rules.length == 0) {
-			logger.error("  rule directory " + args[3] + " is empty");
+		if (!configFile.endsWith(".yml")) {
+			logger.error("  config file " + args[1] + " is not valid");
 			System.exit(1);
 		}
 		// construct minimal forward chainer
-		this.hfc = new ForwardChainer(args[2] + tuples[0], args[3] + rules[0], args[1] + namespaces[0]);
+		this.hfc = new ForwardChainer(Config.getInstance(configFile));
 		// upload additional namespace, tuple, and rule files, if specified
-		//TODO fix this
-//		for (int i = 1; i < namespaces.length; i++) {
-//			this.hfc.uploadNamespaces(args[1] + namespaces[i]);
-//		}
-		for (int i = 1; i < tuples.length; i++) {
-			this.hfc.uploadTuples(args[2] + tuples[i]);
-		}
-		for (int i = 1; i < rules.length; i++) {
-			this.hfc.uploadRules(args[3] + rules[i]);
-		}
 		// always compute closure
 		this.hfc.computeClosure();
 		// if equivalence class reduction is turned on and a cleanup has been performed,
 		// further closure computations might be necessary, since cleanups are performed
 		// after a closure computation which potentially make passive rules active again
-		if (this.hfc.tupleStore.equivalenceClassReduction && this.hfc.cleanUpRepository) {
+		if (this.hfc.isEquivalenceClassReduction() && this.hfc.isCleanUpRepository()) {
 			while (this.hfc.computeClosure()) {
 			}
 		}
@@ -140,7 +105,6 @@ public class HfcServer {
 	/**
 	 * starts the server and assigns instance fields hfc and query to the static
 	 * class fields HFC and QUERY in class HfcServerApi
-	 * @see HfcServerApi.stopServer()
 	 */
 	public synchronized void startServer() {
 		try {

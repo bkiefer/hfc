@@ -68,19 +68,6 @@ public class RuleStoreTest {
   }
 
   @Test
-  //TODO refactor
-  public void testisValidTuple() throws FileNotFoundException, WrongFormatException, IOException {
-    ArrayList<String> stringTuple = new ArrayList<String>();
-    stringTuple.add("a");
-    Namespace namespace = new Namespace(getTestResource("default.ns"), false);
-    TupleStore tupleStore = new TupleStore(1, 2);
-    String ruleFile = new String(getTestResource("default.test.rdl"));
-    //RuleStore rs = new RuleStore(true, true, 0, 0, tupleStore, ruleFile);
-    //RuleStore rs = new RuleStore(tupleStore);
-    //rs.isValidTuple(stringTuple);
-  }
-
-  @Test
   public void testwriteRules() throws FileNotFoundException, WrongFormatException, IOException {
     TupleStore tupleStore = new TupleStore(2, 4);
     String ruleFile = new String(getTestResource("default.test.rdl"));
@@ -99,7 +86,7 @@ public class RuleStoreTest {
 
   @Test
   public void testcopyRuleStore() throws FileNotFoundException, WrongFormatException, IOException {
-    Namespace namespace = new Namespace(getTestResource("default.ns"), false);
+    Namespace namespace = Namespace.defaultNamespace();
     //TupleStore tupleStore = new TupleStore(2, 4);
     TupleStore ts = new TupleStore(false, true, true, 2, 5, 4, 2, namespace, getTestResource("default.nt"));
     RuleStore rs = new RuleStore(ts);
@@ -109,4 +96,5 @@ public class RuleStoreTest {
     assertFalse(rs == rs.copyRuleStore(ts));
     //TODO one more branch
   }
+
 }

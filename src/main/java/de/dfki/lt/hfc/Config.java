@@ -65,7 +65,7 @@ public class Config {
     public boolean gc;
     public boolean cleanUpRepository;
 
-    public final Namespace namespace = new Namespace();
+    public  Namespace namespace = new Namespace();
 
 
     public Config(Map<String, Object> configs) {IndexStore indexStore1;

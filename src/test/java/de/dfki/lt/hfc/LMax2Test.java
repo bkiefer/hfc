@@ -15,7 +15,7 @@ public final class LMax2Test {
       WrongFormatException, IOException {
 
     // load Namespace
-    Namespace namespace = new Namespace(getTestResource("default.ns"), false);
+    Namespace namespace = Namespace.defaultNamespace();
 
     // create TupleStore
     TupleStore store =

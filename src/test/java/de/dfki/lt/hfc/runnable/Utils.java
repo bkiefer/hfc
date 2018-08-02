@@ -14,12 +14,10 @@ public class Utils {
   private static final File tmpDir = new File("/tmp");
 
   public static String getResource(String name) {
-    // System.out.println(new File(".").getAbsolutePath());
     return new File(resourceDir, name).getPath();
   }
 
   public static String getTempFile(String name) {
-    // System.out.println(new File(".").getAbsolutePath());
     return new File(tmpDir, name).getPath();
   }
 

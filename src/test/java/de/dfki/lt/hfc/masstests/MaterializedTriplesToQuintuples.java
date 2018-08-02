@@ -37,19 +37,7 @@ public class MaterializedTriplesToQuintuples {
     //   time java -server -cp .:../lib/trove-2.1.0.jar -Xmx1024m de/dfki/lt/hfc/tests/MaterializedTriplesToFile
 	  int tuples = 0;
 	  {
-	    ForwardChainer fc = new ForwardChainer(
-
-	      4, // int noOfCores,
-        false, // boolean verbose,
-        false, //boolean rdfCheck,
-        true, //boolean eqReduction,
-        3, //int minNoOfArgs,
-        3, //int maxNoOfArgs,
-        100000, //int noOfAtoms,
-        500000, //int noOfTuples,
-        getTestResource("default.eqred.nt"),
-        getTestResource("default.eqred.rdl"),
-        getTestResource("default.ns"));
+	    ForwardChainer fc = new ForwardChainer(Config.getInstance(getTestResource("test_eq.yml")));
 	    fc.uploadTuples(getTestResource("ltworld.jena.nt"));
 	    fc.computeClosure();
 	    tuples = fc.tupleStore.getAllTuples().size();
@@ -57,18 +45,7 @@ public class MaterializedTriplesToQuintuples {
 	    fc.shutdownNoExit();
 	  }
 
-    ForwardChainer fc2 = new ForwardChainer(
-        4, // int noOfCores,
-        false, // boolean verbose,
-        false, //boolean rdfCheck,
-        true, //boolean eqReduction,
-        3, //int minNoOfArgs,
-        3, //int maxNoOfArgs,
-        100000, //int noOfAtoms,
-        500000, //int noOfTuples,
-        IN_FILE,
-        getTestResource("default.eqred.rdl"),
-        getTestResource("default.ns"));
+    ForwardChainer fc2 = new ForwardChainer(Config.getInstance(getTestResource("test.yml")));
     int tuples2 = fc2.tupleStore.getAllTuples().size();
     fc2.shutdownNoExit();
     assertEquals(tuples, tuples2);
@@ -78,19 +55,7 @@ public class MaterializedTriplesToQuintuples {
 	@Test
 	public void triplesToQuintuplesTest() throws Exception {
     {
-      ForwardChainer fc = new ForwardChainer(
-
-        4, // int noOfCores,
-        false, // boolean verbose,
-        false, //boolean rdfCheck,
-        true, //boolean eqReduction,
-        3, //int minNoOfArgs,
-        3, //int maxNoOfArgs,
-        100000, //int noOfAtoms,
-        500000, //int noOfTuples,
-        getTestResource("default.eqred.nt"),
-        getTestResource("default.eqred.rdl"),
-        getTestResource("default.ns"));
+      ForwardChainer fc = new ForwardChainer(Config.getInstance(getTestResource("test_eq.yml")));
       fc.uploadTuples(getTestResource("ltworld.jena.nt"));
       fc.computeClosure();
       fc.tupleStore.writeTuples(IN_FILE);
@@ -107,8 +72,8 @@ public class MaterializedTriplesToQuintuples {
 																					 NO_OF_ATOMS,
 																					 NO_OF_TUPLES,
 																					 IN_FILE,
-																					 getTestResource("default.eqred.rdl"),
-																					 getTestResource("default.ns"));
+																					 getTestResource("default.eqred.rdl")
+																					 );
 
 		TupleStore ts = fc.tupleStore;
 		int start, end;
@@ -142,8 +107,7 @@ public class MaterializedTriplesToQuintuples {
         NO_OF_ATOMS,
         NO_OF_TUPLES,
         OUT_FILE,
-        getTestResource("default.eqred.rdl"),
-        getTestResource("default.ns"));
+        getTestResource("default.eqred.rdl"));
 
 		assertEquals(tuples, fc.tupleStore.getAllTuples().size());
 

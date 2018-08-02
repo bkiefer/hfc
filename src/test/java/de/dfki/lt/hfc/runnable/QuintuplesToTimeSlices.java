@@ -41,8 +41,8 @@ public class QuintuplesToTimeSlices {
 																					 NO_OF_ATOMS,
 																					 NO_OF_TUPLES,
 																					 IN_FILE,
-																					 getResource("default.rdl"),
-																					 getResource("default.ns"));
+																					 getResource("default.rdl")
+																					 );
 
 		TupleStore ts = fc.tupleStore;
 		int[] triple;
