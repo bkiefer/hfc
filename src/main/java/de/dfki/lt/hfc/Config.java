@@ -2,12 +2,19 @@ package de.dfki.lt.hfc;
 
 import de.dfki.lt.hfc.indices.IndexingException;
 import de.dfki.lt.hfc.types.Uri;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
 import java.util.*;
 
 public class Config {
+
+    /**
+     * A basic LOGGER.
+     */
+    private static final Logger logger = LoggerFactory.getLogger(Config.class);
 
     // special value UNBOUND/NULL, not used at the moment
     public static final Uri UNBOUND = new Uri("Null");
@@ -36,24 +43,27 @@ public class Config {
     public static final int OWL_DISJOINTWITH_ID = 5;
 
 
-    public final boolean verbose;
-    public final int noOfCores;
-    public final int noOfTuples;
-    public final int noOfAtoms;
-    public final boolean eqReduction;
-    public final List<String> tupleFiles;
-    public final List<String> ruleFiles;
-    public final boolean shortIsDefault;
-    public final int maxArgs;
-    public final int minArgs;
-    public final int subjectPosition;
-    public final int predicatePosition;
-    public final int objectPosition;
-    public final boolean rdfCheck;
-    public final boolean exitOnError;
-    public final String characterEncoding;
-    public final int noOfIterations;
-    public final IndexStore indexStore;
+    public boolean verbose;
+    public int noOfCores;
+    public int noOfTuples;
+    public int noOfAtoms;
+    public boolean eqReduction;
+    public List<String> tupleFiles;
+    public String persistencyFile;
+    public List<String> ruleFiles;
+    public boolean shortIsDefault;
+    public int maxArgs;
+    public int minArgs;
+    public int subjectPosition;
+    public int predicatePosition;
+    public int objectPosition;
+    public boolean rdfCheck;
+    public boolean exitOnError;
+    public String characterEncoding;
+    public int noOfIterations;
+    public IndexStore indexStore;
+    public boolean gc;
+    public boolean cleanUpRepository;
 
     public final Namespace namespace = new Namespace();
 
@@ -61,14 +71,17 @@ public class Config {
     public Config(Map<String, Object> configs) {IndexStore indexStore1;
         this.verbose = (boolean) configs.get("verbose");
         this.characterEncoding = (String) configs.get("characterEncoding");
+        this.gc = (boolean) configs.get("garbageCollection");
         this.noOfCores = (int) configs.get("noOfCores");
         this.noOfTuples = (int) configs.get("noOfTuples");
         this.noOfAtoms = (int) configs.get("noOfAtoms");
         this.eqReduction = (boolean) configs.get("eqReduction");
         this.tupleFiles = (ArrayList) configs.get("tupleFiles");
         this.ruleFiles = (ArrayList) configs.get("ruleFiles");
+        this.persistencyFile = (String) configs.get("persistencyFile");
         this.noOfIterations = (int) configs.get("iterations");
         this.shortIsDefault = (boolean)configs.get("shortIsDefault");
+        this.cleanUpRepository = (boolean) configs.get("cleanUpRepository");
         HashMap<String, String> shortToLong = (HashMap<String, String>) configs.get("namespaces");
         NamespaceObject ns;
         for (Map.Entry<String, String> mapping : shortToLong.entrySet()){
@@ -91,6 +104,11 @@ public class Config {
         this.indexStore = indexStore1;
     }
 
+    public Config(int noOfCores, boolean verbose) {
+        this.verbose = verbose;
+        this.noOfCores = noOfCores;
+    }
+
     public static Config getInstance(String configFileName) throws FileNotFoundException {
         Yaml yaml = new Yaml();
         File confFile = new File(configFileName);
@@ -99,6 +117,68 @@ public class Config {
 
     }
 
+
+    public void updateConfig(Map<String, String> configuration){
+        for (Map.Entry<String, String> pair : configuration.entrySet()) {
+            switch (pair.getKey()) {
+                case "characterEncoding" :
+                    this.characterEncoding = pair.getValue();
+                    break;
+                case "cleanUpRepository" :
+                    this.cleanUpRepository = Boolean.parseBoolean(pair.getValue());
+                    break;
+                case "eqReduction" :
+                    this.eqReduction = Boolean.parseBoolean(pair.getValue());
+                    break;
+                case "garbageCollection" :
+                    this.gc = Boolean.parseBoolean(pair.getValue());
+                    break;
+                case "MaxArgs" :
+                    this.maxArgs = Integer.parseInt(pair.getValue());
+                    break;
+                case "MinArgs" :
+                    this.minArgs = Integer.parseInt(pair.getValue());
+                    break;
+                case "noOfAtoms" :
+                    this.noOfAtoms = Integer.parseInt(pair.getValue());
+                    break;
+                case "noOfCores" :
+                    this.noOfCores = Integer.parseInt(pair.getValue());
+                    break;
+                case "noOfIterations" :
+                    this.noOfIterations = Integer.parseInt(pair.getValue());
+                    break;
+                case "noOfTuples" :
+                    this.noOfTuples = Integer.parseInt(pair.getValue());
+                    break;
+                case "objectPosition" :
+                    this.objectPosition = Integer.parseInt(pair.getValue());
+                    break;
+                case "persistencyFile" :
+                    this.persistencyFile = pair.getValue();
+                    break;
+                case "predicatePosition" :
+                    this.predicatePosition = Integer.parseInt(pair.getValue());
+                    break;
+                case "rdfCheck" :
+                    this.rdfCheck = Boolean.parseBoolean(pair.getValue());
+                    break;
+                case "shortIsDefault" :
+                    this.setShortIsDefault(Boolean.parseBoolean(pair.getValue()));
+                    break;
+                case "subjectPosition" :
+                    this.subjectPosition = Integer.parseInt(pair.getValue());
+                    break;
+                case "verbose" :
+                    this.verbose = Boolean.parseBoolean(pair.getValue());
+                    break;
+                default :
+                    if (this.verbose)
+                        logger.info("  unknown setting option: " + pair.getKey());
+                    break;
+            }
+        }
+    }
 
     private IndexStore createIndexStore(HashMap<String, Object> indexSettings) throws IndexingException {
         return new IndexStore(indexSettings);
@@ -138,7 +218,37 @@ public class Config {
     }
 
 
+    public void putNamespace(String shortNamespace, String longNamespace) {
+        namespace.putForm(shortNamespace,longNamespace,shortIsDefault);
+    }
 
+    public void setShortIsDefault(boolean shortIsDefault) {
+        this.shortIsDefault = shortIsDefault;
+        namespace.updateNamespace(shortIsDefault);
+    }
 
-
+    public Config getCopy(int noOfCores, boolean verbose) {
+        Config copy = new Config(noOfCores,verbose);
+        copy.characterEncoding = this.characterEncoding;
+        copy.gc = this.gc;
+        copy.noOfTuples = this.noOfTuples;
+        copy.noOfAtoms = this.noOfAtoms;
+        copy.eqReduction = this.eqReduction;
+        copy.tupleFiles = this.tupleFiles;
+        copy.ruleFiles = this.ruleFiles;
+        copy.persistencyFile = this.persistencyFile;
+        copy.noOfIterations = this.noOfIterations;
+        copy.shortIsDefault = this.shortIsDefault;
+        copy.cleanUpRepository = this.cleanUpRepository;
+        copy.namespace = this.namespace.copy();
+        copy.minArgs = this.minArgs;
+        copy.maxArgs = this.maxArgs;
+        copy.subjectPosition = this.subjectPosition;
+        copy.predicatePosition = this.predicatePosition;
+        copy.objectPosition = this.objectPosition;
+        copy.rdfCheck = this.rdfCheck;
+        copy.exitOnError = this.exitOnError;
+        copy.indexStore = this.indexStore.copy();
+        return copy;
+    }
 }
