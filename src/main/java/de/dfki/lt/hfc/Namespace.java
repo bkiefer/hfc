@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.StringTokenizer;
 
 /**
@@ -54,12 +55,6 @@ import java.util.StringTokenizer;
 public final class Namespace {
 
 	private static final Logger logger = LoggerFactory.getLogger(Namespace.class);
-
-  /**
-   * the two directives that can be found in a namespace file
-   */
-  public static final String SHORT_TO_LONG = "&short2long";
-  public static final String TYPE_TO_CLASS = "&type2class";
 
 	/**
 	 * what follows are useful constants that can be accessed within each class
@@ -115,6 +110,8 @@ public final class Namespace {
 	public static final int OWL_DISJOINTWITH_ID = 5;
 
 
+	private HashSet<NamespaceObject> allNamespaces = new HashSet<>();
+
 	/**
 	 * translation table for establishing mappings between short and long form
 	 * namespace strings
@@ -127,9 +124,7 @@ public final class Namespace {
 	 */
 	public HashMap<String, NamespaceObject> longToNs = new HashMap<String, NamespaceObject>();
 
-	public boolean shortIsDefault = false;
-
-
+	public final boolean shortIsDefault = false;
 
 	/**
    * a mapping between XSD type specifiers and Java classes representing these types
@@ -138,6 +133,7 @@ public final class Namespace {
   //protected HashMap<String, Constructor<XsdAnySimpleType>> typeToConstructor = new HashMap<String, Constructor<XsdAnySimpleType>>();
 
 	public void addNamespace(NamespaceObject ns){
+		this.allNamespaces.add(ns);
 		this.shortToNs.put(ns.SHORT_NAMESPACE, ns);
 		this.longToNs.put(ns.LONG_NAMESPACE, ns);
 	}
@@ -147,6 +143,7 @@ public final class Namespace {
 	 */
 	public void putForm(String shortForm, String longForm, boolean shortIsDefault) {
 		NamespaceObject ns = new NamespaceObject(shortForm,longForm,shortIsDefault);
+		this.allNamespaces.add(ns);
 		this.shortToNs.put(shortForm, ns);
 		this.longToNs.put(longForm, ns);
 	}
@@ -252,6 +249,20 @@ public final class Namespace {
 			return uri;
 		else
 			return "<" + expansion + suffix;
+	}
+
+	public void updateNamespace(boolean shortIsDefault) {
+		for (NamespaceObject ns : allNamespaces){
+			ns.setIsShort(shortIsDefault);
+		}
+	}
+
+	public Namespace copy() {
+		Namespace copy = new Namespace();
+		copy.allNamespaces = (HashSet<NamespaceObject>) this.allNamespaces.clone();
+		copy.shortToNs = (HashMap<String, NamespaceObject>) this.shortToNs.clone();
+		copy.longToNs = (HashMap<String, NamespaceObject>) this.longToNs.clone();
+		return copy;
 	}
 
 //	/**
