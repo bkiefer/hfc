@@ -16,6 +16,8 @@ public class Config {
      */
     private static final Logger logger = LoggerFactory.getLogger(Config.class);
 
+    private static String path = "/src/resources/";
+
     // special value UNBOUND/NULL, not used at the moment
     public static final Uri UNBOUND = new Uri("Null");
     public static final int UNBOUND_ID = 0;
@@ -187,8 +189,10 @@ public class Config {
      * the DEFAULT settings basically address the RDF triple case without equivalence class reduction
      * @return an instance of Config containing the default settings
      */
-    public static Config getDefaultConfig() throws FileNotFoundException {
-        return getInstance("DefaultConfig.yml");
+    public static Config getDefaultConfig() throws IOException {
+        String configPath = new File("." ).getCanonicalPath()+ path + "DefaultConfig.yml";
+        System.out.println(configPath);
+        return getInstance(configPath);
     }
 
     public String toString(){

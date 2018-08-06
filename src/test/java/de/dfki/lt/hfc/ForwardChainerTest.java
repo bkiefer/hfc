@@ -22,7 +22,7 @@ public class ForwardChainerTest {
    *Test default Config;
    *
    */
-   public void testForwardChainer() throws FileNotFoundException {
+   public void testForwardChainer() throws IOException {
      ForwardChainer fc = new ForwardChainer();
      assertNotNull(fc);
   }

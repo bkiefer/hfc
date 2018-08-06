@@ -73,6 +73,8 @@ public class Hfc {
     } catch (FileNotFoundException e) {
       logger.error("Was not able to load default configuration");
       e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 
