@@ -129,7 +129,7 @@ public final class ForwardChainer {
 	/**
 	 * prints a welcome message to standard out
 	 */
-	private ForwardChainer() throws FileNotFoundException {
+	ForwardChainer() throws FileNotFoundException {
 		this.config = Config.getDefaultConfig();
 		init();
 	}
