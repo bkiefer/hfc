@@ -149,7 +149,7 @@ public final class ForwardChainer {
 		for(String ts : config.tupleFiles){
 			tupleStore.readTuples(ts);
 		}
-		this.ruleStore = new RuleStore(tupleStore);
+		this.ruleStore = new RuleStore(Config.getDefaultConfig(), tupleStore);
 		for(String rls: config.ruleFiles){
 			ruleStore.readRules(rls);
 		}
@@ -170,8 +170,7 @@ public final class ForwardChainer {
 		Namespace namespace = new Namespace();
 //		IndexStore indexStore = new IndexStore(indexFile,this.verbose);
 		IndexStore indexStore = null;
-		this.tupleStore = new TupleStore(verbose, rdfCheck, eqReduction, minArgs, maxArgs,
-				atoms, tuples, namespace, tupleFile, indexStore);
+		this.tupleStore = new TupleStore(config);
 		this.ruleStore = new RuleStore(verbose, rdfCheck, minArgs, maxArgs,
 				this.tupleStore, ruleFile);
 		this.threadPool = Executors.newFixedThreadPool(noOfCores);

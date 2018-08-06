@@ -248,7 +248,7 @@ public class Hfc {
     // create a forward chainer, as rules alone are useless
     if (_ruleStore == null) {
       // sexternary constructor would suffice here
-      _ruleStore = new RuleStore(_tupleStore);
+      _ruleStore = new RuleStore(Config.getDefaultConfig(), _tupleStore);
       // customize rule store settings
       _ruleStore.minNoOfArgs = config.minArgs;
       _ruleStore.maxNoOfArgs = config.maxArgs;

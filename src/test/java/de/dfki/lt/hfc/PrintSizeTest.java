@@ -51,7 +51,7 @@ public class PrintSizeTest {
 
     // create TupleStore
     TupleStore store =
-        new TupleStore(false, true, true, 2, 5, 4, 2, namespace,
+        new TupleStore(false, true, true, 2, 5,0,1,2, 4, 2, namespace,
             getTestResource("default.nt"));
 
     // create FunctionalOperator

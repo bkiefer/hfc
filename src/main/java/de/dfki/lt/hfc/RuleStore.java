@@ -212,19 +212,31 @@ public final class RuleStore {
 	/**
 	 * creates an empty rule store
 	 */
-	public RuleStore(TupleStore tupleStore) {
+	private RuleStore(TupleStore tupleStore) {
 		//this.namespace = namespace;
 		this.tupleStore = tupleStore;
 	}
 
-	/**
-	 * initializes the rule store with the information stored in file ruleFile
-	 * @throws IOException
-	 */
-	public RuleStore(TupleStore tupleStore, String ruleFile)
-	    throws IOException {
+//	/**
+//	 * initializes the rule store with the information stored in file ruleFile
+//	 * @throws IOException
+//	 */
+//	public RuleStore(TupleStore tupleStore, String ruleFile)
+//	    throws IOException {
+//		this(tupleStore);
+//		readRules(ruleFile);
+//	}
+
+
+
+	public RuleStore(Config config, TupleStore tupleStore) throws IOException {
 		this(tupleStore);
-		readRules(ruleFile);
+		this.verbose = config.verbose;
+		this.rdfCheck = config.rdfCheck;
+		this.minNoOfArgs = config.minArgs;
+		this.maxNoOfArgs = config.maxArgs;
+		for(String ruleFile : config.ruleFiles)
+			readRules(ruleFile);
 	}
 
 	/**

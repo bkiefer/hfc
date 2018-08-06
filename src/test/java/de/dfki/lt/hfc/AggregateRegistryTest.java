@@ -2,6 +2,8 @@ package de.dfki.lt.hfc;
 
 import static org.junit.Assert.*;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
@@ -13,9 +15,9 @@ import gnu.trove.set.hash.*;
 
 public class AggregateRegistryTest {
 	@Test
-	public void testAggregateRegistry(){
+	public void testAggregateRegistry() throws IOException, WrongFormatException {
 		//test method AggregateRegistry(TupleStore tuplestore)
-		TupleStore ts = new TupleStore(1,2);
+		TupleStore ts = new TupleStore(Config.getDefaultConfig());
 		//what object to use?
 		//?.AggregateRegistry(ts);
 	}

@@ -55,6 +55,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class TupleStore {
 
+
     /**
      * this field serves a different purpose compared to field ForwardChainer.generationCounter
      * and is solely used when tuple deletion is enabled in the forward chainer;
@@ -419,111 +420,127 @@ public final class TupleStore {
         this.indexStore = null;
     }
 
-    /**
-     * choose a proper noOfAtoms/noOfTuples in order not to arrive at copying (at all or
-     * too early) the elements into a larger structure; keep in mind that other services
-     * (e.g., rule application) can drastically increase the number of tuples;
-     * note: assigns an empty Namespace object to this.namespace
-     */
-    public TupleStore(int noOfAtoms, int noOfTuples) {
-        this.namespace = new Namespace();
-        this.indexStore = null;
-        init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
-                this.minNoOfArgs, this.maxNoOfArgs,
-                this.subjectPosition, this.predicatePosition, this.objectPosition,
-                noOfAtoms, noOfTuples);
-    }
+//    /**
+//     * choose a proper noOfAtoms/noOfTuples in order not to arrive at copying (at all or
+//     * too early) the elements into a larger structure; keep in mind that other services
+//     * (e.g., rule application) can drastically increase the number of tuples;
+//     * note: assigns an empty Namespace object to this.namespace
+//     */
+//    public TupleStore(int noOfAtoms, int noOfTuples) {
+//        this.namespace = new Namespace();
+//        this.indexStore = null;
+//        init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
+//                this.minNoOfArgs, this.maxNoOfArgs,
+//                this.subjectPosition, this.predicatePosition, this.objectPosition,
+//                noOfAtoms, noOfTuples);
+//    }
+//
+//    /**
+//     * extends the binary constructor with the ability to read in a namespace
+//     */
+//    public TupleStore(int noOfAtoms, int noOfTuples, Namespace namespace) {
+//        this.namespace = namespace;
+//        this.indexStore = null;
+//        init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
+//                this.minNoOfArgs, this.maxNoOfArgs,
+//                this.subjectPosition, this.predicatePosition, this.objectPosition,
+//                noOfAtoms, noOfTuples);
+//    }
+//
+//    /**
+//     * extends the binary constructor with the ability to read in a namespace and a
+//     * textual representation of facts (basically N-Triples syntax), stored in a file
+//     *
+//     * @throws IOException
+//     * @throws FileNotFoundException
+//     * @throws WrongFormatException
+//     * @see #readTuples
+//     */
+//    public TupleStore(int noOfAtoms, int noOfTuples, Namespace namespace, String tupleFile)
+//            throws FileNotFoundException, IOException, WrongFormatException {
+//        this.namespace = namespace;
+//        this.indexStore = null;
+//        init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
+//                this.minNoOfArgs, this.maxNoOfArgs,
+//                this.subjectPosition, this.predicatePosition, this.objectPosition,
+//                noOfAtoms, noOfTuples);
+//        readTuples(tupleFile);
+//    }
+//
+//    /**
+//     * extends the binary constructor with the ability to read in a namespace, a index store, as well as a
+//     * textual representation of facts (basically N-Triples syntax), as well as stored in a file
+//     *
+//     * @throws IOException
+//     * @throws WrongFormatException
+//     * @see #readTuples
+//     */
+//    public TupleStore(int noOfAtoms, int noOfTuples, Namespace namespace, String tupleFile, IndexStore indexStore)
+//            throws IOException, WrongFormatException {
+//        this.namespace = namespace;
+//        this.indexStore = indexStore;
+//        init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
+//                this.minNoOfArgs, this.maxNoOfArgs,
+//                this.subjectPosition, this.predicatePosition, this.objectPosition,
+//                noOfAtoms, noOfTuples);
+//        readTuples(tupleFile);
+//    }
+//
+//    /**
+//     * more options to fully parameterize the tuple store
+//     *
+//     * @throws IOException
+//     * @throws FileNotFoundException
+//     * @throws WrongFormatException
+//     */
+//    public TupleStore(boolean verbose, boolean rdfCheck, boolean eqReduction,
+//                      int minNoOfArgs, int maxNoOfArgs,
+//                      int noOfAtoms, int noOfTuples,
+//                      Namespace namespace, String tupleFile)
+//            throws FileNotFoundException, IOException, WrongFormatException {
+//        this.namespace = namespace;
+//        this.indexStore = null;
+//        init(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
+//                this.subjectPosition, this.predicatePosition, this.objectPosition,
+//                noOfAtoms, noOfTuples);
+//        readTuples(tupleFile);
+//    }
+//
+//    /**
+//     * more options to fully parameterize the tuple store
+//     *
+//     * @throws IOException
+//     * @throws FileNotFoundException
+//     * @throws WrongFormatException
+//     */
+//    public TupleStore(boolean verbose, boolean rdfCheck, boolean eqReduction,
+//                      int minNoOfArgs, int maxNoOfArgs,
+//                      int noOfAtoms, int noOfTuples,
+//                      Namespace namespace, String tupleFile,
+//                      IndexStore indexStore)
+//            throws FileNotFoundException, IOException, WrongFormatException {
+//        this.namespace = namespace;
+//        this.indexStore = indexStore;
+//        init(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
+//                this.subjectPosition, this.predicatePosition, this.objectPosition,
+//                noOfAtoms, noOfTuples);
+//        readTuples(tupleFile);
+//    }
 
-    /**
-     * extends the binary constructor with the ability to read in a namespace
-     */
-    public TupleStore(int noOfAtoms, int noOfTuples, Namespace namespace) {
-        this.namespace = namespace;
-        this.indexStore = null;
-        init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
-                this.minNoOfArgs, this.maxNoOfArgs,
-                this.subjectPosition, this.predicatePosition, this.objectPosition,
-                noOfAtoms, noOfTuples);
-    }
 
-    /**
-     * extends the binary constructor with the ability to read in a namespace and a
-     * textual representation of facts (basically N-Triples syntax), stored in a file
-     *
-     * @throws IOException
-     * @throws FileNotFoundException
-     * @throws WrongFormatException
-     * @see #readTuples
-     */
-    public TupleStore(int noOfAtoms, int noOfTuples, Namespace namespace, String tupleFile)
-            throws FileNotFoundException, IOException, WrongFormatException {
-        this.namespace = namespace;
-        this.indexStore = null;
-        init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
-                this.minNoOfArgs, this.maxNoOfArgs,
-                this.subjectPosition, this.predicatePosition, this.objectPosition,
-                noOfAtoms, noOfTuples);
-        readTuples(tupleFile);
-    }
-
-    /**
-     * extends the binary constructor with the ability to read in a namespace, a index store, as well as a
-     * textual representation of facts (basically N-Triples syntax), as well as stored in a file
-     *
-     * @throws IOException
-     * @throws WrongFormatException
-     * @see #readTuples
-     */
-    public TupleStore(int noOfAtoms, int noOfTuples, Namespace namespace, String tupleFile, IndexStore indexStore)
-            throws IOException, WrongFormatException {
-        this.namespace = namespace;
-        this.indexStore = indexStore;
-        init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
-                this.minNoOfArgs, this.maxNoOfArgs,
-                this.subjectPosition, this.predicatePosition, this.objectPosition,
-                noOfAtoms, noOfTuples);
-        readTuples(tupleFile);
-    }
-
-    /**
-     * more options to fully parameterize the tuple store
-     *
-     * @throws IOException
-     * @throws FileNotFoundException
-     * @throws WrongFormatException
-     */
-    public TupleStore(boolean verbose, boolean rdfCheck, boolean eqReduction,
-                      int minNoOfArgs, int maxNoOfArgs,
-                      int noOfAtoms, int noOfTuples,
-                      Namespace namespace, String tupleFile)
-            throws FileNotFoundException, IOException, WrongFormatException {
-        this.namespace = namespace;
-        this.indexStore = null;
-        init(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
-                this.subjectPosition, this.predicatePosition, this.objectPosition,
-                noOfAtoms, noOfTuples);
-        readTuples(tupleFile);
-    }
-
-    /**
-     * more options to fully parameterize the tuple store
-     *
-     * @throws IOException
-     * @throws FileNotFoundException
-     * @throws WrongFormatException
-     */
-    public TupleStore(boolean verbose, boolean rdfCheck, boolean eqReduction,
-                      int minNoOfArgs, int maxNoOfArgs,
-                      int noOfAtoms, int noOfTuples,
-                      Namespace namespace, String tupleFile,
-                      IndexStore indexStore)
-            throws FileNotFoundException, IOException, WrongFormatException {
-        this.namespace = namespace;
-        this.indexStore = indexStore;
-        init(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
-                this.subjectPosition, this.predicatePosition, this.objectPosition,
-                noOfAtoms, noOfTuples);
-        readTuples(tupleFile);
+    public TupleStore(Config config) throws IOException, WrongFormatException {
+        this.namespace = config.namespace;
+        this.indexStore = config.indexStore;
+        //TODO not sure if we need this
+        //this.config = config;
+        init(config.verbose,config.rdfCheck, config.eqReduction, config.minArgs, config.maxArgs,
+                config.subjectPosition, config.predicatePosition, config.objectPosition,
+                config.noOfAtoms, config.noOfTuples);
+        this.inputCharacterEncoding = config.characterEncoding;
+        this.outputCharacterEncoding = config.characterEncoding;
+        for(String tuplefile: config.tupleFiles){
+            readTuples(tuplefile);
+        }
     }
 
     /**

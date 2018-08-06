@@ -180,18 +180,18 @@ public class CalcTest {
     assertTrue(Calc.project(table, pos).isEmpty());
   }
   @Test
-  public void testmap(){
+  public void testmap() throws IOException, WrongFormatException {
     //test method map(BindingTable oldTable, int[] toMap)
-    TupleStore ts = new TupleStore(1,2);
+    TupleStore ts = new TupleStore(Config.getDefaultConfig());
     BindingTable oldTable = new BindingTable(ts);
     int[] toMap = new int[1];
     toMap[0] = 1;
     assertEquals(true, (Calc.map(oldTable, toMap) instanceof BindingTable));
   }
   @Test
-  public void testproject1(){
+  public void testproject1() throws IOException, WrongFormatException {
     //test method project(BindingTable tt, int[] pos)
-    TupleStore ts = new TupleStore(1,2);
+    TupleStore ts = new TupleStore(Config.getDefaultConfig());
     BindingTable tt = new BindingTable(ts);
     int[] pos = new int[1];
     pos[0] = 1;
@@ -200,7 +200,7 @@ public class CalcTest {
   @Test
   public void testrestrict() throws FileNotFoundException, WrongFormatException, IOException{
     //test method restrict(BindingTable bt, ArrayList<Integer> varvarIneqs, ArrayList<Integer> varconstIneqs)
-    TupleStore ts = new TupleStore(1,2);
+    TupleStore ts = new TupleStore(Config.getDefaultConfig());
     BindingTable bt = new BindingTable(ts);
     ArrayList<Integer> varvarIneqs = new ArrayList();
     ArrayList<Integer> varconstIneqs = new ArrayList();
@@ -215,14 +215,14 @@ public class CalcTest {
     assertFalse(varvarIneqs1.isEmpty());//the arrays are not empty
     assertFalse(varconstIneqs1.isEmpty());//the arrays are not empty
     Namespace namespace = Namespace.defaultNamespace();
-    TupleStore tuple = new TupleStore(3, 2);
+    TupleStore tuple = new TupleStore(Config.getDefaultConfig());
     BindingTable bt1 = new BindingTable(tuple);
     //Calc.restrict(bt1, varvarIneqs1, varconstIneqs1);// Null pointer exception
   }
   @Test
-  public void testrestrict1(){
+  public void testrestrict1() throws IOException, WrongFormatException {
   //test method restrict(BindingTable bt, ArrayList<Predicate> predicates)
-    TupleStore ts = new TupleStore(1,2);
+    TupleStore ts = new TupleStore(Config.getDefaultConfig());
     BindingTable bt = new BindingTable(ts);
     ArrayList<Predicate> predicates = new ArrayList();
     assertEquals(true, Calc.restrict(bt, predicates) instanceof BindingTable);
@@ -235,13 +235,13 @@ public class CalcTest {
     //
   }
   @Test
-  public void testproduct(){
+  public void testproduct() throws IOException, WrongFormatException {
   //test method product(BindingTable bt1, BindingTable bt2)
     //create bt1
     Set<int[]> table3 = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     SortedMap<Integer, Integer> nameToPos3 = new TreeMap<Integer, Integer>();
     Map<Integer, String> nameToExternalName3 = new TreeMap<Integer, String>();
-    TupleStore ts3 = new TupleStore(1,2);
+    TupleStore ts3 = new TupleStore(Config.getDefaultConfig());
     int[] arguments = new int[2];
     HashMap<Integer, ArrayList<Integer>> relIdToFunIds = new HashMap<Integer, ArrayList<Integer>>();
     HashMap<String, Integer> varToId = new HashMap<String, Integer>();
@@ -251,7 +251,7 @@ public class CalcTest {
     Set<int[]> table4 = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     SortedMap<Integer, Integer> nameToPos4 = new TreeMap<Integer, Integer>();
     Map<Integer, String> nameToExternalName4 = new TreeMap<Integer, String>();
-    TupleStore ts4 = new TupleStore(2,5);
+    TupleStore ts4 = new TupleStore(Config.getDefaultConfig());
     int[] arguments1 = new int[3];
     HashMap<Integer, ArrayList<Integer>> relIdToFunIds1 = new HashMap<Integer, ArrayList<Integer>>();
     HashMap<String, Integer> varToId1 = new HashMap<String, Integer>();
@@ -261,13 +261,13 @@ public class CalcTest {
     assertEquals(true, Calc.product(bt1, bt2) instanceof BindingTable);
   }
   @Test
-  public void testjoin(){
+  public void testjoin() throws IOException, WrongFormatException {
   //test method join(BindingTable tt1, BindingTable tt2)
     //create binding table 1
     Set<int[]> table3 = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     SortedMap<Integer, Integer> nameToPos3 = new TreeMap<Integer, Integer>();
     Map<Integer, String> nameToExternalName3 = new TreeMap<Integer, String>();
-    TupleStore ts3 = new TupleStore(1,2);
+    TupleStore ts3 = new TupleStore(Config.getDefaultConfig());
     int[] arguments = new int[2];
     HashMap<Integer, ArrayList<Integer>> relIdToFunIds = new HashMap<Integer, ArrayList<Integer>>();
     HashMap<String, Integer> varToId = new HashMap<String, Integer>();
@@ -277,7 +277,7 @@ public class CalcTest {
     Set<int[]> table4 = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     SortedMap<Integer, Integer> nameToPos4 = new TreeMap<Integer, Integer>();
     Map<Integer, String> nameToExternalName4 = new TreeMap<Integer, String>();
-    TupleStore ts4 = new TupleStore(2,5);
+    TupleStore ts4 = new TupleStore(Config.getDefaultConfig());
     int[] arguments1 = new int[3];
     HashMap<Integer, ArrayList<Integer>> relIdToFunIds1 = new HashMap<Integer, ArrayList<Integer>>();
     HashMap<String, Integer> varToId1 = new HashMap<String, Integer>();

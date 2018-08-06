@@ -2,13 +2,8 @@ package de.dfki.lt.hfc.operators;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import de.dfki.lt.hfc.BindingTable;
-import de.dfki.lt.hfc.Namespace;
-import de.dfki.lt.hfc.Query;
-import de.dfki.lt.hfc.QueryParseException;
-import de.dfki.lt.hfc.TupleStore;
-import de.dfki.lt.hfc.TestingUtils;
-import de.dfki.lt.hfc.WrongFormatException;
+
+import de.dfki.lt.hfc.*;
 import org.junit.Test;
 
 public class LIsValidTest {
@@ -25,8 +20,10 @@ public class LIsValidTest {
     ns.putForm("logic", "http://www.dfki.de/lt/onto/common/logic.owl#", ns.shortIsDefault);
     ns.putForm("dom", "http://www.dfki.de/lt/onto/pal/domain.owl#", ns.shortIsDefault);
     ns.putForm("pal", "http://www.dfki.de/lt/onto/pal/pal.owl#",ns.shortIsDefault);
-    TupleStore ts = new TupleStore(1000, 5000, ns);
-    ts.verbose = false;
+    Config config = Config.getDefaultConfig();
+    config.namespace = ns;
+    config.verbose = false;
+    TupleStore ts = new TupleStore(config);
     ts.readTuples(getResource("tuples.nt"));
     Query q = new Query(ts);
     BindingTable bt

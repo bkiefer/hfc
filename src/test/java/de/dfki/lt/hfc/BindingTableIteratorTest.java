@@ -17,13 +17,15 @@ import de.dfki.lt.hfc.types.XsdString;
 
 public class BindingTableIteratorTest {
   Query q;
-  Namespace ns;
   TupleStore ts;
+  Config config;
 
   @Before
   public void setup() throws FileNotFoundException, IOException, WrongFormatException {
-    ns = Namespace.defaultNamespace();
-    ts = new TupleStore(100000, 250000, ns);
+    config = Config.getDefaultConfig();
+    config.noOfAtoms = 100000;
+    config.noOfTuples = 250000;
+    ts = new TupleStore(config);
     ts.verbose = false;
     ts.readTuples(getTestResource("default.nt"));
     q = new Query(ts);
@@ -31,7 +33,7 @@ public class BindingTableIteratorTest {
 
   @After
   public void tearDown() {
-    ns = null;
+    config = null;
     ts = null;
     q = null;
   }

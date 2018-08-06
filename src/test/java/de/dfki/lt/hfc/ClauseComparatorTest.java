@@ -13,18 +13,18 @@ import org.junit.Test;
 public class ClauseComparatorTest {
 
   @Test
-  public void testconstructor(){
+  public void testconstructor() throws IOException, WrongFormatException {
     //test ClauseComparator(HashSet<Integer> dontCareVariables, TupleStore tupleStore)
     HashSet<Integer> dontCareVariables = new HashSet();
     dontCareVariables.add(1);
     dontCareVariables.add(100);
     dontCareVariables.add(100000);
-    TupleStore tupleStore = new TupleStore(100, 200);
+    TupleStore tupleStore = new TupleStore(Config.getDefaultConfig());
     ClauseComparator cc = new ClauseComparator(dontCareVariables, tupleStore);
     assertNotNull(cc);
   }
   @Test
-  public void testcompare(){
+  public void testcompare() throws IOException, WrongFormatException {
   /*test methods compare(int[] clause1, int[] clause2) and
     computeCost(int[] clause)*/
     int[] clause1 = new int[1];
@@ -36,7 +36,7 @@ public class ClauseComparatorTest {
     dontCareVariables.add(1);
     dontCareVariables.add(2);
     dontCareVariables.add(3);
-    TupleStore ts = new TupleStore(2,5);
+    TupleStore ts = new TupleStore(Config.getDefaultConfig());
     ClauseComparator cc = new ClauseComparator(dontCareVariables, ts);
     assertTrue(cc.compare(clause1, clause2) > 0);
     assertEquals(990, cc.compare(clause1, clause2));//in this particular case

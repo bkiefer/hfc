@@ -1,6 +1,10 @@
 package de.dfki.lt.hfc.runnable;
 
+import de.dfki.lt.hfc.Config;
 import de.dfki.lt.hfc.TupleStore;
+import de.dfki.lt.hfc.WrongFormatException;
+
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -12,11 +16,14 @@ public class Test {
 	 * to measure 100,000,000 triple and 10,000,000 uris/atoms
 	 *   time java -server -cp .:trove-2.0.4.jar -Xms15000m -Xmx26000m de/dfki/lt/hfc/TupleStore 10000000 100000000
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException, WrongFormatException {
 		long start;
 		int atoms = Integer.parseInt(args[0]);
 		int tuples = Integer.parseInt(args[1]);
-		TupleStore ts = new TupleStore(atoms, tuples);
+		Config config = Config.getDefaultConfig();
+		config.noOfAtoms = atoms;
+		config.noOfTuples = tuples;
+		TupleStore ts = new TupleStore(config);
 		Random rnd = new Random();
 		int[] tuple;
 		System.out.println();

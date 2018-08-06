@@ -23,8 +23,10 @@ public class LEqualsTest {
     ns.putForm("logic", "http://www.dfki.de/lt/onto/common/logic.owl#", ns.shortIsDefault);
     ns.putForm("dom", "http://www.dfki.de/lt/onto/pal/domain.owl#", ns.shortIsDefault);
     ns.putForm("pal", "http://www.dfki.de/lt/onto/pal/pal.owl#",ns.shortIsDefault);
-    ts = new TupleStore(1000, 5000, ns);
-    ts.verbose = false;
+    Config config = Config.getDefaultConfig();
+    config.namespace = ns;
+    config.verbose = false;
+    ts = new TupleStore(config);
     ts.readTuples(getResource("tuples.nt"));
     q = new Query(ts);
   }

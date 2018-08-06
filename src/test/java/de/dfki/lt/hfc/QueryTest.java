@@ -5,6 +5,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import static de.dfki.lt.hfc.TestingUtils.checkResult;
@@ -36,9 +37,9 @@ public class QueryTest {
   }
 
   @Test
-  public void testQuery() {
+  public void testQuery() throws IOException, WrongFormatException {
     //test constructor Query(TupleStore tupleStore)
-    TupleStore tupleStore = new TupleStore(2, 5);
+    TupleStore tupleStore = new TupleStore(Config.getDefaultConfig());
     Query query = new Query(tupleStore);
     assertNotNull(query);
   }
@@ -74,7 +75,7 @@ public class QueryTest {
 
     @Test(expected = QueryParseException.class)
     public void testSingleIntervalErrors() throws Exception {
-        TupleStore tupleStore = new TupleStore(2, 5);
+        TupleStore tupleStore = new TupleStore(Config.getDefaultConfig());
         Query query = new Query(tupleStore);
         // inputs which should  lead to QueryParseExeptions
         query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o [\"(1,2)\"^^<xsd:2DPoint>, \"(1,2)\"^^<xsd:2DPoint>]");
@@ -87,8 +88,8 @@ public class QueryTest {
     }
 
     @Test(expected = QueryParseException.class)
-    public void testIntervalRelationsErrors() throws QueryParseException {
-        TupleStore tupleStore = new TupleStore(2, 5);
+    public void testIntervalRelationsErrors() throws QueryParseException, IOException, WrongFormatException {
+        TupleStore tupleStore = new TupleStore(Config.getDefaultConfig());
         Query query = new Query(tupleStore);
 
         query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o FOO  \"1\"^^<xsd:date> , \"2\"^^<xsd:date>");
