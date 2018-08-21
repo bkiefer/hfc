@@ -140,24 +140,43 @@ public final class ForwardChainer {
 		this.tupleStore = tupleStore;
 		this.ruleStore = ruleStore;
 		this.config = config;
-
+		this.threadPool = Executors.newFixedThreadPool(config.noOfCores);
+		this.noOfTasks = this.ruleStore.allRules.size();
 	}
 
 	public ForwardChainer(Config config) throws IOException, WrongFormatException {
 		this.config = config;
-		this.tupleStore = new TupleStore(config.namespace);
-		for(String ts : config.tupleFiles){
-			tupleStore.readTuples(ts);
-		}
-		this.ruleStore = new RuleStore(Config.getDefaultConfig(), tupleStore);
-		for(String rls: config.ruleFiles){
-			ruleStore.readRules(rls);
-		}
+		this.tupleStore = new TupleStore(config);
+//		for(String ts : config.tupleFiles){
+//			tupleStore.readTuples(ts);
+//		}
+		this.ruleStore = new RuleStore(config, tupleStore);
+//		for(String rls: config.ruleFiles){
+//			ruleStore.readRules(rls);
+//		}
+		this.threadPool = Executors.newFixedThreadPool(config.noOfCores);
+		this.noOfTasks = this.ruleStore.allRules.size();
 	}
 
-
+	/**
+	 * @deprecated for tests only
+	 * @param noOfCores
+	 * @param verbose
+	 * @param rdfCheck
+	 * @param eqReduction
+	 * @param minArgs
+	 * @param maxArgs
+	 * @param atoms
+	 * @param tuples
+	 * @param tupleFile
+	 * @param ruleFile
+	 * @throws IOException
+	 * @throws WrongFormatException
+	 */
 	public ForwardChainer(int noOfCores, boolean verbose, boolean rdfCheck, boolean eqReduction, int minArgs, int maxArgs, int atoms, int tuples, String tupleFile, String ruleFile) throws IOException, WrongFormatException {
 		this.config = Config.getDefaultConfig();
+		config.tupleFiles.clear();
+		config.tupleFiles.add(tupleFile);
 		config.noOfCores = noOfCores;
 		config.verbose = verbose;
 		config.rdfCheck = rdfCheck;

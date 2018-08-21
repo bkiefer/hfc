@@ -3,9 +3,7 @@ package de.dfki.lt.hfc.aggregates;
 import de.dfki.lt.hfc.*;
 
 import de.dfki.lt.hfc.types.XsdLong;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import static de.dfki.lt.hfc.TestingUtils.checkResult;
 import static org.junit.Assert.assertTrue;
@@ -27,8 +25,8 @@ public class TestSort {
         return TestingUtils.getTestResource("LGetLatestValues", name);
     }
 
-    @BeforeClass
-    public static void init() throws Exception {
+    @Before
+    public void init() throws Exception {
 
         fc = new ForwardChainer(Config.getDefaultConfig());
 
@@ -36,8 +34,8 @@ public class TestSort {
     }
 
 
-    @AfterClass
-    public static void cleanup() {
+    @After
+    public void cleanup() {
         fc.shutdownNoExit();
     }
 

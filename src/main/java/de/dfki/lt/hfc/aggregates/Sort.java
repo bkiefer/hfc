@@ -33,13 +33,11 @@ public class Sort extends AggregationalOperator{
         final int rowLength = table[0].length;  // rows are of same length
         final int sortColumnNo = rowLength - 1;
         // supply the sort method with its own comparator
-        Arrays.sort(table, new Comparator<int[]>() {
-            public int compare(int[] t1, int[] t2) {
-                final XsdAnySimpleType i1 = ((XsdAnySimpleType)(getObject(t1[sortColumnNo])));
-                final XsdAnySimpleType i2 = ((XsdAnySimpleType)(getObject(t2[sortColumnNo])));
-                // we want a descending, _not_ ascending order
-                return i1.compareTo(i2);  // an int must be returned, so (l2 - l1) won't work
-            }
+        Arrays.sort(table, (t1, t2) -> {
+            final XsdAnySimpleType i1 = ((XsdAnySimpleType)(getObject(t1[sortColumnNo])));
+            final XsdAnySimpleType i2 = ((XsdAnySimpleType)(getObject(t2[sortColumnNo])));
+            // we want a descending, _not_ ascending order
+            return i1.compareTo(i2);  // an int must be returned, so (l2 - l1) won't work
         });
 
         // no need to throw away the last two columns

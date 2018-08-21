@@ -44,6 +44,9 @@ public class BlankNodeOneTest {
     fc.computeClosure();
   }
 
+  /**
+   * @throws QueryParseException
+   */
   @Test
   public void test() throws QueryParseException  {
     // TODO: FIX EXPECTED DATA

@@ -4,17 +4,21 @@ noOfCores: 16
 noOfTuples: 500000
 noOfAtoms: 100000
 eqReduction: true
+garbageCollection: false
+cleanUpRepository: true
 
-shortIsDefault:  false
+shortIsDefault:  true
 namespaces:
   xsd:  http://www.w3.org/2001/XMLSchema#
   rdf:  http://www.w3.org/1999/02/22-rdf-syntax-ns#
   rdfs:  http://www.w3.org/2000/01/rdf-schema#
   owl:  http://www.w3.org/2002/07/owl#
   test: http://www.dfki.de/lt/onto/test.owl#
+  lt: http://www.lt-world.org/ltw.owl#
+  reg: http://registry.dfki.de#
 
 tupleFiles:
-  - default.eqred.nt
+  - ./src/test/data/default.eqred.nt
 
 MinArgs: 3
 MaxArgs: 5
@@ -26,7 +30,7 @@ rdfCheck: false
 exitOnError: true
 
 ruleFiles:
-  - default.eqred.rdl
+  - ./src/test/data/default.eqred.rdl
 
 
 iterations: 2147483647

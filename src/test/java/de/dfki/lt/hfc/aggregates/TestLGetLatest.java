@@ -43,7 +43,7 @@ public class TestLGetLatest {
   @BeforeClass
   public static void init() throws Exception {
 
-    fc = new ForwardChainer(Config.getDefaultConfig());
+    fc = new ForwardChainer(Config.getInstance(getTestResource("test.yml")));
 
     // upload instance test files
     fc.uploadTuples(getResource("time.nt"));
@@ -391,7 +391,7 @@ public class TestLGetLatest {
         {"<hst:da66>", "<rdf:type>", "<dafn:DialogueAct>"},
         {"<hst:da66>", "<dafn:happens>", "\"686\"^^<xsd:long>"},
     };
-    ForwardChainer localfc =	new ForwardChainer(Config.getDefaultConfig());
+    ForwardChainer localfc =	new ForwardChainer(Config.getInstance(getTestResource("test.yml")));
 
     // upload instance test files
     localfc.uploadTuples(getResource("time.nt"));

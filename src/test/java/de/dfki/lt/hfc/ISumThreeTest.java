@@ -16,7 +16,7 @@ public class ISumThreeTest {
   @BeforeClass
   public static void init() throws Exception {
 
-    fc =  new ForwardChainer(Config.getInstance(getResource("Isum3.yml")));
+    fc =  new ForwardChainer(Config.getInstance(getResource("ISum3.yml")));
 
     // compute deductive closure
 

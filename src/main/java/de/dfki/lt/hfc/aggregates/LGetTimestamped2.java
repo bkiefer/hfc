@@ -64,14 +64,12 @@ public abstract class LGetTimestamped2 extends AggregationalOperator {
     final int rowLength = table[0].length;  // rows are of same length
     final int sortColumnNo = rowLength - 2;
     // supply the sort method with its own comparator
-    Arrays.sort(table, new Comparator<int[]>() {
-      public int compare(int[] t1, int[] t2) {
-        final long l1 = ((XsdLong)(getObject(t1[sortColumnNo]))).value;
-        final long l2 = ((XsdLong)(getObject(t2[sortColumnNo]))).value;
-        // we want a descending, _not_ ascending order
-        int res = Long.compare(l2, l1);  // an int must be returned, so (l2 - l1) won't work
-        return latest ? res : -res;
-      }
+    Arrays.sort(table, (t1, t2) -> {
+      final long l1 = ((XsdLong)(getObject(t1[sortColumnNo]))).value;
+      final long l2 = ((XsdLong)(getObject(t2[sortColumnNo]))).value;
+      // we want a descending, _not_ ascending order
+      int res = Long.compare(l2, l1);  // an int must be returned, so (l2 - l1) won't work
+      return latest ? res : -res;
     });
     // take the "latest" rows, given by the last argument ?limit (an XSD int)
     // this differs from LGetLatest in that the limit relates to the time stamps,

@@ -1,6 +1,6 @@
 verbose: false
 characterEncoding: UTF-8
-noOfCores: 16
+noOfCores: 4
 noOfTuples: 500000
 noOfAtoms: 100000
 eqReduction: false
@@ -14,24 +14,30 @@ namespaces:
   rdfs:  http://www.w3.org/2000/01/rdf-schema#
   owl:  http://www.w3.org/2002/07/owl#
   test: http://www.dfki.de/lt/onto/test.owl#
+  test: http://www.dfki.de/lt/onto/test.owl#
   lt: http://www.lt-world.org/ltw.owl#
   reg: http://registry.dfki.de#
+  d_time: http://www.dfki.de/lt/onto/time.owl#
+  time: http://www.dfki.de/lt/onto/hysociatea/time.owl#
+  upp:  http://www.dfki.de/lt/onto/hysociatea/upper.owl#
+  dafn: http://www.dfki.de/lt/onto/hysociatea/dialframe.owl#
+  dom:  http://www.dfki.de/lt/onto/hysociatea/domain.owl#
+  hst:  http://www.dfki.de/lt/onto/hysociatea/hysociatea.owl#
 
 
 tupleFiles:
-  - ./src/test/data/default.nt
+  - ./src/test/data/LGetLatest/default.nt
 
 MinArgs: 3
-MaxArgs: 5
+MaxArgs: 3
 subjectPosition: 0
 
 predicatePosition: 1
 objectPosition: 2
-rdfCheck: false
+rdfCheck: true
 exitOnError: true
 
 ruleFiles:
-  - ./src/test/data/default.rdl
-
+  - ./src/test/data/LGetLatest/default.rdl
 
 iterations: 2147483647

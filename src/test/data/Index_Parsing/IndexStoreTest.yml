@@ -3,9 +3,11 @@ characterEncoding: UTF-8
 noOfCores: 4
 noOfTuples: 500000
 noOfAtoms: 100000
-eqReduction: true
+eqReduction: false
+garbageCollection: false
+cleanUpRepository: true
 
-shortIsDefault:  false
+shortIsDefault:  true
 namespaces:
   xsd:  http://www.w3.org/2001/XMLSchema#
   rdf:  http://www.w3.org/1999/02/22-rdf-syntax-ns#
@@ -14,7 +16,7 @@ namespaces:
   test: http://www.dfki.de/lt/onto/test.owl#
 
 tupleFiles:
-  - transaction_date0_valid_date45.nt
+  - ./src/test/data/Index_Parsing/transaction_date0_valid_date45.nt
 
 MinArgs: 6
 MaxArgs: 6
@@ -22,11 +24,11 @@ subjectPosition: 0
 
 predicatePosition: 1
 objectPosition: 2
-rdfCheck: true
+rdfCheck: false
 exitOnError: true
 
 ruleFiles:
-  - transaction0_valid45.rdl
+  - ./src/test/data/Index_Parsing/transaction0_valid45.rdl
 
 Index:
   - Key1: XsdDate

@@ -97,7 +97,7 @@ public class TupleStoreTest {
 
     @Test
     public void testgetObject() throws IOException, WrongFormatException {
-        TupleStore objectfortest = new TupleStore(Config.getDefaultConfig());
+        TupleStore objectfortest = new TupleStore(Config.getInstance(getTestResource("Empty.yml")));
         int id = objectfortest.putObject("www.bbc.com");
         assertFalse(objectfortest.getObject(5) == null);
         assertEquals("www.bbc.com", objectfortest.getObject(id));
@@ -116,7 +116,7 @@ public class TupleStoreTest {
 
     @Test
     public void testregisterJavaObject() throws IOException, WrongFormatException {
-        TupleStore objecttotest = new TupleStore(Config.getDefaultConfig());
+        TupleStore objecttotest = new TupleStore(Config.getInstance(getTestResource("Empty.yml")));
         assertEquals(objecttotest.registerJavaObject("www.bbc.com", null), 6);
     }
 
@@ -194,7 +194,7 @@ public class TupleStoreTest {
 
     @Test
     public void testParseAtom() throws IOException, WrongFormatException, QueryParseException {
-        TupleStore objectToTest = new TupleStore(Config.getDefaultConfig());
+        TupleStore objectToTest = new TupleStore(Config.getInstance(getTestResource("Empty.yml")));
         objectToTest.readTuples(getTestResource("ReadTest", "testAtoms.nt"));
 
         assertEquals("Expected 12 tuples but was " + objectToTest.getAllTuples().size(),
@@ -221,7 +221,7 @@ public class TupleStoreTest {
 
     @Test
     public void testUnicodeHandling() throws IOException, WrongFormatException, QueryParseException {
-        TupleStore objectToTest = new TupleStore(Config.getDefaultConfig());
+        TupleStore objectToTest = new TupleStore(Config.getInstance(getTestResource("Empty.yml")));
         objectToTest.readTuples(getTestResource("ReadTest", "testUnicodes.nt"));
 
         String[][] expected = {
@@ -243,12 +243,11 @@ public class TupleStoreTest {
         bt = q.query("SELECT ?o WHERE ?s <test:value> ?o");
         checkResult(expected, bt, "?o");
         expectedOutput = new HashSet<String>() {{
-            add("<test:a1> <test:value> \"Hello foo!\"^^<http://www.w3.org/2001/XMLSchema#string> .");
-            add("<test:a1> <test:value> \"Hello foo\"^^<http://www.w3.org/2001/XMLSchema#string> .");
-            add("<test:a2> <test:value> \"\\u00fc foo\"^^<http://www.w3.org/2001/XMLSchema#string> .");
+            add("<http://www.dfki.de/lt/onto/test.owl#a1> <http://www.dfki.de/lt/onto/test.owl#value> \"Hello foo!\"^^<http://www.w3.org/2001/XMLSchema#string> .");
+            add("<http://www.dfki.de/lt/onto/test.owl#a1> <http://www.dfki.de/lt/onto/test.owl#value> \"Hello foo\"^^<http://www.w3.org/2001/XMLSchema#string> .");
+            add("<http://www.dfki.de/lt/onto/test.owl#a2> <http://www.dfki.de/lt/onto/test.owl#value> \"\\u00fc foo\"^^<http://www.w3.org/2001/XMLSchema#string> .");
         }};
         for (int[] tuple : objectToTest.getAllTuples()) {
-            //System.out.println(objectToTest.toExpandedString(tuple));
             expectedOutput.remove(objectToTest.toExpandedString(tuple));
         }
         assertEquals(0, expectedOutput.size());
@@ -260,9 +259,6 @@ public class TupleStoreTest {
         ArrayList<String> stringTuple = new ArrayList<String>();
         stringTuple.add("hello");
         stringTuple.add("world");
-        // System.out.println("MESSAGE " +
-        // objectfortest.internalizeTuple(stringTuple));
-        // assertNotNull(objectfortest.internalizeTuple(stringTuple));
         assertEquals(objectfortest.internalizeTuple(stringTuple).length, stringTuple.size());
     }
 
@@ -317,7 +313,7 @@ public class TupleStoreTest {
     @Test
     public void testgetTuples1()
             throws FileNotFoundException, WrongFormatException, IOException {
-        TupleStore toTest = new TupleStore(Config.getDefaultConfig());
+        TupleStore toTest = new TupleStore(Config.getInstance(getTestResource("Empty.yml")));
         // testing for case if (result == null)
         assertTrue(toTest.getTuples(2, 1).isEmpty());
         // testing for case if (result!= null), still uncovered
@@ -346,7 +342,7 @@ public class TupleStoreTest {
     @Test
     public void testgetAllTuples() throws FileNotFoundException, WrongFormatException, IOException {
         // test for case when there are no tuples
-        TupleStore objectfortest = new TupleStore(Config.getDefaultConfig());
+        TupleStore objectfortest = new TupleStore(Config.getInstance(getTestResource("Empty.yml")));
         assertTrue(objectfortest.getAllTuples().isEmpty());
         // test for case when there are tuples
         Namespace namespace = Namespace.defaultNamespace();

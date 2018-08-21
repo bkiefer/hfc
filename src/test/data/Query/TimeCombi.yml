@@ -16,7 +16,7 @@ namespaces:
   test: http://www.dfki.de/lt/onto/test.owl#
 
 tupleFiles:
-  - ./src/test/data/Query/lookupAtomIntervalTest.nt
+- ./src/test/data/Query/lookupAtomIntervalTest.nt
 
 MinArgs: 6
 MaxArgs: 6
@@ -28,14 +28,14 @@ rdfCheck: false
 exitOnError: true
 
 ruleFiles:
-  - ./src/test/data/Query/combiTest.rdl
+- ./src/test/data/Query/combiTest.rdl
 
 Index:
-  - Key1: XsdLong
-  - Position1: 0
-  - Structure1: BTreeIndex
-  - Key2: XsdLong
-  - Position2: 4,5
-  - Structure2: BTreeIndex
+- Key1: XsdLong
+- Position1: 0
+- Structure1: BTreeIndex
+- Key2: XsdLong
+- Position2: 4,5
+- Structure2: IntervalTreeIndex
 
 iterations: 2147483647

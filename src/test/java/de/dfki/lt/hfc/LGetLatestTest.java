@@ -1,13 +1,8 @@
 package de.dfki.lt.hfc;
+import static de.dfki.lt.hfc.TestingUtils.*;
 import static org.junit.Assert.*;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import static de.dfki.lt.hfc.TestingUtils.checkResult;
-import static de.dfki.lt.hfc.TestingUtils.checkResult;
-
+import org.junit.*;
 
 
 public class LGetLatestTest {
@@ -16,10 +11,11 @@ public class LGetLatestTest {
   private static String getResource(String name) {
     return TestingUtils.getTestResource("LGetLatest", name);
   }
-  @BeforeClass
-  public static void init() throws Exception {
 
-    fc =  new ForwardChainer(Config.getDefaultConfig());
+  @Before
+  public  void init() throws Exception {
+
+    fc =  new ForwardChainer(Config.getInstance(getResource("test.yml")));
 
     // compute deductive closure
 
@@ -29,7 +25,6 @@ public class LGetLatestTest {
 
   @Test
   public void test() throws QueryParseException  {
-    // TODO: NO VALID TEST, IMPLEMENT IT
 
     String[][] expected = {
 
@@ -116,24 +111,12 @@ public class LGetLatestTest {
     };
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    //TestLGetLatest.printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     checkResult(expected, bt, bt.getVars());
   }
 
-  @AfterClass
-  public static void finish() {
+  @After
+  public  void finish() {
     fc.shutdownNoExit();
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-

@@ -30,12 +30,12 @@ public class PointValuesOne {
     @BeforeClass
     public static void init() throws Exception {
 
-        fc =  new ForwardChainer(Config.getInstance("IndexParsing.yml"));
+        fc =  new ForwardChainer(Config.getInstance(getResource("IndexParsing.yml")));
     }
 
     @Test
     public void testIndexNoClosure(){
-        assertEquals(11,fc.tupleStore.indexStore.size());
+        assertEquals(11, fc.tupleStore.indexStore.size());
         Xsd3DPoint key = new Xsd3DPoint(0,0,1);
         Set<int[]> values = fc.tupleStore.indexStore.lookup(key);
         assertEquals(1,values.size());

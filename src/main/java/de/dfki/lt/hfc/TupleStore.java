@@ -530,6 +530,7 @@ public final class TupleStore {
 
     public TupleStore(Config config) throws IOException, WrongFormatException {
         this.namespace = config.namespace;
+        this.namespace.shortIsDefault = config.shortIsDefault;
         this.indexStore = config.indexStore;
         //TODO not sure if we need this
         //this.config = config;
@@ -538,9 +539,10 @@ public final class TupleStore {
                 config.noOfAtoms, config.noOfTuples);
         this.inputCharacterEncoding = config.characterEncoding;
         this.outputCharacterEncoding = config.characterEncoding;
-        for(String tuplefile: config.tupleFiles){
-            readTuples(tuplefile);
-        }
+        if(!config.tupleFiles.isEmpty())
+            for(String tuplefile: config.tupleFiles){
+                readTuples(tuplefile);
+            }
     }
 
     /**

@@ -3,7 +3,7 @@ characterEncoding: UTF-8
 noOfCores: 4
 noOfTuples: 500000
 noOfAtoms: 100000
-eqReduction: false
+eqReduction: true
 garbageCollection: false
 cleanUpRepository: true
 
@@ -16,26 +16,24 @@ namespaces:
   test: http://www.dfki.de/lt/onto/test.owl#
 
 tupleFiles:
-  - ./src/test/data/Query/lookupAtomIntervalTest.nt
+- ./src/test/data/Index_Parsing/test_transaction_3Dpoint.nt
 
-MinArgs: 6
-MaxArgs: 6
+MinArgs: 3
+MaxArgs: 5
 subjectPosition: 0
 
 predicatePosition: 1
 objectPosition: 2
-rdfCheck: false
+rdfCheck: true
 exitOnError: true
 
 ruleFiles:
-  - ./src/test/data/Query/combiTest.rdl
+- ./src/test/data/Index_Parsing/transaction0.rdl
 
 Index:
-  - Key1: XsdLong
-  - Position1: 0
-  - Structure1: BTreeIndex
-  - Key2: XsdLong
-  - Position2: 4,5
-  - Structure2: BTreeIndex
+- Key1: XsdDate
+#TestComment
+- Position1: 3
+- Structure1: BPlusTreeIndex
 
 iterations: 2147483647

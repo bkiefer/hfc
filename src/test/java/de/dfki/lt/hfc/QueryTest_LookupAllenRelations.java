@@ -27,7 +27,7 @@ public class QueryTest_LookupAllenRelations {
     @BeforeClass
     public static void init() throws Exception {
 
-        fc =  new ForwardChainer(Config.getInstance(getResource("LookupAllenRelations.yml")));
+        fc =  new ForwardChainer(Config.getInstance(getResource("LookupAllenRelation.yml")));
 
 
         // compute deductive closure

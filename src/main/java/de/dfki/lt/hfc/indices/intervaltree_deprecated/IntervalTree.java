@@ -25,14 +25,12 @@ public class IntervalTree<Key extends Comparable> {
     //}
 
     public IntervalTree() { // TODO aus dem constructor rausziehen.
-        this.comparator = new Comparator<Interval<Key>>() {
-            public int compare(Interval<Key> o1, Interval<Key> o2) {
-                int comp = o1.getLower().compareTo(o2.getLower());
-                if(comp == 0) {
-                    comp = o1.getUpper().compareTo(o2.getUpper());
-                }
-                return comp;
+        this.comparator = (o1, o2) -> {
+            int comp = o1.getLower().compareTo(o2.getLower());
+            if(comp == 0) {
+                comp = o1.getUpper().compareTo(o2.getUpper());
             }
+            return comp;
         };
     }
 

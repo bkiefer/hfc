@@ -4,8 +4,10 @@ noOfCores: 4
 noOfTuples: 500000
 noOfAtoms: 100000
 eqReduction: true
+garbageCollection: false
+cleanUpRepository: true
 
-shortIsDefault:  false
+shortIsDefault:  true
 namespaces:
   xsd:  http://www.w3.org/2001/XMLSchema#
   rdf:  http://www.w3.org/1999/02/22-rdf-syntax-ns#
@@ -14,7 +16,7 @@ namespaces:
   test: http://www.dfki.de/lt/onto/test.owl#
 
 tupleFiles:
-  - concatenate.nt
+  - ./src/test/data/Concatenate2/concatenate.nt
 
 MinArgs: 3
 MaxArgs: 5
@@ -26,6 +28,6 @@ rdfCheck: true
 exitOnError: true
 
 ruleFiles:
-  - concatenate.rdl
+  - ./src/test/data/Concatenate2/concatenate.rdl
 
 iterations: 2147483647

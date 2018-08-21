@@ -78,23 +78,21 @@ public final class LGetLatestValues extends AggregationalOperator {
     final int proppos = 0;                    // we sort according to the property ...
     final int timepos = table[0].length - 1;  // ... and according to the time argument
     // supply the sort method with its own comparator
-    Arrays.sort(table, new Comparator<int[]>() {
-      public int compare(int[] row1, int[] row2) {
-        // properties in HFC are lazily represented as instances of de.dfki.lt.hfc.types.Uri
-        final String prop1 = (getObject(row1[proppos])).toName();
-        final String prop2 = (getObject(row2[proppos])).toName();
-        // we assume time stamps be represented as instances of de.dfki.lt.hfc.types.XsdLong
-        final long time1 = ((XsdLong)(getObject(row1[timepos]))).value;
-        final long time2 = ((XsdLong)(getObject(row2[timepos]))).value;
-        // ascending order for the properties ...
-        final int propcomp = prop1.compareTo(prop2);
-        if (propcomp == 0) {
-          // ... but descending order for the time stamps
-          return Long.compare(time2, time1);
-        }
-        else
-          return propcomp;
+    Arrays.sort(table, (row1, row2) -> {
+      // properties in HFC are lazily represented as instances of de.dfki.lt.hfc.types.Uri
+      final String prop1 = (getObject(row1[proppos])).toName();
+      final String prop2 = (getObject(row2[proppos])).toName();
+      // we assume time stamps be represented as instances of de.dfki.lt.hfc.types.XsdLong
+      final long time1 = ((XsdLong)(getObject(row1[timepos]))).value;
+      final long time2 = ((XsdLong)(getObject(row2[timepos]))).value;
+      // ascending order for the properties ...
+      final int propcomp = prop1.compareTo(prop2);
+      if (propcomp == 0) {
+        // ... but descending order for the time stamps
+        return Long.compare(time2, time1);
       }
+      else
+        return propcomp;
     });
     // at least one row as table is not empty (see above)
     resultTable.add(table[0]);

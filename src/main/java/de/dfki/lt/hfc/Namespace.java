@@ -127,19 +127,20 @@ public final class Namespace {
 	 */
 	public HashMap<String, NamespaceObject> longToNs = new HashMap<String, NamespaceObject>();
 
-	public final boolean shortIsDefault = false;
 
+	public boolean shortIsDefault = false;
 	/**
 	 * @deprecated for test only
 	 * @return
 	 */
 	public static Namespace defaultNamespace(){
 		Namespace namespace = new Namespace();
-		namespace.putForm(XSD_SHORT,XSD_LONG,false);
-		namespace.putForm(RDF_SHORT, RDF_LONG, false);
-		namespace.putForm(RDFS_SHORT, RDFS_LONG, false);
-		namespace.putForm(OWL_SHORT, OWL_LONG, false);
-		namespace.putForm(TEST_SHORT, TEST_LONG, false);
+		namespace.shortIsDefault = true;
+		namespace.putForm(XSD_SHORT,XSD_LONG,namespace.shortIsDefault);
+		namespace.putForm(RDF_SHORT, RDF_LONG, namespace.shortIsDefault);
+		namespace.putForm(RDFS_SHORT, RDFS_LONG, namespace.shortIsDefault);
+		namespace.putForm(OWL_SHORT, OWL_LONG, namespace.shortIsDefault);
+		namespace.putForm(TEST_SHORT, TEST_LONG, namespace.shortIsDefault);
 		return namespace;
 	}
 
@@ -188,7 +189,7 @@ public final class Namespace {
 	 * by their long forms
 	 */
 	public String normalizeNamespaceUri(String uri) {
-		if (this.shortIsDefault) {
+		if (shortIsDefault) {
 			// read characters until we find a '#'
 			int pos = uri.indexOf("#");
 			if (pos == -1)

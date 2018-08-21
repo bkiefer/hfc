@@ -34,7 +34,7 @@ public class LongBasicThree {
     @BeforeClass
     public static void init() throws Exception {
 
-        fc =  new ForwardChainer(Config.getInstance("transaction_long3.yml"));
+        fc =  new ForwardChainer(Config.getInstance(getResource("transaction_long3.yml")));
 
         // compute deductive closure
         // TODO move this into extra tests -> fc.computeClosure();

@@ -45,8 +45,9 @@ public class MaterializedTriplesToQuintuples {
 	    fc.shutdownNoExit();
 	  }
 
-    ForwardChainer fc2 = new ForwardChainer(Config.getInstance(getTestResource("test.yml")));
-    int tuples2 = fc2.tupleStore.getAllTuples().size();
+    ForwardChainer fc2 = new ForwardChainer(Config.getInstance(getTestResource("Empty.yml")));
+    fc2.uploadTuples(IN_FILE);
+		int tuples2 = fc2.tupleStore.getAllTuples().size();
     fc2.shutdownNoExit();
     assertEquals(tuples, tuples2);
   }

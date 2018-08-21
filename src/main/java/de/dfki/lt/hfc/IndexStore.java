@@ -37,8 +37,6 @@ public class IndexStore {
    */
   private static final Logger logger = LoggerFactory.getLogger(IndexStore.class);
 
-
-
   // last '.' char is OK!
   public static final String INDEX_PATH = "de.dfki.lt.hfc.indices.";
 
@@ -60,6 +58,10 @@ public class IndexStore {
    */
   private Index primaryIndex;
 
+  /**
+   * The {@link Index} represents the data structure which is used to allow a quick and effective
+   * access to the information.
+   */
   private Index secundaryIndex;
 
   /**
@@ -90,18 +92,8 @@ public class IndexStore {
   private TupleStore tupleStore;
 
 
-//  /**
-//   * Creates a new instance of {@link IndexStore} according to the specification in the given file.
-//   */
-//  public IndexStore(String indexFile, boolean verbose) throws IndexingException {
-//    logger.debug("Initializing indexStore ...");
-//    readIndex(indexFile);
-//    logger.debug( "... successfully initialized");
-//  }
-
-
-  public IndexStore(Map<String, Object> config) throws IndexingException {
-    readIndex(config);
+  public IndexStore(Map<String, Object> settings) throws IndexingException {
+    readIndex(settings);
   }
 
 
@@ -168,7 +160,7 @@ public class IndexStore {
           break;
         }
         case "Position1": {
-          String value = (String) entry.getValue();
+          String value =  entry.getValue().toString();
           if (value.contains(",")) {
             String[] interval = value.split(",");
             position_prime_start = Integer.parseInt(interval[0]);
@@ -179,7 +171,7 @@ public class IndexStore {
           break;
         }
         case "Position2": {
-          String value = (String) entry.getValue();
+          String value = entry.getValue().toString();
           if (value.contains(",")) {
             String[] interval = value.split(",");
             position_second_start = Integer.parseInt(interval[0]);

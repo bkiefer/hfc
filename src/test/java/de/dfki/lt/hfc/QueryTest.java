@@ -27,7 +27,9 @@ public class QueryTest {
 
   @Before
   public void setUp() throws IOException, WrongFormatException {
-    fc =  new ForwardChainer(Config.getDefaultConfig());
+    Config config = Config.getDefaultConfig();
+    fc =  new ForwardChainer(config);
+
     fc.uploadTuples(getResource("test.child.labvalues.nt"));
   }
 

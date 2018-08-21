@@ -1,4 +1,5 @@
 package de.dfki.lt.hfc;
+import static de.dfki.lt.hfc.TestingUtils.printExpected;
 import static org.junit.Assert.*;
 
 import org.junit.AfterClass;
@@ -63,7 +64,8 @@ public class ISumTwoTest {
     };
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    //TestUtils.printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
+    System.out.println(bt.toString());
+    //printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     checkResult(expected, bt, bt.getVars());
   }
 

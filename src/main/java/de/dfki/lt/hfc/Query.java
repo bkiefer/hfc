@@ -186,10 +186,10 @@ public class Query {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        logger.info("Projected vars " + queryParser.projectedVars +
-                " \n WHERE " + queryParser.whereClauses+
-                " \n FILTER " + queryParser.filterClauses+
-                " \n AGGREGATE " + queryParser.aggregateClauses);
+//        logger.info("Projected vars " + queryParser.projectedVars +
+//                " \n WHERE " + queryParser.whereClauses+
+//                " \n FILTER " + queryParser.filterClauses+
+//                " \n AGGREGATE " + queryParser.aggregateClauses);
 
         // so far, query syntactically correct; namespaces are also correctly treated, using the
         // cannonical form (either short or long), as specified in the namespace object;

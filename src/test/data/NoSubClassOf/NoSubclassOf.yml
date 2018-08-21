@@ -3,9 +3,11 @@ characterEncoding: UTF-8
 noOfCores: 4
 noOfTuples: 500000
 noOfAtoms: 100000
-eqReduction: true
+eqReduction: false
+garbageCollection: false
+cleanUpRepository: true
 
-shortIsDefault:  false
+shortIsDefault:  true
 namespaces:
   xsd:  http://www.w3.org/2001/XMLSchema#
   rdf:  http://www.w3.org/1999/02/22-rdf-syntax-ns#
@@ -14,7 +16,7 @@ namespaces:
   test: http://www.dfki.de/lt/onto/test.owl#
 
 tupleFiles:
-  - nosubclassof.nt
+  - ./src/test/data/NoSubClassOf/nosubclassof.nt
 
 MinArgs: 3
 MaxArgs: 5
@@ -26,7 +28,7 @@ rdfCheck: true
 exitOnError: true
 
 ruleFiles:
-  - nosubclassof.rdl
+  - ./src/test/data/NoSubClassOf/nosubclassof.rdl
 
 
 iterations: 2147483647

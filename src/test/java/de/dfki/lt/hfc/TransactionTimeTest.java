@@ -45,7 +45,6 @@ public class TransactionTimeTest {
     fc =	new ForwardChainer(Config.getInstance(getResource("TestTransaction.yml")));
     // further PAL-specific namespaces (short-to-long mappings, XSD DTs-to-Java class mappings)
     // further PAL-specific tuples (special XSD DT)
-    fc.uploadTuples(getResource("pal.polarity.transtime.long.quintuple.eqred.nt"));  // already 5-tuples
     // further PAL-specific triples from the inidividual sub-ontologies: make them 5-tuples
     for (String file : new String[] {
             "dialogue.nt",
@@ -57,8 +56,6 @@ public class TransactionTimeTest {
             "time.nt",
             "upper.nt"})
       fc.uploadTuples(getResource(file), TRUE, TIME);  // transform triples into quintuples
-    // further rules (currently empty)
-    fc.uploadRules(getResource("pal.polarity.transtime.long.quintuple.eqred.rdl"));
   }
 
   @AfterClass

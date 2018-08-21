@@ -1,9 +1,9 @@
-verbose: false
+verbose: true
 characterEncoding: UTF-8
-noOfCores: 16
+noOfCores: 4
 noOfTuples: 500000
 noOfAtoms: 100000
-eqReduction: false
+eqReduction: true
 garbageCollection: false
 cleanUpRepository: true
 
@@ -14,12 +14,18 @@ namespaces:
   rdfs:  http://www.w3.org/2000/01/rdf-schema#
   owl:  http://www.w3.org/2002/07/owl#
   test: http://www.dfki.de/lt/onto/test.owl#
+  test: http://www.dfki.de/lt/onto/test.owl#
   lt: http://www.lt-world.org/ltw.owl#
   reg: http://registry.dfki.de#
-
+  dial: http://www.dfki.de/lt/onto/hysociatea/dialframe.owl#
+  time: http://www.dfki.de/lt/onto/hysociatea/time.owl#
+  upp:  http://www.dfki.de/lt/onto/hysociatea/upper.owl#
+  dafn: http://www.dfki.de/lt/onto/hysociatea/dialframe.owl#
+  dom:  http://www.dfki.de/lt/onto/hysociatea/domain.owl#
+  hst:  http://www.dfki.de/lt/onto/hysociatea/hysociatea.owl#
 
 tupleFiles:
-  - ./src/test/data/default.nt
+- ./src/test/data/default.nt
 
 MinArgs: 3
 MaxArgs: 5
@@ -27,11 +33,10 @@ subjectPosition: 0
 
 predicatePosition: 1
 objectPosition: 2
-rdfCheck: false
+rdfCheck: true
 exitOnError: true
 
 ruleFiles:
-  - ./src/test/data/default.rdl
-
+- ./src/test/data/default.eqred.rdl
 
 iterations: 2147483647

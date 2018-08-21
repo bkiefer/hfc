@@ -21,6 +21,7 @@ public final class IntStringToBooleanTest {
 
     // load Namespace
     Namespace namespace = Namespace.defaultNamespace();
+    namespace.shortIsDefault = true;
 
     // create TupleStore
     TupleStore store =

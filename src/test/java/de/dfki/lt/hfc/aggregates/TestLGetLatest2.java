@@ -1,6 +1,7 @@
 package de.dfki.lt.hfc.aggregates;
 
 import static de.dfki.lt.hfc.TestingUtils.checkResult;
+import static de.dfki.lt.hfc.TestingUtils.getTestResource;
 import static de.dfki.lt.hfc.aggregates.TestLGetLatest.getResource;
 
 import java.io.FileNotFoundException;
@@ -40,7 +41,7 @@ public class TestLGetLatest2 {
   @BeforeClass
   public static void init() throws Exception {
 
-    fc =	new ForwardChainer(Config.getDefaultConfig());
+    fc =	new ForwardChainer(Config.getInstance(getTestResource("test.yml")));
 
     // upload instance test files
     fc.uploadTuples(getResource("time.nt"));
@@ -216,7 +217,7 @@ public class TestLGetLatest2 {
         {"<hst:da77>", "<rdf:type>", "<dafn:DialogueAct>"},
         {"<hst:da77>", "<dafn:happens>", "\"731\"^^<xsd:long>"},
     };
-    ForwardChainer localfc =  new ForwardChainer(Config.getDefaultConfig());
+    ForwardChainer localfc =  new ForwardChainer(Config.getInstance(getTestResource("test.yml")));
 
     // upload instance test files
     localfc.uploadTuples(getResource("time.nt"));

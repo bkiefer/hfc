@@ -38,7 +38,7 @@ public class TestRemoveSupers {
   @BeforeClass
   public static void init() throws Exception {
 
-    fc =	new ForwardChainer(Config.getDefaultConfig());
+    fc =	new ForwardChainer(Config.getInstance(getTestResource("test.yml")));
 
     // upload instance test files
     fc.uploadTuples(getResource("dialframe.nt"));

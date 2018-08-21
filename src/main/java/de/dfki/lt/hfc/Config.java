@@ -8,6 +8,7 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class Config {
 
@@ -16,7 +17,7 @@ public class Config {
      */
     private static final Logger logger = LoggerFactory.getLogger(Config.class);
 
-    private static String path = "/src/resources/";
+    private static String path = "./src/resources/";
 
     // special value UNBOUND/NULL, not used at the moment
     public static final Uri UNBOUND = new Uri("Null");
@@ -50,9 +51,9 @@ public class Config {
     public int noOfTuples;
     public int noOfAtoms;
     public boolean eqReduction;
-    public List<String> tupleFiles;
+    public List<String> tupleFiles = new ArrayList<>();
     public String persistencyFile;
-    public List<String> ruleFiles;
+    public List<String> ruleFiles = new ArrayList<>();
     public boolean shortIsDefault;
     public int maxArgs;
     public int minArgs;
@@ -70,7 +71,8 @@ public class Config {
     public  Namespace namespace = new Namespace();
 
 
-    public Config(Map<String, Object> configs) {IndexStore indexStore1;
+    public Config(Map<String, Object> configs) {
+        this.exitOnError = (boolean) configs.get("exitOnError");
         this.verbose = (boolean) configs.get("verbose");
         this.characterEncoding = (String) configs.get("characterEncoding");
         this.gc = (boolean) configs.get("garbageCollection");
@@ -78,13 +80,16 @@ public class Config {
         this.noOfTuples = (int) configs.get("noOfTuples");
         this.noOfAtoms = (int) configs.get("noOfAtoms");
         this.eqReduction = (boolean) configs.get("eqReduction");
-        this.tupleFiles = (ArrayList) configs.get("tupleFiles");
-        this.ruleFiles = (ArrayList) configs.get("ruleFiles");
+        if(configs.get("tupleFiles") != null)
+            this.tupleFiles = (ArrayList) configs.get("tupleFiles");
+        if(configs.get("ruleFiles") != null)
+            this.ruleFiles = (ArrayList) configs.get("ruleFiles");
         this.persistencyFile = (String) configs.get("persistencyFile");
         this.noOfIterations = (int) configs.get("iterations");
         this.shortIsDefault = (boolean)configs.get("shortIsDefault");
         this.cleanUpRepository = (boolean) configs.get("cleanUpRepository");
         HashMap<String, String> shortToLong = (HashMap<String, String>) configs.get("namespaces");
+        this.namespace.shortIsDefault = shortIsDefault;
         NamespaceObject ns;
         for (Map.Entry<String, String> mapping : shortToLong.entrySet()){
             ns = new NamespaceObject(mapping.getKey(), mapping.getValue(), shortIsDefault);
@@ -96,14 +101,22 @@ public class Config {
         this.predicatePosition = (int) configs.get("predicatePosition");
         this.objectPosition = (int) configs.get("objectPosition");
         this.rdfCheck = (boolean) configs.get("rdfCheck");
-        this.exitOnError = (boolean) configs.get("exitOnError");
         try {
-            indexStore1 = ( configs.containsKey("Index")) ? createIndexStore((HashMap<String, Object>) configs.get("Index")) : null;
+            HashMap<String,Object> settings = new HashMap<>();
+            if( configs.containsKey("Index")){
+                for(Object e : (ArrayList)configs.get("Index")){
+                    settings.putAll((Map<? extends String, ?>) e);
+                }
+            this.indexStore = createIndexStore(settings);
+            } else {
+                this.indexStore = null;
+            }
         } catch (IndexingException e) {
-            indexStore1 = null;
-            e.printStackTrace();
+            this.indexStore = null;
+            logger.error(e.getMessage());
+            if(exitOnError)
+                System.exit(-1);
         }
-        this.indexStore = indexStore1;
     }
 
     public Config(int noOfCores, boolean verbose) {
@@ -116,7 +129,6 @@ public class Config {
         File confFile = new File(configFileName);
         InputStream in = new FileInputStream(confFile);
         return new Config((Map<String, Object>) yaml.load(in));
-
     }
 
 
@@ -190,8 +202,8 @@ public class Config {
      * @return an instance of Config containing the default settings
      */
     public static Config getDefaultConfig() throws IOException {
-        String configPath = new File("." ).getCanonicalPath()+ path + "DefaultConfig.yml";
-        System.out.println(configPath);
+//        String configPath = new File("." ).getCanonicalPath()+ path + "DefaultConfig.yml";
+        String configPath =  path + "DefaultConfig.yml";
         return getInstance(configPath);
     }
 
@@ -252,7 +264,10 @@ public class Config {
         copy.objectPosition = this.objectPosition;
         copy.rdfCheck = this.rdfCheck;
         copy.exitOnError = this.exitOnError;
-        copy.indexStore = this.indexStore.copy();
+        if(indexStore != null)
+            copy.indexStore = this.indexStore.copy();
+        else
+            copy.indexStore = null;
         return copy;
     }
 }

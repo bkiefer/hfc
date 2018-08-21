@@ -16,7 +16,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -47,50 +49,50 @@ public class IndexStoreTest {
 
   @Test
   public void  lookup() {
-    assertEquals(74,fc.tupleStore.indexStore.lookup(new XsdDate(0,0,0)).size());
+    assertEquals(74,fc.config.indexStore.lookup(new XsdDate(0,0,0)).size());
   }
 
   @Test
   public void  lookup1() {
-    assertEquals(74,fc.tupleStore.indexStore.lookup(new XsdDate(0,0,1),new XsdDate(0,0,2)).size());
+    assertEquals(74,fc.config.indexStore.lookup(new XsdDate(0,0,1),new XsdDate(0,0,2)).size());
   }
 
   @Test
   public void  update_ClosureComputation() {
       fc.computeClosure();
-      assertEquals(1,fc.tupleStore.indexStore.getPrimIndex().size());
-      assertEquals(154,fc.tupleStore.indexStore.lookup(new XsdDate(0,0,0)).size());
-      assertEquals(1,fc.tupleStore.indexStore.getSecIndex().size());
-      assertEquals(154,fc.tupleStore.indexStore.lookup(new XsdDate(0,0,1),new XsdDate(0,0,2)).size());
+      assertEquals(1,fc.config.indexStore.getPrimIndex().size());
+      assertEquals(154,fc.config.indexStore.lookup(new XsdDate(0,0,0)).size());
+      assertEquals(1,fc.config.indexStore.getSecIndex().size());
+      assertEquals(154,fc.config.indexStore.lookup(new XsdDate(0,0,1),new XsdDate(0,0,2)).size());
   }
 
   @Test
   public void  update(){
     // the size(number of used keys) of the primary index should be unchanged, but the one of the second index must be increased by 1.
     fc.tupleStore.addTuple(new String[]{"\"0000-00-00\"^^<xsd:date>", "<rdf:type>", "<rdf:type>", "<rdf:Property>", "\"0000-00-02\"^^<xsd:date>","\"0000-00-03\"^^<xsd:date>"});
-    assertEquals(1,fc.tupleStore.indexStore.getPrimIndex().size());
-    assertEquals(2,fc.tupleStore.indexStore.getSecIndex().size());
+    assertEquals(1,fc.config.indexStore.getPrimIndex().size());
+    assertEquals(2,fc.config.indexStore.getSecIndex().size());
   }
 
   @Test
   public void  getPrimIndex() {
-    assertTrue(fc.tupleStore.indexStore.getPrimIndex() instanceof BTreeIndex);
+    assertTrue(fc.config.indexStore.getPrimIndex() instanceof BTreeIndex);
   }
 
   @Test
   public void  getSecIndex() {
-    assertTrue(fc.tupleStore.indexStore.getSecIndex() instanceof IntervalTreeIndex);
+    assertTrue(fc.config.indexStore.getSecIndex() instanceof IntervalTreeIndex);
   }
 
   @Test
   public void  size() {
-    assertEquals(1,fc.tupleStore.indexStore.getPrimIndex().size());
+    assertEquals(1,fc.config.indexStore.getPrimIndex().size());
 
   }
 
   @Test
   public void  secSize() {
-    assertEquals(1,fc.tupleStore.indexStore.getSecIndex().size());
+    assertEquals(1,fc.config.indexStore.getSecIndex().size());
   }
 
   @Test
@@ -106,7 +108,7 @@ public class IndexStoreTest {
     integerQRelationMap.put(-5,equal );
     Set<IndexLookup> lkps = new HashSet<IndexLookup>();
     Set<QRelation> relationsToBeRewritten = new HashSet<>();
-    fc.tupleStore.indexStore.prepareLookup(clause,integerQRelationMap, lkps, relationsToBeRewritten);
+    fc.config.indexStore.prepareLookup(clause,integerQRelationMap, lkps, relationsToBeRewritten);
     assertEquals(1,lkps.size());
   }
 

@@ -1,6 +1,7 @@
 package de.dfki.lt.hfc;
 
 
+import static de.dfki.lt.hfc.TestingUtils.printExpected;
 import static org.junit.Assert.*;
 
 import org.junit.AfterClass;
@@ -55,35 +56,64 @@ public class BlankNodeTwoTest {
     // TODO: FIX EXPECTED DATA
 
     String[][] expected = {
+//      { "<xsd:int>", "<rdf:type>", "<rdfs:Datatype>" },
         { "<xsd:int>", "<rdf:type>", "<rdfs:Datatype>" },
+//      { "<test:sri>", "<test:hasName>", ""Stanford Research Institute"^^<xsd:string>" },
         { "<test:sri>", "<test:hasName>", "\"Stanford Research Institute\"^^<xsd:string>"},
+//      { "<test:dfki>", "<rdf:type>", "<test:Company>" },
         { "<test:dfki>", "<rdf:type>", "<test:Company>" },
+//      { "<test:Company>", "<rdfs:subClassOf>", "<owl:Thing>" },
         { "<test:Company>", "<rdfs:subClassOf>", "<owl:Thing>" },
+//      { "<test:db>", "<test:hasName>", ""Daimler Benz"^^<xsd:string>" },
         { "<test:db>", "<test:hasName>", "\"Daimler Benz\"^^<xsd:string>" },
+//      { "<test:dfki>", "<test:hasName>", ""DFKI"^^<xsd:string>" },
         { "<test:dfki>", "<test:hasName>", "\"DFKI\"^^<xsd:string>" },
+//      { "<test:db>", "<rdf:type>", "<test:Company>" },
         { "<test:db>", "<rdf:type>", "<test:Company>" },
+//      { "<test:dfki>", "<test:hasName>", ""DFKI GmbH"^^<xsd:string>" },
         { "<test:dfki>", "<test:hasName>", "\"DFKI GmbH\"^^<xsd:string>" },
+//      { "<test:sri>", "<test:new1>", "_:de.dfki.lt.hfc.ForwardChainer@61a485d21" },
+//      { "<test:sri>", "<test:new1>", "_:de.dfki.lt.hfc.ForwardChainer@61a485d24" },
         { "<test:sri>", "<test:new1>", "_:de.dfki.lt.hfc.ForwardChainer@45283ce21" },
+//      { "<xsd:string>", "<rdf:type>", "<rdfs:Datatype>" },
         { "<xsd:string>", "<rdf:type>", "<rdfs:Datatype>" },
+//      { "<owl:Nothing>", "<rdfs:subClassOf>", "<owl:Thing>" },
         { "<owl:Nothing>", "<rdfs:subClassOf>", "<owl:Thing>" },
+//      { "<owl:Nothing>", "<rdf:type>", "<owl:Class>" },
         { "<owl:Nothing>", "<rdf:type>", "<owl:Class>" },
+//      { "<test:sri>", "<test:hasName>", ""SRI"^^<xsd:string>" },
         { "<test:sri>", "<test:hasName>", "\"SRI\"^^<xsd:string>" },
+//      { "<owl:Thing>", "<owl:disjointWith>", "<owl:Nothing>" },
         { "<owl:Thing>", "<owl:disjointWith>", "<owl:Nothing>" },
+//      { "<test:sri>", "<test:new2>", "_:de.dfki.lt.hfc.ForwardChainer@61a485d24" },
+//      { "<test:sri>", "<test:new2>", "_:de.dfki.lt.hfc.ForwardChainer@61a485d21" },
         { "<test:sri>", "<test:new2>", "_:de.dfki.lt.hfc.ForwardChainer@45283ce21" },
+//      { "<test:dfki>", "<test:hasName>", ""Deutsches Forschungszentrum für Künstliche Intelligenz"@de" },
         { "<test:dfki>", "<test:hasName>", "\"Deutsches Forschungszentrum für Künstliche Intelligenz\"@de" },
+//      { "<test:sri>", "<rdf:type>", "<test:Company>" },
         { "<test:sri>", "<rdf:type>", "<test:Company>" },
+//      { "<test:db>", "<test:new2>", "_:de.dfki.lt.hfc.ForwardChainer@61a485d22" },
+//      { "<test:db>", "<test:new2>", "_:de.dfki.lt.hfc.ForwardChainer@61a485d25" },
         { "<test:db>", "<test:new2>", "_:de.dfki.lt.hfc.ForwardChainer@45283ce22" },
+//      { "<test:dfki>", "<test:hasName>", ""German Research Center for Artificial Inteligence"@en" },
         { "<test:dfki>", "<test:hasName>", "\"German Research Center for Artificial Inteligence\"@en" },
+//      { "<test:db>", "<test:new1>", "_:de.dfki.lt.hfc.ForwardChainer@61a485d22" },
+//      { "<test:db>", "<test:new1>", "_:de.dfki.lt.hfc.ForwardChainer@61a485d25" },
         { "<test:db>", "<test:new1>", "_:de.dfki.lt.hfc.ForwardChainer@45283ce22" },
+//      { "<owl:Thing>", "<rdf:type>", "<owl:Class>" },
         { "<owl:Thing>", "<rdf:type>", "<owl:Class>" },
+//      { "<test:dfki>", "<test:new1>", "_:de.dfki.lt.hfc.ForwardChainer@61a485d23" },
+//      { "<test:dfki>", "<test:new1>", "_:de.dfki.lt.hfc.ForwardChainer@61a485d20" },
         { "<test:dfki>", "<test:new1>", "_:de.dfki.lt.hfc.ForwardChainer@45283ce20" },
+//      { "<test:dfki>", "<test:new2>", "_:de.dfki.lt.hfc.ForwardChainer@61a485d20" },
+//      { "<test:dfki>", "<test:new2>", "_:de.dfki.lt.hfc.ForwardChainer@61a485d23" },
         { "<test:dfki>", "<test:new2>", "_:de.dfki.lt.hfc.ForwardChainer@45283ce20" },
 
     };
 
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    //TestLGetLatest.printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
+    //printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     checkResult(expected, bt, bt.getVars());
   }
 

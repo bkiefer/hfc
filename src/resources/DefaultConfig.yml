@@ -1,13 +1,13 @@
-verbose: false
+verbose: true
 characterEncoding: UTF-8
 noOfCores: 4
 noOfTuples: 500000
 noOfAtoms: 100000
-eqReduction: true
+eqReduction: false
 garbageCollection: false
 cleanUpRepository: true
 
-shortIsDefault:  false
+shortIsDefault:  true
 namespaces:
   xsd:  http://www.w3.org/2001/XMLSchema#
   rdf:  http://www.w3.org/1999/02/22-rdf-syntax-ns#
@@ -16,7 +16,7 @@ namespaces:
   test: http://www.dfki.de/lt/onto/test.owl#
 
 tupleFiles:
-- default.nt
+- ./src/resources/default.nt
 
 MinArgs: 3
 MaxArgs: 5
@@ -28,6 +28,6 @@ rdfCheck: true
 exitOnError: true
 
 ruleFiles:
-- default.rdl
+- ./src/resources/default.rdl
 
 iterations: 2147483647

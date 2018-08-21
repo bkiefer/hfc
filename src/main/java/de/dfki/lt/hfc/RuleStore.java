@@ -631,7 +631,14 @@ public final class RuleStore {
 		for (int i = 0; i < rule.inEqConstraints.size(); i++) {
 			// ineqs only refer to LHS variables!
 			val = rule.inEqConstraints.get(i);
+//			logger.info(rule.name);
 			if (RuleStore.isVariable(val)) {
+//			    for ( int[] a : rule.ante)
+//				    logger.info("Ante:" + Arrays.toString(a));
+//			    for ( int[] c : rule.cons)
+//				    logger.info("Cons:" + Arrays.toString(c));
+//			    for (Predicate p : rule.tests)
+//				    logger.info(p.toString());
 				if (! lhsVars.contains(val))
 					return sayItLoud(rule.name, ": in-eq variable does not refer to LHS");
 				noOfOcc.put(val, noOfOcc.get(val) + 1);
@@ -1291,7 +1298,7 @@ public final class RuleStore {
 		ArrayList<String> actions = new ArrayList<String>();
 		boolean eol = true;
 		boolean anteOK = false;
-    boolean isNew = true;
+        boolean isNew = true;
 		int[] ituple;
 		ArrayList<int[]> tlist = new ArrayList<int[]>();
 		Rule rule = null;
@@ -1307,9 +1314,10 @@ public final class RuleStore {
 				if (line.startsWith("$")) {
           isNew = true;
           // check whether a rule of this _name_ already exists
-          if (this.allRuleNames.contains(line) && this.verbose) {
-            logger.info("  rule with name " + line + " already exists; skipping definition ...");
-            isNew = false;
+          if (this.allRuleNames.contains(line) ) {
+              if(this.verbose)
+                  logger.info("  rule with name " + line + " already exists; skipping definition ...");
+              isNew = false;
           }
           else
             this.allRuleNames.add(line);
@@ -1405,6 +1413,7 @@ public final class RuleStore {
 					}
 				}
 				if (eol) {
+					//logger.info("Read-Tuple:" + tuple.toString());
 					if (tupleStore.equivalenceClassReduction) {
 						// this is the place where we need to look for equivalence relation instances
 						// and where we potentially need to replace individuals by their proxies

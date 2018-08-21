@@ -24,17 +24,7 @@ public class QueryTest_LookupTimeCombi {
   @BeforeClass
   public static void init() throws Exception {
 
-    fc = new ForwardChainer(4,                                                    // #cores
-        false,                                                 // verbose
-        false,                                                 // RDF Check
-        false,                                                // EQ reduction disabled
-        6,                                                    // min #args
-        6,                                                    // max #args
-        100000,                                               // #atoms
-        500000,                                               // #tuples
-        getResource("lookupAtomIntervalTest.nt"),                 // tuple file
-        getResource("combiTest.rdl")
-    );
+    fc = new ForwardChainer(Config.getInstance(getResource("TimeCombi.yml")));
 
     // compute deductive closure
     // TODO move this into extra tests -> fcInterval.computeClosure();

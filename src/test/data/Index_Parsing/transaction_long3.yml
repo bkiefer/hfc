@@ -3,9 +3,11 @@ characterEncoding: UTF-8
 noOfCores: 4
 noOfTuples: 500000
 noOfAtoms: 100000
-eqReduction: true
+eqReduction: false
+garbageCollection: false
+cleanUpRepository: true
 
-shortIsDefault:  false
+shortIsDefault:  true
 namespaces:
   xsd:  http://www.w3.org/2001/XMLSchema#
   rdf:  http://www.w3.org/1999/02/22-rdf-syntax-ns#
@@ -14,7 +16,7 @@ namespaces:
   test: http://www.dfki.de/lt/onto/test.owl#
 
 tupleFiles:
-  - basic_transaction_long3.nt
+  - ./src/test/data/Index_Parsing/basic_transaction_long3.nt
 
 MinArgs: 4
 MaxArgs: 4
@@ -26,11 +28,11 @@ rdfCheck: false
 exitOnError: true
 
 ruleFiles:
-  - transaction3.rdl
+  - ./src/test/data/Index_Parsing/transaction3.rdl
 
 Index:
   - Key1: XsdLong
   - Position1: 3
-  - Structure1:BTreeIndex
+  - Structure1: BTreeIndex
 
 iterations: 2147483647
