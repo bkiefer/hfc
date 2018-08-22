@@ -1,4 +1,5 @@
 package de.dfki.lt.hfc;
+import static de.dfki.lt.hfc.TestingUtils.printExpected;
 import static org.junit.Assert.*;
 
 import org.junit.AfterClass;
@@ -28,7 +29,8 @@ public class ConcatenateFourTest {
   @Test
   public void test() throws QueryParseException  {
     // TODO: FIX EXPECTED DATA
-
+    System.out.println(fc.tupleStore.idToJavaObject);
+    System.out.println(fc.tupleStore.objectToId);
     String[][] expected = {
         { "<test:dfki>", "<test:hasName>", "\"DFKI\"^^<xsd:string>" },
         { "<test:dfki>", "<test:hasDoubleName>", "\"German Research Center for Artificial InteligenceGerman Research Center for Artificial Inteligence\"^^<xsd:string>" },
@@ -59,7 +61,7 @@ public class ConcatenateFourTest {
 
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    //TestLGetLatest.printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
+    printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     checkResult(expected, bt, bt.getVars());
   }
 

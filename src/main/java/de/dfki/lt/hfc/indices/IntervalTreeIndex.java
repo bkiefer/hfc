@@ -3,6 +3,7 @@ package de.dfki.lt.hfc.indices;
 import de.dfki.lt.hfc.indices.IntervalTree.Interval;
 import de.dfki.lt.hfc.indices.IntervalTree.IntervalTree;
 import de.dfki.lt.hfc.types.AnyType;
+
 import java.util.Set;
 
 /**
@@ -19,7 +20,7 @@ public class IntervalTreeIndex extends AdvancedIndex {
 
   @Override
   protected void structureSpecificAdd(AnyType anyType, int[] value) {
-    this.tree.insert(new Interval(anyType,anyType,value));
+    this.tree.insert(new Interval(anyType, anyType, value));
   }
 
   @Override
@@ -29,12 +30,12 @@ public class IntervalTreeIndex extends AdvancedIndex {
 
   @Override
   protected Set<int[]> structureSpecificSearch(AnyType anyType) {
-    return this.tree.findOverlapping(new Interval(anyType,anyType));
+    return this.tree.findOverlapping(new Interval(anyType, anyType));
   }
 
   @Override
   protected Set<int[]> structureSpecificIntervalSearch(AnyType start, AnyType end) {
-    return this.tree.findWithEquality(new Interval(start,end),false,false);
+    return this.tree.findWithEquality(new Interval(start, end), false, false);
   }
 
   @Override
@@ -60,7 +61,7 @@ public class IntervalTreeIndex extends AdvancedIndex {
 
   @Override
   public void addInterval(AnyType start, AnyType end, int[] v) {
-    this.tree.insert(new Interval(start,end,v));
+    this.tree.insert(new Interval(start, end, v));
 
   }
 
@@ -71,12 +72,12 @@ public class IntervalTreeIndex extends AdvancedIndex {
 
   @Override
   public Set<int[]> searchIntervalWithEqualityConstraints(AnyType start, AnyType end, boolean startMustBeEqual, boolean endMustBeEqual) {
-    return this.tree.findWithEquality(new Interval(start,end),startMustBeEqual,endMustBeEqual);
+    return this.tree.findWithEquality(new Interval(start, end), startMustBeEqual, endMustBeEqual);
   }
 
   @Override
   public Set<int[]> searchIntervalsIncluding(AnyType start, AnyType end, boolean startMustBeEqual, boolean endMustBeEqual) {
-    return this.tree.findIntervalsContaining(new Interval(start,end),startMustBeEqual,endMustBeEqual);
+    return this.tree.findIntervalsContaining(new Interval(start, end), startMustBeEqual, endMustBeEqual);
   }
 
 }

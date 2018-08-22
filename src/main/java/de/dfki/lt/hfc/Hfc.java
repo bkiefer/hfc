@@ -1,5 +1,9 @@
 package de.dfki.lt.hfc;
 
+import de.dfki.lt.hfc.types.XsdLong;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,10 +13,6 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import de.dfki.lt.hfc.types.XsdLong;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Hfc {
 
@@ -24,9 +24,10 @@ public class Hfc {
    * I'm making _all_ the potentially relevant object directly accessable
    */
   public TupleStore _tupleStore = null;
-  private RuleStore _ruleStore = null;
-  private ForwardChainer _forwardChainer = null;
-
+  /**
+   * transaction time time stamp used by Hfc.readTuples(BufferedReader tupleReader)
+   */
+  public long timeStamp = 0L;
   /**
    * fields we would like to customize in Namespace, TupleStore, RuleStore, and ForwardChainer
    * and which can be altered by calling customizeHfc() below;
@@ -56,11 +57,8 @@ public class Hfc {
 //  protected int subjectPosition = 0;
 //  protected boolean verbose = false;
   protected Config config;
-
-  /**
-   * transaction time time stamp used by Hfc.readTuples(BufferedReader tupleReader)
-   */
-  public long timeStamp = 0L;
+  private RuleStore _ruleStore = null;
+  private ForwardChainer _forwardChainer = null;
 
   /**
    * the nullary constructor allocates the minimal object configuration:
@@ -128,53 +126,52 @@ public class Hfc {
 //  }
 
   public void addNamespace(String shortForm, String longForm) {
-    config.putNamespace(shortForm,longForm);
+    config.putNamespace(shortForm, longForm);
   }
 
   public void readTuples(BufferedReader tupleReader)
-      throws WrongFormatException, IOException {
+          throws WrongFormatException, IOException {
     _tupleStore.readTuples(tupleReader);
   }
 
-  public void readTuples(BufferedReader tupleReader, HashMap<String,String> namespaceMappings)
-    throws  WrongFormatException, IOException {
+  public void readTuples(BufferedReader tupleReader, HashMap<String, String> namespaceMappings)
+          throws WrongFormatException, IOException {
     for (Map.Entry<String, String> e : namespaceMappings.entrySet())
       config.putNamespace(e.getKey(), e.getValue());
     _tupleStore.readTuples(tupleReader);
   }
 
   public void readTuples(File tuples)
-      throws WrongFormatException, IOException {
+          throws WrongFormatException, IOException {
     readTuples(Files.newBufferedReader(tuples.toPath(),
-        Charset.forName(_tupleStore.inputCharacterEncoding)));
+            Charset.forName(_tupleStore.inputCharacterEncoding)));
   }
 
 
-
   public void readTuples(File tuples, long timestamp)
-      throws WrongFormatException, IOException {
+          throws WrongFormatException, IOException {
     _tupleStore.readTuples(Files.newBufferedReader(tuples.toPath(),
-        Charset.forName(_tupleStore.inputCharacterEncoding)),
-        null, new XsdLong(timestamp).toString());
+            Charset.forName(_tupleStore.inputCharacterEncoding)),
+            null, new XsdLong(timestamp).toString());
   }
 
 
   String myNormalizeNamespaces(String s) {
     //TODO
     switch (s.charAt(0)) {
-    case '<' :
-      return '<'
-          + config.namespace.normalizeNamespaceUri(
-              s.substring(1, s.length() - 1))
-          + '>';
-    case '"' :
-      // Atom, possibly with long xsd type spec
-      int pos = s.lastIndexOf('^');
-      if (pos > 0 && s.charAt(pos - 1) == '^') {
-        return s.substring(0, pos + 2)
-            + config.namespace.normalizeNamespaceUri(s.substring(pos + 2, s.length() - 1))
-            + '>';
-      }
+      case '<':
+        return '<'
+                + config.namespace.normalizeNamespaceUri(
+                s.substring(1, s.length() - 1))
+                + '>';
+      case '"':
+        // Atom, possibly with long xsd type spec
+        int pos = s.lastIndexOf('^');
+        if (pos > 0 && s.charAt(pos - 1) == '^') {
+          return s.substring(0, pos + 2)
+                  + config.namespace.normalizeNamespaceUri(s.substring(pos + 2, s.length() - 1))
+                  + '>';
+        }
     }
     return s;
   }
@@ -187,16 +184,17 @@ public class Hfc {
     return id;
   }
 
-  /** Normalize namespaces, and get ids directly to put in the tuples without
-   *  using the hfc internal functions. Also, honor the equivalence reduction
-   *  by always entering the representative.
+  /**
+   * Normalize namespaces, and get ids directly to put in the tuples without
+   * using the hfc internal functions. Also, honor the equivalence reduction
+   * by always entering the representative.
    *
-   * @param rows the table that contains the tuples to add to the storage
+   * @param rows  the table that contains the tuples to add to the storage
    * @param front the potentially-empty (== null) front element
    * @param backs arbitrary-many back elements (or an empty array)
-   *
-   *  This is done so i can add the <it>now<it/> time stamp transparently
-   *  TODO: refactor, and make this part of HFC core
+   *              <p>
+   *              This is done so i can add the <it>now<it/> time stamp transparently
+   *              TODO: refactor, and make this part of HFC core
    */
   public int addTuples(List<List<String>> rows, String front, String... backs) {
     // normalize namespaces for front and backs
@@ -241,7 +239,6 @@ public class Hfc {
   }
 
   /**
-   *
    * @param rules
    * @throws IOException
    */
@@ -260,8 +257,7 @@ public class Hfc {
       _ruleStore.readRules(rules.getAbsolutePath());
       // create forward chainer
       _forwardChainer = new ForwardChainer(config, _tupleStore, _ruleStore);
-    }
-    else {
+    } else {
       // value of noOfTask in the forward chainer needs to be adapted every time
       // new rules are read in !!
       _ruleStore.readRules(rules.getAbsolutePath());

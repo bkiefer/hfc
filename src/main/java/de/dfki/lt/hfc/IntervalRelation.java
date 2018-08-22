@@ -1,9 +1,7 @@
 package de.dfki.lt.hfc;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.StringTokenizer;
 
 /**
  * TODO
@@ -11,7 +9,7 @@ import java.util.StringTokenizer;
  */
 public class IntervalRelation {
 
-    public  static HashSet<String> identifier =  new HashSet<String>(Arrays.asList("[", "(")); // TODO add additional values
+  public static HashSet<String> identifier = new HashSet<String>(Arrays.asList("[", "(")); // TODO add additional values
 
 //    public static String parseInterval(TupleStore ts, StringTokenizer st , ArrayList<String> tuple, boolean closed) throws QueryParseException {
 //        // the leading  "[", "(" character has already been consumed, so consume tokens until we
@@ -43,7 +41,6 @@ public class IntervalRelation {
 //        tuple.add(token);
 //        return token;
 //    }
-
 
 
 }

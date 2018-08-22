@@ -10,28 +10,27 @@ package de.dfki.lt.hfc.operators;
  * the implementation of these operators (being predicates or functions) must
  * fulfill the interface for method apply() specified in the abstract class
  * FunctionalOperator:
- *
- *   public abstract int apply(int[] args);
- *
+ * <p>
+ * public abstract int apply(int[] args);
+ * <p>
  * a new operator must implement this method and must extend the abstract
  * superclass FunctionalOperator;
  * a new operator might take advantages of already implemented functionality
  * in the (abstract) superclass Operator of FunctionalOperator
- *
+ * <p>
  * NOTE: the action operators modify global data structures;
- *       this modification might lead to problems in case rule execution is
- *       processed in parallel;
- *       the action operators use setters from a fixed set of methods
- *       specified in class Operator; however, these setters make sure that
- *       the data structures are synchronized
+ * this modification might lead to problems in case rule execution is
+ * processed in parallel;
+ * the action operators use setters from a fixed set of methods
+ * specified in class Operator; however, these setters make sure that
+ * the data structures are synchronized
  *
+ * @author (C) Hans-Ulrich Krieger
+ * @version Wed Jun 23 16:53:03 CEST 2010
  * @see FunctionalOperator.UNBOUND
  * @see FunctionalOperator.TRUE
  * @see FunctionalOperator.FALSE
  * @see apply()
  * @see ForwardChainer.noOfCores
  * @see Operator
- *
- * @author (C) Hans-Ulrich Krieger
- * @version Wed Jun 23 16:53:03 CEST 2010
  */

@@ -13,17 +13,17 @@ import de.dfki.lt.hfc.types.XsdMonetary;
  * returns a representation of the new monetary
  *
  * @see FunctionalOperator
- *
+ * <p>
  * Created by christian on 14/06/17.
  */
 public class MonetaryDecrement extends FunctionalOperator {
 
-    @Override
-    public int apply(int[] args) {
-        XsdMonetary monetary = ((XsdMonetary) getObject(args[0]));
-        double d = Math.nextDown(monetary.amount);
-        XsdMonetary M = new XsdMonetary(d, monetary.currency);
-        return registerObject(M.toString(this.tupleStore.namespace.shortIsDefault), M);
-    }
+  @Override
+  public int apply(int[] args) {
+    XsdMonetary monetary = ((XsdMonetary) getObject(args[0]));
+    double d = Math.nextDown(monetary.amount);
+    XsdMonetary M = new XsdMonetary(d, monetary.currency);
+    return registerObject(M.toString(this.tupleStore.namespace.shortIsDefault), M);
+  }
 
 }

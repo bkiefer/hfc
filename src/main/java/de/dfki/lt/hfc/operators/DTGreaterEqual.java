@@ -4,7 +4,7 @@ import de.dfki.lt.hfc.BooleanOperator;
 import de.dfki.lt.hfc.types.XsdDateTime;
 
 
-public class DTGreaterEqual extends BooleanOperator{
+public class DTGreaterEqual extends BooleanOperator {
   /**
    * note that apply() does NOT check at the moment whether the int args
    * represent in fact XSD floats;

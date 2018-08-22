@@ -9,18 +9,18 @@ package de.dfki.lt.hfc;
  * and the forward chainer are still consistent
  *
  * @author (C) Hans-Ulrich Krieger
- * @since JDK 1.5
  * @version Fri Oct 30 11:54:54 CET 2015
+ * @since JDK 1.5
  */
 
 public final class BindingTableIteratorException extends Exception {
-  
+
   public BindingTableIteratorException() {
     super();
   }
-  
+
   public BindingTableIteratorException(String exceptionMessage) {
     super(exceptionMessage);
   }
-  
+
 }

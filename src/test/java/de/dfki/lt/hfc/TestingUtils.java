@@ -58,7 +58,7 @@ public class TestingUtils {
       // one by one from the List, which must be empty in the end
       List<String[]> exp = new ArrayList<String[]>(Arrays.asList(expected));
       BindingTableIterator bindIt = bt.iterator(vars);
-      //assertEquals(expected.length, bindIt.hasSize());
+      assertEquals(expected.length, bindIt.hasSize());
 
       while (bindIt.hasNext()) {
         String[] tuple = neutralizeBlanknodes(bindIt.nextAsString());
@@ -76,9 +76,6 @@ public class TestingUtils {
           }
         }
         assertTrue("Row not found "+Arrays.toString(tuple), found);
-      }
-      for (String[] e: exp){
-        System.out.println(Arrays.toString(e));
       }
       assertTrue("Not all expected rows found ", exp.isEmpty());
     }
@@ -130,7 +127,7 @@ public class TestingUtils {
       String[] res = new String[in.length];
       int i = 0;
       for (int sym : in) {
-        String name = _ts.getObject(sym);
+        String name = _ts.getObject(sym).toString(_ts.namespace.shortIsDefault);
         res[i++] = name;
       }
       return res;

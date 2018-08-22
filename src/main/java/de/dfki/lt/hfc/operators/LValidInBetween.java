@@ -8,27 +8,25 @@ import java.util.Set;
 
 /**
  * call this test operator with
- *   LValidInBetween subj pred obj obj2 ... objN time1 time2
- *
- *
+ * LValidInBetween subj pred obj obj2 ... objN time1 time2
+ * <p>
+ * <p>
  * NOTE: this test is usually employed in temporal entailment rules
- *       for transaction time, such as
- *         <logic:true> ?p <rdf:type> <owl:TransitiveProperty> "0"^^<xsd:long>
- *         <logic:true> ?x ?p ?y ?time1
- *         <logic:true> ?y ?p ?z ?time2
- *         ->
- *         <logic:true> ?x ?p ?z ?time
- *         @test
- *         ?x != ?y
- *         ?y != ?z
- *         LValidInBetween ?x ?p ?y ?time1 ?time2
- *         LValidInBetween ?y ?p ?z ?time1 ?time2
- *         @action
- *         ?time = LMax2 ?time1 ?time2
+ * for transaction time, such as
+ * <logic:true> ?p <rdf:type> <owl:TransitiveProperty> "0"^^<xsd:long>
+ * <logic:true> ?x ?p ?y ?time1
+ * <logic:true> ?y ?p ?z ?time2
+ * ->
+ * <logic:true> ?x ?p ?z ?time
  *
  * @author (C) Hans-Ulrich Krieger
- * @since JDK 1.5
  * @version Thu Aug 25 15:31:48 CEST 2016
+ * @test ?x != ?y
+ * ?y != ?z
+ * LValidInBetween ?x ?p ?y ?time1 ?time2
+ * LValidInBetween ?y ?p ?z ?time1 ?time2
+ * @action ?time = LMax2 ?time1 ?time2
+ * @since JDK 1.5
  */
 public final class LValidInBetween extends FunctionalOperator {
 
@@ -68,12 +66,12 @@ public final class LValidInBetween extends FunctionalOperator {
     }
     // at least tuples with prefix "<logic:false> subj pred obj obj2" exist;
     // so now check whether their time stamps are between time1 and time2
-    final long time1 = ((XsdLong)(getObject(args[length - 2]))).value;
-    final long time2 = ((XsdLong)(getObject(args[length - 1]))).value;
+    final long time1 = ((XsdLong) (getObject(args[length - 2]))).value;
+    final long time2 = ((XsdLong) (getObject(args[length - 1]))).value;
     long time;
-    for (int[] tuple: result) {
+    for (int[] tuple : result) {
       // time is the last argument of a tuple
-      time = ((XsdLong)(getObject(tuple[length - 1]))).value;
+      time = ((XsdLong) (getObject(tuple[length - 1]))).value;
       if ((Long.min(time1, time2) <= time) && (time <= Long.max(time1, time2)))
         return FunctionalOperator.FALSE;
     }

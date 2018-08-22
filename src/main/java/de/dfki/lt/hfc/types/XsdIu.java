@@ -5,18 +5,18 @@ package de.dfki.lt.hfc.types;
  * in international units
  *
  * @author (C) Hans-Ulrich Krieger
- * @since JDK 1.5
  * @version Wed Mar  2 10:07:54 CET 2016
+ * @since JDK 1.5
  */
 public final class XsdIu extends XsdAnySimpleType {
 
   public final static String NAME = "iu";
-  
+
   public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
   public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
-  
+
   static {
-  registerConstructor(XsdIu.class, SHORT_NAME, LONG_NAME);
+    registerConstructor(XsdIu.class, SHORT_NAME, LONG_NAME);
   }
 
   public double value;
@@ -36,13 +36,6 @@ public final class XsdIu extends XsdAnySimpleType {
   }
 
   /**
-   * depending on shortIsDefault, either the suffix SHORT_NAME or LONG_NAME is used
-   */
-  public String toString(boolean shortIsDefault) {
-    return toString(this.value, shortIsDefault);
-  }
-
-  /**
    * binary version is given the value directly
    */
   public static String toString(double val, boolean shortIsDefault) {
@@ -54,6 +47,13 @@ public final class XsdIu extends XsdAnySimpleType {
     else
       sb.append(LONG_NAME);
     return sb.toString();
+  }
+
+  /**
+   * depending on shortIsDefault, either the suffix SHORT_NAME or LONG_NAME is used
+   */
+  public String toString(boolean shortIsDefault) {
+    return toString(this.value, shortIsDefault);
   }
 
   /**
@@ -72,14 +72,14 @@ public final class XsdIu extends XsdAnySimpleType {
 
   @Override
   public int compareTo(Object o) {
-    if(  o instanceof AnyType.MinMaxValue ) {
+    if (o instanceof AnyType.MinMaxValue) {
       AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
       return minMaxValue.compareTo(this);
     }
-    if (! (o instanceof  XsdIu)){
-      throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
+    if (!(o instanceof XsdIu)) {
+      throw new IllegalArgumentException("Can't compare " + this.getClass() + " and " + o.getClass());
     }
-    return Double.compare(this.value,((XsdIu) o).value);
+    return Double.compare(this.value, ((XsdIu) o).value);
   }
 
 }

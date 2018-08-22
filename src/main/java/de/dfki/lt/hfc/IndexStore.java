@@ -1,22 +1,21 @@
 package de.dfki.lt.hfc;
 
-import de.dfki.lt.hfc.indices.IndexingException;
-import de.dfki.lt.hfc.indices.Index;
 import de.dfki.lt.hfc.indices.AdvancedIndex;
+import de.dfki.lt.hfc.indices.Index;
+import de.dfki.lt.hfc.indices.IndexingException;
 import de.dfki.lt.hfc.qrelations.QRelation;
 import de.dfki.lt.hfc.types.AnyType;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * The {@link IndexStore} is the junction between the actual indexing structures, i.e., the trees,
@@ -32,43 +31,35 @@ import java.util.*;
 public class IndexStore {
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // last '.' char is OK!
+  public static final String INDEX_PATH = "de.dfki.lt.hfc.indices.";
+  public static final String TYPE_PATH = "de.dfki.lt.hfc.types.";
   /**
    * A basic LOGGER.
    */
   private static final Logger logger = LoggerFactory.getLogger(IndexStore.class);
-
-  // last '.' char is OK!
-  public static final String INDEX_PATH = "de.dfki.lt.hfc.indices.";
-
-  public static final String TYPE_PATH = "de.dfki.lt.hfc.types.";
-
+  /**
+   * A Class, representing the key which defines what is to be indexed.
+   */
+  public Class primIndexKey;
   /**
    * this setting is used for input encoding in IndexStore
    */
   private String inputCharacterEncoding = "UTF-8";
-
   /**
    * this setting is used for output encoding in TupleStore
    */
   private String outputCharacterEncoding = "UTF-8";
-
   /**
    * The {@link Index} represents the data structure which is used to allow a quick and effective
    * access to the information.
    */
   private Index primaryIndex;
-
   /**
    * The {@link Index} represents the data structure which is used to allow a quick and effective
    * access to the information.
    */
   private Index secundaryIndex;
-
-  /**
-   * A Class, representing the key which defines what is to be indexed.
-   */
-  public Class primIndexKey;
-
   /**
    * A Class, representing the secondary key which defines what is to be stored in the optional
    * index.
@@ -97,7 +88,10 @@ public class IndexStore {
   }
 
 
-  private IndexStore(){};
+  private IndexStore() {
+  }
+
+  ;
 
   /**
    * Lookup the values associated with a specific key, by searching the given key in the Index.
@@ -106,7 +100,7 @@ public class IndexStore {
    * @return A Set of tuples associated with the given key/the given date.
    */
   public Set<int[]> lookup(AnyType key) {
-    logger.debug( "Lookup key: {0} ", key);
+    logger.debug("Lookup key: {0} ", key);
     return this.primaryIndex.search(key);
   }
 
@@ -120,7 +114,7 @@ public class IndexStore {
    * @return The values associated with all keys between the given ones.
    */
   public Set<int[]> lookup(AnyType key1, AnyType key2) {
-    logger.debug( "Lookup interval: {0} - {1} ", key1, key2);
+    logger.debug("Lookup interval: {0} - {1} ", key1, key2);
     if (secundaryIndex != null) {
       return this.secundaryIndex.searchInterval(key1, key2);
     }
@@ -141,7 +135,7 @@ public class IndexStore {
     // These int values define the positions in the tuples where the terms to be indexed by the secondary index should be located.
     // In case atomic types are indexed, both values are the same.
     int position_second_start = -1, position_second_end = -1;
-    for(Map.Entry<String, Object> entry : config.entrySet()){
+    for (Map.Entry<String, Object> entry : config.entrySet()) {
       switch (entry.getKey()) {
         case "Key1": {
           try {
@@ -160,7 +154,7 @@ public class IndexStore {
           break;
         }
         case "Position1": {
-          String value =  entry.getValue().toString();
+          String value = entry.getValue().toString();
           if (value.contains(",")) {
             String[] interval = value.split(",");
             position_prime_start = Integer.parseInt(interval[0]);
@@ -200,7 +194,7 @@ public class IndexStore {
           break;
         }
         default: {
-          logger.warn("Unknown parameter" + entry.getKey() );
+          logger.warn("Unknown parameter" + entry.getKey());
         }
       }
     }
@@ -272,15 +266,15 @@ public class IndexStore {
 
 
   private void addAtomToIndex(Index index, int[] tuple, Class key) {
-    AnyType type = this.tupleStore.getJavaObject(tuple[index.indexedPosition_start]);
+    AnyType type = this.tupleStore.getObject(tuple[index.indexedPosition_start]);
     if (type.getClass() == key) {
       index.add(type, tuple);
     }
   }
 
   private void addIntervalToIndex(Index index, int[] tuple, Class key) {
-    AnyType type_start = this.tupleStore.getJavaObject(tuple[index.indexedPosition_start]);
-    AnyType type_end = this.tupleStore.getJavaObject(tuple[index.indexedPosition_end]);
+    AnyType type_start = this.tupleStore.getObject(tuple[index.indexedPosition_start]);
+    AnyType type_end = this.tupleStore.getObject(tuple[index.indexedPosition_end]);
     if (type_start.getClass() == key && type_end.getClass() == key) {
       if (index.intervalSupport()) {
         ((AdvancedIndex) index).addInterval(type_start, type_end, tuple);
@@ -342,9 +336,9 @@ public class IndexStore {
    * Creates instances of {@link IndexLookup}, if the given close matches either the primary or the
    * secondary index.
    *
-   * @param clause The clause to be indexed. This clause is an integer representation of a where
-   * clause of a query.
-   * @param idToRelation a mapping of ids to instances of {@link QRelation}s.
+   * @param clause                 The clause to be indexed. This clause is an integer representation of a where
+   *                               clause of a query.
+   * @param idToRelation           a mapping of ids to instances of {@link QRelation}s.
    * @param lkps
    * @param relationsToBeRewritten
    * @return A Set of {@link IndexLookup}s associated with the given clause.
@@ -355,7 +349,7 @@ public class IndexStore {
     boolean isApplicable;
     isApplicable = checkIndexApplicability(primaryIndex, clause, idToRelation, lkps, relationsToBeRewritten);
     if (secundaryIndex != null) {
-      isApplicable= checkIndexApplicability(secundaryIndex, clause, idToRelation, lkps, relationsToBeRewritten);
+      isApplicable = checkIndexApplicability(secundaryIndex, clause, idToRelation, lkps, relationsToBeRewritten);
     }
     return !isApplicable;
   }
@@ -374,16 +368,17 @@ public class IndexStore {
 
   /**
    * Creates an atomic {@link IndexLookup} in case either the given index is matched.
-   *  @param index The index the lookup will be associated with.
-   * @param clause The clause to be looked up.
-   * @param lkps a set of lkps. this set will potentially be extended by this method.
-   * @param idToRelation a mapping of ids to instances of {@link QRelation}s.
+   *
+   * @param index                  The index the lookup will be associated with.
+   * @param clause                 The clause to be looked up.
+   * @param lkps                   a set of lkps. this set will potentially be extended by this method.
+   * @param idToRelation           a mapping of ids to instances of {@link QRelation}s.
    * @param notApplicableRelations
    */
   private boolean createAtomLookup(Index index, List<Integer> clause, Set<IndexLookup> lkps,
                                    Map<Integer, QRelation> idToRelation, Set<QRelation> notApplicableRelations) {
     int id = clause.get(index.indexedPosition_start);
-    logger.debug( "Create A lookup for {0}",clause);
+    logger.debug("Create A lookup for {0}", clause);
     QRelation r;
     //Check whether the id is a variable
     if (id < 0) {
@@ -393,7 +388,7 @@ public class IndexStore {
       {
         return false;
       } else {
-        logger.debug("id {0}  is associated with {1}", id,  idToRelation.get(id));
+        logger.debug("id {0}  is associated with {1}", id, idToRelation.get(id));
         //create a lookup object for the given represented QRelation
         r = idToRelation.get(id);
         if (r.getType() == index.key) {
@@ -408,7 +403,7 @@ public class IndexStore {
       }
     } else {
       // if the id is no variable but a constant and the constant has the correct type, create a lookup for this constant.
-      if (tupleStore.getJavaObject(id).getClass() == index.key) {
+      if (tupleStore.getObject(id).getClass() == index.key) {
         lkps.add(new IndexLookup(this.tupleStore, index, clause, index.indexedPosition_start, null));
       }
     }
@@ -417,10 +412,11 @@ public class IndexStore {
 
   /**
    * Creates an interval {@link IndexLookup} in case either the given index is matched.
-   *  @param index The index the lookup will be associated with.
-   * @param clause The clause to be looked up.
-   * @param lkps a set of lkps. this set will potentially be extended by this method.
-   * @param idToRelation a mapping of ids to instances of {@link QRelation}s.
+   *
+   * @param index                  The index the lookup will be associated with.
+   * @param clause                 The clause to be looked up.
+   * @param lkps                   a set of lkps. this set will potentially be extended by this method.
+   * @param idToRelation           a mapping of ids to instances of {@link QRelation}s.
    * @param notApplicableRelations
    */
   private boolean createIntervalLookup(Index index, List<Integer> clause,
@@ -437,7 +433,7 @@ public class IndexStore {
         return false;
       } else {
         //create a lookup object for the given represented QRelation
-        logger.debug("id {0} is associated with {1}", ids , idToRelation.get(ids));
+        logger.debug("id {0} is associated with {1}", ids, idToRelation.get(ids));
         r = idToRelation.get(ids);
         if (r.getType() == index.key) {
           if (!relationIsApplicable(index, r)) {
@@ -453,8 +449,8 @@ public class IndexStore {
       }
     } else {
       // if the id is no variable but a constant and the constant has the correct type, create a lookup for this constant.
-      if (tupleStore.getJavaObject(ids).getClass() == index.key
-              && tupleStore.getJavaObject(ide).getClass() == index.key) {
+      if (tupleStore.getObject(ids).getClass() == index.key
+              && tupleStore.getObject(ide).getClass() == index.key) {
         lkps.add(
                 new IndexLookup(this.tupleStore, index, clause, index.indexedPosition_start, index.indexedPosition_end,
                         null));
@@ -464,8 +460,8 @@ public class IndexStore {
   }
 
   private boolean relationIsApplicable(Index index, QRelation r) {
-    logger.debug("isAllen {0}, isInterval {1}, intervalSupport {2}", r.isAllenRelation(),r.isInterval(),index.intervalSupport());
-    if(r.isAllenRelation()) {
+    logger.debug("isAllen {0}, isInterval {1}, intervalSupport {2}", r.isAllenRelation(), r.isInterval(), index.intervalSupport());
+    if (r.isAllenRelation()) {
       if (!r.isInterval() && index.intervalSupport())
         return true;
       if (r.isInterval() && !index.intervalSupport())
@@ -474,7 +470,7 @@ public class IndexStore {
     return false;
   }
 
-  public IndexStore copy(){
+  public IndexStore copy() {
     IndexStore copy = new IndexStore();
     copy.primaryIndex = this.primaryIndex;
     copy.primIndexKey = this.primIndexKey;

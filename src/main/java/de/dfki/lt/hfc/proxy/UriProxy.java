@@ -1,6 +1,9 @@
 package de.dfki.lt.hfc.proxy;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * the UriProxy class currently only works for triples as it assumes
@@ -11,12 +14,10 @@ import java.util.*;
  * a map;
  * NOTE: we also use this class to represent blank nodes
  *
- * @see de.dfki.lt.hfc.proxy.Literal
- *
  * @author (C) Hans-Ulrich Krieger
- * @since JDK 1.5
  * @version Fri Mar 18 10:04:30 CET 2016
-
+ * @see de.dfki.lt.hfc.proxy.Literal
+ * @since JDK 1.5
  */
 public class UriProxy extends Literal {
 
@@ -48,15 +49,15 @@ public class UriProxy extends Literal {
    * if the property is not known, null is returned, thus this method
    * can be used to check whether the property exists (as null values
    * are _not_ allowed)
-   * @see de.dfki.lt.hfc.proxy.Literal
+   *
    * @return the set of literals that are connected to this URI node
+   * @see de.dfki.lt.hfc.proxy.Literal
    */
   public Set<Literal> getValues(String property) {
     return this.predToObj.get(property);
   }
 
   /**
-   * @return true iff this URI is connected with literal value via property
    * @return false otherwise
    */
   public boolean containsValue(String property, Literal value) {

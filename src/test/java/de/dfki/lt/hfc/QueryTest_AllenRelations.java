@@ -2,6 +2,7 @@ package de.dfki.lt.hfc;
 
 
 
+import de.dfki.lt.hfc.types.AnyType;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -463,7 +464,6 @@ public class QueryTest_AllenRelations {
             BindingTable btNoIndex = queryNoIndex.query(input);
             String tempQuery = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o ?t ?t1 FILTER LGreater ?t \"400\"^^<xsd:long>";
             BindingTable tempTable = queryNoIndex.query(tempQuery);
-
             checkResult(fcInterval, btInterval, expected, btInterval.getVars());//"?s", "?o", "?rel1", "?rel2");
             checkResult(fcNoIndex, btNoIndex, expected, btNoIndex.getVars());//"?s", "?o", "?rel1", "?rel2");
 

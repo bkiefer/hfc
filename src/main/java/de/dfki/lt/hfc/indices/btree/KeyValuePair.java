@@ -4,21 +4,21 @@ import java.util.Set;
 
 /**
  * Key value pair used alongside pointers in the tree nodes of {@link BTree}
- *
+ * <p>
  * Created by christian on 05/03/17.
  */
-public class KeyValuePair <K extends Comparable> {
-        protected K mKey;
-        protected Set<int[]> mValue;
+public class KeyValuePair<K extends Comparable> {
+  protected K mKey;
+  protected Set<int[]> mValue;
 
-        public KeyValuePair(K key, Set<int[]> value) {
-            mKey = key;
-            mValue = value;
-        }
+  public KeyValuePair(K key, Set<int[]> value) {
+    mKey = key;
+    mValue = value;
+  }
 
-        @Override
-        public String toString(){
-            return "["+this.mKey + ", "+ this.mValue+"]";
-        }
-    }
+  @Override
+  public String toString() {
+    return "[" + this.mKey + ", " + this.mValue + "]";
+  }
+}
 

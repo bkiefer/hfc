@@ -9,26 +9,25 @@ import de.dfki.lt.hfc.types.XsdInt;
  * arguments are assumed to be of type <xsd:int>;
  * returns the minimal int
  *
- * @see FunctionalOperator
- *
  * @author (C) Hans-Ulrich Krieger
- * @since JDK 1.5
  * @version Mon May 30 14:01:54 CEST 2011
+ * @see FunctionalOperator
+ * @since JDK 1.5
  */
 public final class IMin2 extends FunctionalOperator {
-	
-	/**
-	 * note that apply() does NOT check at the moment whether the int args
-	 * represent in fact XSD ints
-	 */
-	public int apply(int[] args) {
-		final int first = ((XsdInt)getObject(args[0])).value;
-		final int second = ((XsdInt)getObject(args[1])).value;
-		if (first < second)
-			return args[0];
-		else
-			return args[1];
-	}
+
+  /**
+   * note that apply() does NOT check at the moment whether the int args
+   * represent in fact XSD ints
+   */
+  public int apply(int[] args) {
+    final int first = ((XsdInt) getObject(args[0])).value;
+    final int second = ((XsdInt) getObject(args[1])).value;
+    if (first < second)
+      return args[0];
+    else
+      return args[1];
+  }
 	
 	/* this version registers the minimum which is not needed, since the min is contained in the arguments
 	public int apply(int[] args) {
@@ -39,5 +38,5 @@ public final class IMin2 extends FunctionalOperator {
 		return registerObject(I.toString(de.dfki.lt.hfc.Namespace.shortIsDefault), I);
 	}
 	*/
-	
+
 }

@@ -8,49 +8,48 @@ import java.util.Set;
 
 /**
  * call this test with
- *   LIsValid subj pred obj obj2 ... objN time
- *
- * @return FunctionalOperator.TRUE iff there is *no* tuple
- *           <logic:false> subj pred obj obj2 ... objN time'
- *         such that time' > time
- * @return FunctionalOperator.FALSE otherwise
- *
- * NOTE: this filter operator is usually employed in queries such as
- *         SELECT ?o
- *         WHERE <logic:true> subj pred obj ?ts
- *         FILTER LIsValid subj pred obj ?ts
- *       this requires, however, that _inside_ the test, the repository
- *       is queried for each individual incarnation of the WHERE pattern!
- *
- *       alternatively, the same effect can be achieved through an aggregate
- *       LIsValid which is given the whole "set of possibilities" by now
- *       employing a polarity _variable_ in front of the WHERE pattern:
- *         SELECT ?o
- *         WHERE ?pol subj pred obj ?ts
- *         AGGREGATE LIsValid subj pred obj ?ts
- *       this aggregate might be given a huge binding table, but the
- *       advantage is that the repository needs no longer be queried
- *
- * given the following tuples
- *   true  prof treats p1 t1
- *   true  prof treats p2 t2
- *   false prof treats p1 t3
- *   true  prof treats p3 t4
- *   true  prof treats p1 t5  // p1 treated again by prof
- *   true  prof treats p4 t6
- *   false prof treats p4 t7
- * given
- *   t7 > t6 > t5 > t4 > t3 > t2 > t1
- * and query
- *   SELECT ?o
- *   WHERE <logic:true> subj pred obj ?ts
- *   FILTER LIsValid subj pred obj ?ts
- * we obtain the following values:
- *   ?o = {p1, p2, p3}
+ * LIsValid subj pred obj obj2 ... objN time
  *
  * @author (C) Hans-Ulrich Krieger
- * @since JDK 1.5
  * @version Fri Aug 26 11:50:07 CEST 2016
+ * @return FunctionalOperator.TRUE iff there is *no* tuple
+ * <logic:false> subj pred obj obj2 ... objN time'
+ * such that time' > time
+ * @return FunctionalOperator.FALSE otherwise
+ * <p>
+ * NOTE: this filter operator is usually employed in queries such as
+ * SELECT ?o
+ * WHERE <logic:true> subj pred obj ?ts
+ * FILTER LIsValid subj pred obj ?ts
+ * this requires, however, that _inside_ the test, the repository
+ * is queried for each individual incarnation of the WHERE pattern!
+ * <p>
+ * alternatively, the same effect can be achieved through an aggregate
+ * LIsValid which is given the whole "set of possibilities" by now
+ * employing a polarity _variable_ in front of the WHERE pattern:
+ * SELECT ?o
+ * WHERE ?pol subj pred obj ?ts
+ * AGGREGATE LIsValid subj pred obj ?ts
+ * this aggregate might be given a huge binding table, but the
+ * advantage is that the repository needs no longer be queried
+ * <p>
+ * given the following tuples
+ * true  prof treats p1 t1
+ * true  prof treats p2 t2
+ * false prof treats p1 t3
+ * true  prof treats p3 t4
+ * true  prof treats p1 t5  // p1 treated again by prof
+ * true  prof treats p4 t6
+ * false prof treats p4 t7
+ * given
+ * t7 > t6 > t5 > t4 > t3 > t2 > t1
+ * and query
+ * SELECT ?o
+ * WHERE <logic:true> subj pred obj ?ts
+ * FILTER LIsValid subj pred obj ?ts
+ * we obtain the following values:
+ * ?o = {p1, p2, p3}
+ * @since JDK 1.5
  */
 public final class LIsValid extends FunctionalOperator {
 
@@ -85,11 +84,11 @@ public final class LIsValid extends FunctionalOperator {
     }
     // at least tuples with prefix "<logic:false> subj pred obj obj2" exist;
     // so now check whether their time stamps are greater than the value bound to ?ts
-    final long time = ((XsdLong)(getObject(args[length - 1]))).value;
+    final long time = ((XsdLong) (getObject(args[length - 1]))).value;
     long timeprime;
-    for (int[] tuple: result) {
+    for (int[] tuple : result) {
       // time is the last argument of a tuple
-      timeprime = ((XsdLong)(getObject(tuple[length]))).value;
+      timeprime = ((XsdLong) (getObject(tuple[length]))).value;
       if (time < timeprime)
         return FunctionalOperator.FALSE;
     }

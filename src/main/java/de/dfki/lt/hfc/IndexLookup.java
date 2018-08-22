@@ -4,11 +4,12 @@ import de.dfki.lt.hfc.indices.Index;
 import de.dfki.lt.hfc.qrelations.QRelation;
 import de.dfki.lt.hfc.types.XsdAnySimpleType;
 import gnu.trove.set.hash.TCustomHashSet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * The {@link IndexLookup} is created while parsing queries in case the {@link IndexStore}
@@ -21,26 +22,24 @@ public class IndexLookup {
    * A basic LOGGER.
    */
   private final static Logger logger = LoggerFactory.getLogger(IndexLookup.class.getName());
-
-
-  private TupleStore tupleStore;
   final Index index;
   final int[] clause;
   final int indexedPosition;
   final int indexedPositionEnd;
   final QRelation relation;
   Table table;
+  private TupleStore tupleStore;
 
   /**
    * Creates a new instance of {@link IndexLookup} dedicated to atomic indices, e.g. BTrees
    *
-   * @param index The {@link Index} associated with the lookup instance
-   * @param clause the clause to be searched for
+   * @param index    The {@link Index} associated with the lookup instance
+   * @param clause   the clause to be searched for
    * @param position the position in the clause where the indexed term is
-   * @param r possibly an QRelation such as Allens Overlaps relation, but might also be null
+   * @param r        possibly an QRelation such as Allens Overlaps relation, but might also be null
    */
   public IndexLookup(TupleStore tupleStore, Index index, List<Integer> clause, int position,
-      QRelation r) {
+                     QRelation r) {
     this.tupleStore = tupleStore;
     this.index = index;
     this.clause = Utils.toPrimitive(clause);
@@ -51,15 +50,15 @@ public class IndexLookup {
   /**
    * Creates a new instance of {@link IndexLookup} dedicated to interval indices, e.g. BTrees
    *
-   * @param index The {@link Index} associated with the lookup instance
-   * @param clause the clause to be searched for
+   * @param index          The {@link Index} associated with the lookup instance
+   * @param clause         the clause to be searched for
    * @param position_start the position where the indexed interval starts
-   * @param position_end the position in the clause where the indexed interval ends
-   * @param r possibly an QRelation such as Allens Overlaps relation, but might also be null
+   * @param position_end   the position in the clause where the indexed interval ends
+   * @param r              possibly an QRelation such as Allens Overlaps relation, but might also be null
    */
   public IndexLookup(TupleStore tupleStore, Index index, List<Integer> clause, int position_start,
-      int position_end,
-      QRelation r) {
+                     int position_end,
+                     QRelation r) {
     this.tupleStore = tupleStore;
     this.index = index;
     this.clause = Utils.toPrimitive(clause);
@@ -82,11 +81,11 @@ public class IndexLookup {
       result = relation.apply(this.index);
     } else {
       XsdAnySimpleType t1, t2;
-      t1 = (XsdAnySimpleType) tupleStore.getJavaObject(clause[this.indexedPosition]);
+      t1 = (XsdAnySimpleType) tupleStore.getObject(clause[this.indexedPosition]);
       if (indexedPosition == indexedPositionEnd) {
         result = this.index.search(t1);
       } else {
-        t2 = (XsdAnySimpleType) tupleStore.getJavaObject(clause[this.indexedPositionEnd]);
+        t2 = (XsdAnySimpleType) tupleStore.getObject(clause[this.indexedPositionEnd]);
         result = this.index.searchInterval(t1, t2);
       }
     }
@@ -96,30 +95,18 @@ public class IndexLookup {
       bindingTable.nameToPos = table.nameToPosProper;
       return;
     }
-       int id;
-//    // Lookup the Tuplestore.index to filter not matching tuples.
-//    for (int i = 0; i < clause.length; i++) {
-//      id = clause[i];
-//      if (id >= 0) {
-//        result = Calc.intersection(result, tupleStore.index[i].get(id));
-//        if (result.isEmpty()) {
-//          bindingTable.table = result;
-//          bindingTable.nameToPos = table.nameToPosProper;
-//          return;
-//        }
-//      }
-//    }
+    int id;
     // alternative implementation
     Set<int[]> temp;
-    for (int i = 0; i<clause.length;i++) {
+    for (int i = 0; i < clause.length; i++) {
       temp = new HashSet<>();
       id = clause[i];
-      if (id >= 0){
-        for (int[] tuple : result){
-          if(tuple[i] == id)
+      if (id >= 0) {
+        for (int[] tuple : result) {
+          if (tuple[i] == id)
             temp.add(tuple);
         }
-        if (temp.isEmpty()){
+        if (temp.isEmpty()) {
           bindingTable.table = result;
           bindingTable.nameToPos = table.nameToPosProper;
           return;
@@ -131,7 +118,7 @@ public class IndexLookup {
 
     // use relevant position (and NOT proper), since in-eqs might be applied
     TCustomHashSet query = new TCustomHashSet<int[]>(
-        new TIntArrayHashingStrategy(table.getRelevantPositions()));
+            new TIntArrayHashingStrategy(table.getRelevantPositions()));
     for (int[] tuple : result) {
       if (tuple.length == clause.length) {
         query.add(tuple);

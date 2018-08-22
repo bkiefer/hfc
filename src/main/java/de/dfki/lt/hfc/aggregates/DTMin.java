@@ -1,7 +1,12 @@
 package de.dfki.lt.hfc.aggregates;
 
-import java.util.*;
-import de.dfki.lt.hfc.*;
+import de.dfki.lt.hfc.AggregationalOperator;
+import de.dfki.lt.hfc.BindingTable;
+import de.dfki.lt.hfc.FunctionalOperator;
+
+import java.util.Iterator;
+import java.util.Map;
+import java.util.SortedMap;
 
 /**
  * this aggregational operator DTMin
@@ -10,20 +15,20 @@ import de.dfki.lt.hfc.*;
  * args (the binding table) might have more than one column;
  * we always take the first column (position 0) for determining
  * the minimum
- *
+ * <p>
  * example query:
- *   SELECT ?start
- *   WHERE <foo> <bar> <baz> ?start ?end
- *   AGGREGATE ?min = DTMin ?start
+ * SELECT ?start
+ * WHERE <foo> <bar> <baz> ?start ?end
+ * AGGREGATE ?min = DTMin ?start
  * returns a binding table of one row and one column, headed by
  * the label "?min"
  *
  * @author (C) Hans-Ulrich Krieger
- * @since JDK 1.5
  * @version Mon Sep 14 13:21:56 CEST 2015
+ * @since JDK 1.5
  */
 public final class DTMin extends AggregationalOperator {
-  
+
   /**
    * nameToPos and nameToExternalName of args are not used here
    */
@@ -54,5 +59,5 @@ public final class DTMin extends AggregationalOperator {
     bt.table.add(new int[]{minId});
     return bt;
   }
-  
+
 }

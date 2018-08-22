@@ -4,8 +4,8 @@ package de.dfki.lt.hfc.types;
  * The xsd:min-1 datatype is supposed to encode heart rate measured in 1/min
  *
  * @author (C) Hans-Ulrich Krieger
- * @since JDK 1.5
  * @version Wed Mar  2 10:07:54 CET 2016
+ * @since JDK 1.5
  */
 public final class Xsd1_min extends XsdAnySimpleType {
 
@@ -35,13 +35,6 @@ public final class Xsd1_min extends XsdAnySimpleType {
   }
 
   /**
-   * depending on shortIsDefault, either the suffix SHORT_NAME or LONG_NAME is used
-   */
-  public String toString(boolean shortIsDefault) {
-    return toString(this.value, shortIsDefault);
-  }
-
-  /**
    * binary version is given the value directly
    */
   public static String toString(double val, boolean shortIsDefault) {
@@ -53,6 +46,13 @@ public final class Xsd1_min extends XsdAnySimpleType {
     else
       sb.append(LONG_NAME);
     return sb.toString();
+  }
+
+  /**
+   * depending on shortIsDefault, either the suffix SHORT_NAME or LONG_NAME is used
+   */
+  public String toString(boolean shortIsDefault) {
+    return toString(this.value, shortIsDefault);
   }
 
   /**
@@ -71,14 +71,14 @@ public final class Xsd1_min extends XsdAnySimpleType {
 
   @Override
   public int compareTo(Object o) {
-    if(  o instanceof AnyType.MinMaxValue ) {
+    if (o instanceof AnyType.MinMaxValue) {
       AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
       return minMaxValue.compareTo(this);
     }
-    if (! (o instanceof  Xsd1_min)){
-      throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
+    if (!(o instanceof Xsd1_min)) {
+      throw new IllegalArgumentException("Can't compare " + this.getClass() + " and " + o.getClass());
     }
-    return Double.compare(this.value,((Xsd1_min) o).value);
+    return Double.compare(this.value, ((Xsd1_min) o).value);
   }
 
 }

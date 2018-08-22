@@ -8,26 +8,25 @@ import de.dfki.lt.hfc.FunctionalOperator;
  * arguments are assumed to be of type <xsd:dateTime>;
  * returns the maximal dateTime instant
  *
- * @see FunctionalOperator
- *
  * @author (C) Hans-Ulrich Krieger
- * @since JDK 1.5
  * @version Wed Jun 22 17:15:17 CEST 2011
+ * @see FunctionalOperator
+ * @since JDK 1.5
  */
 public final class DTMax2 extends FunctionalOperator {
-	
-	/**
-	 * note that apply() does NOT check at the moment whether the int args
-	 * represent in fact XSD dateTime instants;
-	 * note: no need to register the result, since the maximum is one of the two arguments
-	 */
-	public int apply(int[] args) {
-		// note: we call DTLess through the use of callFuntionalOperator() in order to define DTMax2
-		final int result = callFunctionalOperator("DTLess", args);
-		if (result == FunctionalOperator.TRUE)
-			return args[1];
-		else
-			return args[0];
-	}
-	
+
+  /**
+   * note that apply() does NOT check at the moment whether the int args
+   * represent in fact XSD dateTime instants;
+   * note: no need to register the result, since the maximum is one of the two arguments
+   */
+  public int apply(int[] args) {
+    // note: we call DTLess through the use of callFuntionalOperator() in order to define DTMax2
+    final int result = callFunctionalOperator("DTLess", args);
+    if (result == FunctionalOperator.TRUE)
+      return args[1];
+    else
+      return args[0];
+  }
+
 }

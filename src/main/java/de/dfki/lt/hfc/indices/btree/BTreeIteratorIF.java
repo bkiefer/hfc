@@ -5,8 +5,8 @@ import java.util.Set;
 /**
  * Created by christian on 05/03/17.
  */
-public interface BTreeIteratorIF <K extends Comparable>{
+public interface BTreeIteratorIF<K extends Comparable> {
 
-      public boolean item(K key, Set<int[]> value);
+  public boolean item(K key, Set<int[]> value);
 
 }

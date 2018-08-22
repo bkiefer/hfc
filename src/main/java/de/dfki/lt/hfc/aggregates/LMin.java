@@ -1,8 +1,11 @@
 package de.dfki.lt.hfc.aggregates;
 
-import java.util.*;
-import de.dfki.lt.hfc.*;
+import de.dfki.lt.hfc.AggregationalOperator;
+import de.dfki.lt.hfc.BindingTable;
 import de.dfki.lt.hfc.types.XsdLong;
+
+import java.util.Map;
+import java.util.SortedMap;
 
 /**
  * this aggregational operator LMin
@@ -11,20 +14,20 @@ import de.dfki.lt.hfc.types.XsdLong;
  * args (the binding table) might have more than one column;
  * we always take the first column (position 0) for determining
  * the minimum
- *
+ * <p>
  * example query:
- *   SELECT ?val
- *   WHERE ?s <value> ?val
- *   AGGREGATE ?min = LMin ?val
+ * SELECT ?val
+ * WHERE ?s <value> ?val
+ * AGGREGATE ?min = LMin ?val
  * returns a binding table of one row and one column, headed by
  * the label "?min"
  *
  * @author (C) Hans-Ulrich Krieger
- * @since JDK 1.5
  * @version Fri Sep 11 18:05:32 CEST 2015
+ * @since JDK 1.5
  */
 public final class LMin extends AggregationalOperator {
-  
+
   /**
    * nameToPos and nameToExternalName of args are not used here
    */
@@ -40,7 +43,7 @@ public final class LMin extends AggregationalOperator {
     long min = Long.MAX_VALUE;
     long curr;
     for (int[] elem : args.table) {
-      curr = ((XsdLong)getObject(elem[0])).value;
+      curr = ((XsdLong) getObject(elem[0])).value;
       if (curr < min)
         min = curr;
     }
@@ -51,5 +54,5 @@ public final class LMin extends AggregationalOperator {
     bt.table.add(new int[]{id});
     return bt;
   }
-  
+
 }

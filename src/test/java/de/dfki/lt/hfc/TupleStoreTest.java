@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
+import de.dfki.lt.hfc.types.Variable;
 import de.dfki.lt.hfc.types.XsdDateTime;
 import org.junit.Assert;
 import org.junit.Test;
@@ -100,17 +101,17 @@ public class TupleStoreTest {
         TupleStore objectfortest = new TupleStore(Config.getInstance(getTestResource("Empty.yml")));
         int id = objectfortest.putObject("www.bbc.com");
         assertFalse(objectfortest.getObject(5) == null);
-        assertEquals("www.bbc.com", objectfortest.getObject(id));
+        assertEquals("\"www.bbc.com\"^^<xsd:string>", objectfortest.getObject(id).toString(objectfortest.namespace.shortIsDefault));
         assertFalse(objectfortest.putObject("?") == 0);
-        assertEquals("?", objectfortest.getObject(7));
-        assertEquals("?-100", objectfortest.getObject(-100), "?-100");
+        assertEquals("\"?\"^^<xsd:string>", objectfortest.getObject(7).toString(objectfortest.namespace.shortIsDefault));
+        assertEquals("?-100", objectfortest.getObject(-100), new Variable("?-100"));
     }
 
     @Test
     public void testgetJavaObject() throws IOException, WrongFormatException {
         TupleStore objecttotest = new TupleStore(Config.getDefaultConfig());
-        assertNotNull(objecttotest.getJavaObject(3));
-        assertNotNull(objecttotest.getJavaObject(0));
+        assertNotNull(objecttotest.getObject(3));
+        assertNotNull(objecttotest.getObject(0));
         // TODO 1 more branch
     }
 
@@ -161,11 +162,11 @@ public class TupleStoreTest {
         assertFalse(TupleStore.isUri("hgghdgh"));
     }
 
-    @Test
-    public void testisUri2() throws IOException, WrongFormatException {
-        TupleStore objecttotest = new TupleStore(Config.getDefaultConfig());
-        assertFalse(objecttotest.isUri(0));
-    }
+//    @Test
+//    public void testisUri2() throws IOException, WrongFormatException {
+//        TupleStore objecttotest = new TupleStore(Config.getDefaultConfig());
+//        assertFalse(objecttotest.isUri(0));
+//    }
 
     @Test
     public void testisBlankNode1() {

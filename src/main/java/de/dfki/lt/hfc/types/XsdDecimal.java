@@ -5,7 +5,7 @@ package de.dfki.lt.hfc.types;
  * @author Christian Willms - Date: 28.11.17 17:11.
  * @version 28.11.17
  */
-public class XsdDecimal extends XsdNumber{
+public class XsdDecimal extends XsdNumber {
 
   public final static String NAME = "decimal";
 
@@ -33,13 +33,6 @@ public class XsdDecimal extends XsdNumber{
   }
 
   /**
-   * depending on shortIsDefault, either the suffix SHORT_NAME or LONG_NAME is used
-   */
-  public String toString(boolean shortIsDefault) {
-    return toString(this.value, shortIsDefault);
-  }
-
-  /**
    * binary version is given the value directly
    */
   public static String toString(double val, boolean shortIsDefault) {
@@ -51,6 +44,13 @@ public class XsdDecimal extends XsdNumber{
     else
       sb.append(LONG_NAME);
     return sb.toString();
+  }
+
+  /**
+   * depending on shortIsDefault, either the suffix SHORT_NAME or LONG_NAME is used
+   */
+  public String toString(boolean shortIsDefault) {
+    return toString(this.value, shortIsDefault);
   }
 
   /**
@@ -69,15 +69,15 @@ public class XsdDecimal extends XsdNumber{
 
   @Override
   public int compareTo(Object o) {
-    if(  o instanceof AnyType.MinMaxValue ) {
+    if (o instanceof AnyType.MinMaxValue) {
       AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
       return minMaxValue.compareTo(this);
     }
     if (o instanceof XsdDecimal)
-      return Double.compare(this.value,((XsdDecimal) o).value);
+      return Double.compare(this.value, ((XsdDecimal) o).value);
     else if (o instanceof XsdNumber)
-      return Double.compare(this.value, ((XsdNumber)o).toNumber().doubleValue());
-    throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
+      return Double.compare(this.value, ((XsdNumber) o).toNumber().doubleValue());
+    throw new IllegalArgumentException("Can't compare " + this.getClass() + " and " + o.getClass());
   }
 
 }

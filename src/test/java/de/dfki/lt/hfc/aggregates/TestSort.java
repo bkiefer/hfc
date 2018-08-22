@@ -6,6 +6,7 @@ import de.dfki.lt.hfc.types.XsdLong;
 import org.junit.*;
 
 import static de.dfki.lt.hfc.TestingUtils.checkResult;
+import static de.dfki.lt.hfc.TestingUtils.printExpected;
 import static org.junit.Assert.assertTrue;
 
 
@@ -47,7 +48,7 @@ public class TestSort {
 
         String[][] expected = {
                 {"<dom:bsl>", "\"162.0\"^^<xsd:mg_dL>", "<pal:lisa>", "\"5544\"^^<xsd:long>"},
-                {"<dom:height>", "\"133\"^^<xsd:cm>", "<pal:lisa>", "\"5544\"^^<xsd:long>"},
+                {"<dom:height>", "\"133.0\"^^<xsd:cm>", "<pal:lisa>", "\"5544\"^^<xsd:long>"},
                 {"<dom:weight>", "\"28.2\"^^<xsd:kg>", "<pal:lisa>", "\"5544\"^^<xsd:long>"},
                 {"<dom:hr>", "\"75.0\"^^<xsd:min-1>", "<pal:lisa>", "\"5544\"^^<xsd:long>"},
                 {"<dom:bmi>", "\"15.9\"^^<xsd:kg_m2>", "<pal:lisa>", "\"5544\"^^<xsd:long>"},
@@ -81,7 +82,7 @@ public class TestSort {
                 {"<dom:bsl>", "\"162.0\"^^<xsd:mg_dL>", "<pal:lisa>", "\"5544\"^^<xsd:long>"},
                 {"<dom:bmi>", "\"15.9\"^^<xsd:kg_m2>", "<pal:lisa>", "\"5544\"^^<xsd:long>"},
                 {"<dom:hr>", "\"75.0\"^^<xsd:min-1>", "<pal:lisa>", "\"5544\"^^<xsd:long>"},
-                {"<dom:height>", "\"133\"^^<xsd:cm>", "<pal:lisa>", "\"5544\"^^<xsd:long>"},
+                {"<dom:height>", "\"133.0\"^^<xsd:cm>", "<pal:lisa>", "\"5544\"^^<xsd:long>"},
                 {"<dom:weight>", "\"28.2\"^^<xsd:kg>", "<pal:lisa>", "\"5544\"^^<xsd:long>"},
                 {"<dom:bsl>", "\"9.0\"^^<xsd:mmol_L>", "<pal:lisa>", "\"5544\"^^<xsd:long>"}
         };

@@ -2,8 +2,8 @@ package de.dfki.lt.hfc.types;
 
 /**
  * @author (C) Hans-Ulrich Krieger
- * @since JDK 1.5
  * @version Fri Jan 29 18:42:17 CET 2016
+ * @since JDK 1.5
  */
 public final class XsdBoolean extends XsdAnySimpleType {
   public final static String NAME = "boolean";
@@ -19,12 +19,12 @@ public final class XsdBoolean extends XsdAnySimpleType {
 
   public boolean value;
 
-	/**
-	 * @param value a Java boolean representation of an XSD boolean
-	 */
-	public XsdBoolean(boolean value) {
-		this.value = value;
-	}
+  /**
+   * @param value a Java boolean representation of an XSD boolean
+   */
+  public XsdBoolean(boolean value) {
+    this.value = value;
+  }
 
   /**
    * @param value a Java boolean representation of an XSD boolean
@@ -33,45 +33,45 @@ public final class XsdBoolean extends XsdAnySimpleType {
     this.value = value;
   }
 
-	/**
-	 * @param value a Java string, representing an XSD boolean, e.g., "\"true\"^^<xsd:boolean>"
-	 */
-	public XsdBoolean(String value) {
-		// get rid of "^^xsd:boolean" and leading & trailing '"' chars
-		this.value = Boolean.parseBoolean(extractValue(value));
-	}
+  /**
+   * @param value a Java string, representing an XSD boolean, e.g., "\"true\"^^<xsd:boolean>"
+   */
+  public XsdBoolean(String value) {
+    // get rid of "^^xsd:boolean" and leading & trailing '"' chars
+    this.value = Boolean.parseBoolean(extractValue(value));
+  }
 
-	/**
-	 * depending on shortIsDefault, either the suffix
-	 *   de.dfki.lt.hfc.SHORT_NAME
-	 * or
-	 *   de.dfki.lt.hfc.LONG_NAME
-	 * is used
-	 */
-	public String toString(boolean shortIsDefault) {
-	  return toString(this.value, shortIsDefault);
-	}
+  /**
+   * binary version is given the value directly
+   */
+  public static String toString(boolean val, boolean shortIsDefault) {
+    StringBuilder sb = new StringBuilder("\"");
+    sb.append(val);
+    sb.append("\"^^");
+    if (shortIsDefault)
+      sb.append(SHORT_NAME);
+    else
+      sb.append(LONG_NAME);
+    return sb.toString();
+  }
 
-	/**
-	 * binary version is given the value directly
-	 */
-	public static String toString(boolean val, boolean shortIsDefault) {
-		StringBuilder sb = new StringBuilder("\"");
-		sb.append(val);
-		sb.append("\"^^");
-		if (shortIsDefault)
-			sb.append(SHORT_NAME);
-		else
-			sb.append(LONG_NAME);
-		return sb.toString();
-	}
+  /**
+   * depending on shortIsDefault, either the suffix
+   * de.dfki.lt.hfc.SHORT_NAME
+   * or
+   * de.dfki.lt.hfc.LONG_NAME
+   * is used
+   */
+  public String toString(boolean shortIsDefault) {
+    return toString(this.value, shortIsDefault);
+  }
 
-	/**
-	 * turn Boolean value into a string
-	 */
-	public String toName() {
-		return Boolean.toString(this.value);
-	}
+  /**
+   * turn Boolean value into a string
+   */
+  public String toName() {
+    return Boolean.toString(this.value);
+  }
 
   /**
    * returns a java.lang.Boolean container for an HFC XsdBoolean object
@@ -80,16 +80,16 @@ public final class XsdBoolean extends XsdAnySimpleType {
     return new Boolean(this.value);
   }
 
-	@Override
-	public int compareTo(Object o) {
-		if(  o instanceof AnyType.MinMaxValue ) {
-			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
-			return minMaxValue.compareTo(this);
-		}
-		if (! (o instanceof  XsdBoolean)){
-			throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
-		}
-		return Boolean.compare(this.value,((XsdBoolean) o).value);
-	}
+  @Override
+  public int compareTo(Object o) {
+    if (o instanceof AnyType.MinMaxValue) {
+      AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
+      return minMaxValue.compareTo(this);
+    }
+    if (!(o instanceof XsdBoolean)) {
+      throw new IllegalArgumentException("Can't compare " + this.getClass() + " and " + o.getClass());
+    }
+    return Boolean.compare(this.value, ((XsdBoolean) o).value);
+  }
 
 }

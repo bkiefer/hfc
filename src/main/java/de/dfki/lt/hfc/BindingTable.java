@@ -1,193 +1,186 @@
 package de.dfki.lt.hfc;
 
+import de.dfki.lt.hfc.types.AnyType;
+import gnu.trove.list.array.TIntArrayList;
+import gnu.trove.map.hash.TIntObjectHashMap;
+import gnu.trove.set.hash.THashSet;
+
 import java.util.*;
-import gnu.trove.map.hash.*;
-import gnu.trove.list.array.*;
-import gnu.trove.set.hash.*;
-import de.dfki.lt.hfc.types.*;
 
 /**
  * a wrapper class, hiding a table (a set of int arrays) and several _mappings_
  *
  * @author (C) Hans-Ulrich Krieger
- * @since JDK 1.5
  * @version Mon Feb  1 12:41:14 CET 2016
+ * @since JDK 1.5
  */
 public class BindingTable {
 
-	/**
-	 *
-	 */
-	public Set<int[]> table;
+  /**
+   *
+   */
+  public Set<int[]> table;
+  /**
+   * might be assigned a value by Calc.restrict(BindingTable bt, ArrayList<Predicate> predicate);
+   * is usually important for tests & actions involving (complex) relational variables
+   */
+  public int[] arguments;
+  /**
+   * might be assigned a value by Calc.restrict(BindingTable bt, ArrayList<Predicate> predicate);
+   * is usually important for tests & actions involving (complex) relational variables
+   */
+  public HashMap<Integer, ArrayList<Integer>> relIdToFunIds;
+  /**
+   * important to establish an order to guarantee proper set operations over binding tables
+   * whose column labels vary
+   */
+  protected SortedMap<Integer, Integer> nameToPos;
+  /**
+   * (internal) name (a negative int, e.g., -2) to external name (a string, e.g., "?y")
+   */
+  protected Map<Integer, String> nameToExternalName;
+  /**
+   * needed in case toString() is called in order to access the idToObject field and the
+   * proxyToUris field when equivalence class reduction is turned on as specified by Boolean
+   * field equivalenceClassReduction in class TupleStore
+   */
+  protected TupleStore tupleStore;
+  /**
+   * in case (addProxyInfo == true), the toString() methods add a further mapping table
+   * to the result string, representing the mapping from proxis to URIs
+   */
+  protected boolean addProxyInfo = false;
+  /**
+   * expansion through expandBindingTable() can only be called once
+   */
+  protected boolean isExpanded = false;
+  /**
+   * might be assigned a value by Calc.restrict(BindingTable bt, ArrayList<Predicate> predicate);
+   * is usually important for tests & actions involving (complex) relational variables
+   */
+  protected HashMap<String, Integer> varToId;
 
-	/**
-	 * important to establish an order to guarantee proper set operations over binding tables
-	 * whose column labels vary
-	 */
-	protected SortedMap<Integer, Integer> nameToPos;
+  /**
+   * The list of variables from the select query generating this table, or "*",
+   * which will be lazily expanded into the list of variables for all columns,
+   * when requested.
+   */
+  String[] selectVars;
 
-	/**
-	 * (internal) name (a negative int, e.g., -2) to external name (a string, e.g., "?y")
-	 */
-	protected Map<Integer, String> nameToExternalName;
+  /**
+   * assigns the null value to all four public fields
+   */
+  public BindingTable() {
+    this.table = null;
+    this.nameToPos = null;
+    this.nameToExternalName = null;
+    this.tupleStore = null;
+  }
 
-	/**
-	 * needed in case toString() is called in order to access the idToObject field and the
-	 * proxyToUris field when equivalence class reduction is turned on as specified by Boolean
-	 * field equivalenceClassReduction in class TupleStore
-	 */
-	protected TupleStore tupleStore;
+  /**
+   * assigns value of parameter table to this.table;
+   * three other fields are assigned the null value
+   */
+  public BindingTable(Set<int[]> table) {
+    this.table = table;
+    this.nameToPos = null;
+    this.nameToExternalName = null;
+    this.tupleStore = null;
+  }
 
-	/**
-	 * in case (addProxyInfo == true), the toString() methods add a further mapping table
-	 * to the result string, representing the mapping from proxis to URIs
-	 */
-	protected boolean addProxyInfo = false;
+  /**
+   * assigns null values to this.nameToPos and this.nameToExternalName;
+   * this.tupleStore is set to parameter tupleStore and this.table is
+   * assigned an empty THashSet<int[]> object (all positions are assumed
+   * to be relevant)
+   */
+  public BindingTable(TupleStore tupleStore) {
 
-	/**
-	 * expansion through expandBindingTable() can only be called once
-	 */
-	protected boolean isExpanded = false;
+    this.table = new THashSet<int[]>();
+    this.nameToPos = null;
+    this.nameToExternalName = null;
+    this.tupleStore = tupleStore;
+  }
 
-	/**
-	 * might be assigned a value by Calc.restrict(BindingTable bt, ArrayList<Predicate> predicate);
-	 * is usually important for tests & actions involving (complex) relational variables
-	 */
-	public int[] arguments;
+  /**
+   * copy constructor for exclusive use in copy constructor of Cluster;
+   * only table value needs to be shallow copied
+   */
+  protected BindingTable(BindingTable bt, TupleStore ts) {
+    this.table = new THashSet<int[]>(bt.table);
+    this.nameToPos = bt.nameToPos;
+    this.nameToExternalName = bt.nameToExternalName;
+    this.tupleStore = ts;
+  }
 
-	/**
-	 * might be assigned a value by Calc.restrict(BindingTable bt, ArrayList<Predicate> predicate);
-	 * is usually important for tests & actions involving (complex) relational variables
-	 */
-	public HashMap<Integer, ArrayList<Integer>> relIdToFunIds;
+  /**
+   * assigns non-null values to this.table and this.nameToPos
+   */
+  public BindingTable(Set<int[]> table, SortedMap<Integer, Integer> nameToPos) {
+    this.table = table;
+    this.nameToPos = nameToPos;
+    this.nameToExternalName = null;
+    this.tupleStore = null;
+  }
 
-	/**
-	 * might be assigned a value by Calc.restrict(BindingTable bt, ArrayList<Predicate> predicate);
-	 * is usually important for tests & actions involving (complex) relational variables
-	 */
-	protected HashMap<String, Integer> varToId;
+  /**
+   * assigns non-null values to this.table, this.nameToPos, and this.nameToExternalName
+   */
+  public BindingTable(Set<int[]> table,
+                      SortedMap<Integer, Integer> nameToPos,
+                      Map<Integer, String> nameToExternalName) {
+    this.table = table;
+    this.nameToPos = nameToPos;
+    this.nameToExternalName = nameToExternalName;
+    this.tupleStore = null;
+  }
 
-	/**
-	 *  The list of variables from the select query generating this table, or "*",
-	 *  which will be lazily expanded into the list of variables for all columns,
-	 *  when requested.
-	 */
-	String[] selectVars;
+  /**
+   * assigns non-null values to all four public fields
+   */
+  public BindingTable(Set<int[]> table,
+                      SortedMap<Integer, Integer> nameToPos,
+                      Map<Integer, String> nameToExternalName,
+                      TupleStore tupleStore) {
+    this.table = table;
+    this.nameToPos = nameToPos;
+    this.nameToExternalName = nameToExternalName;
+    this.tupleStore = tupleStore;
+  }
 
-	/**
-	 * assigns the null value to all four public fields
-	 */
-	public BindingTable() {
-		this.table = null;
-		this.nameToPos = null;
-		this.nameToExternalName = null;
-		this.tupleStore = null;
-	}
+  /**
+   * a further argument varToIsetd originating from the RuleStore when reading in rules
+   * (individual map for each rule)
+   */
+  public BindingTable(Set<int[]> table,
+                      SortedMap<Integer, Integer> nameToPos,
+                      Map<Integer, String> nameToExternalName,
+                      TupleStore tupleStore,
+                      int[] arguments,
+                      HashMap<Integer, ArrayList<Integer>> relIdToFunIds,
+                      HashMap<String, Integer> varToId) {
+    this.table = table;
+    this.nameToPos = nameToPos;
+    this.nameToExternalName = nameToExternalName;
+    this.tupleStore = tupleStore;
+    this.arguments = arguments;
+    this.relIdToFunIds = relIdToFunIds;
+    this.varToId = varToId;
+  }
 
-	/**
-	 * assigns value of parameter table to this.table;
-	 * three other fields are assigned the null value
-	 */
-	public BindingTable(Set<int[]> table) {
-		this.table = table;
-		this.nameToPos = null;
-		this.nameToExternalName = null;
-		this.tupleStore = null;
-	}
-
-	/**
-	 * assigns null values to this.nameToPos and this.nameToExternalName;
-	 * this.tupleStore is set to parameter tupleStore and this.table is
-	 * assigned an empty THashSet<int[]> object (all positions are assumed
-	 * to be relevant)
-	 */
-	public BindingTable(TupleStore tupleStore) {
-
-		this.table = new THashSet<int[]>();
-		this.nameToPos = null;
-		this.nameToExternalName = null;
-		this.tupleStore = tupleStore;
-	}
-
-	/**
-	 * copy constructor for exclusive use in copy constructor of Cluster;
-	 * only table value needs to be shallow copied
-	 */
-	protected BindingTable(BindingTable bt, TupleStore ts) {
-		this.table = new THashSet<int[]>(bt.table);
-		this.nameToPos = bt.nameToPos;
-		this.nameToExternalName = bt.nameToExternalName;
-		this.tupleStore = ts;
-	}
-
-	/**
-	 * assigns non-null values to this.table and this.nameToPos
-	 */
-	public BindingTable(Set<int[]> table, SortedMap<Integer, Integer> nameToPos) {
-		this.table = table;
-		this.nameToPos = nameToPos;
-		this.nameToExternalName = null;
-		this.tupleStore = null;
-	}
-
-	/**
-	 * assigns non-null values to this.table, this.nameToPos, and this.nameToExternalName
-	 */
-	public BindingTable(Set<int[]> table,
-											SortedMap<Integer, Integer> nameToPos,
-											Map<Integer, String> nameToExternalName) {
-		this.table = table;
-		this.nameToPos = nameToPos;
-		this.nameToExternalName = nameToExternalName;
-		this.tupleStore = null;
-	}
-
-	/**
-	 * assigns non-null values to all four public fields
-	 */
-	public BindingTable(Set<int[]> table,
-											SortedMap<Integer, Integer> nameToPos,
-											Map<Integer, String> nameToExternalName,
-											TupleStore tupleStore) {
-		this.table = table;
-		this.nameToPos = nameToPos;
-		this.nameToExternalName = nameToExternalName;
-		this.tupleStore = tupleStore;
-	}
-
-	/**
-	 * a further argument varToIsetd originating from the RuleStore when reading in rules
-	 * (individual map for each rule)
-	 */
-	public BindingTable(Set<int[]> table,
-											SortedMap<Integer, Integer> nameToPos,
-											Map<Integer, String> nameToExternalName,
-											TupleStore tupleStore,
-											int[] arguments,
-											HashMap<Integer, ArrayList<Integer>> relIdToFunIds,
-											HashMap<String, Integer> varToId) {
-		this.table = table;
-		this.nameToPos = nameToPos;
-		this.nameToExternalName = nameToExternalName;
-		this.tupleStore = tupleStore;
-		this.arguments = arguments;
-		this.relIdToFunIds = relIdToFunIds;
-		this.varToId = varToId;
-	}
-
-	/**
-	 * assigns non-null values to this.nameToPos, this.nameToExternalName, and this.tupleStore;
-	 * this.table is assigned an empty THashSet<int[]> object (all positions are assumed to be
-	 * relevant)
-	 */
-	public BindingTable(SortedMap<Integer, Integer> nameToPos,
-											Map<Integer, String> nameToExternalName,
-											TupleStore tupleStore) {
-		this.table = new THashSet<int[]>();  // (no strategy object)
-		this.nameToPos = nameToPos;
-		this.nameToExternalName = nameToExternalName;
-		this.tupleStore = tupleStore;
-	}
+  /**
+   * assigns non-null values to this.nameToPos, this.nameToExternalName, and this.tupleStore;
+   * this.table is assigned an empty THashSet<int[]> object (all positions are assumed to be
+   * relevant)
+   */
+  public BindingTable(SortedMap<Integer, Integer> nameToPos,
+                      Map<Integer, String> nameToExternalName,
+                      TupleStore tupleStore) {
+    this.table = new THashSet<int[]>();  // (no strategy object)
+    this.nameToPos = nameToPos;
+    this.nameToExternalName = nameToExternalName;
+    this.tupleStore = tupleStore;
+  }
 
   /**
    * given an external name, this method returns the position (an int)
@@ -209,9 +202,10 @@ public class BindingTable {
       return this.nameToPos.get(iname);
   }
 
-  /** If this BindingTable was created by a select query, return the variables
-   *  after the select in the order in which they were specified, if "*" was
-   *  specified, return all variables in the table in column order
+  /**
+   * If this BindingTable was created by a select query, return the variables
+   * after the select in the order in which they were specified, if "*" was
+   * specified, return all variables in the table in column order
    */
   public String[] getVars() {
     // selectvars == null means there is an aggregate in the query
@@ -222,11 +216,13 @@ public class BindingTable {
         selectVars[pos++] = this.nameToExternalName.get(e.getKey());
       }
     }
-    return selectVars ;
+    return selectVars;
   }
 
 
-  /** Return the number of rows in this BindingTable */
+  /**
+   * Return the number of rows in this BindingTable
+   */
   public int size() {
     return (null == table ? 0 : table.size());
   }
@@ -235,185 +231,184 @@ public class BindingTable {
     return (null == table || table.isEmpty());
   }
 
-	/**
-	 * uses the full URI/XSD name
-	 * note: in order to properly behave, toString() needs properly set fields, viz.,
-	 * table, nameToPos, nameToExternalName, and tupleStore;
-	 * note: the content of the table is NOT expanded when this method is called directly
-	 */
-	public String toString() {
-		int maxLength = -1;
-		int size = this.nameToPos.keySet().size();
-		Integer[] nameArray = new Integer[size];
-		for (Integer name : this.nameToPos.keySet())
-			nameArray[--size] = name;
-		String element;
-		for (int[] tuple : this.table) {
-			for (Integer name : nameArray) {
-				element = this.tupleStore.idToObject.get(tuple[this.nameToPos.get(name)]);
-				if (element.length() > maxLength)
-					maxLength = element.length();
-			}
-		}
-		// call unary toString() with the maximal length
-		return toString(maxLength);
-	}
+  /**
+   * uses the full URI/XSD name
+   * note: in order to properly behave, toString() needs properly set fields, viz.,
+   * table, nameToPos, nameToExternalName, and tupleStore;
+   * note: the content of the table is NOT expanded when this method is called directly
+   */
+  public String toString() {
+    int maxLength = -1;
+    int size = this.nameToPos.keySet().size();
+    Integer[] nameArray = new Integer[size];
+    for (Integer name : this.nameToPos.keySet())
+      nameArray[--size] = name;
+    String element;
+    for (int[] tuple : this.table) {
+      for (Integer name : nameArray) {
+        element = this.tupleStore.idToJavaObject.get(tuple[this.nameToPos.get(name)]).toString(this.tupleStore.namespace.shortIsDefault);
+        if (element.length() > maxLength)
+          maxLength = element.length();
+      }
+    }
+    // call unary toString() with the maximal length
+    return toString(maxLength);
+  }
 
-	/**
-	 * depending on the argument, the content is destructively expanded and
-	 * returned as a string
-	 */
-	public String toString(boolean expand) {
-		this.addProxyInfo = !expand;
-		if (expand)
-			expandBindingTable();
-		return toString();
-	}
+  /**
+   * depending on the argument, the content is destructively expanded and
+   * returned as a string
+   */
+  public String toString(boolean expand) {
+    this.addProxyInfo = !expand;
+    if (expand)
+      expandBindingTable();
+    return toString();
+  }
 
-	public String toString(int maxLength, boolean expand) {
-		this.addProxyInfo = !expand;
-		if (expand)
-			expandBindingTable();
-		return toString(maxLength);
-	}
+  public String toString(int maxLength, boolean expand) {
+    this.addProxyInfo = !expand;
+    if (expand)
+      expandBindingTable();
+    return toString(maxLength);
+  }
 
-	/**
-	 * maxLength indicates when entries need to be truncated;
-	 * note: in order to properly behave, toString() needs properly set fields, viz.,
-	 * table, nameToPos, nameToExternalName, and tupleStore;
-	 * note: the content of the table is NOT expanded when this method is called directly
-	 */
-	public String toString(int maxLength) {
-		StringBuilder sb = new StringBuilder();
-		// nameToPos' key set is sorted (negative ints), but need inverse order
-		int size = this.nameToPos.keySet().size();
-		Integer[] nameArray = new Integer[size];
-		for (Integer name : this.nameToPos.keySet())
-			nameArray[--size] = name;
-		// print header
-		for (int i = 0; i < nameArray.length * (maxLength + 3) + 1; i++)
-			sb.append("=");
-		sb.append("\n");
-		String element;
-		int difference;
-		for (int i = 0; i < nameArray.length; i++) {
-			sb.append("| ");
-			if (this.nameToExternalName == null)
-				element = "?" + nameArray[i];
-			else
-				element = this.nameToExternalName.get(nameArray[i]);
-			sb.append(element);  // always append full variable name
-			difference = maxLength - element.length();
-			if (difference > 0)
-				for (int j = 0; j < difference; j++)
-					sb.append(" ");
-			sb.append(" ");
-		}
-		sb.append("|\n");
-		for (int i = 0; i < nameArray.length * (maxLength + 3) + 1; i++)
-			sb.append("=");
-		sb.append("\n");
-		// print body
-		for (int[] tuple : this.table) {
-			for (Integer name : nameArray) {
-				sb.append("| ");
-				element = this.tupleStore.idToObject.get(tuple[this.nameToPos.get(name)]);
-				difference = maxLength - element.length();
-				if (difference > 0) {
-					sb.append(element);
-					for (int j = 0; j < difference; j++)
-						sb.append(" ");
-				}
-				else {
-					sb.append(element.substring(0, maxLength));
-				}
-				sb.append(" ");
-			}
-			sb.append("|\n");
-		}
-		// table finished
-		for (int i = 0; i < nameArray.length * (maxLength + 3) + 1; i++)
-			sb.append("-");
-		sb.append("\n" + this.table.size());
-		sb.append("\n");
-		// now, is there a need to add the proxy-to-URIs mapping
-		if (this.addProxyInfo) {
-			final TIntObjectHashMap<TIntArrayList> proxyToUris = this.tupleStore.proxyToUris;
-			final ArrayList<String> idToObject = this.tupleStore.idToObject;
-			TIntArrayList uris;
-			for (int i : proxyToUris.keys()) {
-				sb.append(idToObject.get(i));
-				sb.append(" -> ");
-				uris = proxyToUris.get(i);
-				for (int j = 0; j < uris.size(); j++) {
-					sb.append(idToObject.get(uris.get(j)));
-					sb.append(" ");
-				}
-				sb.append("\n");
-			}
-			sb.append("\n");
-		}
-		return sb.toString();
-	}
+  /**
+   * maxLength indicates when entries need to be truncated;
+   * note: in order to properly behave, toString() needs properly set fields, viz.,
+   * table, nameToPos, nameToExternalName, and tupleStore;
+   * note: the content of the table is NOT expanded when this method is called directly
+   */
+  public String toString(int maxLength) {
+    StringBuilder sb = new StringBuilder();
+    // nameToPos' key set is sorted (negative ints), but need inverse order
+    int size = this.nameToPos.keySet().size();
+    Integer[] nameArray = new Integer[size];
+    for (Integer name : this.nameToPos.keySet())
+      nameArray[--size] = name;
+    // print header
+    for (int i = 0; i < nameArray.length * (maxLength + 3) + 1; i++)
+      sb.append("=");
+    sb.append("\n");
+    String element;
+    int difference;
+    for (int i = 0; i < nameArray.length; i++) {
+      sb.append("| ");
+      if (this.nameToExternalName == null)
+        element = "?" + nameArray[i];
+      else
+        element = this.nameToExternalName.get(nameArray[i]);
+      sb.append(element);  // always append full variable name
+      difference = maxLength - element.length();
+      if (difference > 0)
+        for (int j = 0; j < difference; j++)
+          sb.append(" ");
+      sb.append(" ");
+    }
+    sb.append("|\n");
+    for (int i = 0; i < nameArray.length * (maxLength + 3) + 1; i++)
+      sb.append("=");
+    sb.append("\n");
+    // print body
+    for (int[] tuple : this.table) {
+      for (Integer name : nameArray) {
+        sb.append("| ");
+        element = this.tupleStore.idToJavaObject.get(tuple[this.nameToPos.get(name)]).toString(this.tupleStore.namespace.shortIsDefault);
+        difference = maxLength - element.length();
+        if (difference > 0) {
+          sb.append(element);
+          for (int j = 0; j < difference; j++)
+            sb.append(" ");
+        } else {
+          sb.append(element.substring(0, maxLength));
+        }
+        sb.append(" ");
+      }
+      sb.append("|\n");
+    }
+    // table finished
+    for (int i = 0; i < nameArray.length * (maxLength + 3) + 1; i++)
+      sb.append("-");
+    sb.append("\n" + this.table.size());
+    sb.append("\n");
+    // now, is there a need to add the proxy-to-URIs mapping
+    if (this.addProxyInfo) {
+      final TIntObjectHashMap<TIntArrayList> proxyToUris = this.tupleStore.proxyToUris;
+      final ArrayList<AnyType> idToObject = this.tupleStore.idToJavaObject;
+      TIntArrayList uris;
+      for (int i : proxyToUris.keys()) {
+        sb.append(idToObject.get(i));
+        sb.append(" -> ");
+        uris = proxyToUris.get(i);
+        for (int j = 0; j < uris.size(); j++) {
+          sb.append(idToObject.get(uris.get(j)));
+          sb.append(" ");
+        }
+        sb.append("\n");
+      }
+      sb.append("\n");
+    }
+    return sb.toString();
+  }
 
-	/**
-	 * expands this binding table by multiplying out proxies by their equivalent
-	 * URIs;
-	 * the method does not check whether equivalence class reduction is turned
-	 * on or not; in case it is turned off, calling this method does not have an
-	 * effect
-	 */
-	protected void expandBindingTable() {
-		// if already expanded, no need to call method again, esp., since SELECT
-		// statements without the DISTINCT keyword use java.util.Hashset objects to
-		// represent duplicate elements (int arrays); otherwise (w/ DISTINCT), a
-		// Trove THashSet object is used to represent the internal table
-		if (this.isExpanded)
-			return;
-		this.isExpanded = true;
-		// compute maximal tuple length to guarantee termination
-		int max = 0;
-		for (int[] tuple : this.table)
-			if (tuple.length > max)
-				max = tuple.length;
-		Set<int[]> newTuples = new THashSet<int[]>();
-		final TIntObjectHashMap<TIntArrayList> proxyToUris = this.tupleStore.proxyToUris;
-		// move over each tuple position in every tuple
-		for (int pos = 0; pos < max; pos++) {
-			// need this sequence of for loops, since I'm not allowed to enlarge the set during iteration
-			for (int[] tuple : this.table) {
-				// tuples might be of different length
-				if (pos < tuple.length)
-					if (proxyToUris.containsKey(tuple[pos]))
-						expandTuple(tuple, proxyToUris, newTuples, pos);
-			}
-			this.table.addAll(newTuples);
-			newTuples.clear();
-		}
-	}
+  /**
+   * expands this binding table by multiplying out proxies by their equivalent
+   * URIs;
+   * the method does not check whether equivalence class reduction is turned
+   * on or not; in case it is turned off, calling this method does not have an
+   * effect
+   */
+  protected void expandBindingTable() {
+    // if already expanded, no need to call method again, esp., since SELECT
+    // statements without the DISTINCT keyword use java.util.Hashset objects to
+    // represent duplicate elements (int arrays); otherwise (w/ DISTINCT), a
+    // Trove THashSet object is used to represent the internal table
+    if (this.isExpanded)
+      return;
+    this.isExpanded = true;
+    // compute maximal tuple length to guarantee termination
+    int max = 0;
+    for (int[] tuple : this.table)
+      if (tuple.length > max)
+        max = tuple.length;
+    Set<int[]> newTuples = new THashSet<int[]>();
+    final TIntObjectHashMap<TIntArrayList> proxyToUris = this.tupleStore.proxyToUris;
+    // move over each tuple position in every tuple
+    for (int pos = 0; pos < max; pos++) {
+      // need this sequence of for loops, since I'm not allowed to enlarge the set during iteration
+      for (int[] tuple : this.table) {
+        // tuples might be of different length
+        if (pos < tuple.length)
+          if (proxyToUris.containsKey(tuple[pos]))
+            expandTuple(tuple, proxyToUris, newTuples, pos);
+      }
+      this.table.addAll(newTuples);
+      newTuples.clear();
+    }
+  }
 
-	/**
-	 * given a tuple that contains a proxy at position pos, generate copies of
-	 * this tuple that only differ by replacing the proxy through its equivalences
-	 */
-	private void expandTuple(int[] tuple,
-													 TIntObjectHashMap<TIntArrayList> proxyToUris,
-													 Set<int[]> newTuples,
-													 int pos) {
-		int[] newTuple;
-		TIntArrayList uris = proxyToUris.get(tuple[pos]);
-		// I can start with the second element, first is always the proxy!
-		for (int i = 1; i < uris.size(); i++) {
-			newTuple = new int[tuple.length];
-			for (int j = 0; j < tuple.length; j++) {
-				if (j == pos)
-					newTuple[j] = uris.get(i);
-				else
-					newTuple[j] = tuple[j];
-			}
-			newTuples.add(newTuple);
-		}
-	}
+  /**
+   * given a tuple that contains a proxy at position pos, generate copies of
+   * this tuple that only differ by replacing the proxy through its equivalences
+   */
+  private void expandTuple(int[] tuple,
+                           TIntObjectHashMap<TIntArrayList> proxyToUris,
+                           Set<int[]> newTuples,
+                           int pos) {
+    int[] newTuple;
+    TIntArrayList uris = proxyToUris.get(tuple[pos]);
+    // I can start with the second element, first is always the proxy!
+    for (int i = 1; i < uris.size(); i++) {
+      newTuple = new int[tuple.length];
+      for (int j = 0; j < tuple.length; j++) {
+        if (j == pos)
+          newTuple[j] = uris.get(i);
+        else
+          newTuple[j] = tuple[j];
+      }
+      newTuples.add(newTuple);
+    }
+  }
 
   /**
    * as the constructors of the inner class are private, I do provide two methods
@@ -439,14 +434,14 @@ public class BindingTable {
    * note: as a (legal) cornercase, even columns can be duplicated by specifying
    * a header variable multiple times!
    */
-  public BindingTableIterator iterator(String ... vars) throws BindingTableIteratorException {
+  public BindingTableIterator iterator(String... vars) throws BindingTableIteratorException {
     // check whether vars refers to _legal_ variables, i.e., check whether each
     // variable from vars refers to one of the columns from the binding table
     // and keep the sequence of variables from vars in the tuple that is returned
     if (this.size() == 0) return this.iterator();
     final Collection<String> allVars = this.nameToExternalName.values();
     for (String var : vars)
-      if (! allVars.contains(var))
+      if (!allVars.contains(var))
         throw new BindingTableIteratorException("wrongly-specified variable: there is no table column named " + var);
     return this.new BindingTableIterator(vars);
   }
@@ -482,7 +477,7 @@ public class BindingTable {
       this.size = BindingTable.this.size();
       this.varPos = null;
       this.it = (size == 0 ? Collections.<int[]>emptyList().iterator() :
-        BindingTable.this.table.iterator());
+              BindingTable.this.table.iterator());
     }
 
     /**
@@ -539,7 +534,7 @@ public class BindingTable {
       final int[] intNext = next();
       final String[] result = new String[intNext.length];
       for (int i = 0; i < intNext.length; i++)
-        result[i] = BindingTable.this.tupleStore.getObject(intNext[i]);
+        result[i] = BindingTable.this.tupleStore.getObject(intNext[i]).toString(BindingTable.this.tupleStore.namespace.shortIsDefault);
       return result;
     }
 
@@ -552,7 +547,7 @@ public class BindingTable {
       final int[] intNext = next();
       final AnyType[] result = new AnyType[intNext.length];
       for (int i = 0; i < intNext.length; i++)
-        result[i] = BindingTable.this.tupleStore.getJavaObject(intNext[i]);
+        result[i] = BindingTable.this.tupleStore.getObject(intNext[i]);
       return result;
     }
 
@@ -575,110 +570,110 @@ public class BindingTable {
    *   + go to HFC's bin directory
    *   + java -cp .:../lib/trove-2.1.0.jar -Xms800m -Xmx1200m de/dfki/lt/hfc/BindingTable
    *
-  public static void main(String[] args) throws Exception {
-    Namespace ns = new Namespace("/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.ns");
-    TupleStore ts = new TupleStore(100000, 250000, ns,
-                                   "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.nt");
-    Query q = new Query(ts);
+   public static void main(String[] args) throws Exception {
+   Namespace ns = new Namespace("/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.ns");
+   TupleStore ts = new TupleStore(100000, 250000, ns,
+   "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.nt");
+   Query q = new Query(ts);
 
-    BindingTable bt = q.query("SELECT * WHERE ?s <rdf:type> ?o FILTER ?o != <rdfs:Datatype>");
-    System.out.println(bt);
-    // returns triples even though we're asking for pairs (?s, ?o), but because we're using
-    // Trove sets and strategy objects for table projection, the underlying int arrays are
-    // still of length 3
-    BindingTableIterator it = bt.iterator();
-    System.out.println(it.hasSize());
-    while (it.hasNext()) {
-      int[] next = it.next();
-      for (int i = 0; i < next.length; i++)
-        System.out.print(next[i] + " ");
-      System.out.println();
-    }
+   BindingTable bt = q.query("SELECT * WHERE ?s <rdf:type> ?o FILTER ?o != <rdfs:Datatype>");
+   System.out.println(bt);
+   // returns triples even though we're asking for pairs (?s, ?o), but because we're using
+   // Trove sets and strategy objects for table projection, the underlying int arrays are
+   // still of length 3
+   BindingTableIterator it = bt.iterator();
+   System.out.println(it.hasSize());
+   while (it.hasNext()) {
+   int[] next = it.next();
+   for (int i = 0; i < next.length; i++)
+   System.out.print(next[i] + " ");
+   System.out.println();
+   }
 
-    it = bt.iterator();
-    System.out.println(it.hasSize());
-    while (it.hasNext()) {
-      String[] next = it.nextAsString();
-      for (int i = 0; i < next.length; i++)
-        System.out.print(next[i] + " ");
-      System.out.println();
-    }
+   it = bt.iterator();
+   System.out.println(it.hasSize());
+   while (it.hasNext()) {
+   String[] next = it.nextAsString();
+   for (int i = 0; i < next.length; i++)
+   System.out.print(next[i] + " ");
+   System.out.println();
+   }
 
-    it = bt.iterator("?s", "?o");
-    System.out.println(it.hasSize());
-    while (it.hasNext()) {
-      String[] next = it.nextAsString();
-      for (int i = 0; i < next.length; i++)
-        System.out.print(next[i] + " ");
-      System.out.println();
-    }
+   it = bt.iterator("?s", "?o");
+   System.out.println(it.hasSize());
+   while (it.hasNext()) {
+   String[] next = it.nextAsString();
+   for (int i = 0; i < next.length; i++)
+   System.out.print(next[i] + " ");
+   System.out.println();
+   }
 
-    it = bt.iterator("?s", "?o");
-    System.out.println(it.hasSize());
-    while (it.hasNext()) {
-      AnyType[] next = it.nextAsHfcType();
-      for (int i = 0; i < next.length; i++)
-        System.out.print(next[i] + " ");
-      System.out.println();
-    }
+   it = bt.iterator("?s", "?o");
+   System.out.println(it.hasSize());
+   while (it.hasNext()) {
+   AnyType[] next = it.nextAsHfcType();
+   for (int i = 0; i < next.length; i++)
+   System.out.print(next[i] + " ");
+   System.out.println();
+   }
 
-    it = bt.iterator("?o", "?s");
-    System.out.println(it.hasSize());
-    while (it.hasNext()) {
-      String[] next = it.nextAsString();
-      for (int i = 0; i < next.length; i++)
-        System.out.print(next[i] + " ");
-      System.out.println();
-    }
+   it = bt.iterator("?o", "?s");
+   System.out.println(it.hasSize());
+   while (it.hasNext()) {
+   String[] next = it.nextAsString();
+   for (int i = 0; i < next.length; i++)
+   System.out.print(next[i] + " ");
+   System.out.println();
+   }
 
-    it = bt.iterator("?s", "?o", "?s", "?o");
-    System.out.println(it.hasSize());
-    while (it.hasNext()) {
-      String[] next = it.nextAsString();
-      for (int i = 0; i < next.length; i++)
-        System.out.print(next[i] + " ");
-      System.out.println();
-    }
+   it = bt.iterator("?s", "?o", "?s", "?o");
+   System.out.println(it.hasSize());
+   while (it.hasNext()) {
+   String[] next = it.nextAsString();
+   for (int i = 0; i < next.length; i++)
+   System.out.print(next[i] + " ");
+   System.out.println();
+   }
 
-    it = bt.iterator("?o");
-    System.out.println(it.hasSize());
-    while (it.hasNext()) {
-      String[] next = it.nextAsString();
-      for (int i = 0; i < next.length; i++)
-        System.out.print(next[i] + " ");
-      System.out.println();
-    }
+   it = bt.iterator("?o");
+   System.out.println(it.hasSize());
+   while (it.hasNext()) {
+   String[] next = it.nextAsString();
+   for (int i = 0; i < next.length; i++)
+   System.out.print(next[i] + " ");
+   System.out.println();
+   }
 
-    bt = q.query("SELECT ?p WHERE ?s ?p ?o AGGREGATE ?number = CountDistinct ?p & ?subject = Identity ?p");
-    System.out.println(bt);
-    it = bt.iterator("?number", "?subject");
-    System.out.println(it.hasSize());
-    while (it.hasNext()) {
-      String[] next = it.nextAsString();
-      for (int i = 0; i < next.length; i++)
-        System.out.print(next[i] + " ");
-      System.out.println();
-    }
+   bt = q.query("SELECT ?p WHERE ?s ?p ?o AGGREGATE ?number = CountDistinct ?p & ?subject = Identity ?p");
+   System.out.println(bt);
+   it = bt.iterator("?number", "?subject");
+   System.out.println(it.hasSize());
+   while (it.hasNext()) {
+   String[] next = it.nextAsString();
+   for (int i = 0; i < next.length; i++)
+   System.out.print(next[i] + " ");
+   System.out.println();
+   }
 
-    it = bt.iterator("?number", "?subject");
-    System.out.println(it.hasSize());
-    while (it.hasNext()) {
-      AnyType[] next = it.nextAsHfcType();
-      for (int i = 0; i < next.length; i++)
-        System.out.print(next[i] + " ");
-      System.out.println();
-    }
+   it = bt.iterator("?number", "?subject");
+   System.out.println(it.hasSize());
+   while (it.hasNext()) {
+   AnyType[] next = it.nextAsHfcType();
+   for (int i = 0; i < next.length; i++)
+   System.out.print(next[i] + " ");
+   System.out.println();
+   }
 
-    it = bt.iterator("?subject");
-    System.out.println(it.hasSize());
-    while (it.hasNext()) {
-      String[] next = it.nextAsString();
-      for (int i = 0; i < next.length; i++)
-        System.out.print(next[i] + " ");
-      System.out.println();
-    }
+   it = bt.iterator("?subject");
+   System.out.println(it.hasSize());
+   while (it.hasNext()) {
+   String[] next = it.nextAsString();
+   for (int i = 0; i < next.length; i++)
+   System.out.print(next[i] + " ");
+   System.out.println();
+   }
 
-    it = bt.iterator("?s", "?p", "?o");   // error!
-  }
-  */
+   it = bt.iterator("?s", "?p", "?o");   // error!
+   }
+   */
 }

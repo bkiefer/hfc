@@ -4,8 +4,8 @@ package de.dfki.lt.hfc.types;
  * The xsd:cal datatype is supposed to encode an amount of calories
  *
  * @author (C) Hans-Ulrich Krieger
- * @since JDK 1.5
  * @version Tue Mar  1 13:41:15 CET 2016
+ * @since JDK 1.5
  */
 public final class XsdCal extends XsdAnySimpleType {
 
@@ -35,13 +35,6 @@ public final class XsdCal extends XsdAnySimpleType {
   }
 
   /**
-   * depending on shortIsDefault, either the suffix SHORT_NAME or LONG_NAME is used
-   */
-  public String toString(boolean shortIsDefault) {
-    return toString(this.value, shortIsDefault);
-  }
-
-  /**
    * binary version is given the value directly
    */
   public static String toString(double val, boolean shortIsDefault) {
@@ -53,6 +46,13 @@ public final class XsdCal extends XsdAnySimpleType {
     else
       sb.append(LONG_NAME);
     return sb.toString();
+  }
+
+  /**
+   * depending on shortIsDefault, either the suffix SHORT_NAME or LONG_NAME is used
+   */
+  public String toString(boolean shortIsDefault) {
+    return toString(this.value, shortIsDefault);
   }
 
   /**
@@ -72,13 +72,13 @@ public final class XsdCal extends XsdAnySimpleType {
 
   @Override
   public int compareTo(Object o) {
-    if(  o instanceof AnyType.MinMaxValue ) {
+    if (o instanceof AnyType.MinMaxValue) {
       AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
       return minMaxValue.compareTo(this);
     }
-    if (! (o instanceof  XsdCal)){
-      throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
+    if (!(o instanceof XsdCal)) {
+      throw new IllegalArgumentException("Can't compare " + this.getClass() + " and " + o.getClass());
     }
-    return Double.compare(this.value,((XsdCal) o).value);
+    return Double.compare(this.value, ((XsdCal) o).value);
   }
 }

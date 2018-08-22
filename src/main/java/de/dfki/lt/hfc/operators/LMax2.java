@@ -9,26 +9,25 @@ import de.dfki.lt.hfc.types.XsdLong;
  * arguments are assumed to be of type <xsd:long>;
  * returns the maximal long
  *
- * @see FunctionalOperator
- *
  * @author (C) Hans-Ulrich Krieger
- * @since JDK 1.5
  * @version Mon May 30 14:01:54 CEST 2011
+ * @see FunctionalOperator
+ * @since JDK 1.5
  */
 public final class LMax2 extends FunctionalOperator {
-	
-	/**
-	 * note that apply() does NOT check at the moment whether the int args
-	 * represent in fact XSD longs
-	 */
-	public int apply(int[] args) {
-		final long first = ((XsdLong)getObject(args[0])).value;
-		final long second = ((XsdLong)getObject(args[1])).value;
-		if (first > second)
-			return args[0];
-		else
-			return args[1];
-	}
+
+  /**
+   * note that apply() does NOT check at the moment whether the int args
+   * represent in fact XSD longs
+   */
+  public int apply(int[] args) {
+    final long first = ((XsdLong) getObject(args[0])).value;
+    final long second = ((XsdLong) getObject(args[1])).value;
+    if (first > second)
+      return args[0];
+    else
+      return args[1];
+  }
 	
 	/* this version registers the maximum which is not needed, since the max is contained in the arguments
 	public int apply(int[] args) {
@@ -39,5 +38,5 @@ public final class LMax2 extends FunctionalOperator {
 		return registerObject(L.toString(de.dfki.lt.hfc.Namespace.shortIsDefault), L);
 	}
 	 */
-	
+
 }

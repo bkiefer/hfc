@@ -8,23 +8,22 @@ import de.dfki.lt.hfc.types.XsdFloat;
  * argument is assumed to be an xsd:float;
  * returns a representation of the new float
  *
- * @see FunctionalOperator
- *
  * @author (C) Hans-Ulrich Krieger
- * @since JDK 1.5
  * @version Tue Sep 29 11:11:19 CEST 2009
+ * @see FunctionalOperator
+ * @since JDK 1.5
  */
 public final class FDecrement extends FunctionalOperator {
-	
-	/**
-	 * note that apply() does NOT check at the moment whether the int arg
-	 * represent in fact an XSD float;
-	 * note that apply() does NOT check whether it is given exactly one argument
-	 */
-	public int apply(int[] args) {
-		float f = ((XsdFloat)getObject(args[0])).value - 1;
-		XsdFloat F = new XsdFloat(f);
-		return registerObject(F.toString(this.tupleStore.namespace.shortIsDefault), F);
-	}
-	
+
+  /**
+   * note that apply() does NOT check at the moment whether the int arg
+   * represent in fact an XSD float;
+   * note that apply() does NOT check whether it is given exactly one argument
+   */
+  public int apply(int[] args) {
+    float f = ((XsdFloat) getObject(args[0])).value - 1;
+    XsdFloat F = new XsdFloat(f);
+    return registerObject(F.toString(this.tupleStore.namespace.shortIsDefault), F);
+  }
+
 }

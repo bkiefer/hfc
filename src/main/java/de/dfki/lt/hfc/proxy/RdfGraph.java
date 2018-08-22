@@ -1,7 +1,6 @@
 package de.dfki.lt.hfc.proxy;
 
 import de.dfki.lt.hfc.TupleStore;
-import de.dfki.lt.hfc.Namespace;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,9 +13,8 @@ import java.util.*;
  * as they need not be connected
  *
  * @author (C) Hans-Ulrich Krieger
- * @since JDK 1.5
  * @version Fri Mar 18 11:05:43 CET 2016
-
+ * @since JDK 1.5
  */
 public class RdfGraph {
 
@@ -39,6 +37,7 @@ public class RdfGraph {
 
   /**
    * a mapping from URIs and XSD atom names onto instances of the corresponding classes
+   *
    * @see de.dfki.lt.hfc.proxy.Literal
    * @see de.dfki.lt.hfc.proxy.UriProxy
    * @see de.dfki.lt.hfc.proxy.XsdAtomProxy
@@ -82,10 +81,9 @@ public class RdfGraph {
     if (lsubj == null) {
       usubj = new UriProxy(subj);
       this.nameToLiteral.put(subj, usubj);
-    }
-    else
+    } else
       // subject should be an URI
-      usubj = (UriProxy)(lsubj);
+      usubj = (UriProxy) (lsubj);
     // is predicate brand-new ?
     final Set<Literal> values = usubj.getValues(pred);
     if (values == null)
@@ -119,7 +117,7 @@ public class RdfGraph {
   public boolean addToRdfGraph(int[] ituple) {
     ArrayList<String> tuple = new ArrayList<String>();
     for (int i : ituple)
-      tuple.add(this.tupleStore.getObject(i));
+      tuple.add(this.tupleStore.getObject(i).toString());
     return addToRdfGraph(tuple);
   }
 
@@ -151,9 +149,8 @@ public class RdfGraph {
   }
 
   /**
-   * @return the set of literals which can be accessed from subject via predicate
    * @return null if there is no such predicate or even no such subject, or if the
-   *         literal is an XSD atom
+   * literal is an XSD atom
    */
   public Set<Literal> getFromRdfGraph(String subject, String predicate) {
     final Literal literal = this.nameToLiteral.get(subject);
@@ -162,13 +159,12 @@ public class RdfGraph {
     if (Literal.isXsdAtom(literal))
       return null;
     // contains() via getValues() suffices here as we do _not_ allow for null values
-    return ((UriProxy)(literal)).getValues(predicate);
+    return ((UriProxy) (literal)).getValues(predicate);
   }
 
   /**
    * removes a tuple from this RDF graph
    *
-   * @return true if tuple is part of this RDF graph
    * @return false otherwise
    */
   public boolean removeFromRdfGraph(List<String> tuple) {
@@ -182,7 +178,7 @@ public class RdfGraph {
     if (lsubj == null)
       return false;
     // subject has to be a URI
-    final UriProxy usubj = (UriProxy)(lsubj);
+    final UriProxy usubj = (UriProxy) (lsubj);
     // does property exist ?
     final Set<Literal> values = usubj.getValues(pred);
     if (values == null)
@@ -192,7 +188,7 @@ public class RdfGraph {
     if (lobj == null)
       return false;
     // is object contained in values attached to property ?
-    if (! values.contains(lobj))
+    if (!values.contains(lobj))
       return false;
     // tuple is _definitely_ represented by this RDF graph; so now remove it !
     values.remove(lobj);
@@ -221,7 +217,7 @@ public class RdfGraph {
   public boolean removeFromRdfGraph(int[] ituple) {
     ArrayList<String> stuple = new ArrayList<String>();
     for (int i : ituple)
-      stuple.add(this.tupleStore.getObject(i));
+      stuple.add(this.tupleStore.getObject(i).toString());
     return removeFromRdfGraph(stuple);
   }
 
@@ -230,9 +226,9 @@ public class RdfGraph {
    * walks over all literals recorded in nameToLiteral and removes all those
    * literals (URIs) whose predToObject mapping is empty _and_ which are not
    * accessed by other literals
-   * @return true iff at least one literal has been removed
-   * @return false otherwise
    *
+   * @return false otherwise
+   * <p>
    * NOTE: !!!!! NOT IMPLEMENTED YET !!!!!
    */
   public boolean gc() {

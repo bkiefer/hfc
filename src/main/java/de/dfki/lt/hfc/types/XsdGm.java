@@ -4,8 +4,8 @@ package de.dfki.lt.hfc.types;
  * The xsd:gm datatype is supposed to encode weight measured in grams
  *
  * @author (C) Hans-Ulrich Krieger
- * @since JDK 1.5
  * @version Mon Feb 29 15:40:22 CET 2016
+ * @since JDK 1.5
  */
 public final class XsdGm extends XsdAnySimpleType {
 
@@ -35,13 +35,6 @@ public final class XsdGm extends XsdAnySimpleType {
   }
 
   /**
-   * depending on shortIsDefault, either the suffix SHORT_NAME or LONG_NAME is used
-   */
-  public String toString(boolean shortIsDefault) {
-    return toString(this.value, shortIsDefault);
-  }
-
-  /**
    * binary version is given the value directly
    */
   public static String toString(double val, boolean shortIsDefault) {
@@ -53,6 +46,13 @@ public final class XsdGm extends XsdAnySimpleType {
     else
       sb.append(LONG_NAME);
     return sb.toString();
+  }
+
+  /**
+   * depending on shortIsDefault, either the suffix SHORT_NAME or LONG_NAME is used
+   */
+  public String toString(boolean shortIsDefault) {
+    return toString(this.value, shortIsDefault);
   }
 
   /**
@@ -79,14 +79,14 @@ public final class XsdGm extends XsdAnySimpleType {
 
   @Override
   public int compareTo(Object o) {
-    if(  o instanceof AnyType.MinMaxValue ) {
+    if (o instanceof AnyType.MinMaxValue) {
       AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
       return minMaxValue.compareTo(this);
     }
-    if (! (o instanceof  XsdGm)){
-      throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
+    if (!(o instanceof XsdGm)) {
+      throw new IllegalArgumentException("Can't compare " + this.getClass() + " and " + o.getClass());
     }
-    return Double.compare(this.value,((XsdGm) o).value);
+    return Double.compare(this.value, ((XsdGm) o).value);
   }
 
 }

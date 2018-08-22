@@ -6,12 +6,11 @@ package de.dfki.lt.hfc.types;
  * to days before year 0000 (BC period) -- this is currently not provided by
  * the XSD specification
  *
+ * @author (C) Hans-Ulrich Krieger
+ * @version Fri Jan 29 19:10:24 CET 2016
  * @see http://www.w3.org/TR/xmlschema-2/
  * @see http://www.schemacentral.com/sc/xsd/t-xsd_gDay.html
- *
- * @author (C) Hans-Ulrich Krieger
  * @since JDK 1.5
- * @version Fri Jan 29 19:10:24 CET 2016
  */
 public final class XsdGDay extends XsdAnySimpleType {
   public final static String NAME = "gDay";
@@ -24,57 +23,57 @@ public final class XsdGDay extends XsdAnySimpleType {
   }
 
   /**
-	 * I do NOT check whether 01 <= day <= 31
-	 */
-	public int day;
+   * I do NOT check whether 01 <= day <= 31
+   */
+  public int day;
 
-	/**
-	 *
-	 */
-	public XsdGDay(int day) {
-		this.day = day;
-	}
+  /**
+   *
+   */
+  public XsdGDay(int day) {
+    this.day = day;
+  }
 
-	/**
-	 * @param time a _fully_ specified XSD gDay expression
-	 */
-	public XsdGDay(String time) {
-		// get rid of "^^<xsd:gDay>" and leading & trailing '"' chars
-	  time = extractValue(time);
-		// day is preceeded by three '-' chars
-		this.day = Integer.parseInt(time.substring(3));
-	}
+  /**
+   * @param time a _fully_ specified XSD gDay expression
+   */
+  public XsdGDay(String time) {
+    // get rid of "^^<xsd:gDay>" and leading & trailing '"' chars
+    time = extractValue(time);
+    // day is preceeded by three '-' chars
+    this.day = Integer.parseInt(time.substring(3));
+  }
 
-	/**
-	 * depending on shortIsDefault, either the suffix
-	 *   de.dfki.lt.hfc.Namespace.SHORT_NAME
-	 * or
-	 *   de.dfki.lt.hfc.Namespace.LONG_NAME
-	 * is used
-	 */
-	public String toString(boolean shortIsDefault) {
-		final String tail = "\"^^" + (shortIsDefault ? SHORT_NAME : LONG_NAME);
-		StringBuilder sb = new StringBuilder("\"---");
-		if (this.day >= 10)
-			sb.append(this.day);
-		else
-			sb.append("0").append(this.day);
-		return sb.append(tail).toString();
-	}
+  /**
+   * binary version is given the value directly
+   */
+  public static String toString(String val, boolean shortIsDefault) {
+    StringBuilder sb = new StringBuilder("\"");
+    sb.append(val);
+    sb.append("\"^^");
+    if (shortIsDefault)
+      sb.append(SHORT_NAME);
+    else
+      sb.append(LONG_NAME);
+    return sb.toString();
+  }
 
-	/**
-	 * binary version is given the value directly
-	 */
-	public static String toString(String val, boolean shortIsDefault) {
-		StringBuilder sb = new StringBuilder("\"");
-		sb.append(val);
-		sb.append("\"^^");
-		if (shortIsDefault)
-			sb.append(SHORT_NAME);
-		else
-			sb.append(LONG_NAME);
-		return sb.toString();
-	}
+  /**
+   * depending on shortIsDefault, either the suffix
+   * de.dfki.lt.hfc.Namespace.SHORT_NAME
+   * or
+   * de.dfki.lt.hfc.Namespace.LONG_NAME
+   * is used
+   */
+  public String toString(boolean shortIsDefault) {
+    final String tail = "\"^^" + (shortIsDefault ? SHORT_NAME : LONG_NAME);
+    StringBuilder sb = new StringBuilder("\"---");
+    if (this.day >= 10)
+      sb.append(this.day);
+    else
+      sb.append("0").append(this.day);
+    return sb.append(tail).toString();
+  }
 
   /**
    * even though there exist a java.util.Date and java.util.GregorianCalendar
@@ -85,16 +84,16 @@ public final class XsdGDay extends XsdAnySimpleType {
     return this;
   }
 
-	@Override
-	public int compareTo(Object o) {
-		if(  o instanceof AnyType.MinMaxValue ) {
-			AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
-			return minMaxValue.compareTo(this);
-		}
-		if (! (o instanceof  XsdGDay)){
-			throw new IllegalArgumentException("Can't compare " + this.getClass()+" and " + o.getClass() );
-		}
-		return Integer.compare(this.day,((XsdGDay) o).day);
-	}
+  @Override
+  public int compareTo(Object o) {
+    if (o instanceof AnyType.MinMaxValue) {
+      AnyType.MinMaxValue minMaxValue = (MinMaxValue) o;
+      return minMaxValue.compareTo(this);
+    }
+    if (!(o instanceof XsdGDay)) {
+      throw new IllegalArgumentException("Can't compare " + this.getClass() + " and " + o.getClass());
+    }
+    return Integer.compare(this.day, ((XsdGDay) o).day);
+  }
 
 }

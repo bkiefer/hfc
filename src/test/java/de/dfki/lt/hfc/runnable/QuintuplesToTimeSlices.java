@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import de.dfki.lt.hfc.*;
 import de.dfki.lt.hfc.ForwardChainer;
 import de.dfki.lt.hfc.TupleStore;
+import de.dfki.lt.hfc.types.Uri;
+import de.dfki.lt.hfc.types.XsdAnySimpleType;
 
 import static de.dfki.lt.hfc.runnable.Utils.getResource;
 
@@ -52,18 +54,18 @@ public class QuintuplesToTimeSlices {
 		ArrayList<int[]> newTriples = new ArrayList<int[]>(9 * NO_OF_TUPLES);
 		for (int[] tuple : ts.getAllTuples()) {
 			// generate new ids for extended subjects (and perhaps objects) from the original tuple
-			if (TupleStore.isUri(ts.getObject(tuple[0])))
-				subjectId = ts.putObject(makeUri(ts.getObject(tuple[0]), counter++));  // URI
+			if (ts.getObject(tuple[0]) instanceof Uri)
+				subjectId = ts.putObject(makeUri(ts.getObject(tuple[0]).toString(), counter++));  // URI
 			else
-				subjectId = ts.putObject(makeBlank(ts.getObject(tuple[0]), counter++));  // blank node
+				subjectId = ts.putObject(makeBlank(ts.getObject(tuple[0]).toString(), counter++));  // blank node
 
 			// is object in original tuple an XSD atom or a URI/blank node
-			if (TupleStore.isAtom(ts.getObject(tuple[2])))
+			if (ts.getObject(tuple[2]) instanceof XsdAnySimpleType)
 				objectId = -1;
-			else if (TupleStore.isUri(ts.getObject(tuple[2])))
-				objectId = ts.putObject(makeUri(ts.getObject(tuple[2]), counter++));
+			else if (ts.getObject(tuple[2]) instanceof Uri)
+				objectId = ts.putObject(makeUri(ts.getObject(tuple[2]).toString(), counter++));
 			else
-				objectId = ts.putObject(makeBlank(ts.getObject(tuple[2]), counter++));
+				objectId = ts.putObject(makeBlank(ts.getObject(tuple[2]).toString(), counter++));
 
 			triple = new int[3];
 			triple[0] = subjectId;
