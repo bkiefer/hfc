@@ -1,5 +1,7 @@
 package de.dfki.lt.hfc.types;
 
+import java.util.Objects;
+
 /**
  * float is patterned after the IEEE single-precision 32-bit floating point type [IEEE 754-1985]
  *
@@ -10,8 +12,8 @@ package de.dfki.lt.hfc.types;
 public final class XsdFloat extends XsdNumber {
   public final static String NAME = "float";
 
-  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
-  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
+  public final static String SHORT_NAME = '<' + NS.SHORT_NAMESPACE + ":" + NAME + '>';
+  public final static String LONG_NAME = '<' + NS.LONG_NAMESPACE + NAME + '>';
 
   static {
     registerConstructor(XsdFloat.class, SHORT_NAME, LONG_NAME);
@@ -46,11 +48,11 @@ public final class XsdFloat extends XsdNumber {
   /**
    * binary version is given the value directly
    */
-  public static String toString(float val, boolean shortIsDefault) {
+  public static String toString(float val) {
     StringBuilder sb = new StringBuilder("\"");
     sb.append(val);
     sb.append("\"^^");
-    if (shortIsDefault)
+    if (NS.isShort())
       sb.append(SHORT_NAME);
     else
       sb.append(LONG_NAME);
@@ -64,8 +66,8 @@ public final class XsdFloat extends XsdNumber {
    * LONG_NAME
    * is used
    */
-  public String toString(boolean shortIsDefault) {
-    return toString(this.value, shortIsDefault);
+  public String toString() {
+    return toString(this.value);
   }
 
   /**
@@ -95,4 +97,16 @@ public final class XsdFloat extends XsdNumber {
     throw new IllegalArgumentException("Can't compare " + this.getClass() + " and " + o.getClass());
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    XsdFloat xsdFloat = (XsdFloat) o;
+    return Float.compare(xsdFloat.value, value) == 0;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(value);
+  }
 }

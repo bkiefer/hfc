@@ -31,7 +31,7 @@ public final class MakeBlankNode extends FunctionalOperator {
       // separate args by '|' character
       sb.append(getObject(args[i]).toName()).append("|");
     final BlankNode bn = new BlankNode(sb.toString());
-    return registerObject(bn.toString(this.tupleStore.namespace.shortIsDefault), bn);
+    return registerObject(bn.toString(), bn);
   }
 
 }

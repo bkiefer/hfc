@@ -23,7 +23,7 @@ public final class IQuotient extends FunctionalOperator {
   public int apply(int[] args) {
     int i = ((XsdInt) getObject(args[0])).value / ((XsdInt) getObject(args[1])).value;
     XsdInt I = new XsdInt(i);
-    return registerObject(I.toString(this.tupleStore.namespace.shortIsDefault), I);
+    return registerObject(I.toString(), I);
   }
 
 }

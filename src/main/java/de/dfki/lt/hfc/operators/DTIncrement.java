@@ -35,6 +35,6 @@ public class DTIncrement extends FunctionalOperator {
       newDate = new XsdDateTime(date.year, date.month + 1, 1, 1, 1, 1);
     else
       newDate = new XsdDateTime(date.year + 1, 1, 1, 1, 1, 1);
-    return registerObject(newDate.toString(this.tupleStore.namespace.shortIsDefault), newDate);
+    return registerObject(newDate.toString(), newDate);
   }
 }

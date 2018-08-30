@@ -49,7 +49,7 @@ public final class LMax extends AggregationalOperator {
     }
     XsdLong lmax = new XsdLong(max);
     // no need to register the corresponding XSD long, but method returns the corresponding ID
-    int id = registerObject(lmax.toString(this.tupleStore.namespace.shortIsDefault), lmax);
+    int id = registerObject(lmax.toString(), lmax);
     // add this XSD int as the only unary tuple to the resulting table
     bt.table.add(new int[]{id});
     return bt;

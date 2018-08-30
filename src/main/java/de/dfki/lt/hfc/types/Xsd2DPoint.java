@@ -2,6 +2,8 @@ package de.dfki.lt.hfc.types;
 
 import de.dfki.lt.hfc.indices.ZOrder;
 
+import java.util.Objects;
+
 /**
  * An encoding of a new XSD format  representing a point in a two dimensional space "[+|-]x,[+|-]y"
  * if more ``precision'' is needed, use the Xsd3DPoint class
@@ -15,8 +17,8 @@ public class Xsd2DPoint extends XsdPoint {
 
   public final static String NAME = "2DPoint";
 
-  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
-  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
+  public final static String SHORT_NAME = '<' + NS.SHORT_NAMESPACE + ":" + NAME + '>';
+  public final static String LONG_NAME = '<' + NS.LONG_NAMESPACE + NAME + '>';
 
 
   static {
@@ -61,13 +63,13 @@ public class Xsd2DPoint extends XsdPoint {
   }
 
   @Override
-  public String toString(boolean shortIsDefault) {
+  public String toString() {
     StringBuilder sb = new StringBuilder("\"");
     sb.append(this.x);
     sb.append(",");
     sb.append(this.y);
     sb.append("\"^^");
-    sb.append(shortIsDefault ? SHORT_NAME : LONG_NAME);
+    sb.append(NS.isShort() ? SHORT_NAME : LONG_NAME);
     return sb.toString();
   }
 
@@ -98,5 +100,19 @@ public class Xsd2DPoint extends XsdPoint {
     } catch (ZOrder.ZOrderException e) {
       e.printStackTrace();
     }
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Xsd2DPoint that = (Xsd2DPoint) o;
+    return x == that.x &&
+            y == that.y;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(x, y);
   }
 }

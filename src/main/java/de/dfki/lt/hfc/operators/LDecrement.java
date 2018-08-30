@@ -23,7 +23,7 @@ public final class LDecrement extends FunctionalOperator {
   public int apply(int[] args) {
     long l = ((XsdLong) getObject(args[0])).value - 1;
     XsdLong L = new XsdLong(l);
-    return registerObject(L.toString(this.tupleStore.namespace.shortIsDefault), L);
+    return registerObject(L.toString(), L);
   }
 
 }

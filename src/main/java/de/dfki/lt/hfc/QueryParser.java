@@ -929,7 +929,7 @@ class QueryParser {
         case 54:
           break;
         case 35: {
-          clause.add("\"" + handleUnicode(string.toString()) + "\"" + ts.namespace.normalizeNamespace(yytext()));
+          clause.add("\"" + handleUnicode(string.toString()) + "\"" + yytext());
           string.setLength(0);
         }
         case 55:
@@ -974,7 +974,7 @@ class QueryParser {
         case 61:
           break;
         case 30: {
-          clause.add("\"" + handleUnicode(string.toString()) + "\"" + ts.namespace.normalizeNamespace(yytext()));
+          clause.add("\"" + handleUnicode(string.toString()) + "\"" + yytext());
 
           string.setLength(0);
         }
@@ -993,7 +993,7 @@ class QueryParser {
           break;
         case 37: {
           c++;
-          clause.add("\"" + handleUnicode(string.toString()) + "\"" + ts.namespace.normalizeNamespace(yytext()));
+          clause.add("\"" + handleUnicode(string.toString()) + "\"" + yytext());
           string.setLength(0);
           if (c == 2) if (isRelation) closeRelation("");
         }
@@ -1001,7 +1001,7 @@ class QueryParser {
           break;
         case 31: {
           c++;
-          clause.add("\"" + handleUnicode(string.toString()) + "\"" + ts.namespace.normalizeNamespace(yytext()));
+          clause.add("\"" + handleUnicode(string.toString()) + "\"" + yytext());
           string.setLength(0);
           if (c == 2) if (isRelation) closeRelation("");
         }

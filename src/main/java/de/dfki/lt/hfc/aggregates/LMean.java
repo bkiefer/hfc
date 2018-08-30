@@ -46,7 +46,7 @@ public final class LMean extends AggregationalOperator {
       sum += ((XsdLong) getObject(elem[0])).value;
     XsdLong mean = new XsdLong(sum / size);
     // always register the corresponding XSD long -- could be new to tuple store
-    int id = registerObject(mean.toString(this.tupleStore.namespace.shortIsDefault), mean);
+    int id = registerObject(mean.toString(), mean);
     // add this XSD int as the only unary tuple to the resulting table
     bt.table.add(new int[]{id});
     return bt;

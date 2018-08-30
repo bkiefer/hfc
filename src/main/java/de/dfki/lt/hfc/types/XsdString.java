@@ -2,6 +2,8 @@ package de.dfki.lt.hfc.types;
 
 import de.dfki.lt.hfc.Utils;
 
+import java.util.Objects;
+
 /**
  * @author (C) Hans-Ulrich Krieger
  * @version Fri Jan 29 19:38:30 CET 2016
@@ -10,8 +12,8 @@ import de.dfki.lt.hfc.Utils;
 public final class XsdString extends XsdAnySimpleType {
   public final static String NAME = "string";
 
-  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
-  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
+  public final static String SHORT_NAME = '<' + NS.SHORT_NAMESPACE + ":" + NAME + '>';
+  public final static String LONG_NAME = '<' + NS.LONG_NAMESPACE + NAME + '>';
 
   static {
     registerConstructor(XsdString.class, SHORT_NAME, LONG_NAME);
@@ -80,7 +82,7 @@ public final class XsdString extends XsdAnySimpleType {
     this.languageTag = languageTag;
   }
 
-  private static String toString(String val, String languageTag, boolean shortIsDefault) {
+  private static String toString(String val, String languageTag) {
     StringBuilder sb = new StringBuilder("\"");
     sb.append(Utils.stringToExternal(val));
     sb.append("\"");
@@ -89,7 +91,7 @@ public final class XsdString extends XsdAnySimpleType {
       sb.append(languageTag);
     } else {
       sb.append("^^");
-      if (shortIsDefault)
+      if (NS.isShort())
         sb.append(SHORT_NAME);
       else
         sb.append(LONG_NAME);
@@ -100,8 +102,8 @@ public final class XsdString extends XsdAnySimpleType {
   /**
    * binary version is given the value directly;
    */
-  public static String toString(String val, boolean shortIsDefault) {
-    return toString(val, null, shortIsDefault);
+  public static String toString(String val) {
+    return toString(val, null);
   }
 
   /**
@@ -112,8 +114,8 @@ public final class XsdString extends XsdAnySimpleType {
    * is used;
    * shortIsDefault is ignored in case a language tag is available
    */
-  public String toString(boolean shortIsDefault) {
-    return toString(this.value, this.languageTag, shortIsDefault);
+  public String toString() {
+    return toString(this.value, this.languageTag);
   }
 
   /**
@@ -145,29 +147,6 @@ public final class XsdString extends XsdAnySimpleType {
     return this.languageTag;
   }
 
-  /**
-   * two XsdString objects are equal if value and language tag are equal
-   */
-  public boolean equals(Object o) {
-    if (o instanceof String)
-      return this.languageTag == null && value.equals(o);
-    if (o instanceof XsdString) {
-      XsdString s = (XsdString) o;
-      if (this.languageTag == null) {
-        return s.languageTag == null && this.value.equals(s.value);
-      } else {
-        return this.languageTag.equals(s.languageTag)
-                && this.value.equals(s.value);
-      }
-    }
-    return false;
-  }
-
-  public int hashCode() {
-    return this.value.hashCode()
-            + (this.languageTag == null ? 0 : 29 * this.languageTag.hashCode());
-  }
-
   @Override
   public int compareTo(Object o) {
     if (o instanceof AnyType.MinMaxValue) {
@@ -178,5 +157,19 @@ public final class XsdString extends XsdAnySimpleType {
       throw new IllegalArgumentException("Can't compare " + this.getClass() + " and " + o.getClass());
     }
     return this.value.compareTo(((XsdString) o).value);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    XsdString xsdString = (XsdString) o;
+    return Objects.equals(value, xsdString.value) &&
+            Objects.equals(languageTag, xsdString.languageTag);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(value, languageTag);
   }
 }

@@ -1,5 +1,7 @@
 package de.dfki.lt.hfc.types;
 
+import java.util.Objects;
+
 /**
  * The xsd:mmol_L datatype is supposed to encode blood sugar level in
  * millimoles per litre
@@ -12,8 +14,8 @@ public final class XsdMmol_L extends XsdAnySimpleType {
 
   public final static String NAME = "mmol_L";
 
-  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
-  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
+  public final static String SHORT_NAME = '<' + NS.SHORT_NAMESPACE + ":" + NAME + '>';
+  public final static String LONG_NAME = '<' + NS.LONG_NAMESPACE + NAME + '>';
 
   static {
     registerConstructor(XsdMmol_L.class, SHORT_NAME, LONG_NAME);
@@ -38,11 +40,11 @@ public final class XsdMmol_L extends XsdAnySimpleType {
   /**
    * binary version is given the value directly
    */
-  public static String toString(double val, boolean shortIsDefault) {
+  public static String toString(double val) {
     StringBuilder sb = new StringBuilder("\"");
     sb.append(val);
     sb.append("\"^^");
-    if (shortIsDefault)
+    if (NS.isShort())
       sb.append(SHORT_NAME);
     else
       sb.append(LONG_NAME);
@@ -52,8 +54,8 @@ public final class XsdMmol_L extends XsdAnySimpleType {
   /**
    * depending on shortIsDefault, either the suffix SHORT_NAME or LONG_NAME is used
    */
-  public String toString(boolean shortIsDefault) {
-    return toString(this.value, shortIsDefault);
+  public String toString() {
+    return toString(this.value);
   }
 
   /**
@@ -90,4 +92,16 @@ public final class XsdMmol_L extends XsdAnySimpleType {
     return Double.compare(this.value, ((XsdMmol_L) o).value);
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    XsdMmol_L xsdMmol_l = (XsdMmol_L) o;
+    return Double.compare(xsdMmol_l.value, value) == 0;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(value);
+  }
 }

@@ -98,11 +98,11 @@ public class IndexStoreTest {
   @Test
   public void  prepareLookup() {
     List<Integer> clause = Arrays.asList(
-        new Integer[]{fc.tupleStore.objectToId.get("\"0000-00-00\"^^<xsd:date>"),
+        new Integer[]{fc.tupleStore.putObject("\"0000-00-00\"^^<xsd:date>"),
         -1,-2,-3,-4,-5});
     Map<Integer, QRelation> integerQRelationMap = new HashMap<Integer, QRelation>();
-    Integer start = fc.tupleStore.objectToId.get("\"0000-00-01\"^^<xsd:date>");
-    Integer end = fc.tupleStore.objectToId.get("\"0000-00-02\"^^<xsd:date>");
+    Integer start = fc.tupleStore.putObject("\"0000-00-01\"^^<xsd:date>");
+    Integer end = fc.tupleStore.putObject("\"0000-00-02\"^^<xsd:date>");
     AllenEqual equal = new AllenEqual("Eq",start,end,4);
     integerQRelationMap.put(-4,equal );
     integerQRelationMap.put(-5,equal );

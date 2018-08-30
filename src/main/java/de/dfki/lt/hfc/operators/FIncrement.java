@@ -23,7 +23,7 @@ public final class FIncrement extends FunctionalOperator {
   public int apply(int[] args) {
     float f = ((XsdFloat) getObject(args[0])).value + 1;
     XsdFloat F = new XsdFloat(f);
-    return registerObject(F.toString(this.tupleStore.namespace.shortIsDefault), F);
+    return registerObject(F.toString(), F);
   }
 
 }

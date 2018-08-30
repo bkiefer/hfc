@@ -1,5 +1,7 @@
 package de.dfki.lt.hfc.types;
 
+import java.util.Objects;
+
 /**
  * an encoding of the XSD duration format "[+|-]PnYnMnDTnHnMnS";
  * note that there is no need to specify each individual literal;
@@ -22,8 +24,8 @@ package de.dfki.lt.hfc.types;
 public final class XsdDuration extends XsdAnySimpleType {
   public final static String NAME = "duration";
 
-  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
-  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
+  public final static String SHORT_NAME = '<' + NS.SHORT_NAMESPACE + ":" + NAME + '>';
+  public final static String LONG_NAME = '<' + NS.LONG_NAMESPACE + NAME + '>';
 
   static {
     registerConstructor(XsdDuration.class, SHORT_NAME, LONG_NAME);
@@ -131,34 +133,17 @@ public final class XsdDuration extends XsdAnySimpleType {
   /**
    * binary version is given the value directly
    */
-  public static String toString(String val, boolean shortIsDefault) {
+  public static String toString(String val) {
     StringBuilder sb = new StringBuilder("\"");
     sb.append(val);
     sb.append("\"^^");
-    if (shortIsDefault)
+    if (NS.isShort())
       sb.append(SHORT_NAME);
     else
       sb.append(LONG_NAME);
     return sb.toString();
   }
 
-  /**
-   * for test puposes only
-   */
-  public static void main(String[] args) {
-    XsdDuration xt = new XsdDuration("\"-P12000Y0M04D\"^^<xsd:duration>");
-    System.out.println(xt.year);
-    System.out.println(xt.hour);
-    System.out.println(xt.second);
-    System.out.println(xt.toString(true));
-    System.out.println(xt.toString(false));
-    System.out.println();
-    xt = new XsdDuration(false, 2009, 1, 12, 1, 0, 3.456F);
-    System.out.println(xt.toString(true));
-    System.out.println(xt.toName());
-    System.out.println(xt.toString(true));
-    System.out.println(xt.toString(false));
-  }
 
   /**
    * depending on shortIsDefault, either the suffix
@@ -168,8 +153,8 @@ public final class XsdDuration extends XsdAnySimpleType {
    * is used;
    * format is: "[+|-]PnYnMnDTnHnMnS"
    */
-  public String toString(boolean shortIsDefault) {
-    final String tail = "\"^^" + (shortIsDefault ? SHORT_NAME : LONG_NAME);
+  public String toString() {
+    final String tail = "\"^^" + (NS.isShort() ? SHORT_NAME : LONG_NAME);
     StringBuilder sb = new StringBuilder("\"");
     if (!this.sign)
       sb.append('-');
@@ -223,4 +208,22 @@ public final class XsdDuration extends XsdAnySimpleType {
     return 0;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    XsdDuration that = (XsdDuration) o;
+    return sign == that.sign &&
+            year == that.year &&
+            month == that.month &&
+            day == that.day &&
+            hour == that.hour &&
+            minute == that.minute &&
+            Float.compare(that.second, second) == 0;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(sign, year, month, day, hour, minute, second);
+  }
 }

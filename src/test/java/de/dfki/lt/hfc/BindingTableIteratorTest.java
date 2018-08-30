@@ -67,7 +67,6 @@ public class BindingTableIteratorTest {
     // underlying int arrays are still of length 3
     BindingTable bt = q.query("SELECT * WHERE ?s <rdf:type> ?o FILTER ?o != <rdfs:Datatype>");
     BindingTableIterator it = bt.iterator();
-    // printNext(it, new NextAsIntCall());
     check(it, expected, new NextAsIntCall(ts));
   }
 

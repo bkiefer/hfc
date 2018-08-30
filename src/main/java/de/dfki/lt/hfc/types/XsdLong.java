@@ -1,5 +1,7 @@
 package de.dfki.lt.hfc.types;
 
+import java.util.Objects;
+
 /**
  * note: currently XsdLong is *not* a superclass of (derived from) XsdInt,
  * as the XSD type tree indicates!
@@ -12,8 +14,8 @@ package de.dfki.lt.hfc.types;
 public final class XsdLong extends XsdNumber {
   public final static String NAME = "long";
 
-  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
-  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
+  public final static String SHORT_NAME = '<' + NS.SHORT_NAMESPACE + ":" + NAME + '>';
+  public final static String LONG_NAME = '<' + NS.LONG_NAMESPACE + NAME + '>';
 
   static {
     registerConstructor(XsdLong.class, SHORT_NAME, LONG_NAME);
@@ -48,11 +50,11 @@ public final class XsdLong extends XsdNumber {
   /**
    * binary version is given the value directly
    */
-  public static String toString(long val, boolean shortIsDefault) {
+  public static String toString(long val) {
     StringBuilder sb = new StringBuilder("\"");
     sb.append(val);
     sb.append("\"^^");
-    if (shortIsDefault)
+    if (NS.isShort())
       sb.append(SHORT_NAME);
     else
       sb.append(LONG_NAME);
@@ -66,8 +68,8 @@ public final class XsdLong extends XsdNumber {
    * de.dfki.lt.hfc.Namespace.LONG_NAME
    * is used
    */
-  public String toString(boolean shortIsDefault) {
-    return toString(this.value, shortIsDefault);
+  public String toString() {
+    return toString(this.value);
   }
 
   /**
@@ -96,5 +98,18 @@ public final class XsdLong extends XsdNumber {
     else if (o instanceof XsdNumber)
       return Long.compare(this.value, ((XsdNumber) o).toNumber().longValue());
     throw new IllegalArgumentException("Can't compare " + this.getClass() + " and " + o.getClass());
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    XsdLong xsdLong = (XsdLong) o;
+    return value == xsdLong.value;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(value);
   }
 }

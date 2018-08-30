@@ -29,7 +29,7 @@ public final class Concatenate extends FunctionalOperator {
       sb.append(object.value);
     }
     object = new XsdString(sb.toString(), null);
-    return registerObject(object.toString(this.tupleStore.namespace.shortIsDefault), object);
+    return registerObject(object.toString(), object);
   }
 
 }

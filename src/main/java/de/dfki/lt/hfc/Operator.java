@@ -48,7 +48,7 @@ public abstract class Operator {
    * @return -1, otherwise
    */
   public int getId(String literal) {
-    Integer id = this.tupleStore.objectToId.get(literal);
+    Integer id = this.tupleStore.putObject(literal);
     if (id == null)
       return -1;
     else
@@ -62,9 +62,8 @@ public abstract class Operator {
    * @return -1, otherwise
    */
   public int getIdForPossiblyUnknownEntity(String literal) {
-    Integer id = this.tupleStore.objectToId.get(literal);
     synchronized (this.tupleStore) {
-      return id == null ? tupleStore.putObject(literal) : id;
+      return  tupleStore.putObject(literal);
     }
   }
 
@@ -113,7 +112,7 @@ public abstract class Operator {
    */
   public int registerObject(String string, AnyType object) {
     // note: TupleStore.registerJavaObject() is already synchronized
-    return this.tupleStore.registerJavaObject(string, object);
+    return this.tupleStore.registerJavaObject( object);
   }
 
   /**

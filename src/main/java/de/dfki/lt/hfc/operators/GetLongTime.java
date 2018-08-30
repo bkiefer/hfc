@@ -22,7 +22,7 @@ public final class GetLongTime extends FunctionalOperator {
    */
   public int apply(int[] args) {
     XsdLong time = new XsdLong(System.currentTimeMillis());
-    return registerObject(time.toString(this.tupleStore.namespace.shortIsDefault), time);
+    return registerObject(time.toString(), time);
   }
 
 }

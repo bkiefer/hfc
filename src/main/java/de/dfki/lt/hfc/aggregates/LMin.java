@@ -49,7 +49,7 @@ public final class LMin extends AggregationalOperator {
     }
     XsdLong lmin = new XsdLong(min);
     // // no need to register the corresponding XSD long, but method also returns the corresponding ID
-    int id = registerObject(lmin.toString(this.tupleStore.namespace.shortIsDefault), lmin);
+    int id = registerObject(lmin.toString(), lmin);
     // add this XSD int as the only unary tuple to the resulting table
     bt.table.add(new int[]{id});
     return bt;

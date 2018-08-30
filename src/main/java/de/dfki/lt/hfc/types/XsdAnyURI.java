@@ -3,6 +3,8 @@ package de.dfki.lt.hfc.types;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Objects;
+
 /**
  * NOTE: XsdAnyURI should be used to represent true URI values, i.e.,
  * _without_ angle brackets !
@@ -18,8 +20,8 @@ import org.slf4j.LoggerFactory;
 public final class XsdAnyURI extends XsdAnySimpleType {
 
   public final static String NAME = "anyURI";
-  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
-  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
+  public final static String SHORT_NAME = '<' + NS.SHORT_NAMESPACE + ":" + NAME + '>';
+  public final static String LONG_NAME = '<' + NS.LONG_NAMESPACE + NAME + '>';
   /**
    * A basic LOGGER.
    */
@@ -44,11 +46,11 @@ public final class XsdAnyURI extends XsdAnySimpleType {
   /**
    * binary version is given the value directly
    */
-  public static String toString(String val, boolean shortIsDefault) {
+  public static String toString(String val) {
     StringBuilder sb = new StringBuilder("\"");
     sb.append(val);
     sb.append("\"^^");
-    if (shortIsDefault)
+    if (NS.isShort())
       sb.append(SHORT_NAME);
     else
       sb.append(LONG_NAME);
@@ -62,8 +64,8 @@ public final class XsdAnyURI extends XsdAnySimpleType {
    * de.dfki.lt.hfc.Namespace.LONG_NAME
    * is used
    */
-  public String toString(boolean shortIsDefault) {
-    return toString(this.value, shortIsDefault);
+  public String toString() {
+    return toString(this.value);
   }
 
   /**
@@ -100,4 +102,16 @@ public final class XsdAnyURI extends XsdAnySimpleType {
     return this.value.compareTo(((XsdAnyURI) o).value);
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    XsdAnyURI xsdAnyURI = (XsdAnyURI) o;
+    return Objects.equals(value, xsdAnyURI.value);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(value);
+  }
 }

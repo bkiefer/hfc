@@ -25,7 +25,7 @@ public final class LSum extends FunctionalOperator {
     for (int i = 1; i < args.length; i++)
       l = l + ((XsdLong) getObject(args[i])).value;
     XsdLong L = new XsdLong(l);
-    return registerObject(L.toString(this.tupleStore.namespace.shortIsDefault), L);
+    return registerObject(L.toString(), L);
   }
 
 }

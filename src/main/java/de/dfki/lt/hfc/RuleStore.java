@@ -778,7 +778,7 @@ public final class RuleStore {
         // URIs and XSD atoms must be treated globally
         if (this.verbose) {
           // check whether URI or atom occurs in initial fact base
-          if (!this.tupleStore.objectToId.containsKey(arg))
+          if (!this.tupleStore.isConstant(arg))
             logger.info("  " + this.lineNo + ": " + arg + " not in initial fact base");
         }
         id = this.tupleStore.putObject(arg);
@@ -858,14 +858,11 @@ public final class RuleStore {
       token = parseUriOrAtom(token);
       if (token == null)
         return sayItLoud(rule.name, ": incorrect ineq constraint (right-side value is neither a variable, a URI, nor an XSD atom");
-      if (this.tupleStore.objectToId.containsKey(token))
-        rule.inEqConstraints.add(this.tupleStore.objectToId.get(token));
-      else {
+      if (!this.tupleStore.isConstant(token))
         if (this.verbose)
           logger.info("  " + this.lineNo + ": " + token + " not in initial fact base");
         int id = this.tupleStore.putObject(token);
         rule.inEqConstraints.add(id);
-      }
     }
     return true;
   }
@@ -1012,14 +1009,13 @@ public final class RuleStore {
           token = parseUriOrAtom(token);
           if (token == null)
             return sayItLoud(rule.name, ": incorrect predicate call (argument is neither a LHS variable, nor a URI or XSD atom)");
-          if (this.tupleStore.objectToId.containsKey(token))
-            args.add(this.tupleStore.objectToId.get(token));
-          else {
+          if (!this.tupleStore.isConstant(token))
+
             if (this.verbose)
               logger.info("  " + this.lineNo + ": " + token + " not in initial fact base");
             int id = this.tupleStore.putObject(token);
             args.add(id);
-          }
+
         }
       }
     }
@@ -1097,14 +1093,12 @@ public final class RuleStore {
           token = parseUriOrAtom(token);
           if (token == null)
             return sayItLoud(rule.name, ": incorrect action (argument is neither a variable, nor a URI or XSD atom)");
-          if (this.tupleStore.objectToId.containsKey(token))
-            args.add(this.tupleStore.objectToId.get(token));
-          else {
+          if (!this.tupleStore.isConstant(token))
             if (this.verbose)
               logger.info("  " + this.lineNo + ": " + token + " not in initial fact base");
             int id = this.tupleStore.putObject(token);
             args.add(id);
-          }
+
         }
       }
       // store function representation inside the rule object

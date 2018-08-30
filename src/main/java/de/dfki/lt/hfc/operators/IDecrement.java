@@ -23,7 +23,7 @@ public final class IDecrement extends FunctionalOperator {
   public int apply(int[] args) {
     int i = ((XsdInt) getObject(args[0])).value - 1;
     XsdInt I = new XsdInt(i);
-    return registerObject(I.toString(this.tupleStore.namespace.shortIsDefault), I);
+    return registerObject(I.toString(), I);
   }
 
 }

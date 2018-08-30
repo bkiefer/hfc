@@ -1,5 +1,7 @@
 package de.dfki.lt.hfc.types;
 
+import java.util.Objects;
+
 /**
  * The xsd:min-1 datatype is supposed to encode heart rate measured in 1/min
  *
@@ -11,8 +13,8 @@ public final class Xsd1_min extends XsdAnySimpleType {
 
   public final static String NAME = "min-1";
 
-  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
-  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
+  public final static String SHORT_NAME = '<' + NS.SHORT_NAMESPACE + ":" + NAME + '>';
+  public final static String LONG_NAME = '<' + NS.LONG_NAMESPACE + NAME + '>';
 
   static {
     registerConstructor(Xsd1_min.class, SHORT_NAME, LONG_NAME);
@@ -37,11 +39,11 @@ public final class Xsd1_min extends XsdAnySimpleType {
   /**
    * binary version is given the value directly
    */
-  public static String toString(double val, boolean shortIsDefault) {
+  public static String toString(double val) {
     StringBuilder sb = new StringBuilder("\"");
     sb.append(val);
     sb.append("\"^^");
-    if (shortIsDefault)
+    if (NS.isShort())
       sb.append(SHORT_NAME);
     else
       sb.append(LONG_NAME);
@@ -51,8 +53,8 @@ public final class Xsd1_min extends XsdAnySimpleType {
   /**
    * depending on shortIsDefault, either the suffix SHORT_NAME or LONG_NAME is used
    */
-  public String toString(boolean shortIsDefault) {
-    return toString(this.value, shortIsDefault);
+  public String toString() {
+    return toString(this.value);
   }
 
   /**
@@ -81,4 +83,16 @@ public final class Xsd1_min extends XsdAnySimpleType {
     return Double.compare(this.value, ((Xsd1_min) o).value);
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Xsd1_min xsd1_min = (Xsd1_min) o;
+    return Double.compare(xsd1_min.value, value) == 0;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(value);
+  }
 }

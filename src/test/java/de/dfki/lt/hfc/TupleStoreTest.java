@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
+import de.dfki.lt.hfc.types.Uri;
 import de.dfki.lt.hfc.types.Variable;
 import de.dfki.lt.hfc.types.XsdDateTime;
 import org.junit.Assert;
@@ -118,7 +119,7 @@ public class TupleStoreTest {
     @Test
     public void testregisterJavaObject() throws IOException, WrongFormatException {
         TupleStore objecttotest = new TupleStore(Config.getInstance(getTestResource("Empty.yml")));
-        assertEquals(objecttotest.registerJavaObject("www.bbc.com", null), 6);
+        assertEquals(objecttotest.registerJavaObject(new Uri("www.bbc.com")), 6);
     }
 
     @Test
@@ -378,39 +379,6 @@ public class TupleStoreTest {
         assertEquals(out, in.getAllTuples().size());
     }
 
-  /* The function writeTuples(List<int[]>, file)
-   * should not be available at all. They should be strictly
-   * for internal use and can not be tested meaningfully
-   *
-  @Test
-  public void testwriteTuples2() {
-    String file = getTempFile("file.nt");
-    TupleStore objectfortest = new TupleStore(5, 5);
-    List<int[]> collection = new ArrayList<int[]>();
-
-    objectfortest.writeTuples(collection, file);
-    TupleStore in = new TupleStore(3, 3);
-    in.readTuples(file);
-    assertEquals(tpls.length, in.getAllTuples().size());
-  }
-
-  @Test
-  public void testwriteTuples3() {
-    String file = getTempFile("file.nt");
-    // test for case verbose = false (looks like it's useless)
-    Namespace namespace = Namespace.defaultNamespace();;
-    TupleStore tupleconstructor5 = new TupleStore(true, false, true, 2, 5, 4, 2, namespace,
-        getTestResource("default.nt"));
-    int[][] tpls = { { 1, 2, 3 }, { 3, 2, 1 }, { 1, 1, 1 } };
-    List<int[]> collection = Arrays.asList(tpls);
-    tupleconstructor5.writeTuples(collection, file);
-    TupleStore in = new TupleStore(2, 1);
-    in.readTuples(file);
-    assertEquals(tpls.length, in.getAllTuples().size());
-    // TODO test for case with exception
-  }
-  */
-
     @Test
     public void testwriteExpandedTuples()
             throws FileNotFoundException, IOException, WrongFormatException {
@@ -443,24 +411,7 @@ public class TupleStoreTest {
         // verbose = false
     }
 
-  /*
-  @Test
-  public void testwriteTupleStore2() {
-    String file = getTempFile("file.nt");
 
-    Namespace namespace = Namespace.defaultNamespace();;
-    TupleStore objectverbosefalse = new TupleStore(true, false, true, 2, 5, 4, 2, namespace,
-        getTestResource("default.nt"));
-    objectverbosefalse.writeTupleStore(file);
-
-    int out = objectverbosefalse.getAllTuples().size();
-
-    TupleStore in = new TupleStore(3, 3);
-    in.readTuples(file);
-    assertEquals(out, in.getAllTuples().size());
-
-  }
-  */
 
     @Test
     public void testtoString() throws IOException, WrongFormatException {

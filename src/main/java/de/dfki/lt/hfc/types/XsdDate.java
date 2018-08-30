@@ -1,6 +1,7 @@
 package de.dfki.lt.hfc.types;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * an encoding of the XSD date format "[+|-]yyyy-MM-dd" including negative
@@ -21,8 +22,8 @@ import java.util.Date;
 public final class XsdDate extends XsdAnySimpleType {
   public final static String NAME = "date";
 
-  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
-  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
+  public final static String SHORT_NAME = '<' + NS.SHORT_NAMESPACE + ":" + NAME + '>';
+  public final static String LONG_NAME = '<' + NS.LONG_NAMESPACE + NAME + '>';
 
 
   static {
@@ -99,11 +100,11 @@ public final class XsdDate extends XsdAnySimpleType {
   /**
    * binary version is given the value directly
    */
-  public static String toString(String val, boolean shortIsDefault) {
+  public static String toString(String val) {
     StringBuilder sb = new StringBuilder("\"");
     sb.append(val);
     sb.append("\"^^");
-    sb.append(shortIsDefault ? SHORT_NAME : LONG_NAME);
+    sb.append(NS.isShort() ? SHORT_NAME : LONG_NAME);
     return sb.toString();
   }
 
@@ -118,7 +119,7 @@ public final class XsdDate extends XsdAnySimpleType {
    * 1 <= month <= 12 or whether 1 <= day <= 29 for month 02
    * (= February)
    */
-  public String toString(boolean shortIsDefault) {
+  public String toString() {
     StringBuilder sb = new StringBuilder("\"");
     if (!this.sign)
       sb.append('-');
@@ -141,7 +142,7 @@ public final class XsdDate extends XsdAnySimpleType {
     else
       sb.append("0").append(this.day);
     sb.append("\"^^");
-    sb.append(shortIsDefault ? SHORT_NAME : LONG_NAME);
+    sb.append(NS.isShort() ? SHORT_NAME : LONG_NAME);
     return sb.toString();
   }
 
@@ -173,4 +174,19 @@ public final class XsdDate extends XsdAnySimpleType {
     return 0;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    XsdDate xsdDate = (XsdDate) o;
+    return sign == xsdDate.sign &&
+            year == xsdDate.year &&
+            month == xsdDate.month &&
+            day == xsdDate.day;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(sign, year, month, day);
+  }
 }

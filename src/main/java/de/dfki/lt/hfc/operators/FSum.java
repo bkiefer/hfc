@@ -25,7 +25,7 @@ public final class FSum extends FunctionalOperator {
     for (int i = 1; i < args.length; i++)
       f = f + ((XsdFloat) getObject(args[i])).value;
     XsdFloat F = new XsdFloat(f);
-    return registerObject(F.toString(this.tupleStore.namespace.shortIsDefault), F);
+    return registerObject(F.toString(), F);
   }
 
 }

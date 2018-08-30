@@ -45,7 +45,7 @@ public final class DSum extends AggregationalOperator {
       sum += ((XsdDouble) getObject(elem[0])).value;
     XsdDouble lsum = new XsdDouble(sum);
     // always register the corresponding XSD double -- could be new to tuple store
-    int id = registerObject(lsum.toString(this.tupleStore.namespace.shortIsDefault), lsum);
+    int id = registerObject(lsum.toString(), lsum);
     // add this XSD int as the only unary tuple to the resulting table
     bt.table.add(new int[]{id});
     return bt;

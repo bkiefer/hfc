@@ -1,5 +1,9 @@
 package de.dfki.lt.hfc.types;
 
+import de.dfki.lt.hfc.NamespaceObject;
+
+import java.util.Objects;
+
 /**
  * the Java representation of a URI in HFC, either as a short or long form name;
  * for instance
@@ -21,14 +25,15 @@ public class Uri extends AnyType {
 
   public String value;
 
-  public Uri(String value) {
+  public Uri(String value, NamespaceObject ns) {
+    super(ns);
     this.value = value;
   }
 
   /**
    * NOTE: shortIsDefault can be ignored at the moment
    */
-  public String toString(boolean shortIsDefault) {
+  public String toString() {
     return this.value;
   }
 
@@ -58,4 +63,16 @@ public class Uri extends AnyType {
     return this.value.compareTo(((Uri) o).value);
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Uri uri = (Uri) o;
+    return Objects.equals(value, uri.value);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(value);
+  }
 }

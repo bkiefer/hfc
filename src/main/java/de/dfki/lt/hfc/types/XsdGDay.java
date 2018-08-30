@@ -1,5 +1,7 @@
 package de.dfki.lt.hfc.types;
 
+import java.util.Objects;
+
 /**
  * an encoding of the XSD gDay format "---DD" _without_ time zones;
  * there are NO negative numbers here, although this might be useful to refer
@@ -15,8 +17,8 @@ package de.dfki.lt.hfc.types;
 public final class XsdGDay extends XsdAnySimpleType {
   public final static String NAME = "gDay";
 
-  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
-  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
+  public final static String SHORT_NAME = '<' + NS.SHORT_NAMESPACE + ":" + NAME + '>';
+  public final static String LONG_NAME = '<' + NS.LONG_NAMESPACE + NAME + '>';
 
   static {
     registerConstructor(XsdGDay.class, SHORT_NAME, LONG_NAME);
@@ -47,11 +49,11 @@ public final class XsdGDay extends XsdAnySimpleType {
   /**
    * binary version is given the value directly
    */
-  public static String toString(String val, boolean shortIsDefault) {
+  public static String toString(String val) {
     StringBuilder sb = new StringBuilder("\"");
     sb.append(val);
     sb.append("\"^^");
-    if (shortIsDefault)
+    if (NS.isShort())
       sb.append(SHORT_NAME);
     else
       sb.append(LONG_NAME);
@@ -65,8 +67,8 @@ public final class XsdGDay extends XsdAnySimpleType {
    * de.dfki.lt.hfc.Namespace.LONG_NAME
    * is used
    */
-  public String toString(boolean shortIsDefault) {
-    final String tail = "\"^^" + (shortIsDefault ? SHORT_NAME : LONG_NAME);
+  public String toString() {
+    final String tail = "\"^^" + (NS.isShort() ? SHORT_NAME : LONG_NAME);
     StringBuilder sb = new StringBuilder("\"---");
     if (this.day >= 10)
       sb.append(this.day);
@@ -96,4 +98,16 @@ public final class XsdGDay extends XsdAnySimpleType {
     return Integer.compare(this.day, ((XsdGDay) o).day);
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    XsdGDay xsdGDay = (XsdGDay) o;
+    return day == xsdGDay.day;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(day);
+  }
 }

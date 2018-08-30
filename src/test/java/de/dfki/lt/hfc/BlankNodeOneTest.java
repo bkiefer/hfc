@@ -49,7 +49,7 @@ public class BlankNodeOneTest {
    */
   @Test
   public void test() throws QueryParseException  {
-    // TODO: FIX EXPECTED DATA
+
     String[][] expected = {
         { "<test:sri>", "<test:hasName>", "\"SRI\"^^<xsd:string>" },
         { "<owl:Nothing>", "<rdfs:subClassOf>", "<owl:Thing>" },

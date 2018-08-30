@@ -1,5 +1,7 @@
 package de.dfki.lt.hfc.types;
 
+import java.util.Objects;
+
 /**
  * The xsd:kg datatype is supposed to encode weight measured in kilograms
  *
@@ -11,8 +13,8 @@ public final class XsdKg extends XsdAnySimpleType {
 
   public final static String NAME = "kg";
 
-  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
-  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
+  public final static String SHORT_NAME = '<' + NS.SHORT_NAMESPACE + ":" + NAME + '>';
+  public final static String LONG_NAME = '<' + NS.LONG_NAMESPACE + NAME + '>';
 
   static {
     registerConstructor(XsdKg.class, SHORT_NAME, LONG_NAME);
@@ -37,11 +39,11 @@ public final class XsdKg extends XsdAnySimpleType {
   /**
    * binary version is given the value directly
    */
-  public static String toString(double val, boolean shortIsDefault) {
+  public static String toString(double val) {
     StringBuilder sb = new StringBuilder("\"");
     sb.append(val);
     sb.append("\"^^");
-    if (shortIsDefault)
+    if (NS.isShort())
       sb.append(SHORT_NAME);
     else
       sb.append(LONG_NAME);
@@ -51,8 +53,8 @@ public final class XsdKg extends XsdAnySimpleType {
   /**
    * depending on shortIsDefault, either the suffix SHORT_NAME or LONG_NAME is used
    */
-  public String toString(boolean shortIsDefault) {
-    return toString(this.value, shortIsDefault);
+  public String toString() {
+    return toString(this.value);
   }
 
   /**
@@ -89,4 +91,16 @@ public final class XsdKg extends XsdAnySimpleType {
     return Double.compare(this.value, ((XsdKg) o).value);
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    XsdKg xsdKg = (XsdKg) o;
+    return Double.compare(xsdKg.value, value) == 0;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(value);
+  }
 }

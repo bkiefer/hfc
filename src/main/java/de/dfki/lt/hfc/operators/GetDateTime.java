@@ -36,7 +36,7 @@ public final class GetDateTime extends FunctionalOperator {
             Integer.parseInt(stringTime.substring(11, 13)),
             Integer.parseInt(stringTime.substring(14, 16)),
             Float.parseFloat(stringTime.substring(17)));
-    return registerObject(dateTime.toString(this.tupleStore.namespace.shortIsDefault), dateTime);
+    return registerObject(dateTime.toString(), dateTime);
   }
 
 }

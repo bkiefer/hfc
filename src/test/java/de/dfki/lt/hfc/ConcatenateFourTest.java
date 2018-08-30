@@ -59,9 +59,12 @@ public class ConcatenateFourTest {
 
     };
 
+    //{ "<test:dfki>", "<test:hasName>", ""DFKI"^^<xsd:string>" },
+    //{ "<test:dfki>", "<test:hasName>", ""DFKI"^^<xsd:string>" },
+
     Query q = new Query(fc.tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
+    //printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     checkResult(expected, bt, bt.getVars());
   }
 

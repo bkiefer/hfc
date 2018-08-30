@@ -156,25 +156,25 @@ public class Hfc {
   }
 
 
-  String myNormalizeNamespaces(String s) {
-    //TODO
-    switch (s.charAt(0)) {
-      case '<':
-        return '<'
-                + config.namespace.normalizeNamespaceUri(
-                s.substring(1, s.length() - 1))
-                + '>';
-      case '"':
-        // Atom, possibly with long xsd type spec
-        int pos = s.lastIndexOf('^');
-        if (pos > 0 && s.charAt(pos - 1) == '^') {
-          return s.substring(0, pos + 2)
-                  + config.namespace.normalizeNamespaceUri(s.substring(pos + 2, s.length() - 1))
-                  + '>';
-        }
-    }
-    return s;
-  }
+//  String myNormalizeNamespaces(String s) {
+//    //TODO
+//    switch (s.charAt(0)) {
+//      case '<':
+//        return '<'
+//                + config.namespace.normalizeNamespaceUri(
+//                s.substring(1, s.length() - 1))
+//                + '>';
+//      case '"':
+//        // Atom, possibly with long xsd type spec
+//        int pos = s.lastIndexOf('^');
+//        if (pos > 0 && s.charAt(pos - 1) == '^') {
+//          return s.substring(0, pos + 2)
+//                  + config.namespace.normalizeNamespaceUri(s.substring(pos + 2, s.length() - 1))
+//                  + '>';
+//        }
+//    }
+//    return s;
+//  }
 
   private int getSymbolId(String symbol) {
     int id = _tupleStore.putObject(myNormalizeNamespaces(symbol));

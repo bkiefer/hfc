@@ -177,6 +177,7 @@ public class ForwardChainerTest {
   public void testnextBlankNode() throws FileNotFoundException, IOException, WrongFormatException {
     //test method nextBlankNode () that returns an int
     ForwardChainer fc = new ForwardChainer(Config.getInstance(getTestResource("nextBlankNode.yml")));
+    System.out.println(fc.tupleStore.allTuples.size());
     assertEquals(51, fc.nextBlankNode());
     assertTrue(fc.nextBlankNode() > 0);
   }
@@ -189,34 +190,6 @@ public class ForwardChainerTest {
     ForwardChainer fcverboseF = new ForwardChainer(Config.getInstance(getTestResource("test_eq.yml")));
     assertEquals(true, fcverboseF.enableTupleDeletion());
 	}
-
-//	@Test
-//	public void testdeleteTuple() throws FileNotFoundException, WrongFormatException, IOException{
-//	//test method deleteTuple(int[] tuple)
-//    int[] tuple = new int[2];
-//    tuple[0] = 2;
-//    tuple[1] = 2;
-//    Namespace namespace = Namespace.defaultNamespace();;
-//    TupleStore tupleStore = new TupleStore(2, 2, namespace);
-//    RuleStore ruleStore = new RuleStore(tupleStore);
-//    ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);
-//    //fc.deleteTuple(tuple); Null pointer exception
-//	}
-//
-//	@Test
-//	public void testdeleteTuples() throws FileNotFoundException, WrongFormatException, IOException{
-//	  //test method deleteTuples(Collection<int[]> tuples)
-//	  Collection<int[]> tuples = new THashSet<int[]>();
-//    int[] e = new int[2];
-//    e[0] = 1;
-//    e[1] = 2;
-//    tuples.add(e);
-//    Namespace namespace = Namespace.defaultNamespace();;
-//    TupleStore tupleStore = new TupleStore(1, 2, namespace);
-//    RuleStore ruleStore = new RuleStore(tupleStore);
-//    ForwardChainer fc = new ForwardChainer(tupleStore, ruleStore);
-//    //fc.deleteTuples(tuples); Null pointer exception
-//	}
 
 	@Test
 	public void testaddTuplesToRepository() throws FileNotFoundException, WrongFormatException, IOException{

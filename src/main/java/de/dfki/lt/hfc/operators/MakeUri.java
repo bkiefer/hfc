@@ -29,7 +29,7 @@ public final class MakeUri extends FunctionalOperator {
     }
     sb.append(">");
     final Uri uri = new Uri(sb.toString());
-    return registerObject(uri.toString(this.tupleStore.namespace.shortIsDefault), uri);
+    return registerObject(uri.toString(), uri);
   }
 
 }

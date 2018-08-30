@@ -169,7 +169,7 @@ public final class TupleStore {
   /**
    * used during input, when URIs, blank nodes, or XSD atoms are replaced by their IDs (ints)
    */
-  public HashMap<String, Integer> objectToId;
+  public HashMap<AnyType, Integer> objectToId;
   /**
    * noOfAtoms initializes internal data structures in TupleStore with a predefined size;
    * making a good guess how many atoms will be employed in an application avoid re-sizing
@@ -289,7 +289,6 @@ public final class TupleStore {
 
   public TupleStore(Config config) throws IOException, WrongFormatException {
     this.namespace = config.namespace;
-    this.namespace.shortIsDefault = config.shortIsDefault;
     this.indexStore = config.indexStore;
     //TODO not sure if we need this
     //this.config = config;
@@ -336,113 +335,6 @@ public final class TupleStore {
             this.subjectPosition, this.predicatePosition, this.objectPosition,
             100000, 500000);
   }
-
-//    /**
-//     * choose a proper noOfAtoms/noOfTuples in order not to arrive at copying (at all or
-//     * too early) the elements into a larger structure; keep in mind that other services
-//     * (e.g., rule application) can drastically increase the number of tuples;
-//     * note: assigns an empty Namespace object to this.namespace
-//     */
-//    public TupleStore(int noOfAtoms, int noOfTuples) {
-//        this.namespace = new Namespace();
-//        this.indexStore = null;
-//        init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
-//                this.minNoOfArgs, this.maxNoOfArgs,
-//                this.subjectPosition, this.predicatePosition, this.objectPosition,
-//                noOfAtoms, noOfTuples);
-//    }
-//
-//    /**
-//     * extends the binary constructor with the ability to read in a namespace
-//     */
-//    public TupleStore(int noOfAtoms, int noOfTuples, Namespace namespace) {
-//        this.namespace = namespace;
-//        this.indexStore = null;
-//        init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
-//                this.minNoOfArgs, this.maxNoOfArgs,
-//                this.subjectPosition, this.predicatePosition, this.objectPosition,
-//                noOfAtoms, noOfTuples);
-//    }
-//
-//    /**
-//     * extends the binary constructor with the ability to read in a namespace and a
-//     * textual representation of facts (basically N-Triples syntax), stored in a file
-//     *
-//     * @throws IOException
-//     * @throws FileNotFoundException
-//     * @throws WrongFormatException
-//     * @see #readTuples
-//     */
-//    public TupleStore(int noOfAtoms, int noOfTuples, Namespace namespace, String tupleFile)
-//            throws FileNotFoundException, IOException, WrongFormatException {
-//        this.namespace = namespace;
-//        this.indexStore = null;
-//        init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
-//                this.minNoOfArgs, this.maxNoOfArgs,
-//                this.subjectPosition, this.predicatePosition, this.objectPosition,
-//                noOfAtoms, noOfTuples);
-//        readTuples(tupleFile);
-//    }
-//
-//    /**
-//     * extends the binary constructor with the ability to read in a namespace, a index store, as well as a
-//     * textual representation of facts (basically N-Triples syntax), as well as stored in a file
-//     *
-//     * @throws IOException
-//     * @throws WrongFormatException
-//     * @see #readTuples
-//     */
-//    public TupleStore(int noOfAtoms, int noOfTuples, Namespace namespace, String tupleFile, IndexStore indexStore)
-//            throws IOException, WrongFormatException {
-//        this.namespace = namespace;
-//        this.indexStore = indexStore;
-//        init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
-//                this.minNoOfArgs, this.maxNoOfArgs,
-//                this.subjectPosition, this.predicatePosition, this.objectPosition,
-//                noOfAtoms, noOfTuples);
-//        readTuples(tupleFile);
-//    }
-//
-//    /**
-//     * more options to fully parameterize the tuple store
-//     *
-//     * @throws IOException
-//     * @throws FileNotFoundException
-//     * @throws WrongFormatException
-//     */
-//    public TupleStore(boolean verbose, boolean rdfCheck, boolean eqReduction,
-//                      int minNoOfArgs, int maxNoOfArgs,
-//                      int noOfAtoms, int noOfTuples,
-//                      Namespace namespace, String tupleFile)
-//            throws FileNotFoundException, IOException, WrongFormatException {
-//        this.namespace = namespace;
-//        this.indexStore = null;
-//        init(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
-//                this.subjectPosition, this.predicatePosition, this.objectPosition,
-//                noOfAtoms, noOfTuples);
-//        readTuples(tupleFile);
-//    }
-//
-//    /**
-//     * more options to fully parameterize the tuple store
-//     *
-//     * @throws IOException
-//     * @throws FileNotFoundException
-//     * @throws WrongFormatException
-//     */
-//    public TupleStore(boolean verbose, boolean rdfCheck, boolean eqReduction,
-//                      int minNoOfArgs, int maxNoOfArgs,
-//                      int noOfAtoms, int noOfTuples,
-//                      Namespace namespace, String tupleFile,
-//                      IndexStore indexStore)
-//            throws FileNotFoundException, IOException, WrongFormatException {
-//        this.namespace = namespace;
-//        this.indexStore = indexStore;
-//        init(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
-//                this.subjectPosition, this.predicatePosition, this.objectPosition,
-//                noOfAtoms, noOfTuples);
-//        readTuples(tupleFile);
-//    }
 
 
   /**
@@ -556,7 +448,7 @@ public final class TupleStore {
     this.subjectPosition = subjectPosition;
     this.predicatePosition = predicatePosition;
     this.objectPosition = objectPosition;
-    this.objectToId = new HashMap<String, Integer>(noOfAtoms);
+    this.objectToId = new HashMap<AnyType, Integer>(noOfAtoms);
 //        this.idToObject = new ArrayList<AnyType>(noOfAtoms);
     this.idToJavaObject = new ArrayList<AnyType>(noOfAtoms);
     this.uriToProxy = new TIntIntHashMap();
@@ -590,41 +482,24 @@ public final class TupleStore {
   private void initializeUriMappings() {
     this.objectToId.put(Namespace.UNBOUND, Namespace.UNBOUND_ID);
     //this.idToObject.add(Namespace.UNBOUND);
-    this.idToJavaObject.add(new Uri(Namespace.UNBOUND));
+    this.idToJavaObject.add(Namespace.UNBOUND);
     // maybe make this more flexible by moving this information to a file
-    if (this.namespace.shortIsDefault) {
       this.objectToId.put(Namespace.RDFS_SUBCLASSOF_SHORT, Namespace.RDFS_SUBCLASSOF_ID);
       //this.idToObject.add(Namespace.RDFS_SUBCLASSOF_SHORT);
-      this.idToJavaObject.add(new Uri(Namespace.RDFS_SUBCLASSOF_SHORT));
+      this.idToJavaObject.add(Namespace.RDFS_SUBCLASSOF_SHORT);
       this.objectToId.put(Namespace.OWL_SAMEAS_SHORT, Namespace.OWL_SAMEAS_ID);
       //this.idToObject.add(Namespace.OWL_SAMEAS_SHORT);
-      this.idToJavaObject.add(new Uri(Namespace.OWL_SAMEAS_SHORT));
+      this.idToJavaObject.add(Namespace.OWL_SAMEAS_SHORT);
       this.objectToId.put(Namespace.OWL_EQUIVALENTCLASS_SHORT, Namespace.OWL_EQUIVALENTCLASS_ID);
       //this.idToObject.add(Namespace.OWL_EQUIVALENTCLASS_SHORT);
-      this.idToJavaObject.add(new Uri(Namespace.OWL_EQUIVALENTCLASS_SHORT));
+      this.idToJavaObject.add(Namespace.OWL_EQUIVALENTCLASS_SHORT);
       this.objectToId.put(Namespace.OWL_EQUIVALENTPROPERTY_SHORT, Namespace.OWL_EQUIVALENTPROPERTY_ID);
       //this.idToObject.add(Namespace.OWL_EQUIVALENTPROPERTY_SHORT);
-      this.idToJavaObject.add(new Uri(Namespace.OWL_EQUIVALENTPROPERTY_SHORT));
+      this.idToJavaObject.add(Namespace.OWL_EQUIVALENTPROPERTY_SHORT);
       this.objectToId.put(Namespace.OWL_DISJOINTWITH_SHORT, Namespace.OWL_DISJOINTWITH_ID);
       //this.idToObject.add(Namespace.OWL_DISJOINTWITH_SHORT);
-      this.idToJavaObject.add(new Uri(Namespace.OWL_DISJOINTWITH_SHORT));
-    } else {
-      this.objectToId.put(Namespace.RDFS_SUBCLASSOF_LONG, Namespace.RDFS_SUBCLASSOF_ID);
-      //this.idToObject.add(Namespace.RDFS_SUBCLASSOF_LONG);
-      this.idToJavaObject.add(new Uri(Namespace.RDFS_SUBCLASSOF_LONG));
-      this.objectToId.put(Namespace.OWL_SAMEAS_LONG, Namespace.OWL_SAMEAS_ID);
-      //this.idToObject.add(Namespace.OWL_SAMEAS_LONG);
-      this.idToJavaObject.add(new Uri(Namespace.OWL_SAMEAS_LONG));
-      this.objectToId.put(Namespace.OWL_EQUIVALENTCLASS_LONG, Namespace.OWL_EQUIVALENTCLASS_ID);
-      //this.idToObject.add(Namespace.OWL_EQUIVALENTCLASS_LONG);
-      this.idToJavaObject.add(new Uri(Namespace.OWL_EQUIVALENTCLASS_LONG));
-      this.objectToId.put(Namespace.OWL_EQUIVALENTPROPERTY_LONG, Namespace.OWL_EQUIVALENTPROPERTY_ID);
-      //this.idToObject.add(Namespace.OWL_EQUIVALENTPROPERTY_LONG);
-      this.idToJavaObject.add(new Uri(Namespace.OWL_EQUIVALENTPROPERTY_LONG));
-      this.objectToId.put(Namespace.OWL_DISJOINTWITH_LONG, Namespace.OWL_DISJOINTWITH_ID);
-      //this.idToObject.add(Namespace.OWL_DISJOINTWITH_LONG);
-      this.idToJavaObject.add(new Uri(Namespace.OWL_DISJOINTWITH_LONG));
-    }
+      this.idToJavaObject.add(Namespace.OWL_DISJOINTWITH_SHORT);
+
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     // VERY IMPORTANT: UPDATE currentId !!!!!!!
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -811,13 +686,13 @@ public final class TupleStore {
    * otherwise, the already existing id for obj is returned
    */
   public int putObject(String obj) {
-    if (this.objectToId.containsKey(obj)) {
-      return this.objectToId.get(obj);
+    AnyType t = makeJavaObject(obj);
+    if (this.objectToId.containsKey(t)) {
+      return this.objectToId.get(t);
     } else {
       int id = getNextId();
-      this.objectToId.put(obj, id);
-      // lazy strategy: construct Java object iff it is accessed by functional operator
-      this.idToJavaObject.add(makeJavaObject(obj));
+      this.objectToId.put(t, id);
+      this.idToJavaObject.add(t);
       return id;
     }
   }
@@ -838,7 +713,8 @@ public final class TupleStore {
   private AnyType makeJavaObject(String literal) {
     AnyType anyType;
     if (TupleStore.isUri(literal)) {
-      anyType =  new Uri(literal);
+      NamespaceObject ns = namespace.seperateNSfromURI(literal);
+      anyType =  new Uri(literal,ns);
     } else if (TupleStore.isBlankNode(literal)) {
       anyType =  new BlankNode(literal);
     } else {
@@ -870,12 +746,11 @@ public final class TupleStore {
    * furthermore, a new int (an ID) is returned that is internally used in the
    * tuple store
    */
-  public synchronized int registerJavaObject(String literal, AnyType javaObject) {
-    Integer id = this.objectToId.get(literal);
+  public synchronized int registerJavaObject( AnyType javaObject) {
+    Integer id = this.objectToId.get(javaObject);
     if (id == null) {
       id = getNextId();
-      this.objectToId.put(literal, id);     // or should we only make these three
-      //this.idToObject.add(literal);         // lines synchronized, i.e., objectToId
+      this.objectToId.put(javaObject, id);     // or should we only make these three
       this.idToJavaObject.add(javaObject);  // idToObject, and idToJavaObject
     }
     return id;
@@ -983,7 +858,7 @@ public final class TupleStore {
    * NOTE: false does NOT indicate that literal is a variable!
    */
   public boolean isConstant(String literal) {
-    return this.objectToId.containsKey(literal);
+    return isInFactBase(literal);
   }
 
   /**
@@ -1140,8 +1015,9 @@ public final class TupleStore {
    * NOTE: check whether you must use the short or long namespace prefix depending on
    * Namespace.shortIsDefault
    */
-  public Set<int[]> getTuples(int pos, String obj) {
-    final Set<int[]> result = this.index[pos].get(this.objectToId.get(obj));
+  public Set<int[]> getTuples(int pos, String literal) {
+    AnyType t = makeJavaObject(literal);
+    final Set<int[]> result = this.index[pos].get(this.objectToId.get(t));
     if (result == null)
       return Collections.emptySet();
     else
@@ -1390,7 +1266,7 @@ public final class TupleStore {
    */
   public void readTuples(BufferedReader br, long timeStamp) throws IOException, WrongFormatException {
     // construct an HFC XSD long for the Java long
-    readTuples(br, null, XsdLong.toString(timeStamp, true));
+    readTuples(br, null, XsdLong.toString(timeStamp));
   }
 
   /**
@@ -1435,59 +1311,59 @@ public final class TupleStore {
             Charset.forName(this.inputCharacterEncoding)), front, backs);
   }
 
-  /**
-   * reads in a 'compressed' tuple store (extension usually "ts") generated by
-   * writeTupleStore(); usage:
-   * Namespace ns = new Namespace("...");
-   * TupleStore ts = new TupleStore(ns);
-   * ts.readTupleStore("...");
-   *
-   * @return the set of ALL tuples stored in the this TupleStore instance
-   */
-  protected Set<int[]> readTupleStore(String filename) {
-    logger.info("\n  reading tuples from " + filename + " ...");
-    String line, token;
-    int noOfTuples = 0, lineNo = 0;
-    try {
-      BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filename),
-              this.inputCharacterEncoding));
-      int noOfLines;
-      while ((line = br.readLine()) != null) {
-        noOfLines = Integer.parseInt(line.substring(line.indexOf(' ') + 1));
-        if (line.startsWith("&object2id"))
-          readObjectToId(br, noOfLines);
-        else if (line.startsWith("&id2object"))
-          // also assigns null values for idToJavaObject
-          readIdToObject(br, noOfLines);
-        else if (line.startsWith("&tuples"))
-          readAllTuples(br, noOfLines);
-        else {
-          logger.info("\nwrong section name: " + line);
-          throw new RuntimeException("FATAL ERROR");
-        }
-      }
-    } catch (IOException e) {
-      logger.error("\nerror while reading tuples from " + filename);
-      throw new RuntimeException("FATAL ERROR");
-    }
-    logger.info("\n  read " + noOfTuples + " proper tuples");
-    logger.info("  overall " + this.allTuples.size() + " unique tuples");
-    return this.allTuples;
-  }
-
-  /**
-   * helper for readTupleStore()
-   */
-  private void readObjectToId(BufferedReader br, int noOfLines) throws IOException {
-    String line;
-    int seppos;
-    for (int i = noOfLines; i > 0; i--) {
-      line = br.readLine();
-      seppos = line.lastIndexOf(' ');
-      this.objectToId.put(line.substring(0, seppos),
-              Integer.parseInt(line.substring(seppos + 1)));
-    }
-  }
+//  /**
+//   * reads in a 'compressed' tuple store (extension usually "ts") generated by
+//   * writeTupleStore(); usage:
+//   * Namespace ns = new Namespace("...");
+//   * TupleStore ts = new TupleStore(ns);
+//   * ts.readTupleStore("...");
+//   *
+//   * @return the set of ALL tuples stored in the this TupleStore instance
+//   */
+//  protected Set<int[]> readTupleStore(String filename) {
+//    logger.info("\n  reading tuples from " + filename + " ...");
+//    String line, token;
+//    int noOfTuples = 0, lineNo = 0;
+//    try {
+//      BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filename),
+//              this.inputCharacterEncoding));
+//      int noOfLines;
+//      while ((line = br.readLine()) != null) {
+//        noOfLines = Integer.parseInt(line.substring(line.indexOf(' ') + 1));
+//        if (line.startsWith("&object2id"))
+//          readObjectToId(br, noOfLines);
+//        else if (line.startsWith("&id2object"))
+//          // also assigns null values for idToJavaObject
+//          readIdToObject(br, noOfLines);
+//        else if (line.startsWith("&tuples"))
+//          readAllTuples(br, noOfLines);
+//        else {
+//          logger.info("\nwrong section name: " + line);
+//          throw new RuntimeException("FATAL ERROR");
+//        }
+//      }
+//    } catch (IOException e) {
+//      logger.error("\nerror while reading tuples from " + filename);
+//      throw new RuntimeException("FATAL ERROR");
+//    }
+//    logger.info("\n  read " + noOfTuples + " proper tuples");
+//    logger.info("  overall " + this.allTuples.size() + " unique tuples");
+//    return this.allTuples;
+//  }
+//
+//  /**
+//   * helper for readTupleStore()
+//   */
+//  private void readObjectToId(BufferedReader br, int noOfLines) throws IOException {
+//    String line;
+//    int seppos;
+//    for (int i = noOfLines; i > 0; i--) {
+//      line = br.readLine();
+//      seppos = line.lastIndexOf(' ');
+//      this.objectToId.put(line.substring(0, seppos),
+//              Integer.parseInt(line.substring(seppos + 1)));
+//    }
+//  }
 
   /**
    * helper for readTupleStore()
@@ -1601,7 +1477,7 @@ public final class TupleStore {
     }
     if (bareAtom) {
       // complete type in order to recognize duplicates (perhaps output a message?)
-      if (this.namespace.shortIsDefault)
+      if (this.namespace.isShortIsDefault())
         sb.append("^^").append(XsdString.SHORT_NAME);
       else
         sb.append("^^").append(XsdString.LONG_NAME);
@@ -1684,7 +1560,7 @@ public final class TupleStore {
               this.outputCharacterEncoding));
       // dump objectToId (null -> 0 given by constructor is overwritten by exactly the same mapping)
       pw.println("&object2id " + this.objectToId.size());
-      for (Map.Entry<String, Integer> entry : this.objectToId.entrySet())
+      for (Map.Entry<AnyType, Integer> entry : this.objectToId.entrySet())
         pw.println(entry.getKey() + " " + entry.getValue());
       // dump idToObject
       pw.println("&id2object " + (this.idToJavaObject.size() - 1));
@@ -1759,11 +1635,19 @@ public final class TupleStore {
     int[] internalTuple = new int[externalTuple.length];
     for (int i = 0; i < externalTuple.length; i++) {
       // check whether the external symbols are even known by the tuple store
-      if (!this.objectToId.containsKey(externalTuple[i]))
+      if (!isInFactBase(externalTuple[i]))
         return false;
-      internalTuple[i] = this.objectToId.get(externalTuple[i]);
+      internalTuple[i] = putObject(externalTuple[i]);
     }
     return this.allTuples.contains(internalTuple);
+  }
+
+  private boolean isInFactBase(String literal){
+    for(AnyType t : objectToId.keySet()){
+      if(t.toString(false).equals(literal) || t.toString(true).equals(literal))
+        return true;
+    }
+    return false;
   }
 
   /**
@@ -1972,7 +1856,7 @@ public final class TupleStore {
     copy.proxyToUris = new TIntObjectHashMap<TIntArrayList>(this.proxyToUris);
     copy.uriToEquivalenceRelation = new TIntIntHashMap(this.uriToEquivalenceRelation);
     // use copy constructor for objectToId, idToObject, idToJavaObject, and allTuples
-    copy.objectToId = new HashMap<String, Integer>(this.objectToId);
+    copy.objectToId = new HashMap<AnyType, Integer>(this.objectToId);
     copy.idToJavaObject = new ArrayList<AnyType>(this.idToJavaObject);
     copy.allTuples = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY, this.allTuples);
     // operatorRegistry and aggregateRegistry need to be copied (above mappings might be different

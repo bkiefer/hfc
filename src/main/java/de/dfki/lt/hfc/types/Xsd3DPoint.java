@@ -2,6 +2,8 @@ package de.dfki.lt.hfc.types;
 
 import de.dfki.lt.hfc.indices.ZOrder;
 
+import java.util.Objects;
+
 /**
  * An encoding of a new XSD format  representing a point in a three dimensional space "[+|-]x,[+|-]y,[+|-]z"
  * if less ``precision'' is needed, use the Xsd2DPoint class
@@ -15,8 +17,8 @@ public class Xsd3DPoint extends XsdPoint {
 
   public final static String NAME = "3DPoint";
 
-  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
-  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
+  public final static String SHORT_NAME = '<' + NS.SHORT_NAMESPACE + ":" + NAME + '>';
+  public final static String LONG_NAME = '<' + NS.LONG_NAMESPACE + NAME + '>';
 
   static {
     registerConstructor(Xsd3DPoint.class, SHORT_NAME, LONG_NAME);
@@ -65,7 +67,7 @@ public class Xsd3DPoint extends XsdPoint {
   }
 
   @Override
-  public String toString(boolean shortIsDefault) {
+  public String toString() {
     StringBuilder sb = new StringBuilder("\"");
     sb.append(this.x);
     sb.append(",");
@@ -73,7 +75,7 @@ public class Xsd3DPoint extends XsdPoint {
     sb.append(",");
     sb.append(this.z);
     sb.append("\"^^");
-    sb.append(shortIsDefault ? SHORT_NAME : LONG_NAME);
+    sb.append(NS.isShort() ? SHORT_NAME : LONG_NAME);
     return sb.toString();
   }
 
@@ -102,5 +104,20 @@ public class Xsd3DPoint extends XsdPoint {
     } catch (ZOrder.ZOrderException e) {
       e.printStackTrace();
     }
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Xsd3DPoint that = (Xsd3DPoint) o;
+    return x == that.x &&
+            y == that.y &&
+            z == that.z;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(x, y, z);
   }
 }

@@ -1,5 +1,7 @@
 package de.dfki.lt.hfc.types;
 
+import de.dfki.lt.hfc.NamespaceObject;
+
 /**
  * this (abstract) class is the superclass for the _internal_
  * representationof URIs, blank nodes, and XSD types (and their
@@ -24,13 +26,18 @@ public abstract class AnyType implements Comparable {
 
   public static final MinMaxValue MIN_VALUE = new MinMaxValue(false);
   public static final MinMaxValue MAX_VALUE = new MinMaxValue(true);
+  protected final NamespaceObject ns;
 
-  /**
-   * returns a compliant external representation for subtypes
-   * of AnyType, viz., URIs, blank nodes, and various forms of
-   * XSD atoms
-   */
-  public abstract String toString(boolean shortIsDefault);
+  protected AnyType(NamespaceObject ns) {
+    this.ns = ns;
+  }
+
+//  /**
+//   * returns a compliant external representation for subtypes
+//   * of AnyType, viz., URIs, blank nodes, and various forms of
+//   * XSD atoms
+//   */
+//  public abstract String toString(boolean shortIsDefault);
 
   /**
    * contrary to toString(), toName() returns a somewhat `abstracted'
@@ -69,24 +76,19 @@ public abstract class AnyType implements Comparable {
   public abstract Object toJava();
 
 
-  /**
-   * The default toString method is overridden returning the long representation
-   */
-  public String toString() {
-    return toString(false);
-  }
+
 
   static class MinMaxValue extends AnyType {
 
     final boolean isMax;
 
     public MinMaxValue(boolean b) {
-      super();
+      super(null);
       isMax = b;
     }
 
     @Override
-    public String toString(boolean shortIsDefault) {
+    public String toString() {
       return isMax ? "MAX_VALUE" : "MIN_VALUE";
     }
 

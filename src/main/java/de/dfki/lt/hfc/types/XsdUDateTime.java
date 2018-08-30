@@ -1,5 +1,9 @@
 package de.dfki.lt.hfc.types;
 
+import de.dfki.lt.hfc.Namespace;
+
+import java.util.Objects;
+
 /**
  * an extension of the XSD dateTime format "yyyy-MM-dd'T'HH:mm:ss.SSS"
  * _without_ time zones;
@@ -34,8 +38,8 @@ package de.dfki.lt.hfc.types;
 public final class XsdUDateTime extends XsdAnySimpleType {
   public final static String NAME = "uDateTime";
 
-  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
-  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
+  public final static String SHORT_NAME = '<' + NS.SHORT_NAMESPACE + ":" + NAME + '>';
+  public final static String LONG_NAME = '<' + NS.LONG_NAMESPACE + NAME + '>';
   /**
    *
    */
@@ -193,11 +197,11 @@ public final class XsdUDateTime extends XsdAnySimpleType {
   /**
    * binary version is given the value directly
    */
-  public static String toString(String val, boolean shortIsDefault) {
+  public static String toString(String val) {
     StringBuilder sb = new StringBuilder("\"");
     sb.append(val);
     sb.append("\"^^");
-    if (shortIsDefault)
+    if (NS.isShort())
       sb.append(SHORT_NAME);
     else
       sb.append(LONG_NAME);
@@ -215,8 +219,8 @@ public final class XsdUDateTime extends XsdAnySimpleType {
    * 1 <= month <= 12 or whether 1 <= day <= 29 for month 02
    * (= February)
    */
-  public String toString(boolean shortIsDefault) {
-    final String tail = "\"^^" + (shortIsDefault ? SHORT_NAME : LONG_NAME);
+  public String toString() {
+    final String tail = "\"^^" + (NS.isShort() ? SHORT_NAME : LONG_NAME);
     StringBuilder sb = new StringBuilder("\"");
     if (this.year >= 1000)
       sb.append(this.year);
@@ -317,4 +321,21 @@ public final class XsdUDateTime extends XsdAnySimpleType {
     return 0;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    XsdUDateTime that = (XsdUDateTime) o;
+    return year == that.year &&
+            month == that.month &&
+            day == that.day &&
+            hour == that.hour &&
+            minute == that.minute &&
+            Float.compare(that.second, second) == 0;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(year, month, day, hour, minute, second);
+  }
 }

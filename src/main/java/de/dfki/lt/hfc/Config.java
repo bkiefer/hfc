@@ -14,26 +14,26 @@ import java.util.Map;
 
 public class Config {
 
-  // special value UNBOUND/NULL, not used at the moment
-  public static final Uri UNBOUND = new Uri("Null");
-  public static final int UNBOUND_ID = 0;
-  // RDFS: subClassOf
-  public static final Uri RDFS_SUBCLASSOF_SHORT = new Uri("<rdfs:subClassOf>");
-  public static final Uri RDFS_SUBCLASSOF_LONG = new Uri("<http://www.w3.org/2000/01/rdf-schema#subClassOf>");
-  public static final int RDFS_SUBCLASSOF_ID = 1;
-  // OWL: sameAs, equivalentClass, equivalentProperty, disjointWith
-  public static final Uri OWL_SAMEAS_SHORT = new Uri("<owl:sameAs>");
-  public static final Uri OWL_SAMEAS_LONG = new Uri("<http://www.w3.org/2002/07/owl#sameAs>");
-  public static final int OWL_SAMEAS_ID = 2;
-  public static final Uri OWL_EQUIVALENTCLASS_SHORT = new Uri("<owl:equivalentClass>");
-  public static final Uri OWL_EQUIVALENTCLASS_LONG = new Uri("<http://www.w3.org/2002/07/owl#equivalentClass>");
-  public static final int OWL_EQUIVALENTCLASS_ID = 3;
-  public static final Uri OWL_EQUIVALENTPROPERTY_SHORT = new Uri("<owl:equivalentProperty>");
-  public static final Uri OWL_EQUIVALENTPROPERTY_LONG = new Uri("<http://www.w3.org/2002/07/owl#equivalentProperty>");
-  public static final int OWL_EQUIVALENTPROPERTY_ID = 4;
-  public static final Uri OWL_DISJOINTWITH_SHORT = new Uri("<owl:disjointWith>");
-  public static final Uri OWL_DISJOINTWITH_LONG = new Uri("<http://www.w3.org/2002/07/owl#disjointWith>");
-  public static final int OWL_DISJOINTWITH_ID = 5;
+//  // special value UNBOUND/NULL, not used at the moment
+//  public static final Uri UNBOUND = new Uri("Null");
+//  public static final int UNBOUND_ID = 0;
+//  // RDFS: subClassOf
+//  public static final Uri RDFS_SUBCLASSOF_SHORT = new Uri("<rdfs:subClassOf>");
+//  public static final Uri RDFS_SUBCLASSOF_LONG = new Uri("<http://www.w3.org/2000/01/rdf-schema#subClassOf>");
+//  public static final int RDFS_SUBCLASSOF_ID = 1;
+//  // OWL: sameAs, equivalentClass, equivalentProperty, disjointWith
+//  public static final Uri OWL_SAMEAS_SHORT = new Uri("<owl:sameAs>");
+//  public static final Uri OWL_SAMEAS_LONG = new Uri("<http://www.w3.org/2002/07/owl#sameAs>");
+//  public static final int OWL_SAMEAS_ID = 2;
+//  public static final Uri OWL_EQUIVALENTCLASS_SHORT = new Uri("<owl:equivalentClass>");
+//  public static final Uri OWL_EQUIVALENTCLASS_LONG = new Uri("<http://www.w3.org/2002/07/owl#equivalentClass>");
+//  public static final int OWL_EQUIVALENTCLASS_ID = 3;
+//  public static final Uri OWL_EQUIVALENTPROPERTY_SHORT = new Uri("<owl:equivalentProperty>");
+//  public static final Uri OWL_EQUIVALENTPROPERTY_LONG = new Uri("<http://www.w3.org/2002/07/owl#equivalentProperty>");
+//  public static final int OWL_EQUIVALENTPROPERTY_ID = 4;
+//  public static final Uri OWL_DISJOINTWITH_SHORT = new Uri("<owl:disjointWith>");
+//  public static final Uri OWL_DISJOINTWITH_LONG = new Uri("<http://www.w3.org/2002/07/owl#disjointWith>");
+//  public static final int OWL_DISJOINTWITH_ID = 5;
   /**
    * A basic LOGGER.
    */
@@ -82,7 +82,7 @@ public class Config {
     this.shortIsDefault = (boolean) configs.get("shortIsDefault");
     this.cleanUpRepository = (boolean) configs.get("cleanUpRepository");
     HashMap<String, String> shortToLong = (HashMap<String, String>) configs.get("namespaces");
-    this.namespace.shortIsDefault = shortIsDefault;
+    this.namespace.setShortIsDefault( shortIsDefault);
     NamespaceObject ns;
     for (Map.Entry<String, String> mapping : shortToLong.entrySet()) {
       ns = new NamespaceObject(mapping.getKey(), mapping.getValue(), shortIsDefault);

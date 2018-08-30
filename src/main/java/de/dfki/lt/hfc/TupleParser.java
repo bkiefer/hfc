@@ -322,7 +322,7 @@ class TupleParser {
     if (string.length() != 0) {
       // complete type in order to recognize duplicates (perhaps output a message?)
       match = "\"" + string.toString() + "\"";
-      if (ts.namespace.shortIsDefault)
+      if (ts.namespace.isShortIsDefault())
         match += "^^" + XsdString.SHORT_NAME;
       else
         match += "^^" + XsdString.LONG_NAME;
@@ -710,7 +710,7 @@ class TupleParser {
 
       switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
         case 13: {
-          match = "\"" + handleUnicode(string.toString()) + "\"" + ts.namespace.normalizeNamespace(yytext());
+          match = "\"" + handleUnicode(string.toString()) + "\"" + yytext();
           t.add(match);
           string.setLength(0);
         }
@@ -729,7 +729,7 @@ class TupleParser {
         case 16:
           break;
         case 12: {
-          match = "\"" + handleUnicode(string.toString()) + "\"" + ts.namespace.normalizeNamespace(yytext());
+          match = "\"" + handleUnicode(string.toString()) + "\"" + yytext();
           t.add(match);
           string.setLength(0);
         }
@@ -775,7 +775,7 @@ class TupleParser {
           break;
         case 11: {
           match = yytext();
-          t.add(ts.namespace.normalizeNamespace(match));
+          t.add(match);
         }
         case 25:
           break;

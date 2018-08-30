@@ -246,7 +246,7 @@ public class BindingTable {
     String element;
     for (int[] tuple : this.table) {
       for (Integer name : nameArray) {
-        element = this.tupleStore.idToJavaObject.get(tuple[this.nameToPos.get(name)]).toString(this.tupleStore.namespace.shortIsDefault);
+        element = this.tupleStore.idToJavaObject.get(tuple[this.nameToPos.get(name)]).toString();
         if (element.length() > maxLength)
           maxLength = element.length();
       }
@@ -313,7 +313,7 @@ public class BindingTable {
     for (int[] tuple : this.table) {
       for (Integer name : nameArray) {
         sb.append("| ");
-        element = this.tupleStore.idToJavaObject.get(tuple[this.nameToPos.get(name)]).toString(this.tupleStore.namespace.shortIsDefault);
+        element = this.tupleStore.idToJavaObject.get(tuple[this.nameToPos.get(name)]).toString();
         difference = maxLength - element.length();
         if (difference > 0) {
           sb.append(element);
@@ -534,7 +534,7 @@ public class BindingTable {
       final int[] intNext = next();
       final String[] result = new String[intNext.length];
       for (int i = 0; i < intNext.length; i++)
-        result[i] = BindingTable.this.tupleStore.getObject(intNext[i]).toString(BindingTable.this.tupleStore.namespace.shortIsDefault);
+        result[i] = BindingTable.this.tupleStore.getObject(intNext[i]).toString();
       return result;
     }
 

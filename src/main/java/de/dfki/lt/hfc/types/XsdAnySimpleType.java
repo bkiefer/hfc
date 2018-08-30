@@ -1,6 +1,7 @@
 package de.dfki.lt.hfc.types;
 
 import de.dfki.lt.hfc.Namespace;
+import de.dfki.lt.hfc.NamespaceObject;
 import de.dfki.lt.hfc.WrongFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +30,7 @@ public abstract class XsdAnySimpleType extends AnyType {
    */
   // last '.' char is OK!
   public static final String TYPE_PATH = "de.dfki.lt.hfc.types.";
-  protected static final String SHORT_PREFIX = Namespace.XSD_SHORT + ":";
-  protected static final String LONG_PREFIX = Namespace.XSD_LONG;
+  public static final NamespaceObject NS = Namespace.XSD;
 
   // XSD: string, int, long, float, double, gYear, gYearMonth, gMonth, gMonthDay, gDay, date, dateTime, duration, boolean, anyURI
   /**
@@ -56,6 +56,10 @@ public abstract class XsdAnySimpleType extends AnyType {
     typeToConstructor = new HashMap<String, Constructor<XsdAnySimpleType>>();
     classToConstructor = new HashMap<Class, Constructor<XsdAnySimpleType>>();
     loadSimpleTypes();
+  }
+
+  public XsdAnySimpleType() {
+    super(NS);
   }
 
   // only purpose is to separate the XSD types from uris and blank nodes
@@ -211,6 +215,8 @@ public abstract class XsdAnySimpleType extends AnyType {
    * the XSD type specification, default implementation
    */
   public String toName() {
-    return extractValue(toString(false));
+    return extractValue(toString());
   }
+
+
 }

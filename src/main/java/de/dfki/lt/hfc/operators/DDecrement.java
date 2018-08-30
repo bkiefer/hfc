@@ -17,6 +17,6 @@ public class DDecrement extends FunctionalOperator {
   public int apply(int[] args) {
     double d = Math.nextDown(((XsdDouble) getObject(args[0])).value);
     XsdDouble D = new XsdDouble(d);
-    return registerObject(D.toString(this.tupleStore.namespace.shortIsDefault), D);
+    return registerObject(D.toString(), D);
   }
 }

@@ -1,5 +1,7 @@
 package de.dfki.lt.hfc.types;
 
+import java.util.Objects;
+
 /**
  * an encoding of the currently NOT existing XSD type monetary
  * <p>
@@ -26,8 +28,8 @@ package de.dfki.lt.hfc.types;
 public final class XsdMonetary extends XsdAnySimpleType {
   public final static String NAME = "monetary";
 
-  public final static String SHORT_NAME = '<' + SHORT_PREFIX + NAME + '>';
-  public final static String LONG_NAME = '<' + LONG_PREFIX + NAME + '>';
+  public final static String SHORT_NAME = '<' + NS.SHORT_NAMESPACE + ":" + NAME + '>';
+  public final static String LONG_NAME = '<' + NS.LONG_NAMESPACE + NAME + '>';
   /**
    * some useful constants
    */
@@ -76,11 +78,11 @@ public final class XsdMonetary extends XsdAnySimpleType {
   /**
    * binary version is given the value directly
    */
-  public static String toString(String val, boolean shortIsDefault) {
+  public static String toString(String val) {
     StringBuilder sb = new StringBuilder("\"");
     sb.append(val);
     sb.append("\"^^");
-    if (shortIsDefault)
+    if (NS.isShort())
       sb.append(SHORT_NAME);
     else
       sb.append(LONG_NAME);
@@ -97,12 +99,12 @@ public final class XsdMonetary extends XsdAnySimpleType {
    * description is well-formed; e.g., we do not check whether
    * this.currency is a legal currency (three uppercase letters)
    */
-  public String toString(boolean shortIsDefault) {
+  public String toString() {
     StringBuilder sb = new StringBuilder("\"");
     sb.append(this.amount);
     sb.append(this.currency);
     sb.append("\"^^");
-    if (shortIsDefault)
+    if (NS.isShort())
       sb.append(SHORT_NAME);
     else
       sb.append(LONG_NAME);
@@ -137,4 +139,17 @@ public final class XsdMonetary extends XsdAnySimpleType {
     return Double.compare(this.amount, ((XsdMonetary) o).amount);
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    XsdMonetary that = (XsdMonetary) o;
+    return Double.compare(that.amount, amount) == 0 &&
+            Objects.equals(currency, that.currency);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(amount, currency);
+  }
 }

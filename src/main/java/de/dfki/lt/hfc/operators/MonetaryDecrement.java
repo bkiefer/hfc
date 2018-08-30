@@ -23,7 +23,7 @@ public class MonetaryDecrement extends FunctionalOperator {
     XsdMonetary monetary = ((XsdMonetary) getObject(args[0]));
     double d = Math.nextDown(monetary.amount);
     XsdMonetary M = new XsdMonetary(d, monetary.currency);
-    return registerObject(M.toString(this.tupleStore.namespace.shortIsDefault), M);
+    return registerObject(M.toString(), M);
   }
 
 }

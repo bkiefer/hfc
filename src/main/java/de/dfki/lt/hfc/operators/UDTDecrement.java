@@ -28,6 +28,6 @@ public class UDTDecrement extends FunctionalOperator {
       newDate = new XsdUDateTime(date.year, date.month - 1, 30, 23, 59, 59);
     else
       newDate = new XsdUDateTime(date.year - 1, 12, 30, 23, 59, 59);
-    return registerObject(newDate.toString(this.tupleStore.namespace.shortIsDefault), newDate);
+    return registerObject(newDate.toString(), newDate);
   }
 }

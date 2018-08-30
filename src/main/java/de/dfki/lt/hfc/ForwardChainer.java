@@ -423,10 +423,6 @@ public final class ForwardChainer {
    * across rules
    */
   private void executeLocalMatch(Rule rule) {
-    //System.out.print(rule.name + " ");
-    //System.out.print(rule.properVariables);
-    //System.out.print(rule.dontCareVariables);
-    //System.out.println(rule.blankNodeVariables);
     Set<int[]> query;
     Table table;
     for (int i = 0; i < rule.ante.length; i++) {
@@ -846,6 +842,7 @@ public final class ForwardChainer {
    * writes generated tuples to local output field of the rule
    */
   protected void execute(Rule rule) {
+    logger.info(" execute rule " + rule.name);
     try {
       // reuse rule's output field; make it empty, even for rules that are switched off
       rule.output.clear();

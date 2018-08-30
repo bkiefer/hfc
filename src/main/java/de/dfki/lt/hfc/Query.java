@@ -2,6 +2,7 @@ package de.dfki.lt.hfc;
 
 import de.dfki.lt.hfc.qrelations.QRelation;
 import de.dfki.lt.hfc.qrelations.QRelationFactory;
+import de.dfki.lt.hfc.types.AnyType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -336,136 +337,136 @@ public class Query {
   /**
    * parses the WHERE section of a QDL query
    */
-  private void parseWhere(StringTokenizer st,
-                          ArrayList<ArrayList<String>> whereClauses,
-                          HashSet<String> foundVars) throws QueryParseException {
-    // first token is guaranteed to be "WHERE"--get rid of it
-    st.nextToken();
-    String token;
-    ArrayList<String> tuple = new ArrayList<String>();
-    while (st.hasMoreTokens()) {
-      token = st.nextToken();
-      if (token.equals("&")) {
-        whereClauses.add(tuple);
-        tuple = new ArrayList<String>();
-      } else if (token.equals("?")) {
-        foundVars.add(TupleStore.parseVariable(st, tuple));
-      } else if (token.equals("<")) {
-        this.tupleStore.parseURI(st, tuple);
-      } else if (token.equals("\"")) {
-        this.tupleStore.parseAtom(st, tuple);
-      } else if (token.equals("_")) {
-        this.tupleStore.parseBlankNode(st, tuple);
-      } else if (token.equals("[")) { // check for exclusive interval
-        QRelationFactory.parseInterval(true, st, tuple);
-      } else if (token.equals("(")) {// check for inclusive interval
-        QRelationFactory.parseInterval(false, st, tuple);
-      } else if (QRelationFactory.isAllenRelation(token)) {
-        QRelationFactory.parseAllenRelation(token, st, tuple);
-      } else if (QRelationFactory.isRCC8Relation(token)) {
-        QRelationFactory.parseRCC8Relation(token, st, tuple);
-      } else if (token.equals(" "))  // keep on parsing ...
-      {
-        continue;
-      }
-      // break if (optional) FILTER or AGGREGATE is found
-      else if (token.toUpperCase().equals("FILTER") || token.toUpperCase().equals("AGGREGATE")) {
-        break;
-      }
-      // something has gone wrong when reading the tuple
-      else {
-        throw new QueryParseException("  incorrect WHERE clause " + token);
-      }
-    }
-    // since last clause needs not be finished by the '.' character, we
-    // can detect this by checking whether tuple is not empty
-    if (!tuple.isEmpty()) {
-      whereClauses.add(tuple);
-    }
-  }
+//  private void parseWhere(StringTokenizer st,
+//                          ArrayList<ArrayList<String>> whereClauses,
+//                          HashSet<String> foundVars) throws QueryParseException {
+//    // first token is guaranteed to be "WHERE"--get rid of it
+//    st.nextToken();
+//    String token;
+//    ArrayList<String> tuple = new ArrayList<String>();
+//    while (st.hasMoreTokens()) {
+//      token = st.nextToken();
+//      if (token.equals("&")) {
+//        whereClauses.add(tuple);
+//        tuple = new ArrayList<String>();
+//      } else if (token.equals("?")) {
+//        foundVars.add(TupleStore.parseVariable(st, tuple));
+//      } else if (token.equals("<")) {
+//        this.tupleStore.parseURI(st, tuple);
+//      } else if (token.equals("\"")) {
+//        this.tupleStore.parseAtom(st, tuple);
+//      } else if (token.equals("_")) {
+//        this.tupleStore.parseBlankNode(st, tuple);
+//      } else if (token.equals("[")) { // check for exclusive interval
+//        QRelationFactory.parseInterval(true, st, tuple);
+//      } else if (token.equals("(")) {// check for inclusive interval
+//        QRelationFactory.parseInterval(false, st, tuple);
+//      } else if (QRelationFactory.isAllenRelation(token)) {
+//        QRelationFactory.parseAllenRelation(token, st, tuple);
+//      } else if (QRelationFactory.isRCC8Relation(token)) {
+//        QRelationFactory.parseRCC8Relation(token, st, tuple);
+//      } else if (token.equals(" "))  // keep on parsing ...
+//      {
+//        continue;
+//      }
+//      // break if (optional) FILTER or AGGREGATE is found
+//      else if (token.toUpperCase().equals("FILTER") || token.toUpperCase().equals("AGGREGATE")) {
+//        break;
+//      }
+//      // something has gone wrong when reading the tuple
+//      else {
+//        throw new QueryParseException("  incorrect WHERE clause " + token);
+//      }
+//    }
+//    // since last clause needs not be finished by the '.' character, we
+//    // can detect this by checking whether tuple is not empty
+//    if (!tuple.isEmpty()) {
+//      whereClauses.add(tuple);
+//    }
+//  }
 
   /**
-   * parses the optional FILTER section of a QDL query
-   */
-  private void parseFilter(StringTokenizer st,
-                           ArrayList<ArrayList<String>> filterClauses,
-                           HashSet<String> foundVars) throws QueryParseException {
-    // first token is guaranteed to be "FILTER"--get rid of it
-    st.nextToken();
-    String token, var;
-    ArrayList<String> constraint = new ArrayList<String>();
-    while (st.hasMoreTokens()) {
-      token = st.nextToken();
-      if (token.equals("&")) {
-        filterClauses.add(constraint);
-        constraint = new ArrayList<String>();
-      } else if (token.equals("?")) {
-        var = TupleStore.parseVariable(st, constraint);
-        // check whether filter vars are definitely used in where vars
-        if (!foundVars.contains(var))
-          throw new QueryParseException("  filter variable not contained in WHERE: " + var);
-      } else if (token.equals("<"))
-        this.tupleStore.parseURI(st, constraint);
-      else if (token.equals("\""))
-        this.tupleStore.parseAtom(st, constraint);
-      else if (token.equals(" ") || token.equals("!="))  // keep on parsing ...
-        continue;
-        // break if (optional) AGGREGATE is found
-      else if (token.toUpperCase().equals("AGGREGATE"))
-        break;
-      else { // a predicate symbol
-        // check whether this is a legal Java class name
-        try {
-          Class.forName("de.dfki.lt.hfc.operators." + token);
-        } catch (ClassNotFoundException var8) {
-          throw new QueryParseException(token + " is not a valid constraint.");
-        }
-        constraint.add(token);
-      }
-    }
-    // since last clause is usually not followed by the '&' character,
-    // we need to check this by testing whether constraint is not empty
-    if (!constraint.isEmpty())
-      filterClauses.add(constraint);
-  }
-
-  /**
-   * parses the optional AGGREGATE section of a QDL query
-   */
-  private void parseAggregate(StringTokenizer st,
-                              ArrayList<ArrayList<String>> aggregateClauses) throws QueryParseException {
-    // first token is guaranteed to be "AGGREGATE"--get rid of it
-    st.nextToken();
-    String token, var;
-    ArrayList<String> aggregate = new ArrayList<String>();
-    while (st.hasMoreTokens()) {
-      token = st.nextToken();
-      if (token.equals("?"))
-        var = TupleStore.parseVariable(st, aggregate);
-      else if (token.equals("<"))
-        this.tupleStore.parseURI(st, aggregate);
-      else if (token.equals("\""))
-        this.tupleStore.parseAtom(st, aggregate);
-      else if (token.equals(" "))  // keep on parsing ...
-        continue;
-      else if (token.equals("="))  // the separator
-        aggregate.add(token);
-      else if (token.equals("&")) {  // a new aggregate is going to start
-        aggregateClauses.add(aggregate);
-        aggregate = new ArrayList<String>();
-      } else { // an aggregate symbol
-        //I do not check whether this is a legal Java class name
-        try {
-          Class.forName("de.dfki.lt.hfc.aggregates." + token);
-        } catch (ClassNotFoundException var7) {
-          throw new QueryParseException(token + " is not a valid aggregate operator.");
-        }
-        aggregate.add(token);
-      }
-    }
-    if (!aggregate.isEmpty())
-      aggregateClauses.add(aggregate);
-  }
+//   * parses the optional FILTER section of a QDL query
+//   */
+//  private void parseFilter(StringTokenizer st,
+//                           ArrayList<ArrayList<String>> filterClauses,
+//                           HashSet<String> foundVars) throws QueryParseException {
+//    // first token is guaranteed to be "FILTER"--get rid of it
+//    st.nextToken();
+//    String token, var;
+//    ArrayList<String> constraint = new ArrayList<String>();
+//    while (st.hasMoreTokens()) {
+//      token = st.nextToken();
+//      if (token.equals("&")) {
+//        filterClauses.add(constraint);
+//        constraint = new ArrayList<String>();
+//      } else if (token.equals("?")) {
+//        var = TupleStore.parseVariable(st, constraint);
+//        // check whether filter vars are definitely used in where vars
+//        if (!foundVars.contains(var))
+//          throw new QueryParseException("  filter variable not contained in WHERE: " + var);
+//      } else if (token.equals("<"))
+//        this.tupleStore.parseURI(st, constraint);
+//      else if (token.equals("\""))
+//        this.tupleStore.parseAtom(st, constraint);
+//      else if (token.equals(" ") || token.equals("!="))  // keep on parsing ...
+//        continue;
+//        // break if (optional) AGGREGATE is found
+//      else if (token.toUpperCase().equals("AGGREGATE"))
+//        break;
+//      else { // a predicate symbol
+//        // check whether this is a legal Java class name
+//        try {
+//          Class.forName("de.dfki.lt.hfc.operators." + token);
+//        } catch (ClassNotFoundException var8) {
+//          throw new QueryParseException(token + " is not a valid constraint.");
+//        }
+//        constraint.add(token);
+//      }
+//    }
+//    // since last clause is usually not followed by the '&' character,
+//    // we need to check this by testing whether constraint is not empty
+//    if (!constraint.isEmpty())
+//      filterClauses.add(constraint);
+//  }
+//
+//  /**
+//   * parses the optional AGGREGATE section of a QDL query
+//   */
+//  private void parseAggregate(StringTokenizer st,
+//                              ArrayList<ArrayList<String>> aggregateClauses) throws QueryParseException {
+//    // first token is guaranteed to be "AGGREGATE"--get rid of it
+//    st.nextToken();
+//    String token, var;
+//    ArrayList<String> aggregate = new ArrayList<String>();
+//    while (st.hasMoreTokens()) {
+//      token = st.nextToken();
+//      if (token.equals("?"))
+//        var = TupleStore.parseVariable(st, aggregate);
+//      else if (token.equals("<"))
+//        this.tupleStore.parseURI(st, aggregate);
+//      else if (token.equals("\""))
+//        this.tupleStore.parseAtom(st, aggregate);
+//      else if (token.equals(" "))  // keep on parsing ...
+//        continue;
+//      else if (token.equals("="))  // the separator
+//        aggregate.add(token);
+//      else if (token.equals("&")) {  // a new aggregate is going to start
+//        aggregateClauses.add(aggregate);
+//        aggregate = new ArrayList<String>();
+//      } else { // an aggregate symbol
+//        //I do not check whether this is a legal Java class name
+//        try {
+//          Class.forName("de.dfki.lt.hfc.aggregates." + token);
+//        } catch (ClassNotFoundException var7) {
+//          throw new QueryParseException(token + " is not a valid aggregate operator.");
+//        }
+//        aggregate.add(token);
+//      }
+//    }
+//    if (!aggregate.isEmpty())
+//      aggregateClauses.add(aggregate);
+//  }
 
   /**
    * maps surface WHERE form to internal representation. Further handles the internalization of
@@ -516,7 +517,7 @@ public class Query {
           // a constant: check whether elem is known to the tuple store;
           // also handle uri-to-proxy mapping here
           if (this.tupleStore.isConstant(elem)) {
-            clause.add(this.tupleStore.objectToId.get(elem));
+            clause.add(this.tupleStore.putObject(elem));
             if (this.tupleStore.equivalenceClassReduction) {
               clause
                       .set(clause.size() - 1,
@@ -540,8 +541,8 @@ public class Query {
             // other options: (i) throw a special exception  or (ii) an empty binding table
             // we _now_ opt for the empty binding table in method query()
             if (tupleStore.isAtom(wc.get(i))) {
-              tupleStore.putObject(elem);
-              clause.add(this.tupleStore.objectToId.get(elem));
+              //tupleStore.putObject(elem);
+              clause.add(this.tupleStore.putObject(elem));
             } else {
               return Collections.EMPTY_LIST;
             }
@@ -606,7 +607,7 @@ public class Query {
             args.add(nameToId.get(next));
           else {
             if (this.tupleStore.isConstant(next)) {
-              id = this.tupleStore.objectToId.get(next);
+              id = this.tupleStore.putObject(next);
               // uri-to-proxy mapping, if necessary
               if (this.tupleStore.equivalenceClassReduction)
                 id = this.tupleStore.getProxy(id);
@@ -617,7 +618,7 @@ public class Query {
               if (verbose)
                 logger.info("  unknown constant in FILTER predicate: " + next + "\n");
               this.tupleStore.putObject(next);
-              id = this.tupleStore.objectToId.get(next);
+              id = this.tupleStore.putObject(next);
               args.add(id);
             }
           }
@@ -636,7 +637,7 @@ public class Query {
           varconstIneqs.add(nameToId.get(first));
           // next might not be known to the tuple store
           if (this.tupleStore.isConstant(next)) {
-            id = this.tupleStore.objectToId.get(next);
+            id = this.tupleStore.putObject(next);
             // uri-to-proxy mapping, if necessary
             if (this.tupleStore.equivalenceClassReduction)
               id = this.tupleStore.getProxy(id);
@@ -646,8 +647,8 @@ public class Query {
             //throw new QueryParseException("  unknown constant in in-eq constraint: " + next);
             if (verbose)
               logger.info("  unknown constant in FILTER in-eq constraint: " + next + "\n");
-            this.tupleStore.putObject(next);
-            id = this.tupleStore.objectToId.get(next);
+//            this.tupleStore.putObject(next);
+            id = this.tupleStore.putObject(next);
             varconstIneqs.add(id);
           }
         }
@@ -718,7 +719,7 @@ public class Query {
         // a constant
         else {
           if (this.tupleStore.isConstant(elem)) {
-            id = this.tupleStore.objectToId.get(elem);
+            id = this.tupleStore.putObject(elem);
             // uri-to-proxy mapping, if necessary
             if (this.tupleStore.equivalenceClassReduction)
               id = this.tupleStore.getProxy(id);
@@ -728,8 +729,8 @@ public class Query {
             //throw new QueryParseException("  unknown constant in aggregate: " + elem);
             if (verbose)
               logger.info("  unknown constant in AGGREGATE function: " + elem + "\n");
-            this.tupleStore.putObject(elem);
-            id = this.tupleStore.objectToId.get(elem);
+            //this.tupleStore.putObject(elem);
+            id = this.tupleStore.putObject(elem);
             args[i - eqpos - 2] = id;
           }
         }
