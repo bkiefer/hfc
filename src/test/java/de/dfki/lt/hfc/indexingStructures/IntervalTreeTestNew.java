@@ -109,7 +109,7 @@ public class IntervalTreeTestNew extends IndexStructureTest {
         Set<int[]> val2 = iTree.findOverlapping(new Interval(start, end));
         if (!((val1 == null) && (val2 == null)))
             if (!val1.equals(val2)) {
-                throw new IndexingException("Error in validateSearch(): Failed to compare value for keys = " + start.toString(true) + " and " + end.toString(true));
+                throw new IndexingException("Error in validateSearch(): Failed to compare value for keys = " + start.toString() + " and " + end.toString());
             }
     }
 
@@ -140,7 +140,7 @@ public class IntervalTreeTestNew extends IndexStructureTest {
         Set<int[]> val2 = iTree.findWithEquality(new Interval(start, end), startEqual, endEqual);
         if (!((val1 == null) && (val2 == null)))
             if (!val1.equals(val2)) {
-                throw new IndexingException("Error in validateSearch(): Failed to compare value for keys = " + start.toString(true) + " and " + end.toString(true));
+                throw new IndexingException("Error in validateSearch(): Failed to compare value for keys = " + start.toString() + " and " + end.toString());
             }
     }
 
@@ -155,7 +155,7 @@ public class IntervalTreeTestNew extends IndexStructureTest {
         Set<int[]> val2 = iTree.findIntervalsContaining(new Interval(start, end), false, false);
         if (!((val1 == null) && (val2 == null)))
         if (!val1.equals(val2)) {
-            throw new IndexingException("Error in validateSearch(): Failed to compare value for keys = " + start.toString(true) + " and " + end.toString(true));
+            throw new IndexingException("Error in validateSearch(): Failed to compare value for keys = " + start.toString() + " and " + end.toString());
         }
     }
 

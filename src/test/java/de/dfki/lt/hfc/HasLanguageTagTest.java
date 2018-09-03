@@ -34,10 +34,10 @@ public final class HasLanguageTagTest {
     // store values in TupleStore, save integer-key in database
     int[] args = new int[4];
 
-    args[0] = store.putObject((new XsdString("as string")).toString(true));
-    args[1] = store.putObject((new XsdString("\"a string\"^^xsd:string")).toString(true));
-    args[2] = store.putObject((new XsdString("\"a string\"@en")).toString(true));
-    args[3] = store.putObject((new XsdString("en")).toString(true));
+    args[0] = store.putObject((new XsdString("as string")).toString());
+    args[1] = store.putObject((new XsdString("\"a string\"^^xsd:string")).toString());
+    args[2] = store.putObject((new XsdString("\"a string\"@en")).toString());
+    args[3] = store.putObject((new XsdString("en")).toString());
 
     // do operation
     assertEquals(FunctionalOperator.FALSE,

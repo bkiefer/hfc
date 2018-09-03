@@ -177,7 +177,7 @@ public class Hfc {
 //  }
 
   private int getSymbolId(String symbol) {
-    int id = _tupleStore.putObject(myNormalizeNamespaces(symbol));
+    int id = _tupleStore.putObject(symbol);
     if (_tupleStore.equivalenceClassReduction) {
       id = _tupleStore.getProxy(id);
     }

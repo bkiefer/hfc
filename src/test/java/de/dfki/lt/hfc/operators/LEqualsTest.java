@@ -20,9 +20,9 @@ public class LEqualsTest {
   @BeforeClass
   public static void init() throws FileNotFoundException, WrongFormatException, IOException {
     Namespace ns = Namespace.defaultNamespace();
-    ns.putForm("logic", "http://www.dfki.de/lt/onto/common/logic.owl#", ns.shortIsDefault);
-    ns.putForm("dom", "http://www.dfki.de/lt/onto/pal/domain.owl#", ns.shortIsDefault);
-    ns.putForm("pal", "http://www.dfki.de/lt/onto/pal/pal.owl#",ns.shortIsDefault);
+    ns.putForm("logic", "http://www.dfki.de/lt/onto/common/logic.owl#", ns.isShortIsDefault());
+    ns.putForm("dom", "http://www.dfki.de/lt/onto/pal/domain.owl#", ns.isShortIsDefault());
+    ns.putForm("pal", "http://www.dfki.de/lt/onto/pal/pal.owl#",ns.isShortIsDefault());
     Config config = Config.getDefaultConfig();
     config.namespace = ns;
     config.verbose = false;

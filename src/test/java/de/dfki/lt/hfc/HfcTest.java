@@ -27,7 +27,7 @@ public class HfcTest {
         "<rdf:type>",
     };
     for (int i = 0; i < in.length; ++i) {
-      assertEquals(exp[i], exp[i], hfc.myNormalizeNamespaces(in[i]));
+      assertEquals(exp[i], exp[i], in[i]);
     }
   }
 

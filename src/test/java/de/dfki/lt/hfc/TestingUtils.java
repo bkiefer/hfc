@@ -127,7 +127,7 @@ public class TestingUtils {
       String[] res = new String[in.length];
       int i = 0;
       for (int sym : in) {
-        String name = _ts.getObject(sym).toString(_ts.namespace.shortIsDefault);
+        String name = _ts.getObject(sym).toString();
         res[i++] = name;
       }
       return res;

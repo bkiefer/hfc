@@ -102,9 +102,9 @@ public class TupleStoreTest {
         TupleStore objectfortest = new TupleStore(Config.getInstance(getTestResource("Empty.yml")));
         int id = objectfortest.putObject("www.bbc.com");
         assertFalse(objectfortest.getObject(5) == null);
-        assertEquals("\"www.bbc.com\"^^<xsd:string>", objectfortest.getObject(id).toString(objectfortest.namespace.shortIsDefault));
+        assertEquals("\"www.bbc.com\"^^<xsd:string>", objectfortest.getObject(id).toString()); //TODO was objectfortest.namespace.shortIsDefault before
         assertFalse(objectfortest.putObject("?") == 0);
-        assertEquals("\"?\"^^<xsd:string>", objectfortest.getObject(7).toString(objectfortest.namespace.shortIsDefault));
+        assertEquals("\"?\"^^<xsd:string>", objectfortest.getObject(7).toString()); //TODO was objectfortest.namespace.shortIsDefault before
         assertEquals("?-100", objectfortest.getObject(-100), new Variable("?-100"));
     }
 
@@ -119,7 +119,7 @@ public class TupleStoreTest {
     @Test
     public void testregisterJavaObject() throws IOException, WrongFormatException {
         TupleStore objecttotest = new TupleStore(Config.getInstance(getTestResource("Empty.yml")));
-        assertEquals(objecttotest.registerJavaObject(new Uri("www.bbc.com")), 6);
+        assertEquals(objecttotest.registerJavaObject(new Uri("www.bbc.com", Namespace.TEST)), 6);
     }
 
     @Test

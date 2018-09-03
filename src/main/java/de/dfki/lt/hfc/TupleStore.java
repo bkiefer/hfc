@@ -1413,7 +1413,7 @@ public final class TupleStore {
         break;
       else
         // normalize the namespace
-        sb.append(this.namespace.normalizeNamespaceUri(token));
+        sb.append(token); //TODO removed normalizeNamespace call
     }
     token = sb.append(">").toString();
     tuple.add(token);
@@ -1471,7 +1471,7 @@ public final class TupleStore {
         bareAtom = false;
         if (!(token.equals("^^") || token.equals("<") || token.equals(">")))
           // normalize namespace
-          token = this.namespace.normalizeNamespaceUri(token);
+          token = token; //TODO removed normalizeNamespace call
         sb.append(token);
       }
     }
@@ -1643,11 +1643,8 @@ public final class TupleStore {
   }
 
   private boolean isInFactBase(String literal){
-    for(AnyType t : objectToId.keySet()){
-      if(t.toString(false).equals(literal) || t.toString(true).equals(literal))
-        return true;
-    }
-    return false;
+    AnyType t = makeJavaObject(literal);
+    return this.objectToId.containsKey(t);
   }
 
   /**

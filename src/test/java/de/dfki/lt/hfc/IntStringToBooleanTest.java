@@ -21,7 +21,7 @@ public final class IntStringToBooleanTest {
 
     // load Namespace
     Namespace namespace = Namespace.defaultNamespace();
-    namespace.shortIsDefault = true;
+    namespace.setShortIsDefault(true);
 
     // create TupleStore
     TupleStore store =
@@ -37,18 +37,18 @@ public final class IntStringToBooleanTest {
     int[] args = new int[9];
     int[] bools = new int[2];
 
-    args[0] = store.putObject((new XsdString("0")).toString(true));
-    args[1] = store.putObject((new XsdString("1")).toString(true));
-    args[2] = store.putObject((new XsdString("true")).toString(true));
-    args[3] = store.putObject((new XsdString("false")).toString(true));
-    args[4] = store.putObject((new XsdString("True")).toString(true));
-    args[5] = store.putObject((new XsdString("False")).toString(true));
-    args[6] = store.putObject((new XsdString("TRUE")).toString(true));
-    args[7] = store.putObject((new XsdString("FALSE")).toString(true));
-    args[8] = store.putObject((new XsdString("2")).toString(true));
+    args[0] = store.putObject((new XsdString("0")).toString());
+    args[1] = store.putObject((new XsdString("1")).toString());
+    args[2] = store.putObject((new XsdString("true")).toString());
+    args[3] = store.putObject((new XsdString("false")).toString());
+    args[4] = store.putObject((new XsdString("True")).toString());
+    args[5] = store.putObject((new XsdString("False")).toString());
+    args[6] = store.putObject((new XsdString("TRUE")).toString());
+    args[7] = store.putObject((new XsdString("FALSE")).toString());
+    args[8] = store.putObject((new XsdString("2")).toString());
 
-    bools[0] = store.putObject((new XsdBoolean(false)).toString(true));
-    bools[1] = store.putObject((new XsdBoolean(true)).toString(true));
+    bools[0] = store.putObject((new XsdBoolean(false)).toString());
+    bools[1] = store.putObject((new XsdBoolean(true)).toString());
 
 
     // do operation

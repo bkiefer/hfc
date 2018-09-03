@@ -34,15 +34,15 @@ public final class SContainsTest {
     // store values in TupleStore, save integer-key in database
     int[] args = new int[8];
 
-    args[0] = store.putObject((new XsdString("foo")).toString(true));
-    args[1] = store.putObject((new XsdString("bar")).toString(true));
-    args[2] = store.putObject((new XsdString("föö")).toString(true));
-    args[3] = store.putObject((new XsdString("bär")).toString(true));
+    args[0] = store.putObject((new XsdString("foo")).toString());
+    args[1] = store.putObject((new XsdString("bar")).toString());
+    args[2] = store.putObject((new XsdString("föö")).toString());
+    args[3] = store.putObject((new XsdString("bär")).toString());
 
-    args[4] = store.putObject((new XsdString("foobar")).toString(true));
-    args[5] = store.putObject((new XsdString("foobarföö")).toString(true));
-    args[6] = store.putObject((new XsdString("foobarfööbär")).toString(true));
-    args[7] = store.putObject((new XsdString("xsd")).toString(true));
+    args[4] = store.putObject((new XsdString("foobar")).toString());
+    args[5] = store.putObject((new XsdString("foobarföö")).toString());
+    args[6] = store.putObject((new XsdString("foobarfööbär")).toString());
+    args[7] = store.putObject((new XsdString("xsd")).toString());
 
     // do operation
     assertEquals(FunctionalOperator.FALSE, fop.apply(new int[]{args[4], args[2]}));
