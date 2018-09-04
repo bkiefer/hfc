@@ -441,7 +441,6 @@ public class BindingTableIteratorTest {
 
     BindingTable bt = q.query("SELECT ?p WHERE ?s ?p ?o AGGREGATE ?number = CountDistinct ?p & ?subject = Identity ?p");
     BindingTableIterator it = bt.iterator("?number", "?subject");
-    //printNext(it, new NextAsHfcCall());
     check(it, expected, new NextAsHfcCall());
   }
 

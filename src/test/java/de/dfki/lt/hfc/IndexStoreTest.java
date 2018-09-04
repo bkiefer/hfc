@@ -5,6 +5,7 @@ import de.dfki.lt.hfc.indices.BTreeIndex;
 import de.dfki.lt.hfc.indices.IntervalTreeIndex;
 import de.dfki.lt.hfc.qrelations.AllenEqual;
 import de.dfki.lt.hfc.qrelations.QRelation;
+import de.dfki.lt.hfc.types.AnyType;
 import de.dfki.lt.hfc.types.XsdDate;
 import org.junit.Before;
 import org.junit.Test;

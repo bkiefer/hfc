@@ -60,19 +60,20 @@ public final class Namespace {
 
   // SHORT and LONG namespace for XSD, RDF, RDFS, OWL (1.0), OWL 1.1
 
-  public static final NamespaceObject XSD = new NamespaceObject("xsd","http://www.w3.org/2001/XMLSchema#",false);
-  public static final NamespaceObject RDF = new NamespaceObject("rdf","http://www.w3.org/1999/02/22-rdf-syntax-ns#",false);
-  public static final NamespaceObject RDFS = new NamespaceObject("rdfs","http://www.w3.org/2000/01/rdf-schema#",false);
-  public static final NamespaceObject OWL = new NamespaceObject("owl","http://www.w3.org/2002/07/owl#", false );
-  public static final NamespaceObject TEST = new NamespaceObject("test","http://www.dfki.de/lt/onto/test.owl", false );
+  public static final NamespaceObject XSD = new NamespaceObject("xsd", "http://www.w3.org/2001/XMLSchema#", false);
+  public static final NamespaceObject RDF = new NamespaceObject("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#", false);
+  public static final NamespaceObject RDFS = new NamespaceObject("rdfs", "http://www.w3.org/2000/01/rdf-schema#", false);
+  public static final NamespaceObject OWL = new NamespaceObject("owl", "http://www.w3.org/2002/07/owl#", false);
+  public static final NamespaceObject TEST = new NamespaceObject("test", "http://www.dfki.de/lt/onto/test.owl", false);
+  public static final NamespaceObject EMPTY = new NamespaceObject("", "", false);
   public static final String RDF_TYPE_SHORT = "<rdf:type>";
   public static final String RDF_TYPE_LONG = "<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>";
 
   // special value UNBOUND/NULL, not used at the moment
-  public static final AnyType UNBOUND = new Uri("NULL", null);
+  public static final AnyType UNBOUND = new Uri("NULL", EMPTY);
   public static final int UNBOUND_ID = 0;
   // RDFS: subClassOf
-  public static final AnyType RDFS_SUBCLASSOF_SHORT = new Uri("subClassOf",RDFS);
+  public static final AnyType RDFS_SUBCLASSOF_SHORT = new Uri("subClassOf", RDFS);
   public static final int RDFS_SUBCLASSOF_ID = 1;
   // OWL: sameAs, equivalentClass, equivalentProperty, disjointWith
   public static final Uri OWL_SAMEAS_SHORT = new Uri("sameAs", OWL);
@@ -97,40 +98,34 @@ public final class Namespace {
    * namespace strings
    */
   public HashMap<String, NamespaceObject> longToNs = new HashMap<String, NamespaceObject>();
+  private boolean shortIsDefault = false;
+  private HashSet<NamespaceObject> allNamespaces = new HashSet<>();
+
+  public Namespace() {
+    shortIsDefault = true;
+    addNamespace(EMPTY);
+    addNamespace(XSD);
+    addNamespace(OWL);
+    addNamespace(RDF);
+    addNamespace(RDFS);
+    addNamespace(TEST);
+  }
 
   public boolean isShortIsDefault() {
     return shortIsDefault;
   }
 
   public void setShortIsDefault(boolean shortIsDefault) {
+//    System.out.println("Set short is default: " + shortIsDefault);
     this.shortIsDefault = shortIsDefault;
-    for(NamespaceObject ns : shortToNs.values()){
+    for (NamespaceObject ns : shortToNs.values()) {
       ns.setIsShort(this.shortIsDefault);
     }
-    if(shortToNs.size() != longToNs.size())
-      for(NamespaceObject ns : shortToNs.values()){
+    if (shortToNs.size() != longToNs.size())
+      for (NamespaceObject ns : shortToNs.values()) {
         ns.setIsShort(this.shortIsDefault);
       }
-  }
-
-  private boolean shortIsDefault = false;
-  private HashSet<NamespaceObject> allNamespaces = new HashSet<>();
-
-  /**
-   * @return
-   * @deprecated for test only
-   */
-  @Deprecated
-  public static Namespace defaultNamespace() {
-    Namespace namespace = new Namespace();
-    namespace.shortIsDefault = true;
-    namespace.addNamespace(XSD);
-    namespace.addNamespace(OWL);
-    namespace.addNamespace(RDF);
-    namespace.addNamespace(RDFS);
-    namespace.addNamespace(TEST);
-
-    return namespace;
+//    System.out.println(XSD.isShort());
   }
 
   /**
@@ -148,7 +143,7 @@ public final class Namespace {
    * adds a new mapping to the namespace
    */
   public void putForm(String shortForm, String longForm, boolean shortIsDefault) {
-    if(shortToNs.containsKey(shortForm))
+    if (shortToNs.containsKey(shortForm))
       shortToNs.get(shortForm).setIsShort(shortIsDefault);
     else if (longToNs.containsKey(longForm))
       longToNs.get(longForm).setIsShort(shortIsDefault);
@@ -174,69 +169,6 @@ public final class Namespace {
     return this.shortToNs.get(shortForm).LONG_NAMESPACE;
   }
 
-//  /**
-//   * normalizeNamespaceUri() takes a URI (without '<' and '>') and normalizes the
-//   * namespace depending on global Namespace.shortIsDefault;
-//   * if shortIsDefault == true, normalizeNamespaceUri() tries to replace long forms
-//   * by their short forms;
-//   * if shortIsDefault == false, normalizeNamespaceUri() tries to replace short forms
-//   * by their long forms
-//   */
-//  public String normalizeNamespaceUri(String uri) {
-//    if (shortIsDefault) {
-//      // read characters until we find a '#'
-//      int pos = uri.indexOf("#");
-//      if (pos == -1)
-//        // URI already in short form or no type info but instead a language tag
-//        return uri;
-//      String prefix = uri.substring(0, pos + 1);
-//      String suffix = uri.substring(pos + 1);
-//      String expansion = longToNs.get(prefix).SHORT_NAMESPACE;
-//      if (expansion == null)
-//        // there is no namespace mapping
-//        return uri;
-//      else
-//        return expansion + ":" + suffix;
-//    } else {
-//      // read characters until we find a ':'
-//      int pos = uri.indexOf(":");
-//      if (pos == -1)
-//        // URI already in long form or no type info but instead a language tag
-//        return uri;
-//      String prefix = uri.substring(0, pos);
-//      String suffix = uri.substring(pos + 1);
-//      String expansion = shortToNs.get(prefix).LONG_NAMESPACE;
-//      if (expansion == null)
-//        // there is no namespace maping
-//        return uri;
-//      else
-//        return expansion + suffix;
-//    }
-//  }
-//
-//  /**
-//   * normalizeNamespace() not only normalizes the the namespace name of an URI,
-//   * but also looks at the type specification of an XSD atom (again, a URI);
-//   * thanks Bernd
-//   */
-//  public String normalizeNamespace(String s) {
-//    switch (s.charAt(0)) {
-//      case '<':
-//        return '<'
-//                + normalizeNamespaceUri(
-//                s.substring(1, s.length() - 1))
-//                + '>';
-//      case '"':
-//        // Atom, possibly with long xsd type spec
-//        int pos = s.lastIndexOf('^');
-//        if (pos > 0 && s.charAt(pos - 1) == '^') {
-//          return s.substring(0, pos + 2)
-//                  + normalizeNamespaceUri(s.substring(pos + 2, s.length() - 1))
-//                  + '>';
-//        }
-//    }
-//    return s;
-//  }
 
   /**
    * this method borrows code from normalizeNamespace() above and always tries to fully
@@ -277,23 +209,39 @@ public final class Namespace {
   }
 
 
-  public NamespaceObject seperateNSfromURI(String literal) {
-    NamespaceObject ns;
-    // get rid of <>
+  public String[] seperateNSfromURI(String literal) { //TODO verschoenern
     String namespace;
-
     int pos = literal.indexOf("#");
     //uri must be in short form
-    if(pos== -1){
-      namespace = literal.substring(0, pos+1);
-      ns = longToNs.get(namespace);
-      literal = literal.substring(pos+1, literal.length()-1);
-    } else {//uri must be in short form
-      pos  = literal.indexOf(":");
-      namespace = literal.substring(0, pos);
-      ns = shortToNs.get(namespace);
-      literal = literal.substring(pos+1, literal.length()-1);
+    if (pos != -1) {
+      // get rid of <>
+      namespace = literal.substring(1, pos + 1);
+      literal = literal.substring(pos + 1, literal.length() - 1);
+    } else {
+      //uri should be in short form or have no namespace at all.
+      pos = literal.indexOf(":");
+      // check for empty namespace
+      if (pos < 0) {
+        pos = 0;
+        namespace = "";
+      } else {
+        namespace = literal.substring(1, pos);
+        if (namespace.equals("http")) {
+          pos = 0;
+          namespace = "";
+        }
+      }
+      literal = literal.substring(pos + 1, literal.length() - 1);
     }
-    return ns;
+    return new String[]{namespace, literal};
+  }
+
+  public NamespaceObject getNamespaceObject(String namespaceString) {
+    if (shortToNs.containsKey(namespaceString))
+      return shortToNs.get(namespaceString);
+    else if (longToNs.containsKey(namespaceString))
+      return longToNs.get(namespaceString);
+    else // we encountered an unknown namespace
+      throw new IllegalArgumentException("Unknown Namespace " + namespaceString);
   }
 }

@@ -26,6 +26,7 @@ public class QueryTest_LookupTimeCombi {
 
     fc = new ForwardChainer(Config.getInstance(getResource("TimeCombi.yml")));
 
+
     // compute deductive closure
     // TODO move this into extra tests -> fcInterval.computeClosure();
   }

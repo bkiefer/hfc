@@ -39,6 +39,6 @@ public class NamespaceObject {
   }
 
   public String toString() {
-    return isShort ? SHORT_NAMESPACE : LONG_NAMESPACE;
+    return isShort ? SHORT_NAMESPACE + ":" : LONG_NAMESPACE;
   }
 }

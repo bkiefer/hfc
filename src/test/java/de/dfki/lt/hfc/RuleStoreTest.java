@@ -86,7 +86,7 @@ public class RuleStoreTest {
 
   @Test
   public void testcopyRuleStore() throws FileNotFoundException, WrongFormatException, IOException {
-    Namespace namespace = Namespace.defaultNamespace();
+    Namespace namespace = new Namespace();
     //TupleStore tupleStore = new TupleStore(2, 4);
     TupleStore ts = new TupleStore(false, true, false, 2, 5,0,1,2, 4, 2, namespace, getTestResource("default.nt"));
     RuleStore rs = new RuleStore(Config.getDefaultConfig(),ts);

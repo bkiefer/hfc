@@ -19,7 +19,7 @@ public final class DTLessTest {
       WrongFormatException, IOException, InterruptedException {
 
     // load Namespace
-    Namespace namespace = Namespace.defaultNamespace();;
+    Namespace namespace = new Namespace();;
 
     // create TupleStore
     TupleStore store =

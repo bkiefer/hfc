@@ -23,9 +23,7 @@ public class QueryTest_AllenRelations {
     public static void init() throws Exception {
 
         fcInterval =  new ForwardChainer(Config.getInstance(getResource("lookupIntervalTestIndex.yml")) );
-
         fcNoIndex = new ForwardChainer(Config.getInstance(getResource("lookupIntervalTestNoIndex.yml")) );
-
 
 
     }

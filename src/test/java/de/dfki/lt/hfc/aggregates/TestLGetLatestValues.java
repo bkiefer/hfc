@@ -43,6 +43,8 @@ public class TestLGetLatestValues {
 
     // forward chainer actually not needed -- tuple store and query object would suffice !
     fc =	new ForwardChainer(Config.getDefaultConfig());
+    fc.tupleStore.namespace.putForm("pal", "http://www.lt-world.org/pal.owl#", true);
+    fc.tupleStore.namespace.putForm("dom", "http://www.lt-world.org/dom.owl#", true);
 
     // manually-constructed child test data from PAL
     //   <pal:lisa> <rdf:type> <dom:Child> "5544"^^<xsd:long> .
@@ -74,7 +76,7 @@ public class TestLGetLatestValues {
         { "<dom:bmi>", "\"15.9\"^^<xsd:kg_m2>", "<pal:lisa>", "\"5544\"^^<xsd:long>" },
         { "<dom:bsl>", "\"165.6\"^^<xsd:mg_dL>", "<pal:lisa>", "\"5577\"^^<xsd:long>" },
         { "<dom:bsl>", "\"9.2\"^^<xsd:mmol_L>", "<pal:lisa>", "\"5577\"^^<xsd:long>" },
-        { "<dom:height>", "\"133\"^^<xsd:cm>", "<pal:lisa>", "\"5544\"^^<xsd:long>" },
+        { "<dom:height>", "\"133.0\"^^<xsd:cm>", "<pal:lisa>", "\"5544\"^^<xsd:long>" },
         { "<dom:hr>", "\"75.0\"^^<xsd:min-1>", "<pal:lisa>", "\"5544\"^^<xsd:long>" },
         { "<dom:weight>", "\"28.6\"^^<xsd:kg>", "<pal:lisa>", "\"5577\"^^<xsd:long>" }
     };

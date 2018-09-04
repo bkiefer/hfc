@@ -27,6 +27,7 @@ public class Uri extends AnyType {
 
   public Uri(String value, NamespaceObject ns) {
     super(ns);
+//    System.out.println(value);
     this.value = value;
   }
 
@@ -34,14 +35,18 @@ public class Uri extends AnyType {
    * NOTE: shortIsDefault can be ignored at the moment
    */
   public String toString() {
-    return this.value;
+    StringBuilder strb = new StringBuilder("<");
+    strb.append(ns.toString());
+    strb.append(this.value);
+    strb.append(">");
+    return strb.toString();
   }
 
   /**
    * omit the surrounding angle brackets
    */
   public String toName() {
-    return this.value.substring(1, this.value.length() - 1);
+    return ns.toString() + this.value;
   }
 
   /**
@@ -62,6 +67,7 @@ public class Uri extends AnyType {
     }
     return this.value.compareTo(((Uri) o).value);
   }
+
 
   @Override
   public boolean equals(Object o) {

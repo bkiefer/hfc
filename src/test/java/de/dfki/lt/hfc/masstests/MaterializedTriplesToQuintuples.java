@@ -75,7 +75,8 @@ public class MaterializedTriplesToQuintuples {
 																					 IN_FILE,
 																					 getTestResource("default.eqred.rdl")
 																					 );
-
+		fc.tupleStore.namespace.putForm("ltw", "http://www.lt-world.org/ltw.owl#", false);
+		fc.tupleStore.namespace.putForm("lt", "http://www.lt-world.org/lt.owl#", false);
 		TupleStore ts = fc.tupleStore;
 		int start, end;
 		int[] tuple;
@@ -109,7 +110,8 @@ public class MaterializedTriplesToQuintuples {
         NO_OF_TUPLES,
         OUT_FILE,
         getTestResource("default.eqred.rdl"));
-
+		fc.tupleStore.namespace.putForm("ltw", "http://www.lt-world.org/ltw.owl#", false);
+		fc.tupleStore.namespace.putForm("lt", "http://www.lt-world.org/lt.owl#", false);
 		assertEquals(tuples, fc.tupleStore.getAllTuples().size());
 
 		fc.shutdownNoExit();

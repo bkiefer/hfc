@@ -20,7 +20,7 @@ public final class IntStringToBooleanTest {
       WrongFormatException, IOException, InterruptedException {
 
     // load Namespace
-    Namespace namespace = Namespace.defaultNamespace();
+    Namespace namespace = new Namespace();
     namespace.setShortIsDefault(true);
 
     // create TupleStore

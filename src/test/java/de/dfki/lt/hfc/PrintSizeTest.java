@@ -47,7 +47,7 @@ public class PrintSizeTest {
     // TODO: FIX EXPECTED DATA
 
      // load Namespace
-    Namespace namespace = Namespace.defaultNamespace();
+    Namespace namespace = new Namespace();
 
     // create TupleStore
     TupleStore store =

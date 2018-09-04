@@ -46,7 +46,8 @@ public class TestGetEvents {
     public void init() throws Exception {
 
         fc = new ForwardChainer(Config.getDefaultConfig() );
-
+        fc.tupleStore.namespace.putForm("pal", "http://www.dfki.de/lt/onto/pal.owl#", true );
+        fc.tupleStore.namespace.putForm("dom", "http://www.dfki.de/lt/onto/dom.owl#", true);
         fc.uploadTuples(getResource("test.child.labvalues.nt"));
     }
 

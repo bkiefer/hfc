@@ -29,7 +29,6 @@ public class QueryTest_LookupAllenRelations {
 
         fc =  new ForwardChainer(Config.getInstance(getResource("LookupAllenRelation.yml")));
 
-
         // compute deductive closure
         // TODO move this into extra tests -> fcInterval.computeClosure();
     }

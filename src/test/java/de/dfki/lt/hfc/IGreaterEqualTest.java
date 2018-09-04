@@ -16,7 +16,7 @@ public final class IGreaterEqualTest {
       WrongFormatException, IOException {
 
     // load Namespace
-    Namespace namespace = Namespace.defaultNamespace();
+    Namespace namespace = new Namespace();
 
     // create TupleStore
     TupleStore store =

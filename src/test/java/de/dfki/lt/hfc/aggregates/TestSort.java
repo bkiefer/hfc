@@ -30,7 +30,8 @@ public class TestSort {
     public void init() throws Exception {
 
         fc = new ForwardChainer(Config.getDefaultConfig());
-
+        fc.tupleStore.namespace.putForm("pal", "http://www.lt-world.org/pal.owl#", true);
+        fc.tupleStore.namespace.putForm("dom", "http://www.lt-world.org/dom.owl#", true);
         fc.uploadTuples(getResource("test.child.labvalues.nt"));
     }
 

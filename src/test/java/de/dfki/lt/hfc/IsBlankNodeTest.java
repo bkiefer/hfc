@@ -23,7 +23,8 @@ public final class IsBlankNodeTest{
       WrongFormatException, IOException, InterruptedException {
 
     // load Namespace
-    Namespace namespace = Namespace.defaultNamespace();
+    Namespace namespace = new Namespace();
+    namespace.putForm("hfc", "http://www.dfki.de/lt/hfc.owl#", namespace.isShortIsDefault());
 
     // create TupleStore
     TupleStore store =

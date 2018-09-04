@@ -713,8 +713,9 @@ public final class TupleStore {
   private AnyType makeJavaObject(String literal) {
     AnyType anyType;
     if (TupleStore.isUri(literal)) {
-      NamespaceObject ns = namespace.seperateNSfromURI(literal);
-      anyType =  new Uri(literal,ns);
+      //logger.info("Processing literal {}", literal);
+      String[] ns = namespace.seperateNSfromURI(literal);
+      anyType =  new Uri(ns[1],namespace.getNamespaceObject(ns[0]));
     } else if (TupleStore.isBlankNode(literal)) {
       anyType =  new BlankNode(literal);
     } else {
@@ -1635,6 +1636,8 @@ public final class TupleStore {
     int[] internalTuple = new int[externalTuple.length];
     for (int i = 0; i < externalTuple.length; i++) {
       // check whether the external symbols are even known by the tuple store
+      if (externalTuple[i] == null)
+        return false;
       if (!isInFactBase(externalTuple[i]))
         return false;
       internalTuple[i] = putObject(externalTuple[i]);

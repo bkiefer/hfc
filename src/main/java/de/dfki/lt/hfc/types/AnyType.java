@@ -76,8 +76,6 @@ public abstract class AnyType implements Comparable {
   public abstract Object toJava();
 
 
-
-
   static class MinMaxValue extends AnyType {
 
     final boolean isMax;

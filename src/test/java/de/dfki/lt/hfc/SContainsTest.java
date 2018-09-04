@@ -19,7 +19,8 @@ public final class SContainsTest {
       WrongFormatException, IOException, InterruptedException {
 
     // load Namespace
-    Namespace namespace = Namespace.defaultNamespace();
+    Namespace namespace = new Namespace();
+    namespace.putForm("nary","http://www.lt-world.org/dom.owl#", true);
 
     // create TupleStore
     TupleStore store =

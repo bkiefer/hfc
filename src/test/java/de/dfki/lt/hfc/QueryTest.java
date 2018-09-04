@@ -29,7 +29,8 @@ public class QueryTest {
   public void setUp() throws IOException, WrongFormatException {
     Config config = Config.getDefaultConfig();
     fc =  new ForwardChainer(config);
-
+    fc.config.namespace.putForm("pal", "http://www.dfki.de/lt/onto/pal.owl#", true );
+    fc.config.namespace.putForm("dom", "http://www.dfki.de/lt/onto/dom.owl#", true);
     fc.uploadTuples(getResource("test.child.labvalues.nt"));
   }
 
