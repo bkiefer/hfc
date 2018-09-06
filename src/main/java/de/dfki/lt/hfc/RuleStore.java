@@ -619,14 +619,7 @@ public final class RuleStore {
     for (int i = 0; i < rule.inEqConstraints.size(); i++) {
       // ineqs only refer to LHS variables!
       val = rule.inEqConstraints.get(i);
-//			logger.info(rule.name);
       if (RuleStore.isVariable(val)) {
-//			    for ( int[] a : rule.ante)
-//				    logger.info("Ante:" + Arrays.toString(a));
-//			    for ( int[] c : rule.cons)
-//				    logger.info("Cons:" + Arrays.toString(c));
-//			    for (Predicate p : rule.tests)
-//				    logger.info(p.toString());
         if (!lhsVars.contains(val))
           return sayItLoud(rule.name, ": in-eq variable does not refer to LHS");
         noOfOcc.put(val, noOfOcc.get(val) + 1);
@@ -1380,7 +1373,6 @@ public final class RuleStore {
         }
       }
       if (eol) {
-        //logger.info("Read-Tuple:" + tuple.toString());
         if (tupleStore.equivalenceClassReduction) {
           // this is the place where we need to look for equivalence relation instances
           // and where we potentially need to replace individuals by their proxies
