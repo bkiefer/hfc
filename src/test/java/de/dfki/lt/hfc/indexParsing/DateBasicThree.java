@@ -53,7 +53,7 @@ public class DateBasicThree {
         assertEquals(1,fc.tupleStore.indexStore.size());
          key = new XsdDate(0,0,0);
          values = fc.tupleStore.indexStore.lookup(key);
-        assertEquals(154,values.size());
+        assertEquals(156,values.size());
     }
 
     @AfterClass

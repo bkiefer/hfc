@@ -51,7 +51,7 @@ public class ActiveSecIndex {
         assertEquals(1,fc.tupleStore.indexStore.size());
         assertEquals(1, fc.tupleStore.indexStore.secSize());
         values = fc.tupleStore.indexStore.lookup(start,end);
-        assertEquals(154,values.size());
+        assertEquals(156,values.size());
     }
 
     @AfterClass

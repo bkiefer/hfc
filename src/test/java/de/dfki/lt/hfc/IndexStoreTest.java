@@ -62,9 +62,15 @@ public class IndexStoreTest {
   public void  update_ClosureComputation() {
       fc.computeClosure();
       assertEquals(1,fc.config.indexStore.getPrimIndex().size());
-      assertEquals(154,fc.config.indexStore.lookup(new XsdDate(0,0,0)).size());
+      Set<int[]> res = fc.config.indexStore.lookup(new XsdDate(0,0,0));
+      int c = 0;
+      for (int[] i : res){
+        System.out.println(c++ + ": " + Arrays.toString(i));
+        System.out.println("ext: " + fc.tupleStore.toExpandedString(i));
+      }
+      assertEquals(156,fc.config.indexStore.lookup(new XsdDate(0,0,0)).size());
       assertEquals(1,fc.config.indexStore.getSecIndex().size());
-      assertEquals(154,fc.config.indexStore.lookup(new XsdDate(0,0,1),new XsdDate(0,0,2)).size());
+      assertEquals(156,fc.config.indexStore.lookup(new XsdDate(0,0,1),new XsdDate(0,0,2)).size());
   }
 
   @Test

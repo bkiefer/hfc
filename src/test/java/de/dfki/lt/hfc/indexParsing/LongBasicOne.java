@@ -51,7 +51,7 @@ public class LongBasicOne {
         assertEquals(1,fc.tupleStore.indexStore.size());
         key = new XsdLong(0L);
         values = fc.tupleStore.indexStore.lookup(key);
-        assertEquals(154,values.size());
+        assertEquals(156,values.size());
         //for ( int[] t : values)
         //    System.out.println(Arrays.toString(t));
     }

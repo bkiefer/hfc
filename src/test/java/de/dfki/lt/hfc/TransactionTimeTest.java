@@ -71,8 +71,8 @@ public class TransactionTimeTest {
     assertEquals(0, bt.size());
     bt = q.query("SELECT * WHERE ?s ?p ?o ?ts");  // 0 quadruples
     assertEquals(0, bt.size());
-    bt = q.query("SELECT * WHERE ?pol ?s ?p ?o ?ts");  // 4057 quintuples
-    assertEquals(4057, bt.size());
+    bt = q.query("SELECT * WHERE ?pol ?s ?p ?o ?ts");  // 4218 quintuples
+    assertEquals(4218, bt.size());
     bt = q.query("SELECT * WHERE ?pol ?s <owl:equivalentClass> ?o ?ts");  // 2 result quadruples
     assertEquals(2, bt.size());
     bt = q.query("SELECTALL * WHERE ?pol ?s <owl:equivalentClass> ?o ?ts");  // 25 result quadruples
