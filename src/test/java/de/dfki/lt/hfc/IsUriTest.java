@@ -22,8 +22,8 @@ public final class IsUriTest{
   public void testcleanUpTuple() throws FileNotFoundException,
       WrongFormatException, IOException, InterruptedException {
 
-    // load Namespace
-    Namespace namespace = new Namespace();
+    // load NamespaceManager
+    NamespaceManager namespace = NamespaceManager.getInstance();
 
     // create TupleStore
     TupleStore store =
@@ -41,7 +41,7 @@ public final class IsUriTest{
     args[0] = store.putObject((new XsdString("0")).toString());
     args[1] = store.putObject((new XsdInt(1)).toString());
     args[2] = store.putObject((new XsdBoolean(false)).toString());
-    args[3] = store.putObject((new Uri("<rdf:type>", Namespace.RDF)).toString());
+    args[3] = store.putObject((new Uri("<rdf:type>", NamespaceManager.RDF)).toString());
     args[4] = store.putObject((new BlankNode("_blank")).toString());
 
     // do operation

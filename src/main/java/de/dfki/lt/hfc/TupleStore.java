@@ -165,7 +165,7 @@ public final class TupleStore {
   /**
    * a namespace object used to expand short form namespaces into full forms
    */
-  public Namespace namespace;
+  public NamespaceManager namespace;
   /**
    * used during input, when URIs, blank nodes, or XSD atoms are replaced by their IDs (ints)
    */
@@ -314,7 +314,7 @@ public final class TupleStore {
                     int minNoOfArgs, int maxNoOfArgs,
                     int subjectPosition, int predicatePosition, int objectPosition,
                     int noOfAtoms, int noOfTuples,
-                    Namespace namespace, String tupleFile)
+                    NamespaceManager namespace, String tupleFile)
           throws FileNotFoundException, IOException, WrongFormatException {
     this.namespace = namespace;
     this.indexStore = null;
@@ -327,7 +327,7 @@ public final class TupleStore {
   /**
    * assumes a default of 100,000 atoms and 500,000 tuples
    */
-  public TupleStore(Namespace namespace) {
+  public TupleStore(NamespaceManager namespace) {
     this.namespace = namespace;
     this.indexStore = null;
     init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
@@ -344,7 +344,7 @@ public final class TupleStore {
    * @throws FileNotFoundException
    * @throws WrongFormatException
    */
-  public TupleStore(Namespace namespace, String tupleFile)
+  public TupleStore(NamespaceManager namespace, String tupleFile)
           throws FileNotFoundException, IOException, WrongFormatException {
     this(namespace);
     readTuples(tupleFile);
@@ -480,25 +480,25 @@ public final class TupleStore {
    * owl:disjointWith : 5
    */
   private void initializeUriMappings() {
-    this.objectToId.put(Namespace.UNBOUND, Namespace.UNBOUND_ID);
-    //this.idToObject.add(Namespace.UNBOUND);
-    this.idToJavaObject.add(Namespace.UNBOUND);
+    this.objectToId.put(NamespaceManager.UNBOUND, NamespaceManager.UNBOUND_ID);
+    //this.idToObject.add(NamespaceManager.UNBOUND);
+    this.idToJavaObject.add(NamespaceManager.UNBOUND);
     // maybe make this more flexible by moving this information to a file
-      this.objectToId.put(Namespace.RDFS_SUBCLASSOF_SHORT, Namespace.RDFS_SUBCLASSOF_ID);
-      //this.idToObject.add(Namespace.RDFS_SUBCLASSOF_SHORT);
-      this.idToJavaObject.add(Namespace.RDFS_SUBCLASSOF_SHORT);
-      this.objectToId.put(Namespace.OWL_SAMEAS_SHORT, Namespace.OWL_SAMEAS_ID);
-      //this.idToObject.add(Namespace.OWL_SAMEAS_SHORT);
-      this.idToJavaObject.add(Namespace.OWL_SAMEAS_SHORT);
-      this.objectToId.put(Namespace.OWL_EQUIVALENTCLASS_SHORT, Namespace.OWL_EQUIVALENTCLASS_ID);
-      //this.idToObject.add(Namespace.OWL_EQUIVALENTCLASS_SHORT);
-      this.idToJavaObject.add(Namespace.OWL_EQUIVALENTCLASS_SHORT);
-      this.objectToId.put(Namespace.OWL_EQUIVALENTPROPERTY_SHORT, Namespace.OWL_EQUIVALENTPROPERTY_ID);
-      //this.idToObject.add(Namespace.OWL_EQUIVALENTPROPERTY_SHORT);
-      this.idToJavaObject.add(Namespace.OWL_EQUIVALENTPROPERTY_SHORT);
-      this.objectToId.put(Namespace.OWL_DISJOINTWITH_SHORT, Namespace.OWL_DISJOINTWITH_ID);
-      //this.idToObject.add(Namespace.OWL_DISJOINTWITH_SHORT);
-      this.idToJavaObject.add(Namespace.OWL_DISJOINTWITH_SHORT);
+      this.objectToId.put(NamespaceManager.RDFS_SUBCLASSOF_SHORT, NamespaceManager.RDFS_SUBCLASSOF_ID);
+      //this.idToObject.add(NamespaceManager.RDFS_SUBCLASSOF_SHORT);
+      this.idToJavaObject.add(NamespaceManager.RDFS_SUBCLASSOF_SHORT);
+      this.objectToId.put(NamespaceManager.OWL_SAMEAS_SHORT, NamespaceManager.OWL_SAMEAS_ID);
+      //this.idToObject.add(NamespaceManager.OWL_SAMEAS_SHORT);
+      this.idToJavaObject.add(NamespaceManager.OWL_SAMEAS_SHORT);
+      this.objectToId.put(NamespaceManager.OWL_EQUIVALENTCLASS_SHORT, NamespaceManager.OWL_EQUIVALENTCLASS_ID);
+      //this.idToObject.add(NamespaceManager.OWL_EQUIVALENTCLASS_SHORT);
+      this.idToJavaObject.add(NamespaceManager.OWL_EQUIVALENTCLASS_SHORT);
+      this.objectToId.put(NamespaceManager.OWL_EQUIVALENTPROPERTY_SHORT, NamespaceManager.OWL_EQUIVALENTPROPERTY_ID);
+      //this.idToObject.add(NamespaceManager.OWL_EQUIVALENTPROPERTY_SHORT);
+      this.idToJavaObject.add(NamespaceManager.OWL_EQUIVALENTPROPERTY_SHORT);
+      this.objectToId.put(NamespaceManager.OWL_DISJOINTWITH_SHORT, NamespaceManager.OWL_DISJOINTWITH_ID);
+      //this.idToObject.add(NamespaceManager.OWL_DISJOINTWITH_SHORT);
+      this.idToJavaObject.add(NamespaceManager.OWL_DISJOINTWITH_SHORT);
 
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     // VERY IMPORTANT: UPDATE currentId !!!!!!!
@@ -558,16 +558,16 @@ public final class TupleStore {
    * in position this.predicatePosition is an equivalence relation;
    * currently, owl:sameAs, owl:equivalentClass, and owl:equivalentProperty
    * are recognized here as given by the integers
-   * Namespace.OWL_SAMEAS_ID
-   * Namespace.OWL_EQUIVALENTCLASS_ID
-   * Namespace.OWL_EQUIVALENTPROPERTY_ID
+   * NamespaceManager.OWL_SAMEAS_ID
+   * NamespaceManager.OWL_EQUIVALENTCLASS_ID
+   * NamespaceManager.OWL_EQUIVALENTPROPERTY_ID
    */
   protected boolean isEquivalenceRelation(int[] tuple) {
     // perhaps use an int set plus an element test here if more relations are involved
     final int pred = tuple[this.predicatePosition];
-    return ((pred == Namespace.OWL_SAMEAS_ID) ||
-            (pred == Namespace.OWL_EQUIVALENTCLASS_ID) ||
-            (pred == Namespace.OWL_EQUIVALENTPROPERTY_ID));
+    return ((pred == NamespaceManager.OWL_SAMEAS_ID) ||
+            (pred == NamespaceManager.OWL_EQUIVALENTCLASS_ID) ||
+            (pred == NamespaceManager.OWL_EQUIVALENTPROPERTY_ID));
   }
 
   /**
@@ -601,9 +601,9 @@ public final class TupleStore {
     //     if (isEquivalenceRelation(tuple))
     //	     toBeRemoved.add(tuple);
     // OR better: use the index (less triples to iterate over)
-    toBeRemoved.addAll(getTuples(this.predicatePosition, Namespace.OWL_SAMEAS_ID));
-    toBeRemoved.addAll(getTuples(this.predicatePosition, Namespace.OWL_EQUIVALENTCLASS_ID));
-    toBeRemoved.addAll(getTuples(this.predicatePosition, Namespace.OWL_EQUIVALENTPROPERTY_ID));
+    toBeRemoved.addAll(getTuples(this.predicatePosition, NamespaceManager.OWL_SAMEAS_ID));
+    toBeRemoved.addAll(getTuples(this.predicatePosition, NamespaceManager.OWL_EQUIVALENTCLASS_ID));
+    toBeRemoved.addAll(getTuples(this.predicatePosition, NamespaceManager.OWL_EQUIVALENTPROPERTY_ID));
     // remove ER tuples from store (set & index) and update uriToProxy and proxyToUris,
     // but also record the equivalence relation in which subject and object are related to
     for (int[] tuple : toBeRemoved) {
@@ -727,7 +727,7 @@ public final class TupleStore {
         anyType =  new XsdString(literal);
       }
       // now do the `clever' dispatch through mapping the type names to Java
-      // class constructors:  @see de.dfki.lt.hfc.Namespace.readNamespaces()
+      // class constructors:  @see de.dfki.lt.hfc.NamespaceManager.readNamespaces()
       else {
         try {
           anyType =  XsdAnySimpleType.getXsdObject(literal);
@@ -1014,7 +1014,7 @@ public final class TupleStore {
    * instead of using the obj id (an int), one can alternatively specify the object
    * directly;
    * NOTE: check whether you must use the short or long namespace prefix depending on
-   * Namespace.shortIsDefault
+   * NamespaceManager.shortIsDefault
    */
   public Set<int[]> getTuples(int pos, String literal) {
     AnyType t = makeJavaObject(literal);
@@ -1315,7 +1315,7 @@ public final class TupleStore {
 //  /**
 //   * reads in a 'compressed' tuple store (extension usually "ts") generated by
 //   * writeTupleStore(); usage:
-//   * Namespace ns = new Namespace("...");
+//   * NamespaceManager ns = new NamespaceManager("...");
 //   * TupleStore ts = new TupleStore(ns);
 //   * ts.readTupleStore("...");
 //   *

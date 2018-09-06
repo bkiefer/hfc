@@ -1,7 +1,7 @@
 package de.dfki.lt.hfc.operators;
 
 import de.dfki.lt.hfc.BooleanOperator;
-import de.dfki.lt.hfc.Namespace;
+import de.dfki.lt.hfc.NamespaceManager;
 
 /**
  * IsNotSubtypeOf checks whether the two arguments given to apply() are NOT standing in a
@@ -28,8 +28,8 @@ public final class IsNotSubtypeOf extends BooleanOperator {
    */
   protected boolean holds(int[] args) {
     return ((args[0] != args[1]
-            && ask(new int[]{args[1], Namespace.RDFS_SUBCLASSOF_ID, args[0]}))
-            || ask(new int[]{args[0], Namespace.OWL_DISJOINTWITH_ID, args[1]}));
+            && ask(new int[]{args[1], NamespaceManager.RDFS_SUBCLASSOF_ID, args[0]}))
+            || ask(new int[]{args[0], NamespaceManager.OWL_DISJOINTWITH_ID, args[1]}));
   }
 
 }

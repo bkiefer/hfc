@@ -2,7 +2,7 @@ package de.dfki.lt.hfc.aggregates;
 
 import de.dfki.lt.hfc.AggregationalOperator;
 import de.dfki.lt.hfc.BindingTable;
-import de.dfki.lt.hfc.Namespace;
+import de.dfki.lt.hfc.NamespaceManager;
 import gnu.trove.set.hash.TIntHashSet;
 
 import java.util.Arrays;
@@ -44,7 +44,7 @@ public final class RemoveSupers extends AggregationalOperator {
     }
     int[] tuple = new int[3 + len - 1];
     Arrays.fill(tuple, 0);
-    tuple[1] = Namespace.RDFS_SUBCLASSOF_ID;
+    tuple[1] = NamespaceManager.RDFS_SUBCLASSOF_ID;
     boolean change = true;
     while (change) {
       change = false;

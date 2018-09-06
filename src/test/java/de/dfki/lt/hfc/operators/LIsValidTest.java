@@ -16,7 +16,7 @@ public class LIsValidTest {
   public void testLIsValid()
       throws FileNotFoundException, IOException, WrongFormatException,
       QueryParseException {
-    Namespace ns = new Namespace();
+    NamespaceManager ns = NamespaceManager.getInstance();
     ns.putForm("logic", "http://www.dfki.de/lt/onto/common/logic.owl#", ns.isShortIsDefault());
     ns.putForm("dom", "http://www.dfki.de/lt/onto/pal/domain.owl#", ns.isShortIsDefault());
     ns.putForm("pal", "http://www.dfki.de/lt/onto/pal/pal.owl#",ns.isShortIsDefault());

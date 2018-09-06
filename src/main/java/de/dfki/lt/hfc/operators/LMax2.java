@@ -35,7 +35,7 @@ public final class LMax2 extends FunctionalOperator {
 		final long second = ((XsdLong)getObject(args[1])).value;
 		final long max = Math.max(first, second);
 		XsdLong L = new XsdLong(max);
-		return registerObject(L.toString(de.dfki.lt.hfc.Namespace.shortIsDefault), L);
+		return registerObject(L.toString(de.dfki.lt.hfc.NamespaceManager.shortIsDefault), L);
 	}
 	 */
 

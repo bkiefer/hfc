@@ -44,7 +44,7 @@ public final class IMin extends FunctionalOperator {
 				min = current;
 		}
 		XsdInt I = new XsdInt(min);
-		return registerObject(I.toString(de.dfki.lt.hfc.Namespace.shortIsDefault), I);
+		return registerObject(I.toString(de.dfki.lt.hfc.NamespaceManager.shortIsDefault), I);
 	}
 	*/
 

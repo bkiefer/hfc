@@ -1,6 +1,7 @@
 package de.dfki.lt.hfc.types;
 
-import de.dfki.lt.hfc.NamespaceObject;
+import de.dfki.lt.hfc.NamespaceManager;
+import de.dfki.lt.hfc.Namespace;
 
 /**
  * this (abstract) class is the superclass for the _internal_
@@ -19,16 +20,16 @@ import de.dfki.lt.hfc.NamespaceObject;
  * constants
  * <p>
  * NOTE: all (custom) types should be put in package de.dfki.lt.hfc.types
- * @see de.dfki.lt.hfc.Namespace.TYPE_PATH
+ * @see NamespaceManager.TYPE_PATH
  * @since JDK 1.5
  */
 public abstract class AnyType implements Comparable {
 
   public static final MinMaxValue MIN_VALUE = new MinMaxValue(false);
   public static final MinMaxValue MAX_VALUE = new MinMaxValue(true);
-  protected final NamespaceObject ns;
+  protected final Namespace ns;
 
-  protected AnyType(NamespaceObject ns) {
+  protected AnyType(Namespace ns) {
     this.ns = ns;
   }
 

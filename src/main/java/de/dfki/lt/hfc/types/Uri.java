@@ -1,6 +1,6 @@
 package de.dfki.lt.hfc.types;
 
-import de.dfki.lt.hfc.NamespaceObject;
+import de.dfki.lt.hfc.Namespace;
 
 import java.util.Objects;
 
@@ -25,7 +25,7 @@ public class Uri extends AnyType {
 
   public String value;
 
-  public Uri(String value, NamespaceObject ns) {
+  public Uri(String value, Namespace ns) {
     super(ns);
 //    System.out.println(value);
     this.value = value;

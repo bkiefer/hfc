@@ -1,6 +1,5 @@
 package de.dfki.lt.hfc;
 
-import de.dfki.lt.hfc.operators.PrintSize;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -46,8 +45,8 @@ public class PrintSizeTest {
   public void test() throws QueryParseException, WrongFormatException, IOException  {
     // TODO: FIX EXPECTED DATA
 
-     // load Namespace
-    Namespace namespace = new Namespace();
+     // load NamespaceManager
+    NamespaceManager namespace = NamespaceManager.getInstance();
 
     // create TupleStore
     TupleStore store =

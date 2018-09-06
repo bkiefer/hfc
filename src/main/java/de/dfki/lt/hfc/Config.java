@@ -1,7 +1,6 @@
 package de.dfki.lt.hfc;
 
 import de.dfki.lt.hfc.indices.IndexingException;
-import de.dfki.lt.hfc.types.Uri;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
@@ -61,7 +60,7 @@ public class Config {
   public boolean gc;
   public boolean cleanUpRepository;
 
-  public Namespace namespace = new Namespace();
+  public NamespaceManager namespace = NamespaceManager.getInstance();
 
 
   public Config(Map<String, Object> configs) {
@@ -83,9 +82,9 @@ public class Config {
     this.cleanUpRepository = (boolean) configs.get("cleanUpRepository");
     HashMap<String, String> shortToLong = (HashMap<String, String>) configs.get("namespaces");
     this.namespace.setShortIsDefault( shortIsDefault);
-    NamespaceObject ns;
+    Namespace ns;
     for (Map.Entry<String, String> mapping : shortToLong.entrySet()) {
-      ns = new NamespaceObject(mapping.getKey(), mapping.getValue(), shortIsDefault);
+      ns = new Namespace(mapping.getKey(), mapping.getValue(), shortIsDefault);
       namespace.addNamespace(ns);
     }
     this.minArgs = (int) configs.get("MinArgs");
@@ -222,7 +221,7 @@ public class Config {
   }
 
   public void addNamespace(String shortForm, String longForm) {
-    NamespaceObject ns = new NamespaceObject(shortForm, longForm, shortIsDefault);
+    Namespace ns = new Namespace(shortForm, longForm, shortIsDefault);
     namespace.shortToNs.put(shortForm, ns);
     namespace.longToNs.put(longForm, ns);
   }

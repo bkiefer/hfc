@@ -15,8 +15,6 @@ import org.junit.Test;
 
 import gnu.trove.set.hash.*;
 
-import static de.dfki.lt.hfc.TestingUtils.*;
-
 
 public class CalcTest {
 
@@ -214,7 +212,7 @@ public class CalcTest {
     varconstIneqs1.add(2);
     assertFalse(varvarIneqs1.isEmpty());//the arrays are not empty
     assertFalse(varconstIneqs1.isEmpty());//the arrays are not empty
-    Namespace namespace = new Namespace();
+    NamespaceManager namespace = NamespaceManager.getInstance();
     TupleStore tuple = new TupleStore(Config.getDefaultConfig());
     BindingTable bt1 = new BindingTable(tuple);
     //Calc.restrict(bt1, varvarIneqs1, varconstIneqs1);// Null pointer exception

@@ -571,7 +571,7 @@ public class BindingTable {
    *   + java -cp .:../lib/trove-2.1.0.jar -Xms800m -Xmx1200m de/dfki/lt/hfc/BindingTable
    *
    public static void main(String[] args) throws Exception {
-   Namespace ns = new Namespace("/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.ns");
+   NamespaceManager ns = new NamespaceManager("/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.ns");
    TupleStore ts = new TupleStore(100000, 250000, ns,
    "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.nt");
    Query q = new Query(ts);

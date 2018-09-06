@@ -44,7 +44,7 @@ public final class LMax extends FunctionalOperator {
 				max = current;
 		}
 		XsdLong L = new XsdLong(max);
-		return registerObject(L.toString(de.dfki.lt.hfc.Namespace.shortIsDefault), L);
+		return registerObject(L.toString(de.dfki.lt.hfc.NamespaceManager.shortIsDefault), L);
 	}
 	*/
 

@@ -44,7 +44,7 @@ public final class FMax extends FunctionalOperator {
 				max = current;
 		}
 		XsdFloat F = new XsdFloat(max);
-		return registerObject(F.toString(de.dfki.lt.hfc.Namespace.shortIsDefault), F);
+		return registerObject(F.toString(de.dfki.lt.hfc.NamespaceManager.shortIsDefault), F);
 	}
 	 */
 

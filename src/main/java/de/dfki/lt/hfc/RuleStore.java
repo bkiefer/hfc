@@ -138,7 +138,7 @@ public final class RuleStore {
    * THERE ARE STATIC REFERENCES TO NAMESPACE OF EQUIVALENCE REDUCTION
    * IF AT ALL, CALLS SHOULD GO THROUGH TUPLESTORE
    */
-  //protected Namespace namespace;
+  //protected NamespaceManager namespace;
   /**
    * @see de.dfki.lt.hfc.RuleStore.reorderAntecedent()
    */
@@ -1463,13 +1463,13 @@ public final class RuleStore {
     // can we dispatch better?
     // YES: map (for more choices), but not now!
     switch (eqrel) {
-      case Namespace.OWL_SAMEAS_ID:
+      case NamespaceManager.OWL_SAMEAS_ID:
         sb.append("SameAsTest ");
         break;
-      case Namespace.OWL_EQUIVALENTCLASS_ID:
+      case NamespaceManager.OWL_EQUIVALENTCLASS_ID:
         sb.append("EquivalentClassTest ");
         break;
-      case Namespace.OWL_EQUIVALENTPROPERTY_ID:
+      case NamespaceManager.OWL_EQUIVALENTPROPERTY_ID:
         sb.append("EquivalentPropertyTest ");
         break;
       default:
@@ -1495,13 +1495,13 @@ public final class RuleStore {
     sb.append(varname);
     sb.append(" = ");
     switch (eqrel) {
-      case Namespace.OWL_SAMEAS_ID:
+      case NamespaceManager.OWL_SAMEAS_ID:
         sb.append("SameAsAction ");
         break;
-      case Namespace.OWL_EQUIVALENTCLASS_ID:
+      case NamespaceManager.OWL_EQUIVALENTCLASS_ID:
         sb.append("EquivalentClassAction ");
         break;
-      case Namespace.OWL_EQUIVALENTPROPERTY_ID:
+      case NamespaceManager.OWL_EQUIVALENTPROPERTY_ID:
         sb.append("EquivalentPropertyAction ");
         break;
       default:

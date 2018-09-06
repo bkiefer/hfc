@@ -5,18 +5,12 @@ import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 import de.dfki.lt.hfc.types.Uri;
 import de.dfki.lt.hfc.types.Variable;
-import de.dfki.lt.hfc.types.XsdDateTime;
-import org.junit.Assert;
 import org.junit.Test;
 
 
@@ -25,7 +19,7 @@ public class TupleStoreTest {
     @Test
     public void testConstructors() throws FileNotFoundException, WrongFormatException, IOException {
         // constructor TupleStore(int noOfAtoms, int noOfTuples) is tested
-        Namespace namespace = new Namespace();
+        NamespaceManager namespace = NamespaceManager.getInstance();
         assertNotNull(namespace);
     /*
     TupleStore tupleconstructor1 = new TupleStore(5, 5);
@@ -38,22 +32,22 @@ public class TupleStoreTest {
     TupleStore tupleconstructor3 = new TupleStore(100000, 250000, namespace,
         getTestResource("default.nt"));
     assertNotNull(tupleconstructor3);
-    // constructor TupleStore(int noOfAtoms, int noOfTuples, Namespace
+    // constructor TupleStore(int noOfAtoms, int noOfTuples, NamespaceManager
     // namespace) is tested
     TupleStore tupleconstructor4 = new TupleStore(2, 4, namespace);
     assertNotNull(tupleconstructor4);
     */
         // constructor TupleStore(boolean verbose, boolean rdfCheck, boolean
         // eqReduction, int minNoOfArgs, int maxNoOfArgs,
-        // int noOfAtoms, int noOfTuples, Namespace namespace, String tupleFile) is
+        // int noOfAtoms, int noOfTuples, NamespaceManager namespace, String tupleFile) is
         // tested
         TupleStore tupleconstructor5 = new TupleStore(false, true, true, 2, 5,0,1,2, 4, 2, namespace,
                 getTestResource("default.nt"));
         assertNotNull(tupleconstructor5);
-        // constructor TupleStore(Namespace namespace) is tested
+        // constructor TupleStore(NamespaceManager namespace) is tested
         TupleStore tupleconstructor6 = new TupleStore(namespace);
         assertNotNull(tupleconstructor6);
-        // constructor TupleStore(Namespace namespace, String tupleFile) is tested
+        // constructor TupleStore(NamespaceManager namespace, String tupleFile) is tested
         TupleStore tupleconstructor7 = new TupleStore(namespace, getTestResource("default.nt"));
         assertNotNull(tupleconstructor7);
     }
@@ -77,7 +71,7 @@ public class TupleStoreTest {
 
     @Test
     public void testcleanUpTuple() throws FileNotFoundException, WrongFormatException, IOException {
-        Namespace namespace = new Namespace();
+        NamespaceManager namespace = NamespaceManager.getInstance();
         TupleStore objfortest = new TupleStore(false, true, true, 2, 5,0,1,2, 4, 2, namespace,
                 getTestResource("default.nt"));
         int[] tuple = new int[3];
@@ -119,7 +113,7 @@ public class TupleStoreTest {
     @Test
     public void testregisterJavaObject() throws IOException, WrongFormatException {
         TupleStore objecttotest = new TupleStore(Config.getInstance(getTestResource("Empty.yml")));
-        assertEquals(objecttotest.registerJavaObject(new Uri("www.bbc.com", Namespace.TEST)), 6);
+        assertEquals(objecttotest.registerJavaObject(new Uri("www.bbc.com", NamespaceManager.TEST)), 6);
     }
 
     @Test
@@ -137,7 +131,7 @@ public class TupleStoreTest {
         stringTuple2.add("sf");
         stringTuple2.add("sfsd");// test for case stringTuple.size > maxNoOfArgs
         assertFalse(objectfortest.isValidTuple(stringTuple2, 1));
-        Namespace namespace = new Namespace();
+        NamespaceManager namespace = NamespaceManager.getInstance();
         TupleStore objecToTestRdfTrue = new TupleStore(false, true, true, 2, 5,0,1,2, 4, 2, namespace,
                 getTestResource("default.nt"));
         // the second boolean argument is rdfCheck
@@ -348,7 +342,7 @@ public class TupleStoreTest {
         TupleStore objectfortest = new TupleStore(Config.getInstance(getTestResource("Empty.yml")));
         assertTrue(objectfortest.getAllTuples().isEmpty());
         // test for case when there are tuples
-        Namespace namespace = new Namespace();
+        NamespaceManager namespace = NamespaceManager.getInstance();
         TupleStore objectfull = new TupleStore(namespace, getTestResource("default.nt"));
         assertFalse(objectfull.getAllTuples().isEmpty());
     }
@@ -478,7 +472,7 @@ public class TupleStoreTest {
 
     @Test
     public void testcopyTupleStore() throws FileNotFoundException, WrongFormatException, IOException {
-        Namespace namespace = new Namespace();
+        NamespaceManager namespace = NamespaceManager.getInstance();
         TupleStore objectfortest = new TupleStore(false, true, true, 2, 5,0,1,2, 4, 2, namespace,
                 getTestResource("default.nt"));
         objectfortest.copyTupleStore();

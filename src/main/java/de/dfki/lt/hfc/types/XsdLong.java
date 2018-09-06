@@ -63,9 +63,9 @@ public final class XsdLong extends XsdNumber {
 
   /**
    * depending on shortIsDefault, either the suffix
-   * de.dfki.lt.hfc.Namespace.SHORT_NAME
+   * de.dfki.lt.hfc.NamespaceManager.SHORT_NAME
    * or
-   * de.dfki.lt.hfc.Namespace.LONG_NAME
+   * de.dfki.lt.hfc.NamespaceManager.LONG_NAME
    * is used
    */
   public String toString() {

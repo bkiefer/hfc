@@ -6,7 +6,6 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import de.dfki.lt.hfc.*;
 import de.dfki.lt.hfc.ForwardChainer;
-import de.dfki.lt.hfc.Namespace;
 import de.dfki.lt.hfc.TupleStore;
 import de.dfki.lt.hfc.types.XsdInt;
 

@@ -35,7 +35,7 @@ public final class IMin2 extends FunctionalOperator {
 		final int second = ((XsdInt)getObject(args[1])).value;
 		final int min = Math.min(first, second);
 		XsdInt I = new XsdInt(min);
-		return registerObject(I.toString(de.dfki.lt.hfc.Namespace.shortIsDefault), I);
+		return registerObject(I.toString(de.dfki.lt.hfc.NamespaceManager.shortIsDefault), I);
 	}
 	*/
 

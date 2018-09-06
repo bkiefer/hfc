@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
@@ -22,8 +21,8 @@ import gnu.trove.set.hash.*;
 
 public class BindingTableTest {
 
-  private Namespace getNS() throws FileNotFoundException, WrongFormatException, IOException {
-    return new Namespace();
+  private NamespaceManager getNS() throws FileNotFoundException, WrongFormatException, IOException {
+    return NamespaceManager.getInstance();
   }
 
   private TupleStore getTS() throws FileNotFoundException, WrongFormatException, IOException {
@@ -162,7 +161,7 @@ public class BindingTableTest {
     nameToPos.put(1, 1);
     Map<Integer, String> nameToExternalName = new TreeMap<Integer, String>();
     nameToExternalName.put(1, "value");
-    Namespace namespace = getNS();
+    NamespaceManager namespace = getNS();
     TupleStore ts = new TupleStore(false, true, true, 2, 5,0,1,2, 4, 2, namespace,
         getTestResource("default.nt"));
     BindingTable bt = new BindingTable(table, nameToPos, nameToExternalName, ts);
@@ -180,7 +179,7 @@ public class BindingTableTest {
     nameToPos.put(1, 1);
     Map<Integer, String> nameToExternalName = new TreeMap<Integer, String>();
     nameToExternalName.put(1, "val");
-    Namespace namespace = getNS();
+    NamespaceManager namespace = getNS();
     TupleStore ts = new TupleStore(false, true, true, 2, 5,0,1,2, 4, 2, namespace,
         getTestResource("default.nt"));
     BindingTable bt = new BindingTable(table, nameToPos, nameToExternalName, ts);
@@ -206,7 +205,7 @@ public class BindingTableTest {
 
   @Test
   public void testVars() throws QueryParseException {
-    TupleStore ts = new TupleStore(new Namespace());
+    TupleStore ts = new TupleStore(NamespaceManager.getInstance());
     Query q = new Query(ts);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
     String[] vars = bt.getVars();
@@ -216,7 +215,7 @@ public class BindingTableTest {
 
   @Test
   public void testVarsStar() throws QueryParseException {
-    TupleStore ts = new TupleStore(new Namespace());
+    TupleStore ts = new TupleStore(NamespaceManager.getInstance());
     Query q = new Query(ts);
     BindingTable bt = q.query("SELECT * WHERE ?s ?p ?o");
     String[] vars = bt.getVars();

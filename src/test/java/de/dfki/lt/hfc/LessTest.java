@@ -6,7 +6,6 @@ import static org.junit.Assert.assertEquals;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import de.dfki.lt.hfc.*;
 import de.dfki.lt.hfc.types.*;
 
 import org.junit.Test;
@@ -17,8 +16,8 @@ public class LessTest {
   public void testLess()
       throws FileNotFoundException, IOException, WrongFormatException {
 
-    // load Namespace
-    Namespace namespace = new Namespace();
+    // load NamespaceManager
+    NamespaceManager namespace = NamespaceManager.getInstance();
 
     // create TupleStore
     TupleStore store =
@@ -52,8 +51,8 @@ public class LessTest {
   public void testLessEq()
       throws FileNotFoundException, IOException, WrongFormatException {
 
-    // load Namespace
-    Namespace namespace = new Namespace();
+    // load NamespaceManager
+    NamespaceManager namespace = NamespaceManager.getInstance();
 
     // create TupleStore
     TupleStore store =
@@ -88,8 +87,8 @@ public class LessTest {
   public void testGreater()
       throws FileNotFoundException, IOException, WrongFormatException {
 
-    // load Namespace
-    Namespace namespace = new Namespace();
+    // load NamespaceManager
+    NamespaceManager namespace = NamespaceManager.getInstance();
 
     // create TupleStore
     TupleStore store =
@@ -123,8 +122,8 @@ public class LessTest {
   public void testGreaterEq()
       throws FileNotFoundException, IOException, WrongFormatException {
 
-    // load Namespace
-    Namespace namespace = new Namespace();
+    // load NamespaceManager
+    NamespaceManager namespace = NamespaceManager.getInstance();
 
     // create TupleStore
     TupleStore store =
@@ -158,8 +157,8 @@ public class LessTest {
   public void testEqual()
       throws FileNotFoundException, IOException, WrongFormatException {
 
-    // load Namespace
-    Namespace namespace = new Namespace();
+    // load NamespaceManager
+    NamespaceManager namespace = NamespaceManager.getInstance();
 
     // create TupleStore
     TupleStore store =

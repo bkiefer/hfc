@@ -77,7 +77,7 @@
               <classifier>types-lib</classifier>
               <includes>
                 <include>**/de/dfki/lt/hfc/types/*</include>
-                <include>**/de/dfki/lt/hfc/Namespace*</include>
+                <include>**/de/dfki/lt/hfc/NamespaceManager*</include>
                 <include>**/de/dfki/lt/hfc/WrongFormatException*</include>
               </includes>
             </configuration>

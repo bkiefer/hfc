@@ -15,8 +15,8 @@ public final class LLessTest {
   public void testcleanUpTuple() throws FileNotFoundException,
       WrongFormatException, IOException {
 
-    // load Namespace
-    Namespace namespace = new Namespace();;
+    // load NamespaceManager
+    NamespaceManager namespace = NamespaceManager.getInstance();;
 
     // create TupleStore
     TupleStore store =

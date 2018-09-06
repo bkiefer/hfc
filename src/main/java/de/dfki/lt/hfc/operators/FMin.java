@@ -45,7 +45,7 @@ public final class FMin extends FunctionalOperator {
 				min = current;
 		}
 		XsdFloat F = new XsdFloat(min);
-		return registerObject(F.toString(de.dfki.lt.hfc.Namespace.shortIsDefault), F);
+		return registerObject(F.toString(de.dfki.lt.hfc.NamespaceManager.shortIsDefault), F);
 	}
 	 */
 

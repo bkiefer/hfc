@@ -1,7 +1,7 @@
 package de.dfki.lt.hfc.types;
 
+import de.dfki.lt.hfc.NamespaceManager;
 import de.dfki.lt.hfc.Namespace;
-import de.dfki.lt.hfc.NamespaceObject;
 import de.dfki.lt.hfc.WrongFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +10,7 @@ import java.lang.reflect.Constructor;
 import java.util.HashMap;
 
 /**
- * NOTE: if further XSD types are added, class Namespace needs to be extended;
+ * NOTE: if further XSD types are added, class NamespaceManager needs to be extended;
  * same holds for method TupleStore.makeJavaObject()
  * <p>
  * NOTE: I made this class _abstract_, even though there exist the corresponding
@@ -30,7 +30,7 @@ public abstract class XsdAnySimpleType extends AnyType {
    */
   // last '.' char is OK!
   public static final String TYPE_PATH = "de.dfki.lt.hfc.types.";
-  public static final NamespaceObject NS = Namespace.XSD;
+  public static final Namespace NS = NamespaceManager.XSD;
 
   // XSD: string, int, long, float, double, gYear, gYearMonth, gMonth, gMonthDay, gDay, date, dateTime, duration, boolean, anyURI
   /**
@@ -162,7 +162,7 @@ public abstract class XsdAnySimpleType extends AnyType {
       return new XsdString(literal);
     }
     // now do the `clever' dispatch through mapping the type names to Java
-    // class constructors:  @see de.dfki.lt.hfc.Namespace.readNamespaces()
+    // class constructors:  @see de.dfki.lt.hfc.NamespaceManager.readNamespaces()
     final String type = literal.substring(idx + 1);
     final Constructor<XsdAnySimpleType> constructor = typeToConstructor.get(type);
     if (constructor == null)

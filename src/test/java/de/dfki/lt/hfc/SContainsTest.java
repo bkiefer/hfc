@@ -18,8 +18,8 @@ public final class SContainsTest {
   public void testcleanUpTuple() throws FileNotFoundException,
       WrongFormatException, IOException, InterruptedException {
 
-    // load Namespace
-    Namespace namespace = new Namespace();
+    // load NamespaceManager
+    NamespaceManager namespace = NamespaceManager.getInstance();
     namespace.putForm("nary","http://www.lt-world.org/dom.owl#", true);
 
     // create TupleStore

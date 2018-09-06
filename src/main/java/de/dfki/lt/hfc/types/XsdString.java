@@ -108,9 +108,9 @@ public final class XsdString extends XsdAnySimpleType {
 
   /**
    * depending on shortIsDefault, either the suffix
-   * de.dfki.lt.hfc.Namespace.SHORT_NAME
+   * de.dfki.lt.hfc.NamespaceManager.SHORT_NAME
    * or
-   * de.dfki.lt.hfc.Namespace.LONG_NAME
+   * de.dfki.lt.hfc.NamespaceManager.LONG_NAME
    * is used;
    * shortIsDefault is ignored in case a language tag is available
    */

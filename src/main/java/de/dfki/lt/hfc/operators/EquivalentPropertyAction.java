@@ -1,7 +1,7 @@
 package de.dfki.lt.hfc.operators;
 
 import de.dfki.lt.hfc.FunctionalOperator;
-import de.dfki.lt.hfc.Namespace;
+import de.dfki.lt.hfc.NamespaceManager;
 
 /**
  * an EquivalentPropertyAction call can be used for replacing an equivalentProperty RHS
@@ -47,8 +47,8 @@ public final class EquivalentPropertyAction extends FunctionalOperator {
    */
   public int apply(int[] args) {
     setProxy(args[0], args[1]);
-    setRelation(args[0], Namespace.OWL_EQUIVALENTPROPERTY_ID);
-    setRelation(args[1], Namespace.OWL_EQUIVALENTPROPERTY_ID);
+    setRelation(args[0], NamespaceManager.OWL_EQUIVALENTPROPERTY_ID);
+    setRelation(args[1], NamespaceManager.OWL_EQUIVALENTPROPERTY_ID);
     return getProxy(args[0]);
   }
 

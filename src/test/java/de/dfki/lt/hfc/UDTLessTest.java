@@ -18,8 +18,8 @@ public final class UDTLessTest {
   public void testcleanUpTuple() throws FileNotFoundException,
       WrongFormatException, IOException, InterruptedException {
 
-    // load Namespace
-    Namespace namespace = new Namespace();
+    // load NamespaceManager
+    NamespaceManager namespace = NamespaceManager.getInstance();
     // create TupleStore
     TupleStore store =
         new TupleStore(false, true, true, 2, 5,0,1,2, 4, 2, namespace,

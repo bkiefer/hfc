@@ -239,7 +239,7 @@ public class RdfGraph {
 //   * for test purposes only
 //   */
 //  public static void main(String[] args) throws Exception {
-//    Namespace ns = new Namespace("/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.ns");
+//    NamespaceManager ns = new NamespaceManager("/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.ns");
 //    TupleStore ts = new TupleStore(ns, "/Users/krieger/Desktop/Java/HFC/hfc/src/resources/default.eqred.nt");
 //    RdfGraph rg = new RdfGraph(ts);
 //    // add info for child

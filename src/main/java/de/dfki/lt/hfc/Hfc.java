@@ -29,12 +29,12 @@ public class Hfc {
    */
   public long timeStamp = 0L;
   /**
-   * fields we would like to customize in Namespace, TupleStore, RuleStore, and ForwardChainer
+   * fields we would like to customize in NamespaceManager, TupleStore, RuleStore, and ForwardChainer
    * and which can be altered by calling customizeHfc() below;
    * the collection of field names with their values should be grouped in a Map and should be
    * handed over as settings to customizeHfc();
    * some of the settings affects more than one object; e.g., "verbose" modifies the output
-   * in the Namespace, TupleStore, RuleStore, and ForwardChainer objects;
+   * in the NamespaceManager, TupleStore, RuleStore, and ForwardChainer objects;
    * here, we are also assigning DEFAULT values which are used in case they are not specified
    * in the settings map;
    * the DEFAULT settings basically address the RDF triple case without equivalence class reduction

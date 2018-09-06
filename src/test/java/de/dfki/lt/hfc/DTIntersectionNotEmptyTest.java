@@ -18,8 +18,8 @@ public final class DTIntersectionNotEmptyTest {
   public void testcleanUpTuple() throws FileNotFoundException,
       WrongFormatException, IOException, InterruptedException {
 
-    // load Namespace
-    Namespace namespace = new Namespace();
+    // load NamespaceManager
+    NamespaceManager namespace = NamespaceManager.getInstance();
 
     // create TupleStore
     TupleStore store =

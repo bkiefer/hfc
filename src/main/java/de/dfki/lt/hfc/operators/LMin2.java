@@ -35,7 +35,7 @@ public final class LMin2 extends FunctionalOperator {
 		final long second = ((XsdLong)getObject(args[1])).value;
 		final long min = Math.min(first, second);
 		XsdLong L = new XsdLong(min);
-		return registerObject(L.toString(de.dfki.lt.hfc.Namespace.shortIsDefault), L);
+		return registerObject(L.toString(de.dfki.lt.hfc.NamespaceManager.shortIsDefault), L);
 	}
 	*/
 

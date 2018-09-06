@@ -44,7 +44,7 @@ public final class IMax extends FunctionalOperator {
 				max = current;
 		}
 		XsdInt I = new XsdInt(max);
-		return registerObject(I.toString(de.dfki.lt.hfc.Namespace.shortIsDefault), I);
+		return registerObject(I.toString(de.dfki.lt.hfc.NamespaceManager.shortIsDefault), I);
 	}
 	*/
 

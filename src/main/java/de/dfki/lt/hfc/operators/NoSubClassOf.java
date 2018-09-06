@@ -1,7 +1,7 @@
 package de.dfki.lt.hfc.operators;
 
 import de.dfki.lt.hfc.BooleanOperator;
-import de.dfki.lt.hfc.Namespace;
+import de.dfki.lt.hfc.NamespaceManager;
 
 /**
  * NoSubClassOf checks whether the tuple store does NOT _contain_ a rdfs:subClassOf
@@ -48,7 +48,7 @@ public final class NoSubClassOf extends BooleanOperator {
    */
   protected boolean holds(int[] args) {
     // do we need to check whether '<rdfs:subClassOf>' is a valid literal?  NO!
-    return !ask(new int[]{args[0], Namespace.RDFS_SUBCLASSOF_ID, args[1]});
+    return !ask(new int[]{args[0], NamespaceManager.RDFS_SUBCLASSOF_ID, args[1]});
   }
 
 }

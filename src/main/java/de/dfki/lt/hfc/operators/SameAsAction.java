@@ -1,7 +1,7 @@
 package de.dfki.lt.hfc.operators;
 
 import de.dfki.lt.hfc.FunctionalOperator;
-import de.dfki.lt.hfc.Namespace;
+import de.dfki.lt.hfc.NamespaceManager;
 
 /**
  * a SameAsAction call can be used for replacing a sameAs RHS pattern in a rule;
@@ -50,8 +50,8 @@ public final class SameAsAction extends FunctionalOperator {
    */
   public int apply(int[] args) {
     setProxy(args[0], args[1]);
-    setRelation(args[0], Namespace.OWL_SAMEAS_ID);
-    setRelation(args[1], Namespace.OWL_SAMEAS_ID);
+    setRelation(args[0], NamespaceManager.OWL_SAMEAS_ID);
+    setRelation(args[1], NamespaceManager.OWL_SAMEAS_ID);
     return getProxy(args[0]);
   }
 

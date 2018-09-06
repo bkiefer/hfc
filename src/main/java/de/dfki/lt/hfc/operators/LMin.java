@@ -44,7 +44,7 @@ public final class LMin extends FunctionalOperator {
 				min = current;
 		}
 		XsdLong L = new XsdLong(min);
-		return registerObject(L.toString(de.dfki.lt.hfc.Namespace.shortIsDefault), L);
+		return registerObject(L.toString(de.dfki.lt.hfc.NamespaceManager.shortIsDefault), L);
 	}
 	*/
 

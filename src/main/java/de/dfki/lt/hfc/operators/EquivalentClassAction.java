@@ -1,7 +1,7 @@
 package de.dfki.lt.hfc.operators;
 
 import de.dfki.lt.hfc.FunctionalOperator;
-import de.dfki.lt.hfc.Namespace;
+import de.dfki.lt.hfc.NamespaceManager;
 
 /**
  * an EquivalentClassAction call can be used for replacing an equivalentClass RHS
@@ -47,8 +47,8 @@ public final class EquivalentClassAction extends FunctionalOperator {
    */
   public int apply(int[] args) {
     setProxy(args[0], args[1]);
-    setRelation(args[0], Namespace.OWL_EQUIVALENTCLASS_ID);
-    setRelation(args[1], Namespace.OWL_EQUIVALENTCLASS_ID);
+    setRelation(args[0], NamespaceManager.OWL_EQUIVALENTCLASS_ID);
+    setRelation(args[1], NamespaceManager.OWL_EQUIVALENTCLASS_ID);
     return getProxy(args[0]);
   }
 
