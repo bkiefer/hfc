@@ -233,7 +233,7 @@ public class Config {
 
   public void setShortIsDefault(boolean shortIsDefault) {
     this.shortIsDefault = shortIsDefault;
-    namespace.updateNamespace(shortIsDefault);
+    namespace.setShortIsDefault(shortIsDefault);
   }
 
   public Config getCopy(int noOfCores, boolean verbose) {

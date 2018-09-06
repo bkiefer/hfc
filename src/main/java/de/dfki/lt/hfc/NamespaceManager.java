@@ -65,7 +65,7 @@ public final class NamespaceManager {
   public static final Namespace RDF = new Namespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#", false);
   public static final Namespace RDFS = new Namespace("rdfs", "http://www.w3.org/2000/01/rdf-schema#", false);
   public static final Namespace OWL = new Namespace("owl", "http://www.w3.org/2002/07/owl#", false);
-  public static final Namespace TEST = new Namespace("test", "http://www.dfki.de/lt/onto/test.owl", false);
+  public static final Namespace TEST = new Namespace("test", "http://www.dfki.de/lt/onto/test.owl#", false);
   public static final Namespace EMPTY = new Namespace("", "", false);
   public static final String RDF_TYPE_SHORT = "<rdf:type>";
   public static final String RDF_TYPE_LONG = "<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>";
@@ -211,11 +211,6 @@ public final class NamespaceManager {
       return "<" + expansion + suffix;
   }
 
-  public void updateNamespace(boolean shortIsDefault) {
-    for (Namespace ns : allNamespaces) {
-      ns.setIsShort(shortIsDefault);
-    }
-  }
 
   public NamespaceManager copy() {
     NamespaceManager copy = new NamespaceManager(allNamespaces, shortToNs,longToNs,shortIsDefault);
