@@ -26,7 +26,7 @@ public class ConfigTest {
         assertEquals(false,config.eqReduction);
         assertEquals(false, config.gc);
         assertEquals(true, config.cleanUpRepository);
-        assertEquals(true, config.shortIsDefault);
+        assertEquals(true, config.isShortIsDefault());
         assertEquals("./src/resources/default.nt", config.tupleFiles.get(0));
     }
 

@@ -46,7 +46,7 @@ public class Config {
   public List<String> tupleFiles = new ArrayList<>();
   public String persistencyFile;
   public List<String> ruleFiles = new ArrayList<>();
-  public boolean shortIsDefault;
+  private boolean shortIsDefault;
   public int maxArgs;
   public int minArgs;
   public int subjectPosition;
@@ -234,6 +234,10 @@ public class Config {
   public void setShortIsDefault(boolean shortIsDefault) {
     this.shortIsDefault = shortIsDefault;
     namespace.setShortIsDefault(shortIsDefault);
+  }
+
+  public boolean isShortIsDefault(){
+    return this.shortIsDefault;
   }
 
   public Config getCopy(int noOfCores, boolean verbose) {

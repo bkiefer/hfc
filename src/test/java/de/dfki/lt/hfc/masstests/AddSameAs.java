@@ -21,12 +21,10 @@ public class AddSameAs {
   // shortIsDefault no longer a static field in class NamespaceManager
   public static ForwardChainer getFwChainer(boolean eqRed)
       throws FileNotFoundException, WrongFormatException, IOException {
-    ForwardChainer fc_eq = new ForwardChainer(Config.getInstance(getTestResource("AddSameAs_eqRed.yml")));
-    ForwardChainer fc = new ForwardChainer(Config.getInstance(getTestResource("AddSameAs.yml")));
+    ForwardChainer fc = new ForwardChainer(Config.getInstance(getTestResource(eqRed? "AddSameAs_eqRed.yml":"AddSameAs.yml")));
     fc.uploadTuples(getTestResource("ltworld.jena.nt"));
-    fc_eq.uploadTuples(getTestResource("ltworld.jena.nt"));
     fc.computeClosure();
-    return eqRed ? fc_eq : fc;
+    return fc;
   }
 
 	@Test
