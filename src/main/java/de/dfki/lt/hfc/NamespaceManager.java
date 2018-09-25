@@ -105,7 +105,7 @@ public final class NamespaceManager {
   private NamespaceManager() {
     if(instance != null)
       throw new IllegalStateException("Already instatiated");
-    shortIsDefault = true;
+    shortIsDefault = false;
     addNamespace(EMPTY);
     addNamespace(XSD);
     addNamespace(OWL);
@@ -121,12 +121,21 @@ public final class NamespaceManager {
     this.shortIsDefault = shortIsDefault;
   }
 
+  public static void clear() {
+    NamespaceManager.EMPTY.setIsShort(false);
+    NamespaceManager.XSD.setIsShort(false);
+    NamespaceManager.OWL.setIsShort(false);
+    NamespaceManager.RDF.setIsShort(false);
+    NamespaceManager.RDFS.setIsShort(false);
+    NamespaceManager.TEST.setIsShort(false);
+    instance = null;
+  }
+
   public boolean isShortIsDefault() {
     return shortIsDefault;
   }
 
   public void setShortIsDefault(boolean shortIsDefault) {
-//    System.out.println("Set short is default: " + shortIsDefault);
     this.shortIsDefault = shortIsDefault;
     for (Namespace ns : shortToNs.values()) {
       ns.setIsShort(this.shortIsDefault);
@@ -135,7 +144,6 @@ public final class NamespaceManager {
       for (Namespace ns : shortToNs.values()) {
         ns.setIsShort(this.shortIsDefault);
       }
-//    System.out.println(XSD.isShort());
   }
 
   public static NamespaceManager getInstance(){

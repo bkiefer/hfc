@@ -1,6 +1,8 @@
 package de.dfki.lt.hfc;
 
 import de.dfki.lt.hfc.types.Uri;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.naming.Name;
@@ -9,11 +11,20 @@ import static org.junit.Assert.*;
 
 public class NamespaceManagerTest {
 
-
+  @Before
+  /**
+   * Make sure that the namespaceManager is in its default state when loading the ontology
+   */
+  public void init(){
+    NamespaceManager.clear();
+    NamespaceManager.TEST.setIsShort(false);
+  }
 
   @Test
   public void setShortIsDefault() {
+    System.out.println(NamespaceManager.instance);
     NamespaceManager nsm = NamespaceManager.getInstance();
+    assertFalse(nsm.isShortIsDefault());
     assertFalse(nsm.shortToNs.get("test").isShort());
     Uri testObject = new Uri("testObject", NamespaceManager.TEST);
     assertEquals("<http://www.dfki.de/lt/onto/test.owl#testObject>", testObject.toString());
