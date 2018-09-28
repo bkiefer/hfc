@@ -842,7 +842,10 @@ public final class ForwardChainer {
    * writes generated tuples to local output field of the rule
    */
   protected void execute(Rule rule) {
-    logger.info(" execute rule " + rule.name);
+    if(verbose)
+      synchronized (logger) {
+        logger.info(" execute rule " + rule.name);
+      }
     try {
       // reuse rule's output field; make it empty, even for rules that are switched off
       rule.output.clear();

@@ -1154,7 +1154,7 @@ public final class TupleStore {
           throws IOException, WrongFormatException {
     this.parser = new TupleParser(br, this);
     this.parser.parse(front, backs);
-    logger.info("Store has size {}", allTuples.size());
+    //logger.info("Store has size {}", allTuples.size());
 
   }
 
