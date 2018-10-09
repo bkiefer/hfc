@@ -712,8 +712,7 @@ public final class TupleStore {
   private AnyType makeJavaObject(String literal) {
     AnyType anyType;
     if (TupleStore.isUri(literal)) {
-      //logger.info("Processing literal {}", literal);
-      String[] ns = namespace.seperateNSfromURI(literal);
+      String[] ns = namespace.separateNSfromURI(literal);
       anyType =  new Uri(ns[1],namespace.getNamespaceObject(ns[0]));
     } else if (TupleStore.isBlankNode(literal)) {
       anyType =  new BlankNode(literal);
@@ -1154,9 +1153,8 @@ public final class TupleStore {
           throws IOException, WrongFormatException {
     this.parser = new TupleParser(br, this);
     this.parser.parse(front, backs);
-    //logger.info("Store has size {}", allTuples.size());
-
   }
+
 
   public void readTuples(BufferedReader br, String front, String... backs)
           throws IOException, WrongFormatException {
@@ -1179,7 +1177,6 @@ public final class TupleStore {
    * @throws WrongFormatException
    */
   public void readTuples(BufferedReader br, long timeStamp) throws IOException, WrongFormatException {
-    // construct an HFC XSD long for the Java long
     readTuples(br, null, XsdLong.toString(timeStamp));
   }
 
@@ -1219,7 +1216,6 @@ public final class TupleStore {
    */
   public void readTuples(String filename, String front, String... backs)
           throws FileNotFoundException, IOException, WrongFormatException {
-    //if (this.verbose)
     logger.info("\n  reading tuples from " + filename + " ...");
     readTuples(Files.newBufferedReader(new File(filename).toPath(),
             Charset.forName(this.inputCharacterEncoding)), front, backs);

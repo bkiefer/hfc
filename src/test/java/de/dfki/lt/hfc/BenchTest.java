@@ -15,12 +15,9 @@ public class BenchTest {
    */
   @Test
   public void test() throws IOException, WrongFormatException {
-    long start = System.currentTimeMillis();
     ForwardChainer fc = new ForwardChainer(Config.getInstance(TestingUtils.getTestResource("bench.yml")));
     //long mid = System.currentTimeMillis();
-    //System.out.println("Reading took: " + (mid - start) + "ms");
     fc.computeClosure();
-    //long end = System.currentTimeMillis();
     //System.out.println("Reading and closure took: " + (end - start) + "ms");
     //System.out.println("closure took: " + (end - mid) + "ms");
   }

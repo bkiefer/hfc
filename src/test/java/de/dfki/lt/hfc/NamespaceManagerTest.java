@@ -2,10 +2,7 @@ package de.dfki.lt.hfc;
 
 import de.dfki.lt.hfc.types.Uri;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-
-import javax.naming.Name;
 
 import static org.junit.Assert.*;
 
@@ -84,9 +81,9 @@ public class NamespaceManagerTest {
     String uri2 = "<http://www.dfki.de/lt/onto/test.owl#testObject2>";
     String uri3 = "<testObject3>";
     NamespaceManager nsm = NamespaceManager.getInstance();
-    assertEquals("test", nsm.seperateNSfromURI(uri1)[0]);
-    assertEquals("http://www.dfki.de/lt/onto/test.owl#", nsm.seperateNSfromURI(uri2)[0]);
-    assertEquals("", nsm.seperateNSfromURI(uri3)[0]);
+    assertEquals("test", nsm.separateNSfromURI(uri1)[0]);
+    assertEquals("http://www.dfki.de/lt/onto/test.owl#", nsm.separateNSfromURI(uri2)[0]);
+    assertEquals("", nsm.separateNSfromURI(uri3)[0]);
   }
 
   @Test (expected = java.lang.IllegalArgumentException.class)

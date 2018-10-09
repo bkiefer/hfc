@@ -26,6 +26,15 @@
     <encoding>UTF-8</encoding>
   </properties>
 
+  <repositories>
+    <repository>
+      <id>project.local</id>
+      <name>project</name>
+      <url>file://${project.basedir}/lib</url>
+    </repository>
+  </repositories>
+
+
   <build>
     <plugins>
       <plugin>
@@ -124,6 +133,13 @@
   </build>
 
   <dependencies>
+
+    <dependency>
+      <groupId>com.antlr.grammarsv4</groupId>
+      <artifactId>sparql</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <type>jar</type>
+    </dependency>
 
     <dependency>
       <groupId>org.yaml</groupId>

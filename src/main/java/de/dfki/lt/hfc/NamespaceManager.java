@@ -227,9 +227,9 @@ public final class NamespaceManager {
   }
 
 
-  public String[] seperateNSfromURI(String literal) { //TODO verschoenern
+  public String[] separateNSfromURI(String literal) { //TODO verschoenern
     String namespace;
-    int pos = literal.indexOf("#");
+    int pos = literal.lastIndexOf("#");
     //uri must be in short form
     if (pos != -1) {
       // get rid of <>

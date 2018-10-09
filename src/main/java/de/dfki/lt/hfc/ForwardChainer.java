@@ -120,14 +120,9 @@ public final class ForwardChainer {
 
   public ForwardChainer(Config config) throws IOException, WrongFormatException {
     this.config = config;
+    this.verbose = config.verbose;
     this.tupleStore = new TupleStore(config);
-//		for(String ts : config.tupleFiles){
-//			tupleStore.readTuples(ts);
-//		}
     this.ruleStore = new RuleStore(config, tupleStore);
-//		for(String rls: config.ruleFiles){
-//			ruleStore.readRules(rls);
-//		}
     this.threadPool = Executors.newFixedThreadPool(config.noOfCores);
     this.noOfTasks = this.ruleStore.allRules.size();
   }
@@ -161,7 +156,6 @@ public final class ForwardChainer {
     config.noOfTuples = tuples;
 
     NamespaceManager namespace = NamespaceManager.getInstance();
-//		IndexStore indexStore = new IndexStore(indexFile,this.verbose);
     IndexStore indexStore = null;
     this.tupleStore = new TupleStore(config);
     this.ruleStore = new RuleStore(verbose, rdfCheck, minArgs, maxArgs,
@@ -183,216 +177,6 @@ public final class ForwardChainer {
     }
   }
 
-//	/**
-//	 * generates a new forward chainer with the default namespace for XSD, RDF, RDFS, and OWL
-//	 * @throws IOException
-//	 * @throws FileNotFoundException
-//	 * @throws WrongFormatException
-//	 */
-//	public ForwardChainer(String tupleFile, String ruleFile)
-//	    throws FileNotFoundException, IOException, WrongFormatException {
-//		this();
-//		NamespaceManager namespace = NamespaceManager.getInstance();
-//		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
-//		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
-//		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
-//		this.noOfTasks = this.ruleStore.allRules.size();
-//	}
-//
-//	/**
-//	 * this version allows to explicitly define the namespace
-//	 * @throws IOException
-//	 * @throws WrongFormatException
-//	 * @throws FileNotFoundException
-//	 */
-//	public ForwardChainer(String tupleFile, String ruleFile,	String namespaceFile)
-//	    throws FileNotFoundException, WrongFormatException, IOException {
-//		this();
-//		NamespaceManager namespace = NamespaceManager.getInstance();
-//		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
-//		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
-//		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
-//		this.noOfTasks = this.ruleStore.allRules.size();
-//	}
-//
-//	/**
-//	 * generates a new forward chainer with the default namespace for XSD, RDF, RDFS, and OWL;
-//	 * noOfAtoms and noOfTuples are important parameters that affects the performance of the
-//	 * tuple store used by the forward chainer
-//	 * @throws IOException
-//	 * @throws FileNotFoundException
-//	 * @throws WrongFormatException
-//	 */
-//	public ForwardChainer(int noOfAtoms, int noOfTuples, String tupleFile, String ruleFile)
-//	    throws FileNotFoundException, IOException, WrongFormatException {
-//		this();
-//		this.noOfAtoms = noOfAtoms;
-//	  this.noOfTuples = noOfTuples;
-//		//this.namespace = NamespaceManager.getInstance();
-//		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples);
-//		this.tupleStore.readTuples(tupleFile);
-//		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
-//		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
-//		this.noOfTasks = this.ruleStore.allRules.size();
-//	}
-//
-//	/**
-//	 * this version allows to explicitly define the namespace
-//	 * @throws IOException
-//	 * @throws WrongFormatException
-//	 * @throws FileNotFoundException
-//	 */
-//	public ForwardChainer(int noOfAtoms, int noOfTuples, String tupleFile, String ruleFile, String namespaceFile)
-//	    throws FileNotFoundException, WrongFormatException, IOException {
-//		this();
-//		this.noOfAtoms = noOfAtoms;
-//	  this.noOfTuples = noOfTuples;
-//		NamespaceManager namespace = NamespaceManager.getInstance();
-//		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
-//		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
-//		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
-//		this.noOfTasks = this.ruleStore.allRules.size();
-//	}
-//
-//
-//	/**
-//	 *  assumes a default of 100,000 atoms and 500,000 tuples
-//	 */
-//	public ForwardChainer(TupleStore tupleStore, RuleStore ruleStore) {
-//		this();
-//		this.tupleStore = tupleStore;
-//		this.ruleStore = ruleStore;
-//		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
-//		this.noOfTasks = this.ruleStore.allRules.size();
-//	}
-//
-//	/**
-//	 * more options that will also affect namespace, tuple store, and rule store
-//	 * @throws IOException
-//	 * @throws WrongFormatException
-//	 * @throws FileNotFoundException
-//	 */
-//	public ForwardChainer(int noOfCores,
-//												boolean verbose,
-//												boolean rdfCheck,
-//												boolean eqReduction,
-//												int minNoOfArgs,
-//												int maxNoOfArgs,
-//												int noOfAtoms,
-//												int noOfTuples,
-//												String tupleFile,
-//												String ruleFile,
-//												String namespaceFile)
-//			throws FileNotFoundException, WrongFormatException, IOException {
-//		this(noOfCores, verbose);
-//		this.noOfAtoms = noOfAtoms;
-//	  this.noOfTuples = noOfTuples;
-//		NamespaceManager namespace = NamespaceManager.getInstance();
-//		this.tupleStore = new TupleStore(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
-//																		 this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
-//		this.ruleStore = new RuleStore(verbose, rdfCheck, minNoOfArgs, maxNoOfArgs,
-//																	 this.tupleStore, ruleFile);
-//		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
-//		this.noOfTasks = this.ruleStore.allRules.size();
-//	}
-//
-//	/**
-//		* more options that will also affect namespace, tuple store, and rule store
-//		* @throws IOException
-//		* @throws WrongFormatException
-//		* @throws FileNotFoundException
-//		*/
-//	public ForwardChainer(int noOfCores,
-//												boolean verbose,
-//												boolean rdfCheck,
-//												boolean eqReduction,
-//												int minNoOfArgs,
-//												int maxNoOfArgs,
-//												int subjectPosition,
-//												int predicatePosition,
-//												int objectPosition,
-//												int noOfAtoms,
-//												int noOfTuples,
-//												String tupleFile,
-//												String ruleFile,
-//												String namespaceFile)
-//					throws FileNotFoundException, WrongFormatException, IOException {
-//		this(noOfCores, verbose);
-//		this.noOfAtoms = noOfAtoms;
-//		this.noOfTuples = noOfTuples;
-//		NamespaceManager namespace = NamespaceManager.getInstance();
-//		this.tupleStore = new TupleStore(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
-//						                             subjectPosition, predicatePosition, objectPosition,
-//						                             this.noOfAtoms, this.noOfTuples, namespace, tupleFile);
-//		this.ruleStore = new RuleStore(verbose, rdfCheck, minNoOfArgs, maxNoOfArgs,
-//						this.tupleStore, ruleFile);
-//		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
-//		this.noOfTasks = this.ruleStore.allRules.size();
-//	}
-//
-//	/**
-//	 * slightly less options as before, but namespace, tuple store, and rule store have already
-//	 * been created
-//	 */
-//	public ForwardChainer(int noOfCores,
-//												boolean verbose,
-//												int noOfAtoms,
-//												int noOfTuples,
-//												TupleStore tupleStore,
-//												RuleStore ruleStore) {
-//		this(noOfCores, verbose);
-//		this.noOfAtoms = noOfAtoms;
-//	  this.noOfTuples = noOfTuples;
-//		this.tupleStore = tupleStore;
-//		this.ruleStore = ruleStore;
-//		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
-//		this.noOfTasks = this.ruleStore.allRules.size();
-//	}
-//
-//	/**
-//	 * this version allows to explicitly define the namespace
-//	 * @throws IOException
-//	 * @throws WrongFormatException
-//	 * @throws FileNotFoundException
-//	 */
-//	public ForwardChainer(String tupleFile, String ruleFile,	String namespaceFile, String indexFile)
-//			throws FileNotFoundException, WrongFormatException, IOException, IndexingException {
-//		this();
-//		NamespaceManager namespace = NamespaceManager.getInstance();
-//		//IndexStore indexStore = new IndexStore(indexFile, this.verbose);
-//		IndexStore indexStore = null;
-//		this.tupleStore = new TupleStore(this.noOfAtoms, this.noOfTuples, namespace, tupleFile, indexStore);
-//		this.ruleStore = new RuleStore(this.tupleStore, ruleFile);
-//		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
-//		this.noOfTasks = this.ruleStore.allRules.size();
-//	}
-//
-//	public ForwardChainer(int noOfCores,
-//						  boolean verbose,
-//						  boolean rdfCheck,
-//						  boolean eqReduction,
-//						  int minNoOfArgs,
-//						  int maxNoOfArgs,
-//						  int noOfAtoms,
-//						  int noOfTuples,
-//						  String tupleFile,
-//						  String ruleFile,
-//						  String namespaceFile,
-//						  String indexFile)
-//			throws FileNotFoundException, WrongFormatException, IOException, IndexingException {
-//		this(noOfCores, verbose);
-//		this.noOfAtoms = noOfAtoms;
-//		this.noOfTuples = noOfTuples;
-//		NamespaceManager namespace = NamespaceManager.getInstance();
-////		IndexStore indexStore = new IndexStore(indexFile,this.verbose);
-//		IndexStore indexStore = null;
-//		this.tupleStore = new TupleStore(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
-//				this.noOfAtoms, this.noOfTuples, namespace, tupleFile, indexStore);
-//		this.ruleStore = new RuleStore(verbose, rdfCheck, minNoOfArgs, maxNoOfArgs,
-//				this.tupleStore, ruleFile);
-//		this.threadPool = Executors.newFixedThreadPool(this.noOfCores);
-//		this.noOfTasks = this.ruleStore.allRules.size();
-//	}
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -949,6 +733,7 @@ public final class ForwardChainer {
       // execute all rules (quasi) in parallel, taking advantage of multi-core CPUs
       this.doneSignal = new CountDownLatch(this.noOfTasks);  // = #rules
       try {
+        logger.info("Execute all rules ...");
         executeAllRules();
         this.doneSignal.await();  // wait for all tasks to finish
       } catch (InterruptedException ie) {
@@ -993,6 +778,7 @@ public final class ForwardChainer {
         logger.info("  number of all tuples: " + this.tupleStore.allTuples.size());
       }
     }
+    logger.info("Generation Counter: " + generationCounter);
     // and finally the `answer'
     if ((noOfAllTuples - this.tupleStore.allTuples.size()) == 0)
       return false;
