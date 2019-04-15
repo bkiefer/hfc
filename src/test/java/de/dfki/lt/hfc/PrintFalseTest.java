@@ -8,7 +8,7 @@ import static de.dfki.lt.hfc.TestingUtils.checkResult;
 
 
 public class PrintFalseTest {
-  static ForwardChainer fc;
+  static Hfc fc;
 
   private static String getResource(String name) {
     return TestingUtils.getTestResource("PrintFalse", name);
@@ -17,7 +17,7 @@ public class PrintFalseTest {
   @BeforeClass
   public static void init() throws Exception {
 
-    fc =  new ForwardChainer(Config.getInstance(getResource("PrintFalse.yml")));
+    fc =  new Hfc(Config.getInstance(getResource("PrintFalse.yml")));
 
     // compute deductive closure
 
@@ -38,11 +38,11 @@ public class PrintFalseTest {
         { "<test:sri>", "<test:hasName>", "\"Stanford Research Institute\"^^<xsd:string>" },
         { "<test:db>", "<rdf:type>", "<test:Company>" },
         { "<xsd:int>", "<rdf:type>", "<rdfs:Datatype>" },
-//        { "<test:dfki>", "<test:new>", "_:de.dfki.lt.hfc.ForwardChainer@45283ce20" },
+//        { "<test:dfki>", "<test:new>", "_:de.dfki.lt.hfc.Hfc@45283ce20" },
         { "<owl:Thing>", "<rdf:type>", "<owl:Class>" },
         { "<owl:Nothing>", "<rdfs:subClassOf>", "<owl:Thing>" },
         { "<test:dfki>", "<rdf:type>", "<test:Company>" },
-//        { "<test:sri>", "<test:new>", "_:de.dfki.lt.hfc.ForwardChainer@45283ce21" },
+//        { "<test:sri>", "<test:new>", "_:de.dfki.lt.hfc.Hfc@45283ce21" },
         { "<xsd:string>", "<rdf:type>", "<rdfs:Datatype>" },
         { "<test:dfki>", "<test:hasName>", "\"Deutsches Forschungszentrum für Künstliche Intelligenz\"@de" },
         { "<test:sri>", "<test:hasName>", "\"SRI\"^^<xsd:string>" },
@@ -51,9 +51,9 @@ public class PrintFalseTest {
         { "<owl:Nothing>", "<rdf:type>", "<owl:Class>" },
 
     };
-    Query q = new Query(fc.tupleStore);
+    Query q = fc.getQuery();
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    //TestLGetLatest.printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
+    //TestLGetLatest.printExpected(bt, fc._tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     checkResult(expected, bt, bt.getVars());
   }
 

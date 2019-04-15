@@ -217,11 +217,11 @@ public final class RuleStore {
 
   public RuleStore(Config config, TupleStore tupleStore) throws IOException {
     this(tupleStore);
-    this.verbose = config.verbose;
-    this.rdfCheck = config.rdfCheck;
-    this.minNoOfArgs = config.minArgs;
-    this.maxNoOfArgs = config.maxArgs;
-    for (String ruleFile : config.ruleFiles)
+    this.verbose = config.isVerbose();
+    this.rdfCheck = config.isRdfCheck();
+    this.minNoOfArgs = config.getMinArgs();
+    this.maxNoOfArgs = config.getMaxArgs();
+    for (String ruleFile : config.getRuleFiles())
       readRules(ruleFile);
   }
 

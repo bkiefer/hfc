@@ -9,7 +9,7 @@ import org.junit.Test;
 import static de.dfki.lt.hfc.TestingUtils.*;
 
 public class BlankNodeOneTest {
-  static ForwardChainer fc;
+  static Hfc fc;
 
   private static String getResource(String name) {
     return TestingUtils.getTestResource("BlankNode1", name);
@@ -38,7 +38,7 @@ public class BlankNodeOneTest {
   @BeforeClass
   public static void init() throws Exception {
 
-    fc =  new ForwardChainer(Config.getInstance(getResource("BlankNode1.yml")));
+    fc =  new Hfc(Config.getInstance(getResource("BlankNode1.yml")));
 
     // compute deductive closure
     fc.computeClosure();
@@ -67,16 +67,17 @@ public class BlankNodeOneTest {
         { "<test:db>", "<rdf:type>", "<test:Company>" },
         { "<test:sri>", "<rdf:type>", "<test:Company>" },
         { "<test:Company>", "<rdfs:subClassOf>", "<owl:Thing>" },
-        { "<test:sri>", "<test:new>", "_:de.dfki.lt.hfc.ForwardChainer@77a567e11" },
-        { "<test:db>", "<test:new>", "_:de.dfki.lt.hfc.ForwardChainer@77a567e12" },
+        { "<test:sri>", "<test:new>", "_:de.dfki.lt.hfc.Hfc@77a567e11" },
+        { "<test:db>", "<test:new>", "_:de.dfki.lt.hfc.Hfc@77a567e12" },
         { "<owl:Thing>", "<rdf:type>", "<owl:Class>" },
-        { "<test:dfki>", "<test:new>", "_:de.dfki.lt.hfc.ForwardChainer@77a567e10" },
+        { "<test:dfki>", "<test:new>", "_:de.dfki.lt.hfc.Hfc@77a567e10" },
         //{ "<hst:da8>", "\"755\"^^<xsd:long>", "\"755\"^^<xsd:long>" },
         //{ "<hst:da7>", "\"731\"^^<xsd:long>", "\"731\"^^<xsd:long>" },
         //{ "<hst:da6>", "\"686\"^^<xsd:long>", "\"686\"^^<xsd:long>" },
     };
 
-    Query q = new Query(fc.tupleStore);
+    Query q = fc.getQuery();
+    System.out.println("Number of tuples " + fc._tupleStore.allTuples.size());
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
     checkResult(expected, bt, bt.getVars());
   }

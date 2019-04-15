@@ -769,7 +769,7 @@ public class IntervalTree<Key extends Comparable> {
   /**
    * Controls the results for searchNearest()
    */
-  public static enum SearchNearest {
+  public enum SearchNearest {
     SEARCH_NEAREST_ROUNDED_DOWN, // If result not found, always chose the lower element
     SEARCH_NEAREST_ABSOLUTE,     // If result not found, chose the nearest based on comparison
     SEARCH_NEAREST_ROUNDED_UP    // If result not found, always chose the higher element

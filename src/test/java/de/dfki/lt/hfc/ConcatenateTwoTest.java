@@ -5,13 +5,17 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import static de.dfki.lt.hfc.TestingUtils.checkResult;
 import static de.dfki.lt.hfc.TestingUtils.checkResult;
 
 
 
 public class ConcatenateTwoTest {
-  static ForwardChainer fc;
+  static Hfc fc;
 
   private static String getResource(String name) {
     return TestingUtils.getTestResource("Concatenate2", name);
@@ -19,18 +23,22 @@ public class ConcatenateTwoTest {
   @BeforeClass
   public static void init() throws Exception {
 
-    fc =  new ForwardChainer(4,                                                    // #cores
-        false,                                                 // verbose
-        true,                                                 // RDF Check
-        false,                                                // EQ reduction disabled
-        3,                                                    // min #args
-        3,                                                    // max #args
-        100000,                                               // #atoms
-        500000,                                               // #tuples
-        getResource("concatenate.nt"),                            // tuple file
-        getResource("concatenate.rdl")                          // rule file
-        );
 
+      Config config = Config.getInstance(getResource("Concatenate2.yml"));
+      /**
+      Map update = new HashMap<>();
+      update.put(Config.NOOFCORES, 4);
+      update.put(Config.VERBOSE, false);
+      update.put(Config.RDFCHECK, true);
+      update.put(Config.EQREDUCTION, false);
+      update.put(Config.MINARGS, 3);
+      update.put(Config.MAXARGS, 3);
+      update.put(Config.NOOFATOMS, 100000);
+      update.put(Config.NOOFTUPLES, 500000);
+      config.updateConfig(update);
+        **/
+
+    fc =  new Hfc(config);
 
     // compute deductive closure
     fc.computeClosure();
@@ -67,9 +75,9 @@ public class ConcatenateTwoTest {
 
     };
 
-    Query q = new Query(fc.tupleStore);
+    Query q = new Query(fc._tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    //TestLGetLatest.printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
+    //TestLGetLatest.printExpected(bt, fc._tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     checkResult(expected, bt, bt.getVars());
   }
 

@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class TestSort {
 
-    static ForwardChainer fc;
+    static Hfc fc;
 
     public static String getResource(String name) {
         return TestingUtils.getTestResource("LGetLatestValues", name);
@@ -29,9 +29,9 @@ public class TestSort {
     @Before
     public void init() throws Exception {
 
-        fc = new ForwardChainer(Config.getDefaultConfig());
-        fc.tupleStore.namespace.putForm("pal", "http://www.lt-world.org/pal.owl#", true);
-        fc.tupleStore.namespace.putForm("dom", "http://www.lt-world.org/dom.owl#", true);
+        fc = new Hfc(Config.getDefaultConfig());
+        fc._tupleStore.namespace.putForm("pal", "http://www.lt-world.org/pal.owl#", true);
+        fc._tupleStore.namespace.putForm("dom", "http://www.lt-world.org/dom.owl#", true);
         fc.uploadTuples(getResource("test.child.labvalues.nt"));
     }
 
@@ -44,7 +44,7 @@ public class TestSort {
 
     @Test
     public void testSort() throws QueryParseException, BindingTableIteratorException {
-        Query q = new Query(fc.tupleStore);
+        Query q = new Query(fc._tupleStore);
 
 
         String[][] expected = {
@@ -73,7 +73,7 @@ public class TestSort {
 
     @Test
     public void testSortR() throws QueryParseException, BindingTableIteratorException {
-        Query q = new Query(fc.tupleStore);
+        Query q = new Query(fc._tupleStore);
 
 
         String[][] expected = {

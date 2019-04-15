@@ -16,7 +16,7 @@ import static junit.framework.TestCase.*;
  */
 public class QueryTest_LookupAllenRelations {
 
-    static ForwardChainer fc;
+    static Hfc fc;
 
 
 
@@ -27,7 +27,7 @@ public class QueryTest_LookupAllenRelations {
     @BeforeClass
     public static void init() throws Exception {
 
-        fc =  new ForwardChainer(Config.getInstance(getResource("LookupAllenRelation.yml")));
+        fc =  new Hfc(Config.getInstance(getResource("LookupAllenRelation.yml")));
 
         // compute deductive closure
         // TODO move this into extra tests -> fcInterval.computeClosure();
@@ -35,7 +35,7 @@ public class QueryTest_LookupAllenRelations {
 
     @Test
     public void testSelectWhere(){
-        TupleStore tupleStore = fc.tupleStore;
+        TupleStore tupleStore = fc._tupleStore;
         Query query = new Query(tupleStore);
 
         try { // F
@@ -52,7 +52,7 @@ public class QueryTest_LookupAllenRelations {
 
     @Test
     public void testSelectDistinctWhere(){
-        TupleStore tupleStore = fc.tupleStore;
+        TupleStore tupleStore = fc._tupleStore;
         Query query = new Query(tupleStore);
         try { // F
             BindingTable bt = query.query("SELECT DISTINCT ?s ?o WHERE ?s <test:hasValue> ?o D \"100\"^^<xsd:long>  \"1550\"^^<xsd:long> ");
@@ -70,7 +70,7 @@ public class QueryTest_LookupAllenRelations {
 
     @Test
     public void testSelectWhereFilter(){
-        TupleStore tupleStore = fc.tupleStore;
+        TupleStore tupleStore = fc._tupleStore;
         Query query = new Query(tupleStore);
         try { // F
             BindingTable bt = query.query("SELECT DISTINCT ?s ?o WHERE ?s <test:hasValue> ?o D \"200\"^^<xsd:long>  \"1600\"^^<xsd:long> FILTER ?s != <test:Sensor1>");
@@ -86,7 +86,7 @@ public class QueryTest_LookupAllenRelations {
 
     @Test
     public void testSelectDistinctWhereFilter(){
-        TupleStore tupleStore = fc.tupleStore;
+        TupleStore tupleStore = fc._tupleStore;
         Query query = new Query(tupleStore);
         try { // F
             BindingTable bt = query.query("SELECT DISTINCT ?s ?o WHERE ?s <test:hasValue> ?o D \"200\"^^<xsd:long>  \"1600\"^^<xsd:long> FILTER ?o IGreater \"2\"^^<xsd:int>");
@@ -103,7 +103,7 @@ public class QueryTest_LookupAllenRelations {
 
     @Test
     public void testSelectWhereAggregate(){
-        TupleStore tupleStore = fc.tupleStore;
+        TupleStore tupleStore = fc._tupleStore;
         Query query = new Query(tupleStore);
         try { // F
             BindingTable bt = query.query("SELECT DISTINCT ?s ?o WHERE ?s <test:hasValue> ?o D \"200\"^^<xsd:long>  \"1600\"^^<xsd:long> AGGREGATE  ?number = Count ?o");

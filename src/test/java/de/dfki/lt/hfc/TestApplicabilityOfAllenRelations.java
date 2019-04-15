@@ -10,9 +10,9 @@ import static org.junit.Assert.*;
 
 public class TestApplicabilityOfAllenRelations {
 
-  static ForwardChainer fcWithIntervalTree_Index;
+  static Hfc fcWithIntervalTree_Index;
 
-  static ForwardChainer fcWithoutIntervalTree_Index;
+  static Hfc fcWithoutIntervalTree_Index;
 
   private static String getResource(String name) {
     return TestingUtils.getTestResource("Query", name);
@@ -21,15 +21,15 @@ public class TestApplicabilityOfAllenRelations {
   @BeforeClass
   public static void init() throws Exception {
 
-    fcWithIntervalTree_Index = new ForwardChainer(Config.getInstance(getResource("AllenRelationIndex.yml")));
+    fcWithIntervalTree_Index = new Hfc(Config.getInstance(getResource("AllenRelationIndex.yml")));
 
-    fcWithoutIntervalTree_Index = new ForwardChainer(Config.getInstance(getResource("AllenRelationNoIndex.yml")));
+    fcWithoutIntervalTree_Index = new Hfc(Config.getInstance(getResource("AllenRelationNoIndex.yml")));
 
   }
 
   @Test
   public void testValidConfiguration(){
-    TupleStore tupleStore = fcWithIntervalTree_Index.tupleStore;
+    TupleStore tupleStore = fcWithIntervalTree_Index._tupleStore;
     Query query = new Query(tupleStore);
     String[][] expected = {
         { "<test:Sensor2>",  "\"4\"^^<xsd:int>" },
@@ -55,7 +55,7 @@ public class TestApplicabilityOfAllenRelations {
 
   @Test
   public void testInvalidConfiguration(){
-    TupleStore tupleStore = fcWithoutIntervalTree_Index.tupleStore;
+    TupleStore tupleStore = fcWithoutIntervalTree_Index._tupleStore;
     Query query = new Query(tupleStore);
     String[][] expected = {
         { "<test:Sensor2>",  "\"4\"^^<xsd:int>" },

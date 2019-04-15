@@ -13,7 +13,7 @@ import org.junit.Before;
 
 
 public class PrintSizeTest {
-  static ForwardChainer fc;
+  static Hfc hfc;
   private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
   @Before
@@ -33,11 +33,11 @@ public class PrintSizeTest {
   @BeforeClass
   public static void init() throws Exception {
 
-    fc =  new ForwardChainer(Config.getInstance(getResource("PrintSize.yml")));
+    hfc =  new Hfc(Config.getInstance(getResource("PrintSize.yml")));
 
     // compute deductive closure
 
-    fc.computeClosure();
+    hfc.computeClosure();
 
   }
 
@@ -80,9 +80,9 @@ public class PrintSizeTest {
         { "<owl:Nothing>", "<rdf:type>", "<owl:Class>" },
 
     };
-    Query q = new Query(fc.tupleStore);
+    Query q = hfc.getQuery();
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    //TestLGetLatest.printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
+    //TestLGetLatest.printExpected(bt, fc._tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
 
     rop.apply(new BindingTable[]{bt});
     String temp = outContent.toString();
@@ -94,7 +94,7 @@ public class PrintSizeTest {
 
   @AfterClass
   public static void finish() {
-    fc.shutdownNoExit();
+    hfc.shutdownNoExit();
   }
 
 }

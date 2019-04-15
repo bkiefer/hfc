@@ -106,8 +106,7 @@ public class RdfGraph {
    */
   public boolean addToRdfGraph(String[] stuple) {
     ArrayList<String> tuple = new ArrayList<String>();
-    for (String s : stuple)
-      tuple.add(s);
+    tuple.addAll(Arrays.asList(stuple));
     return addToRdfGraph(tuple);
   }
 
@@ -206,8 +205,7 @@ public class RdfGraph {
    */
   public boolean removeFromRdfGraph(String[] stuple) {
     ArrayList<String> tuple = new ArrayList<String>();
-    for (String s : stuple)
-      tuple.add(s);
+    tuple.addAll(Arrays.asList(stuple));
     return removeFromRdfGraph(tuple);
   }
 

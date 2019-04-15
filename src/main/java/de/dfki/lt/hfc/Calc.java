@@ -44,8 +44,8 @@ public final class Calc {
       set2 = set;
     }
     Set<int[]> res = new TCustomHashSet<int[]>(Calc.DEFAULT_HASHING_STRATEGY, set2);
-    for (int[] elem : set1)
-      res.add(elem);  // add already checks for containment
+    // add already checks for containment
+    res.addAll(set1);
     return res;
   }
 
@@ -61,8 +61,8 @@ public final class Calc {
       set2 = set;
     }
     Set<int[]> res = new TCustomHashSet<int[]>(strategy, set2);
-    for (int[] elem : set1)
-      res.add(elem);  // add already checks for containment
+    // add already checks for containment
+    res.addAll(set1);
     return res;
   }
 

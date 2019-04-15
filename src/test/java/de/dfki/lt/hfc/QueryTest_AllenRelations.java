@@ -1,8 +1,6 @@
 package de.dfki.lt.hfc;
 
 
-
-import de.dfki.lt.hfc.types.AnyType;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -12,7 +10,7 @@ import static junit.framework.TestCase.*;
 
 public class QueryTest_AllenRelations {
 
-    static ForwardChainer fcInterval, fcNoIndex;
+    static Hfc fcInterval, fcNoIndex;
 
 
     private static String getResource(String name) {
@@ -22,8 +20,8 @@ public class QueryTest_AllenRelations {
     @BeforeClass
     public static void init() throws Exception {
 
-        fcInterval =  new ForwardChainer(Config.getInstance(getResource("lookupIntervalTestIndex.yml")) );
-        fcNoIndex = new ForwardChainer(Config.getInstance(getResource("lookupIntervalTestNoIndex.yml")) );
+        fcInterval =  new Hfc(Config.getInstance(getResource("lookupIntervalTestIndex.yml")) );
+        fcNoIndex = new Hfc(Config.getInstance(getResource("lookupIntervalTestNoIndex.yml")) );
 
 
     }
@@ -41,8 +39,8 @@ public class QueryTest_AllenRelations {
                 {"<test:Sensor2>", "\"2\"^^<xsd:int>"},
                 {"<test:Sensor1>",  "\"3\"^^<xsd:int>"}
         };
-        TupleStore tupleStoreInterval = fcInterval.tupleStore;
-        TupleStore tupleStoreNoIdex = fcNoIndex.tupleStore;
+        TupleStore tupleStoreInterval = fcInterval._tupleStore;
+        TupleStore tupleStoreNoIdex = fcNoIndex._tupleStore;
         Query queryInterval = new Query(tupleStoreInterval);
         Query queryNoIndex = new Query(tupleStoreNoIdex);
         try { // F
@@ -81,8 +79,8 @@ public class QueryTest_AllenRelations {
                 {"<test:Sensor2>", "\"2\"^^<xsd:int>"},
                 {"<test:Sensor1>",  "\"3\"^^<xsd:int>"}
         };
-        TupleStore tupleStoreInterval = fcInterval.tupleStore;
-        TupleStore tupleStoreNoIdex = fcNoIndex.tupleStore;
+        TupleStore tupleStoreInterval = fcInterval._tupleStore;
+        TupleStore tupleStoreNoIdex = fcNoIndex._tupleStore;
         Query queryInterval = new Query(tupleStoreInterval);
         Query queryNoIndex = new Query(tupleStoreNoIdex);
         try { // F
@@ -116,8 +114,8 @@ public class QueryTest_AllenRelations {
                 {"<test:Sensor2>", "\"7\"^^<xsd:int>"},
                 {"<test:Sensor1>", "\"9\"^^<xsd:int>"},
                 {"<test:Sensor2>",  "\"10\"^^<xsd:int>"}};
-        TupleStore tupleStoreInterval = fcInterval.tupleStore;
-        TupleStore tupleStoreNoIdex = fcNoIndex.tupleStore;
+        TupleStore tupleStoreInterval = fcInterval._tupleStore;
+        TupleStore tupleStoreNoIdex = fcNoIndex._tupleStore;
         Query queryInterval = new Query(tupleStoreInterval);
         Query queryNoIndex = new Query(tupleStoreNoIdex);
         try { // F
@@ -146,8 +144,8 @@ public class QueryTest_AllenRelations {
         String[][] expected = {
                 {"<test:Sensor2>", "\"2\"^^<xsd:int>"}
                 };
-        TupleStore tupleStoreInterval = fcInterval.tupleStore;
-        TupleStore tupleStoreNoIdex = fcNoIndex.tupleStore;
+        TupleStore tupleStoreInterval = fcInterval._tupleStore;
+        TupleStore tupleStoreNoIdex = fcNoIndex._tupleStore;
         Query queryInterval = new Query(tupleStoreInterval);
         Query queryNoIndex = new Query(tupleStoreNoIdex);
         
@@ -174,8 +172,8 @@ public class QueryTest_AllenRelations {
         String[][] expected = {
                 {"<test:Sensor2>", "\"2\"^^<xsd:int>"}
         };
-        TupleStore tupleStoreInterval = fcInterval.tupleStore;
-        TupleStore tupleStoreNoIdex = fcNoIndex.tupleStore;
+        TupleStore tupleStoreInterval = fcInterval._tupleStore;
+        TupleStore tupleStoreNoIdex = fcNoIndex._tupleStore;
         
         Query queryInterval = new Query(tupleStoreInterval);
         Query queryNoIndex = new Query(tupleStoreNoIdex);
@@ -205,8 +203,8 @@ public class QueryTest_AllenRelations {
         String[][] expected = {
                 {"<test:Sensor2>", "\"2\"^^<xsd:int>"}
         };
-        TupleStore tupleStoreInterval = fcInterval.tupleStore;
-        TupleStore tupleStoreNoIdex = fcNoIndex.tupleStore;
+        TupleStore tupleStoreInterval = fcInterval._tupleStore;
+        TupleStore tupleStoreNoIdex = fcNoIndex._tupleStore;
         
         Query queryInterval = new Query(tupleStoreInterval);
         Query queryNoIndex = new Query(tupleStoreNoIdex);
@@ -237,8 +235,8 @@ public class QueryTest_AllenRelations {
         String[][] expected = {
                 {"<test:Sensor2>", "\"2\"^^<xsd:int>"}
         };
-        TupleStore tupleStoreInterval = fcInterval.tupleStore;
-        TupleStore tupleStoreNoIdex = fcNoIndex.tupleStore;
+        TupleStore tupleStoreInterval = fcInterval._tupleStore;
+        TupleStore tupleStoreNoIdex = fcNoIndex._tupleStore;
         
         Query queryInterval = new Query(tupleStoreInterval);
         Query queryNoIndex = new Query(tupleStoreNoIdex);
@@ -269,8 +267,8 @@ public class QueryTest_AllenRelations {
         String[][] expected = {
                 {"<test:Sensor2>", "\"2\"^^<xsd:int>"}
         };
-        TupleStore tupleStoreInterval = fcInterval.tupleStore;
-        TupleStore tupleStoreNoIdex = fcNoIndex.tupleStore;
+        TupleStore tupleStoreInterval = fcInterval._tupleStore;
+        TupleStore tupleStoreNoIdex = fcNoIndex._tupleStore;
         
         Query queryInterval = new Query(tupleStoreInterval);
         Query queryNoIndex = new Query(tupleStoreNoIdex);
@@ -318,8 +316,8 @@ public class QueryTest_AllenRelations {
                 {"<test:Sensor2>", "\"7\"^^<xsd:int>"},
                 {"<test:Sensor1>", "\"6\"^^<xsd:int>"}
         };
-        TupleStore tupleStoreInterval = fcInterval.tupleStore;
-        TupleStore tupleStoreNoIdex = fcNoIndex.tupleStore;
+        TupleStore tupleStoreInterval = fcInterval._tupleStore;
+        TupleStore tupleStoreNoIdex = fcNoIndex._tupleStore;
         
         Query queryInterval = new Query(tupleStoreInterval);
         Query queryNoIndex = new Query(tupleStoreNoIdex);
@@ -350,8 +348,8 @@ public class QueryTest_AllenRelations {
         String[][] expected = {
                 {"<test:Sensor1>", "\"10\"^^<xsd:int>"}
         };
-        TupleStore tupleStoreInterval = fcInterval.tupleStore;
-        TupleStore tupleStoreNoIdex = fcNoIndex.tupleStore;
+        TupleStore tupleStoreInterval = fcInterval._tupleStore;
+        TupleStore tupleStoreNoIdex = fcNoIndex._tupleStore;
 
         
         Query queryInterval = new Query(tupleStoreInterval);
@@ -382,9 +380,9 @@ public class QueryTest_AllenRelations {
         String[][] expected = {
                 {"<test:Sensor1>", "\"2\"^^<xsd:int>"}
         };
-        //TupleStore tupleStoreInterval = fcInterval.tupleStore;
-        TupleStore tupleStoreNoIdex = fcNoIndex.tupleStore;
-        //TupleStore tupleStoreIntervalNew = fcNew.tupleStore;
+        //TupleStore tupleStoreInterval = fcInterval._tupleStore;
+        TupleStore tupleStoreNoIdex = fcNoIndex._tupleStore;
+        //TupleStore tupleStoreIntervalNew = fcNew._tupleStore;
         
         //Query queryInterval = new Query(tupleStoreInterval);
         Query queryNoIndex = new Query(tupleStoreNoIdex);
@@ -417,8 +415,8 @@ public class QueryTest_AllenRelations {
         String[][] expected = {
                 {"<test:Sensor2>", "\"2\"^^<xsd:int>"}
         };
-        TupleStore tupleStoreInterval = fcInterval.tupleStore;
-        TupleStore tupleStoreNoIdex = fcNoIndex.tupleStore;
+        TupleStore tupleStoreInterval = fcInterval._tupleStore;
+        TupleStore tupleStoreNoIdex = fcNoIndex._tupleStore;
         
         Query queryInterval = new Query(tupleStoreInterval);
         Query queryNoIndex = new Query(tupleStoreNoIdex);
@@ -450,8 +448,8 @@ public class QueryTest_AllenRelations {
         String[][] expected = {
                 {"<test:Sensor1>", "\"2\"^^<xsd:int>"}
         };
-        TupleStore tupleStoreInterval = fcInterval.tupleStore;
-        TupleStore tupleStoreNoIdex = fcNoIndex.tupleStore;
+        TupleStore tupleStoreInterval = fcInterval._tupleStore;
+        TupleStore tupleStoreNoIdex = fcNoIndex._tupleStore;
         Query queryInterval = new Query(tupleStoreInterval);
         Query queryNoIndex = new Query(tupleStoreNoIdex);
 
@@ -487,8 +485,8 @@ public class QueryTest_AllenRelations {
                 {"<test:Sensor2>", "\"10\"^^<xsd:int>"},
                 {"<test:Sensor1>", "\"9\"^^<xsd:int>"}
         };
-        TupleStore tupleStoreInterval = fcInterval.tupleStore;
-        TupleStore tupleStoreNoIdex = fcNoIndex.tupleStore;
+        TupleStore tupleStoreInterval = fcInterval._tupleStore;
+        TupleStore tupleStoreNoIdex = fcNoIndex._tupleStore;
 
         
         Query queryInterval = new Query(tupleStoreInterval);

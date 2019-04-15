@@ -21,8 +21,10 @@ public class Test {
 		int atoms = Integer.parseInt(args[0]);
 		int tuples = Integer.parseInt(args[1]);
 		Config config = Config.getDefaultConfig();
-		config.noOfAtoms = atoms;
-		config.noOfTuples = tuples;
+		Map update = new HashMap();
+		update.put(Config.NOOFATOMS, atoms);
+		update.put(Config.NOOFTUPLES,tuples);
+		config.updateConfig(update);
 		TupleStore ts = new TupleStore(config);
 		Random rnd = new Random();
 		int[] tuple;

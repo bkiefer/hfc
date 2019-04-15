@@ -229,11 +229,7 @@ public class QRelationFactory {
         return relation;
       else
         throw new QueryParseException("Invalid QRelation definition: " + relation.toString());
-    } catch (InstantiationException e) {
-      e.printStackTrace();
-    } catch (IllegalAccessException e) {
-      e.printStackTrace();
-    } catch (InvocationTargetException e) {
+    } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
       e.printStackTrace();
     }
     return null;

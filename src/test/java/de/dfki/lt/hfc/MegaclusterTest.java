@@ -11,7 +11,7 @@ import static de.dfki.lt.hfc.TestingUtils.checkResult;
 
 
 public class MegaclusterTest {
-  static ForwardChainer fc;
+  static Hfc fc;
 
   private static String getResource(String name) {
     return TestingUtils.getTestResource("Megacluster", name);
@@ -19,7 +19,7 @@ public class MegaclusterTest {
   @BeforeClass
   public static void init() throws Exception {
 
-    fc = new ForwardChainer(Config.getInstance(getResource("MegaCluster.yml")));
+    fc = new Hfc(Config.getInstance(getResource("MegaCluster.yml")));
 
     // compute deductive closure
 
@@ -59,9 +59,9 @@ public class MegaclusterTest {
         { "<test:sri>", "<test:hasName>", "\"Stanford Research Institute\"^^<xsd:string>" },
         { "<test:dfki>", "<test:test>", "<owl:Class>" },
     };
-    Query q = new Query(fc.tupleStore);
+    Query q = new Query(fc._tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    //TestLGetLatest.printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
+    //TestLGetLatest.printExpected(bt, fc._tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     checkResult(expected, bt, bt.getVars());
   }
 

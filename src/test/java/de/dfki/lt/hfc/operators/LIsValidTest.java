@@ -22,7 +22,7 @@ public class LIsValidTest {
     ns.putForm("pal", "http://www.dfki.de/lt/onto/pal/pal.owl#",ns.isShortIsDefault());
     Config config = Config.getDefaultConfig();
     config.namespace = ns;
-    config.verbose = false;
+    config.setVerbose(false);
     TupleStore ts = new TupleStore(config);
     ts.readTuples(getResource("tuples.nt"));
     Query q = new Query(ts);

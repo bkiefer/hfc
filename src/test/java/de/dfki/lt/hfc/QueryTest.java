@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class QueryTest {
 
-  static ForwardChainer fc;
+  static Hfc fc;
 
   private static String getResource(String name) {
     return TestingUtils.getTestResource("LGetLatestValues", name);
@@ -28,7 +28,7 @@ public class QueryTest {
   @Before
   public void setUp() throws IOException, WrongFormatException {
     Config config = Config.getDefaultConfig();
-    fc =  new ForwardChainer(config);
+    fc =  new Hfc(config);
     fc.config.namespace.putForm("pal", "http://www.dfki.de/lt/onto/pal.owl#", true );
     fc.config.namespace.putForm("dom", "http://www.dfki.de/lt/onto/dom.owl#", true);
     fc.uploadTuples(getResource("test.child.labvalues.nt"));
@@ -49,13 +49,13 @@ public class QueryTest {
 
   @Test(expected = QueryParseException.class)
   public void query_Invalid_Empty() throws QueryParseException {
-    Query query = new Query(fc.tupleStore);
+    Query query = fc.getQuery();
     query.query("");
   }
 
   @Test(expected = QueryParseException.class)
   public void query_Invalid_SELECT() throws QueryParseException {
-    Query query = new Query(fc.tupleStore);
+    Query query = fc.getQuery();
     query.query("SELECT ");
     query.query("SELECT DISTINCT");
     query.query("?o WHERE ?s <rdf:type> ?o");
@@ -68,7 +68,7 @@ public class QueryTest {
 
   @Test(expected = QueryParseException.class)
   public void query_Invalid_Variable() throws QueryParseException {
-    Query query = new Query(fc.tupleStore);
+    Query query = fc.getQuery();
     query.query("SELECT ? WHERE ?s <rdf:type> ?o");
     query.query("SELECT !o WHERE ?s <rdf:type> ?o");
     query.query("SELECT _ WHERE ?s <rdf:type> ?o");
@@ -103,7 +103,7 @@ public class QueryTest {
 
   @Test(expected = QueryParseException.class)
   public void query_Invalid_Filter() throws QueryParseException {
-    Query query = new Query(fc.tupleStore);
+    Query query = fc.getQuery();
     query.query("SELECT ?s WHERE ?s <rdf:type> ?o FILTER ?p != ?o");
     query.query("SELECT ?s WHERE ?s <rdf:type> ?o FILTER Less ?o ?o");
     query.query("SELECT ?s WHERE ?s <rdf:type> ?o FILTER CountDistinct ?o");
@@ -111,7 +111,7 @@ public class QueryTest {
 
   @Test(expected = QueryParseException.class)
   public void query_Invalid_Aggregate() throws QueryParseException {
-    Query query = new Query(fc.tupleStore);
+    Query query = fc.getQuery();
     query.query("SELECT ?s WHERE ?s <rdf:type> ?o AGGREGAT ?p != ?o");
     query.query("SELECT ?s WHERE ?s <rdf:type> ?o AGGREGATE ?number = CountDistinct ?o");
     query.query("SELECT ?s WHERE ?s <rdf:type> ?o AGGREGATE ?test = ILess ?s ?s");
@@ -135,17 +135,17 @@ public class QueryTest {
   public void query_SELECT_WHERE() throws QueryParseException {
     String[][] expected = {{"<pal:labval22>"},{"<pal:labval22>"}, {"<pal:labval33>"},
 {"<pal:labval33>"}};
-    Query query = new Query(fc.tupleStore);
+    Query query = fc.getQuery();
     BindingTable bt = query.query("SELECT ?s WHERE ?s <dom:bsl> ?o ?t");
     checkResult(fc, bt, expected, "?s");
   }
 
   @Test
   public void query_SELECT_WHERE_EMPTYTABLE() throws QueryParseException {
-      Query query = new Query(fc.tupleStore);
+      Query query = fc.getQuery();
       BindingTable bt = query.query("SELECT ?s WHERE ?s <dom:bse> ?o ?t");
       assertTrue(bt.isEmpty());
-      query = new Query(fc.tupleStore);
+      query = fc.getQuery();
       bt = query.query("SELECT ?s WHERE ?s \"0\"^^<xsd:long> ?o ?t");
       assertTrue(bt.isEmpty());
   }
@@ -154,7 +154,7 @@ public class QueryTest {
     public void query_SELECTALL_WHERE() throws QueryParseException {
         String[][] expected = {{"<pal:labval22>"},{"<pal:labval22>"}, {"<pal:labval33>"},
                 {"<pal:labval33>"}};
-        Query query = new Query(fc.tupleStore);
+        Query query = fc.getQuery();
         BindingTable bt = query.query("SELECTALL ?s WHERE ?s <dom:bsl> ?o ?t");
         checkResult(fc, bt, expected, "?s");
     }
@@ -172,11 +172,11 @@ public class QueryTest {
   @Test
   public void query_SELECT_DISTINCT_WHERE() throws QueryParseException {
     String[][] expected = {{"<pal:labval22>"},{"<pal:labval33>"}};
-    Query query = new Query(fc.tupleStore);
+    Query query = fc.getQuery();
     BindingTable bt = query.query("SELECT DISTINCT ?s WHERE ?s <dom:bsl> ?o ?t");
     checkResult(fc, bt, expected, "?s");
     expected = new String[][]{{"<pal:labval22>"},{"<pal:labval33>"}};
-    query = new Query(fc.tupleStore);
+    query = fc.getQuery();
      bt = query.query("SELECT DISTINCT ?s WHERE ?s <dom:bsl> ?o ?t & ?s <dom:weight> ?o1 ?t1");
      checkResult(fc, bt, expected, "?s");
 
@@ -185,11 +185,11 @@ public class QueryTest {
   @Test
   public void query_SELECT_WHERE_FILTER() throws QueryParseException {
     String[][] expected = {{"<pal:labval22>"}};
-    Query query = new Query(fc.tupleStore);
+    Query query = fc.getQuery();
     BindingTable bt = query.query("SELECT DISTINCT ?s WHERE ?s <dom:bsl> ?o ?t FILTER ?s != <pal:labval33>");
     checkResult(fc, bt, expected, "?s");
       expected = new String[][]{{"<pal:labval22>"}};
-      query = new Query(fc.tupleStore);
+      query = fc.getQuery();
       bt = query.query("SELECT DISTINCT ?s WHERE ?s <dom:bsl> ?o ?t FILTER ?s != <pal:labval33> & ?t != \"5577\"^^<xsd:long>");
       checkResult(fc, bt, expected, "?s");
   }
@@ -197,7 +197,7 @@ public class QueryTest {
   @Test
   public void query_SELECT_WHERE_AGGREGATE() throws QueryParseException {
     String[][] expected = {{"\"2\"^^<xsd:int>"}};
-    Query query = new Query(fc.tupleStore);
+    Query query = fc.getQuery();
     BindingTable bt = query.query("SELECT ?s WHERE ?s <dom:bsl> ?o ?t AGGREGATE ?number = CountDistinct ?s") ;
     checkResult(fc, bt, expected, "?number");
   }
@@ -205,12 +205,12 @@ public class QueryTest {
   @Test
   public void query_SELECT_WHERE_FILTER_AGGREGATE() throws QueryParseException {
     String[][] expected = {{"\"1\"^^<xsd:int>"}};
-    Query query = new Query(fc.tupleStore);
+    Query query = fc.getQuery();
     BindingTable bt = query.query("SELECT ?s WHERE ?s <dom:bsl> ?o ?t FILTER ?s != <pal:labval33> AGGREGATE ?number = CountDistinct ?s") ;
     checkResult(fc, bt, expected, "?number");
     //?subject = Identity ?p
        expected = new String[][]{{"\"1\"^^<xsd:int>", "\"1\"^^<xsd:int>"}};
-      query = new Query(fc.tupleStore);
+      query = fc.getQuery();
       bt = query.query("SELECT ?s WHERE ?s <dom:bsl> ?o ?t FILTER ?s != <pal:labval33> AGGREGATE ?number = CountDistinct ?s & ?number2 = CountDistinct <pal:labval33>") ;
       checkResult(fc, bt, expected, "?number", "?number2");
   }

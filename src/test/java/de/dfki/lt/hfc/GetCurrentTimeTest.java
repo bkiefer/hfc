@@ -1,32 +1,32 @@
 package de.dfki.lt.hfc;
-import static org.junit.Assert.*;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import static de.dfki.lt.hfc.TestingUtils.*;
 
 public class GetCurrentTimeTest {
-  static ForwardChainer fc;
+  static Hfc fc;
 
   private static String getResource(String name) {
     return TestingUtils.getTestResource("GetCurrentTime", name);
   }
+
+
   @BeforeClass
   public static void init() throws Exception {
+      System.out.println("Create HFC");
+        //TODO create yaml
 
-    fc =  new ForwardChainer(4,                                                    // #cores
-        false,                                                 // verbose
-        true,                                                 // RDF Check
-        false,                                                // EQ reduction disabled
-        3,                                                    // min #args
-        3,                                                    // max #args
-        100000,                                               // #atoms
-        500000,                                               // #tuples
-        getResource("getcurrenttime.nt"),                            // tuple file
-        getResource("getcurrenttime.rdl")                           // rule file
-        );
+      Config config = Config.getInstance(getResource("GetCurrentTime.yml"));
+
+      fc = new Hfc(config);
+      System.out.println("HFC creataed " + fc != null);
 
     // compute deductive closure
 
@@ -59,10 +59,10 @@ public class GetCurrentTimeTest {
         { "<owl:Nothing>", "<rdf:type>", "<owl:Class>" },
 
     };
-    Query q = new Query(fc.tupleStore);
+    Query q = new Query(fc._tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
 
-    //printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
+    //printExpected(bt, fc._tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     checkResult(expected, bt, bt.getVars());
   }
 

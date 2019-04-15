@@ -173,15 +173,15 @@ public class TestingUtils {
     printNext(bt.iterator(), new NextAsIntCall(store));
   }
 
-  private static void checkResult(ForwardChainer fc, BindingTable bt, String[][] expected){
+  private static void checkResult(Hfc hfc, BindingTable bt, String[][] expected){
     check(bt.iterator(), expected,
-        new NextAsIntCall(fc.tupleStore));
+        new NextAsIntCall(hfc._tupleStore));
   }
 
-  public static void checkResult(ForwardChainer fc, BindingTable bt, String[][] expected, String ... vars) {
+  public static void checkResult(Hfc hfc, BindingTable bt, String[][] expected, String ... vars) {
     try {
       check(bt.iterator(vars), expected,
-          new NextAsIntCall(fc.tupleStore));
+          new NextAsIntCall(hfc._tupleStore));
     } catch (BindingTableIteratorException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();

@@ -6,6 +6,8 @@ import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.After;
@@ -23,8 +25,10 @@ public class BindingTableIteratorTest {
   @Before
   public void setup() throws FileNotFoundException, IOException, WrongFormatException {
     config = Config.getDefaultConfig();
-    config.noOfAtoms = 100000;
-    config.noOfTuples = 250000;
+    Map update = new HashMap<>();
+    update.put(Config.NOOFATOMS, 100000);
+    update.put(Config.NOOFTUPLES, 250000);
+    config.updateConfig(update);
     ts = new TupleStore(config);
     ts.verbose = false;
     ts.readTuples(getTestResource("default.nt"));

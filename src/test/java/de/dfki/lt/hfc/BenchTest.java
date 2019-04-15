@@ -15,7 +15,7 @@ public class BenchTest {
    */
   @Test
   public void test() throws IOException, WrongFormatException {
-    ForwardChainer fc = new ForwardChainer(Config.getInstance(TestingUtils.getTestResource("bench.yml")));
+    Hfc fc = new Hfc(Config.getInstance(TestingUtils.getTestResource("bench.yml")));
     //long mid = System.currentTimeMillis();
     fc.computeClosure();
     //System.out.println("Reading and closure took: " + (end - start) + "ms");
@@ -24,35 +24,35 @@ public class BenchTest {
 
   @Test
   public void TestQ1() throws IOException, WrongFormatException, QueryParseException {
-    ForwardChainer fc = new ForwardChainer(Config.getInstance(TestingUtils.getTestResource("bench.yml")));
+    Hfc fc = new Hfc(Config.getInstance(TestingUtils.getTestResource("bench.yml")));
     // further PAL-specific tuples (special XSD DT)
     fc.uploadTuples(TestingUtils.getTestResource("ltworld.jena.nt"));
     fc.computeClosure();
     String queryString = "Select * where ?s ?o ?p ";
-    Query query = new Query(fc.tupleStore);
+    Query query = new Query(fc._tupleStore);
     BindingTable bt = query.query(queryString);
 
   }
 
   @Test
   public void TestQ2() throws IOException, WrongFormatException, QueryParseException {
-    ForwardChainer fc = new ForwardChainer(Config.getInstance(TestingUtils.getTestResource("bench.yml")));
+    Hfc fc = new Hfc(Config.getInstance(TestingUtils.getTestResource("bench.yml")));
     // further PAL-specific tuples (special XSD DT)
     fc.uploadTuples(TestingUtils.getTestResource("ltworld.jena.nt"));
     fc.computeClosure();
-    boolean b = fc.tupleStore.ask(new String[]{"<ltw:obj_67783>", "<ltw:lt_technologicalApplication>", "<ltw:KB_788599_Individual_78>"});
+    boolean b = fc._tupleStore.ask(new String[]{"<ltw:obj_67783>", "<ltw:lt_technologicalApplication>", "<ltw:KB_788599_Individual_78>"});
     //System.out.println("Query parsing took: " + (end - start));
     assertTrue(b);
   }
 
   @Test
   public void TestQ3() throws IOException, WrongFormatException, QueryParseException {
-    ForwardChainer fc = new ForwardChainer(Config.getInstance(TestingUtils.getTestResource("bench.yml")));
+    Hfc fc = new Hfc(Config.getInstance(TestingUtils.getTestResource("bench.yml")));
     // further PAL-specific tuples (special XSD DT)
     fc.uploadTuples(TestingUtils.getTestResource("ltworld.jena.nt"));
     fc.computeClosure();
     String queryString = "Select ?s ?p where ?s <ltw:participatedIn> ?p ";
-    Query query = new Query(fc.tupleStore);
+    Query query = new Query(fc._tupleStore);
 
     BindingTable bt = query.query(queryString);
 
@@ -60,12 +60,12 @@ public class BenchTest {
 
   @Test
   public void TestQ4() throws IOException, WrongFormatException, QueryParseException {
-    ForwardChainer fc = new ForwardChainer(Config.getInstance(TestingUtils.getTestResource("bench.yml")));
+    Hfc fc = new Hfc(Config.getInstance(TestingUtils.getTestResource("bench.yml")));
     // further PAL-specific tuples (special XSD DT)
     fc.uploadTuples(TestingUtils.getTestResource("ltworld.jena.nt"));
     fc.computeClosure();
     String queryString = "Select ?s where ?s <rdf:type> <ltw:Active_Patent> ";
-    Query query = new Query(fc.tupleStore);
+    Query query = new Query(fc._tupleStore);
     BindingTable bt = query.query(queryString);
 
   }

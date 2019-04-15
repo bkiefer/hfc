@@ -11,7 +11,7 @@ import static de.dfki.lt.hfc.TestingUtils.checkResult;
 
 
 public class ConcatenateThreeTest {
-  static ForwardChainer fc;
+  static Hfc fc;
 
   private static String getResource(String name) {
     return TestingUtils.getTestResource("Concatenate3", name);
@@ -19,7 +19,7 @@ public class ConcatenateThreeTest {
   @BeforeClass
   public static void init() throws Exception {
 
-    fc =  new ForwardChainer(Config.getInstance(getResource("Concatenate3.yml")));
+    fc =  new Hfc(Config.getInstance(getResource("Concatenate3.yml")));
 
     // compute deductive closure
     fc.computeClosure();
@@ -72,9 +72,9 @@ public class ConcatenateThreeTest {
 
     };
 
-    Query q = new Query(fc.tupleStore);
+    Query q = fc.getQuery();
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    //TestLGetLatest.printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
+    //TestLGetLatest.printExpected(bt, fc._tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     checkResult(expected, bt, bt.getVars());
   }
 

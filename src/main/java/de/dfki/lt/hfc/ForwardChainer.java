@@ -8,8 +8,6 @@ import gnu.trove.set.hash.TIntHashSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -24,9 +22,8 @@ import java.util.concurrent.Executors;
  *
  * @author (C) Hans-Ulrich Krieger
  * @version Fri Jul  8 15:36:17 CEST 2016
- * @see TupleStore.equivalenceClassReduction
- * and
- * @see ForwardChainer.cleanUpRepository
+ * @author Christian Willms
+ * @version Fri Apr 5 10:15:14 CEST 2019
  * it might be the case that the closure computation needs to be called
  * again, since the cleanup phase performed afterwards could lead to the
  * possibility that passive rules become active again !!
@@ -35,15 +32,7 @@ import java.util.concurrent.Executors;
 public final class ForwardChainer {
 
 
-  /**
-   * q
-   * HFC version number string
-   */
-  public static final String VERSION = "6.3.0";
-  /**
-   * HFC info string
-   */
-  public static final String INFO = "v" + ForwardChainer.VERSION + " (Fri Jul  8 15:36:17 CEST 2016)";
+
   /**
    * A basic LOGGER.
    */
@@ -53,25 +42,23 @@ public final class ForwardChainer {
    * iteration: take ALL positions of a tuple into account
    */
   protected static TIntArrayHashingStrategy DEFAULT_HASHING_STRATEGY = new TIntArrayHashingStrategy();
-  protected final Config config;
-  /**
-   * used to generate unique blank node names for _this_ forward chainer
-   */
-  private final String blankNodePrefix = "_:" + this.toString();
-  /**
-   * a pointer to the tuple store for this forward chainer
-   */
-  public TupleStore tupleStore;
-  /**
-   * a pointer to the rule store for this forward chainer
-   */
-  public RuleStore ruleStore;
+  private final TupleStore _tupleStore;
+  
+  
+  private final RuleStore _ruleStore;
+    private final Config _config;
+    //private  int _noOfIterations;
+  //private  Integer _noOfCores;
+  //private  boolean _gc;
+
+
   /**
    * a constant that controls whether a warning is printed in case an invalid
    * tuple is read in;
    * a similar variable exists in class RuleStore
    */
-  public boolean verbose = false;
+  //public boolean verbose;
+
   /**
    * generation counter is incremented during each iteration, independent of how
    * many times computeClosure() is called;
@@ -93,111 +80,69 @@ public final class ForwardChainer {
    * needed to to start a new iteration
    */
   private CountDownLatch doneSignal;
+  //private boolean _cleanUpRepository;
+  //private boolean _eqReduction;
+
+
+  /**
+   * used to generate unique blank node names for _this_ forward chainer
+   */
+  private final String _blankNodePrefix = "_:" + this.toString();
+
   /**
    * used to generate unique blank node names
    */
-  private int blankCounter = 0;
+  private int _blankCounter = 0;
 
-
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  /**
-   * prints a welcome message to standard out
-   */
-  ForwardChainer() throws IOException {
-    this.config = Config.getDefaultConfig();
-    init();
-  }
-
-  public ForwardChainer(Config config, TupleStore tupleStore, RuleStore ruleStore) {
-    this.tupleStore = tupleStore;
-    this.ruleStore = ruleStore;
-    this.config = config;
-    this.threadPool = Executors.newFixedThreadPool(config.noOfCores);
-    this.noOfTasks = this.ruleStore.allRules.size();
-  }
-
-
-  public ForwardChainer(Config config) throws IOException, WrongFormatException {
-    this.config = config;
-    this.verbose = config.verbose;
-    this.tupleStore = new TupleStore(config);
-    this.ruleStore = new RuleStore(config, tupleStore);
-    this.threadPool = Executors.newFixedThreadPool(config.noOfCores);
-    this.noOfTasks = this.ruleStore.allRules.size();
-  }
-
-  /**
-   * @param noOfCores
-   * @param verbose
-   * @param rdfCheck
-   * @param eqReduction
-   * @param minArgs
-   * @param maxArgs
-   * @param atoms
-   * @param tuples
-   * @param tupleFile
-   * @param ruleFile
-   * @throws IOException
-   * @throws WrongFormatException
-   * @deprecated for tests only
-   */
-  public ForwardChainer(int noOfCores, boolean verbose, boolean rdfCheck, boolean eqReduction, int minArgs, int maxArgs, int atoms, int tuples, String tupleFile, String ruleFile) throws IOException, WrongFormatException {
-    this.config = Config.getDefaultConfig();
-    config.tupleFiles.clear();
-    config.tupleFiles.add(tupleFile);
-    config.noOfCores = noOfCores;
-    config.verbose = verbose;
-    config.rdfCheck = rdfCheck;
-    config.eqReduction = eqReduction;
-    config.minArgs = minArgs;
-    config.maxArgs = maxArgs;
-    config.noOfAtoms = atoms;
-    config.noOfTuples = tuples;
-
-    NamespaceManager namespace = NamespaceManager.getInstance();
-    IndexStore indexStore = null;
-    this.tupleStore = new TupleStore(config);
-    this.ruleStore = new RuleStore(verbose, rdfCheck, minArgs, maxArgs,
-            this.tupleStore, ruleFile);
-    this.threadPool = Executors.newFixedThreadPool(noOfCores);
-    this.noOfTasks = this.ruleStore.allRules.size();
-  }
-
-  /**
-   * initialization code of nullary and binary constructors that is outsourced to avoid
-   * code reduplication
-   */
-  private void init() {
-    if (this.verbose) {
-      logger.info("  Welcome to HFC, HUK's Forward Chainer");
-      logger.info("  " + ForwardChainer.INFO);
-      logger.info("  # CPU cores: " + config.noOfCores);
-      logger.info("  " + this.toString());
-    }
-  }
 
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+  
+  public ForwardChainer(TupleStore ts, RuleStore rs, Config config) {
+    _tupleStore = ts;
+    _ruleStore = rs;
+    noOfTasks = rs.allRules.size();
+    _config = config;
+    /**
+    _noOfCores = config.getNoOfCores();
+    _cleanUpRepository = config.isCleanupRepository();
+    _eqReduction = (Boolean) config.isEqReduction();
+    _gc = (Boolean) config.isGarbageCollection();
+    _noOfIterations = (int) config.get(Config.ITERATIONS);
+    verbose = (boolean) config.get(Config.VERBOSE);
+    **/
+     this.threadPool = Executors.newFixedThreadPool(config.getNoOfCores());
+
+  }
+
+
+  /**
+  private ForwardChainer(TupleStore ts, RuleStore rs){
+    _tupleStore = ts;
+    _ruleStore = rs;
+
+    noOfTasks = rs.allRules.size();
+  }
+   **/
+
+
+
+
+
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /**
    * to (dynamically) change the number of processor cores at runtime, use this method
    */
+  /**
   public void setNoOfCores(int noOfCores) {
-    config.noOfCores = noOfCores;
+    _noOfCores = noOfCores;
     this.threadPool = Executors.newFixedThreadPool(noOfCores);
   }
+  **/
 
-  /**
-   * generates a new unique blank node id (an int);
-   * used during forward chaining when unbounded right-hand side variables are introduced;
-   * it is important that the method is synchronized to exclusively lock the blank counter;
-   */
-  public int nextBlankNode() {
-    synchronized (this.tupleStore) {
-      return this.tupleStore.putObject(this.blankNodePrefix + this.blankCounter++);
-    }
-  }
+
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -219,7 +164,7 @@ public final class ForwardChainer {
           continue;
         }
         // not so: query index, assign table/delta the right values, increment counter
-        query = this.tupleStore.queryIndex(rule.ante[i], rule.localQueryBindings[i]);
+        query = _tupleStore.queryIndex(rule.ante[i], rule.localQueryBindings[i]);
         // null indicates an empty result set, thus cancel rule execution!
         if (query.isEmpty()) {
           //System.out.println("X");
@@ -262,7 +207,7 @@ public final class ForwardChainer {
    * (0 J 2) J 1
    * this is achieved by computing "clusters" of LHS clauses
    *
-   * @see de.dfki.lt.hfc.RuleStore#computeAmalgamation
+   * @see de.dfki.lt.hfc.RuleStore
    */
   private void executeGlobalMatch(Rule rule) {
     // one LHS clause
@@ -284,7 +229,7 @@ public final class ForwardChainer {
         else
           // shallow copy delta
           rule.clusters[0].bindingTable =
-                  new BindingTable(new TCustomHashSet<int[]>(table.getStrategy(), table.getDelta()),
+                  new BindingTable(new TCustomHashSet<>(table.getStrategy(), table.getDelta()),
                           table.nameToPosProper);
       }
     }
@@ -297,8 +242,8 @@ public final class ForwardChainer {
                 cluster.positions,
                 0,
                 false,
-                new ArrayList<BindingTable>(),
-                new HashMap<Pair, BindingTable>());
+                new ArrayList<>(),
+                new HashMap<>());
         if (result.isEmpty()) {
           // if at least one cluster yields an empty binding table, the whole LHS is not satisfiable
           rule.isApplicable = false;
@@ -311,17 +256,19 @@ public final class ForwardChainer {
     }
   }
 
+  /**
   public boolean getCleanUpRepository() {
-    return config.cleanUpRepository;
+    return _cleanUpRepository;
   }
 
   public boolean isCleanUpRepository() {
-    return config.cleanUpRepository;
+    return _cleanUpRepository;
   }
 
   public boolean isEquivalenceClassReduction() {
-    return config.eqReduction;
+    return _eqReduction;
   }
+  **/
 
   /**
    * does the recursive job for executeGlobalMatch();
@@ -339,7 +286,7 @@ public final class ForwardChainer {
     if (index == cluster.size()) {
       if (!newInfo)
         // no new info -- no need to do some potential expensive joins
-        return new BindingTable(new THashSet<int[]>(), null);
+        return new BindingTable(new THashSet<>(), null);
       // joinit is at least of length 1
       Pair pair;
       BindingTable memoResult;
@@ -361,22 +308,22 @@ public final class ForwardChainer {
       Table current = locbind[cluster.get(index)];
       BindingTable delta;
       if (current.getDelta().isEmpty())
-        delta = new BindingTable(new THashSet<int[]>(), null);
+        delta = new BindingTable(new THashSet<>(), null);
       else {
         // add current's non-empty delta to the continuation
-        ArrayList<BindingTable> deltaJoinit = new ArrayList<BindingTable>(joinit);
+        ArrayList<BindingTable> deltaJoinit = new ArrayList<>(joinit);
         deltaJoinit.add(new BindingTable(current.getDelta(), current.nameToPosProper));
-        delta = complexJoin(locbind, cluster, index + 1, newInfo || true, deltaJoinit, memo);
+        delta = complexJoin(locbind, cluster, index + 1, true, deltaJoinit, memo);
         //                                               true, of course
       }
       BindingTable old;
       if (current.getOld().isEmpty())
-        old = new BindingTable(new THashSet<int[]>(), null);
+        old = new BindingTable(new THashSet<>(), null);
       else {
         // add current's non-empty old to the continuation
-        ArrayList<BindingTable> oldJoinit = new ArrayList<BindingTable>(joinit);
+        ArrayList<BindingTable> oldJoinit = new ArrayList<>(joinit);
         oldJoinit.add(new BindingTable(current.getOld(), current.nameToPosProper));
-        old = complexJoin(locbind, cluster, index + 1, newInfo || false, oldJoinit, memo);
+        old = complexJoin(locbind, cluster, index + 1, newInfo, oldJoinit, memo);
         //                                             newInfo, of course
       }
       // take the union of delta and old
@@ -443,7 +390,7 @@ public final class ForwardChainer {
         //System.out.println(rule.name + "(delta/old): " + cluster.delta.size() + " " + cluster.old.size());
       }
       // more than one independent LHS cluster: Cartesian Product (at the moment!)
-      rule.megaCluster.bindingTable = complexProduct(rule.clusters, 0, false, new ArrayList<BindingTable>());
+      rule.megaCluster.bindingTable = complexProduct(rule.clusters, 0, false, new ArrayList<>());
       // destructively apply *remaining* in-eqs and tests to mega cluster, using Calc.restrict()
       rule.megaCluster.bindingTable = Calc.restrict(rule.megaCluster.bindingTable, rule.megaCluster.varvarIneqs, rule.megaCluster.varconstIneqs);
       rule.megaCluster.bindingTable = Calc.restrict(rule.megaCluster.bindingTable, rule.megaCluster.tests);
@@ -494,7 +441,7 @@ public final class ForwardChainer {
                                       ArrayList<BindingTable> productit) {
     if (index == clusters.length) {
       if (!newInfo)
-        return new BindingTable(new THashSet<int[]>(), null);
+        return new BindingTable(new THashSet<>(), null);
       // productit is at least of length 1
       BindingTable result = productit.get(0);
       for (int i = 1; i < productit.size(); i++)
@@ -506,22 +453,22 @@ public final class ForwardChainer {
       Cluster current = clusters[index];
       BindingTable delta;
       if (current.delta.size() == 0)
-        delta = new BindingTable(new THashSet<int[]>(), null);
+        delta = new BindingTable(new THashSet<>(), null);
       else {
         // add current's non-empty delta to the continuation
-        ArrayList<BindingTable> deltaProductit = new ArrayList<BindingTable>(productit);
+        ArrayList<BindingTable> deltaProductit = new ArrayList<>(productit);
         deltaProductit.add(new BindingTable(current.delta, current.bindingTable.nameToPos));
-        delta = complexProduct(clusters, index + 1, newInfo || true, deltaProductit);
+        delta = complexProduct(clusters, index + 1, true, deltaProductit);
         //                                          true, of course
       }
       BindingTable old;
       if (current.old.size() == 0)
-        old = new BindingTable(new THashSet<int[]>(), null);
+        old = new BindingTable(new THashSet<>(), null);
       else {
         // add current's non-empty old to the continuation
-        ArrayList<BindingTable> oldProductit = new ArrayList<BindingTable>(productit);
+        ArrayList<BindingTable> oldProductit = new ArrayList<>(productit);
         oldProductit.add(new BindingTable(current.old, current.bindingTable.nameToPos));
-        old = complexProduct(clusters, index + 1, newInfo || false, oldProductit);
+        old = complexProduct(clusters, index + 1, newInfo, oldProductit);
         //                                        newInfo, of course
       }
       // take the union of delta and old
@@ -543,14 +490,14 @@ public final class ForwardChainer {
     SortedMap<Integer, Integer> nameToPos = rule.megaCluster.bindingTable.nameToPos;
     Set<Integer> rhsvars = rule.rhsVariables;  // proper RHS vars w/o BN vars
     Set<Integer> bnvars = rule.blankNodeVariables;
-    if (this.verbose) {
+    if (_config.isVerbose()) {
       synchronized (logger) {
         logger.info("  " + rule.name + ": " + rule.megaCluster.old.size() +
                 " " + rule.megaCluster.delta.size());
       }
     }
     // use a mediator (array) instead of using the slower map; take care of _blank_node_ vars;
-    ArrayList<Integer> allrhsvars = new ArrayList<Integer>(rhsvars);
+    ArrayList<Integer> allrhsvars = new ArrayList<>(rhsvars);
     allrhsvars.addAll(bnvars);
     // adjust array using _all_ RHS vars incl. BN vars; position 0 is unused
     int[] mediator = new int[-Collections.min(allrhsvars).intValue() + 1];
@@ -569,7 +516,7 @@ public final class ForwardChainer {
     if (hasBnVars) {
       bnmediator = new int[mediator.length];
       binderVars = new TIntHashSet();                  // might be empty
-      varToFunct = new TIntObjectHashMap<Function>();  // ditto
+      varToFunct = new TIntObjectHashMap<>();  // ditto
       for (Function function : rule.actions) {
         binderVars.add(function.result);
         varToFunct.put(function.result, function);
@@ -603,7 +550,7 @@ public final class ForwardChainer {
                   input[j] = function.args[j] > 0 ? function.args[j] : binding[mediator[-function.args[j]]];
                 }
                 bnmediator[-clause[i]] =
-                        this.tupleStore.operatorRegistry.evaluate(function.name, OperatorRegistry.OPERATOR_PATH, input);
+                        _tupleStore.operatorRegistry.evaluate(function.name, OperatorRegistry.OPERATOR_PATH, input);
               } else {
                 bnmediator[-clause[i]] = nextBlankNode();
               }
@@ -621,12 +568,23 @@ public final class ForwardChainer {
   }
 
   /**
+   * generates a new unique blank node id (an int);
+   * used during forward chaining when unbounded right-hand side variables are introduced;
+   * it is important that the method is synchronized to exclusively lock the blank counter;
+   */
+  public int nextBlankNode() {
+    synchronized (_tupleStore) {
+      return _tupleStore.putObject(_blankNodePrefix + _blankCounter++);
+    }
+  }
+
+  /**
    * performs the matching and instantiation for each rule;
    * keeps track of local information in order to speed up rule execution;
    * writes generated tuples to local output field of the rule
    */
   protected void execute(Rule rule) {
-    if(verbose)
+    if(_config.isVerbose())
       synchronized (logger) {
         logger.info(" execute rule " + rule.name);
       }
@@ -635,7 +593,7 @@ public final class ForwardChainer {
       rule.output.clear();
       // do not execute rules which have a priority less or equal 0
       if (rule.priority <= 0) {
-        if (this.verbose)
+        if (_config.isVerbose())
           synchronized (logger) {
             logger.info("  " + rule.name + ": off");
           }
@@ -645,7 +603,7 @@ public final class ForwardChainer {
       executeLocalMatch(rule);
       // and check whether rule is applicable on local grounds
       if (!rule.isApplicable) {
-        if (this.verbose)
+        if (_config.isVerbose())
           synchronized (logger) {
             logger.info("  " + rule.name + ": local");
           }
@@ -654,7 +612,7 @@ public final class ForwardChainer {
       // same for the whole antecedent
       executeGlobalMatch(rule);
       if (!rule.isApplicable) {
-        if (this.verbose)
+        if (_config.isVerbose())
           synchronized (logger) {
             logger.info("  " + rule.name + ": global");
           }
@@ -663,7 +621,7 @@ public final class ForwardChainer {
       // apply in-eqs if in-eq vars belong to the same cluster
       applyTests(rule);
       if (!rule.isApplicable) {
-        if (this.verbose)
+        if (_config.isVerbose())
           synchronized (logger) {
             logger.info("  " + rule.name + ": tests");
           }
@@ -672,7 +630,7 @@ public final class ForwardChainer {
       // compute "deltas" over LHS clusters
       prepareInstantiation(rule);
       if (!rule.isApplicable) {
-        if (this.verbose)
+        if (_config.isVerbose())
           synchronized (logger) {
             logger.info("  " + rule.name + ": cluster");
           }
@@ -680,6 +638,7 @@ public final class ForwardChainer {
       }
       // start instantiation phase
       performInstantiation(rule);
+      System.out.println(rule.output);
     } finally {
       // only at the _very end_ decrease count down latch (cf. return statements above)
       this.doneSignal.countDown();
@@ -691,12 +650,9 @@ public final class ForwardChainer {
    */
   private void executeAllRules() {
     Runnable task;
-    for (final Rule rule : this.ruleStore.allRules) {
-      task = new Runnable() {
-        public void run() {
-          execute(rule);
-        }
-      };
+    for (final Rule rule : _ruleStore.allRules) {
+      task = () -> execute(rule);
+      logger.info("Submitting task for rule " + rule);
       this.threadPool.submit(task);
     }
   }
@@ -710,30 +666,32 @@ public final class ForwardChainer {
    * @return false, otherwise
    */
   public boolean computeClosure(int noOfIterations, boolean cleanUpRepository) {
-    int noOfAllTuples = this.tupleStore.allTuples.size();
-    if (this.verbose)
+    logger.info("Number of Iterations = " + noOfIterations);
+    logger.info("CleanUp Repository = " + noOfIterations);
+    int noOfAllTuples = _tupleStore.allTuples.size();
+    if (_config.isVerbose())
       logger.info("\n  number of all tuples: " + noOfAllTuples + "\n");
     int currentIteration = 0;
     long time = System.currentTimeMillis();
     long fullTime = time;
     boolean newInfo = false;
     int noOfNewTuples = 0;
-    if (this.verbose)
+    if (_config.isVerbose())
       logger.info("  rule name: old new OR failure stage");
     // increment generation counter for deletion here AND also at the very end
     boolean notContained;
-    ++this.tupleStore.generation;
+    ++_tupleStore.generation;
     do {
       // increment global generation counter (is never reset)
       ++this.generationCounter;
       // increment number of local iterations wrt. computeClosure()
       ++currentIteration;
-      if (this.verbose)
+      if (_config.isVerbose())
         logger.info("  " + currentIteration);
       // execute all rules (quasi) in parallel, taking advantage of multi-core CPUs
       this.doneSignal = new CountDownLatch(this.noOfTasks);  // = #rules
       try {
-        logger.info("Execute all rules ...");
+        logger.info("Execute all ("+ _ruleStore.allRules.size() + ") rules ...");
         executeAllRules();
         this.doneSignal.await();  // wait for all tasks to finish
       } catch (InterruptedException ie) {
@@ -742,59 +700,52 @@ public final class ForwardChainer {
       // add rule-generated tuples to set of all tuples and update the index
       newInfo = false;
       noOfNewTuples = 0;
-      for (Rule rule : this.ruleStore.allRules) {
+      for (Rule rule : _ruleStore.allRules) {
+        logger.info("Looking at rule " + rule);
         for (int[] tuple : rule.output) {
-          notContained = this.tupleStore.addTuple(tuple);
+          notContained = _tupleStore.addTuple(tuple);
           newInfo = notContained || newInfo;
           ++noOfNewTuples;
         }
       }
-      if (this.verbose) {
-        logger.info("  " + noOfNewTuples + "/" + this.tupleStore.allTuples.size() +
+      if (_config.isVerbose()) {
+        logger.info("  " + noOfNewTuples + "/" + _tupleStore.allTuples.size() +
                 " (" + (System.currentTimeMillis() - time) + "msec)");
         time = System.currentTimeMillis();
       }
       // perhaps trigger a GC after each iteration step
-      if (config.gc)
+      if (_config.isGarbageCollection())
         System.gc();
     } while (newInfo && (currentIteration != noOfIterations));
     // increment the generation  counter for deltion again for further upload
-    ++this.tupleStore.generation;
+    ++_tupleStore.generation;
     // some statistics
-    if (this.verbose) {
-      logger.info("\n  number of all tuples: " + this.tupleStore.allTuples.size());
-      logger.info("  " + (this.tupleStore.allTuples.size() - noOfAllTuples) +
+    if (_config.isVerbose()) {
+      logger.info("\n  number of all tuples: " + _tupleStore.allTuples.size());
+      logger.info("  " + (_tupleStore.allTuples.size() - noOfAllTuples) +
               " tuples generated");
       logger.info("  closure computation took " + (System.currentTimeMillis() - fullTime) + "msec");
     }
     // possibly cleanup
-    if (config.eqReduction && config.cleanUpRepository) {
-      if (this.verbose) {
+    if (_config.isEqReduction() && _config.isCleanupRepository()) {
+      if (_config.isVerbose()) {
         logger.info("\n  cleaning up repository ... ");
       }
-      this.tupleStore.cleanUpTupleStore();
-      if (this.verbose) {
+      _tupleStore.cleanUpTupleStore();
+      if (_config.isVerbose()) {
         logger.info("done");
-        logger.info("  number of all tuples: " + this.tupleStore.allTuples.size());
+        logger.info("  number of all tuples: " + _tupleStore.allTuples.size());
       }
     }
     logger.info("Generation Counter: " + generationCounter);
     // and finally the `answer'
-    if ((noOfAllTuples - this.tupleStore.allTuples.size()) == 0)
+    if ((noOfAllTuples - _tupleStore.allTuples.size()) == 0)
       return false;
     else
       return true;
   }
 
-  /**
-   * the number of iterations is given by global this.noOfIterations;
-   * whether the repository is cleaned up is determined by ForwardChainer.cleanUpRepository
-   * and TupleStore.equivalenceClassReduction
-   */
-  public boolean computeClosure() {
-    return computeClosure(config.noOfIterations, config.cleanUpRepository);
-  }
-
+  
   /**
    * calls computeClosure(int noOfIterations) again, assuming that a set of
    * new tuples has been added to the tuple store;
@@ -804,116 +755,35 @@ public final class ForwardChainer {
   public boolean computeClosure(Set<int[]> newTuples, int noOfIterations, boolean cleanUpRepository) {
     // note: A \subseteq T <==> A \setminus T = \emptyset
     // use this to avoid subset test, union, and difference operations
-    newTuples.removeAll(this.tupleStore.allTuples);  // is a destructive operation
+    newTuples.removeAll(_tupleStore.allTuples);  // is a destructive operation
     // is newTuples a subset of allTuples
     if (newTuples.isEmpty()) {
-      if (this.verbose)
+      if (_config.isVerbose())
         logger.info("\n  no tuples generated");
       return false;
     }
     for (int[] tuple : newTuples) {
-      this.tupleStore.addTuple(tuple);
+      _tupleStore.addTuple(tuple);
     }
     // and finally call nullary computeClosure()
     return computeClosure(noOfIterations, cleanUpRepository);
   }
+  
 
-  /**
-   * the number of iterations is given by field noOfIterations
-   */
-  public boolean computeClosure(Set<int[]> newTuples) {
-    return computeClosure(newTuples, config.noOfIterations, config.cleanUpRepository);
-  }
 
-  /**
-   * uploads further tuples stored in a file to an already established forward chainer;
-   * this method directly calls readTuples() from class TupleStore;
-   * if tuple deletion is enabled in the forward chainer, the tuples from the file are
-   * assigned the actual generation TupleStore.generation
-   *
-   * @throws IOException
-   * @throws FileNotFoundException
-   * @throws WrongFormatException
-   */
-  public void uploadTuples(String filename) throws FileNotFoundException, IOException, WrongFormatException {
-    this.tupleStore.readTuples(filename);
-  }
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
+ 
 
-//	/**
-//	 * uploads further namespaces stored in a file to an already established forward chainer;
-//	 * this method directly calls readNamespaces() from class NamespaceManager
-//	 * @throws IOException
-//	 * @throws WrongFormatException
-//	 * @throws FileNotFoundException
-//	 * @see NamespaceManager.readNamespaces()
-//	 */
-//	public void uploadNamespaces(String filename)
-//	    throws FileNotFoundException, WrongFormatException, IOException {
-//		this.tupleStore.uploadNamespaces(filename);
-//	}
 
-  /**
-   * read in tuples stored in a file with name filename;
-   * tuples that are goind to be read in are extended by at most one front element front
-   * and potentially many back elements back;
-   * use null as a value for front to indicate that there is no front element, and an
-   * empty String array that there are no back elements
-   *
-   * @param filename
-   * @param front
-   * @param backs
-   * @throws FileNotFoundException
-   * @throws IOException
-   * @throws WrongFormatException
-   */
-  public void uploadTuples(String filename, String front, String... backs)
-          throws FileNotFoundException, IOException, WrongFormatException {
-    this.tupleStore.readTuples(filename, front, backs);
-  }
-
-  /**
-   * add tuples, represented as int[], to the set of all tuples;
-   * if tuple deletion is enabled in the forward chainer, the tuples from the set are
-   * assigned the actual generation TupleStore.generation
-   */
-  public void addTuples(Collection<int[]> tuples) {
-    for (int[] tuple : tuples)
-      this.tupleStore.addTuple(tuple);
-  }
-
-  /**
-   * remove tuples, represented as int[], from the set of all tuples;
-   * if tuple deletion is enabled in the forward chainer, the tuples from the set are
-   * removed from TupleStore.generation
-   */
-  public void removeTuples(Collection<int[]> tuples) {
-    for (int[] tuple : tuples)
-      this.tupleStore.removeTuple(tuple);
-  }
-
-  /**
-   * uploads further rules stored in a file to an already established forward chainer;
-   * the set of all rules is returned;
-   * NOTE: a similar method readRules() is defined in class RuleStore;
-   * however, uploadRules set the field noOfTasks in ForwardChainer to the proper value
-   *
-   * @throws IOException
-   */
-  public void uploadRules(String filename) throws IOException {
-    this.ruleStore.lineNo = 0;
-    this.ruleStore.readRules(filename);
-    // update noOfTask in order to guarantee proper rule execution in a multi-threaded environment
-    this.noOfTasks = this.ruleStore.allRules.size();
-  }
 
   /**
    * shutdowns the thread pool and exits with value 0
    */
   public void shutdown() {
     this.threadPool.shutdown();
-    if (this.verbose) {
+    if (_config.isVerbose()) {
       logger.info("\n  shutting down thread pool ...");
       logger.info("  exiting ...\n");
     }
@@ -928,10 +798,24 @@ public final class ForwardChainer {
    */
   public void shutdownNoExit() {
     this.threadPool.shutdown();
-    if (this.verbose) {
+    if (_config.isVerbose()) {
       logger.info("  shutting down thread pool ...");
     }
   }
+
+  
+
+ 
+
+  /**
+   * @return false otherwise
+   * <p>
+   * there is a similar method in class TupleStore
+   */
+  public boolean tupleDeletionEnabled() {
+    return (_tupleStore.tupleToGeneration != null);
+  }
+
 
   /**
    * if 0, auxiliary structures in forward chainer are not compressed/deleted;
@@ -965,20 +849,20 @@ public final class ForwardChainer {
   private void deleteOldNew() {
     // do not call clear() since it does NOT frees the memory (only clears the sets)
     // delete clause-level info shared between rules
-    for (Proxy proxy : this.ruleStore.equivalentClauses.values()) {
-      proxy.table = new THashSet<int[]>();
+    for (Proxy proxy : _ruleStore.equivalentClauses.values()) {
+      proxy.table = new THashSet<>();
       proxy.delta = null;
       proxy.old = null;
     }
     // delete local rule-level cluster/mega-cluster info + output field
-    for (Rule rule : this.ruleStore.allRules) {
-      rule.output = new TCustomHashSet<int[]>(ForwardChainer.DEFAULT_HASHING_STRATEGY);
+    for (Rule rule : _ruleStore.allRules) {
+      rule.output = new TCustomHashSet<>(ForwardChainer.DEFAULT_HASHING_STRATEGY);
       for (Cluster cluster : rule.clusters) {
-        cluster.table = new THashSet<int[]>();
+        cluster.table = new THashSet<>();
         cluster.delta = null;
         cluster.old = null;
       }
-      rule.megaCluster.table = new THashSet<int[]>();
+      rule.megaCluster.table = new THashSet<>();
       rule.megaCluster.delta = null;
       rule.megaCluster.old = null;
     }
@@ -988,63 +872,19 @@ public final class ForwardChainer {
    *
    */
   private void deleteIndex() {
-    Map<Integer, Set<int[]>>[] index = this.tupleStore.index;
+    Map<Integer, Set<int[]>>[] index = _tupleStore.index;
     for (int i = 0; i < index.length; i++)
       // do not call clear() since it does NOT frees the memory (only clears the mappings)
-      index[i] = new HashMap<Integer, Set<int[]>>();
+      index[i] = new HashMap<>();
   }
 
   /**
    *
    */
   public void uncompressIndex() {
-    for (int[] tuple : this.tupleStore.allTuples)
-      this.tupleStore.addToIndex(tuple);
+    for (int[] tuple : _tupleStore.allTuples)
+      _tupleStore.addToIndex(tuple);
   }
-
-  /**
-   * returns a copy of the forward chainer that can be used to generate "choice points"
-   * during reasoning;
-   * tuples are taken over, but nearly everything else is copied
-   *
-   * @param noOfCores an integer, specifying how many parallel threads are used during
-   *                  the computation of the deductive closure for the copy of this forward chainer
-   */
-  public ForwardChainer copyForwardChainer(int noOfCores, boolean verbose) {
-    Config configCopy = this.config.getCopy(noOfCores, verbose);
-    TupleStore tupleStoreCopy = this.tupleStore.copyTupleStore();
-    RuleStore ruleStoreCopy = this.ruleStore.copyRuleStore(tupleStoreCopy);
-    ForwardChainer copy = new ForwardChainer(config, tupleStoreCopy, ruleStoreCopy);
-    // take over namespace object and generation counter
-    // copy.namespace = this.namespace;
-    copy.generationCounter = this.generationCounter;
-    // copy tuple store and rule store
-    // ***WARNING***: do not let work this and copy in PARALLEL !!!!!
-    // reuse thread pool of this object
-    copy.threadPool = this.threadPool;
-    copy.noOfTasks = copy.ruleStore.allRules.size();
-    // take over blankCounter, although not necessary
-    copy.blankCounter = this.blankCounter;
-    // copy over information related to deletion of tuples (independent of whether enabled or disabled)
-    copy.tupleStore.generation = this.tupleStore.generation;
-    if (tupleDeletionEnabled())
-      copy.tupleStore.tupleToGeneration =
-              new TCustomHashMap<int[], Integer>(ForwardChainer.DEFAULT_HASHING_STRATEGY, this.tupleStore.tupleToGeneration);
-    else
-      copy.tupleStore.tupleToGeneration = null;
-    // finished!
-    return copy;
-  }
-
-  /**
-   * @return false otherwise
-   * <p>
-   * there is a similar method in class TupleStore
-   */
-  public boolean tupleDeletionEnabled() {
-    return (this.tupleStore.tupleToGeneration != null);
-  }
-
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /**
@@ -1072,17 +912,17 @@ public final class ForwardChainer {
    * @return false otherwise, i.e., tuple deletion has been made ready TOO LATE = no effect
    */
   public boolean enableTupleDeletion() {
-    if (this.tupleStore.generation == 0) {
+    if (_tupleStore.generation == 0) {
       // at the moment, NO closure has been computed
-      if (this.tupleStore.tupleToGeneration == null)
-        this.tupleStore.tupleToGeneration = new TCustomHashMap<int[], Integer>(ForwardChainer.DEFAULT_HASHING_STRATEGY);
-      for (int[] tuple : this.tupleStore.allTuples)
-        this.tupleStore.tupleToGeneration.put(tuple, 0);
-      if (this.verbose)
+      if (_tupleStore.tupleToGeneration == null)
+        _tupleStore.tupleToGeneration = new TCustomHashMap<>(ForwardChainer.DEFAULT_HASHING_STRATEGY);
+      for (int[] tuple : _tupleStore.allTuples)
+        _tupleStore.tupleToGeneration.put(tuple, 0);
+      if (_config.isVerbose())
         logger.info("  tuple deletion enabled");
       return true;
     } else {
-      if (this.verbose)
+      if (_config.isVerbose())
         logger.info("  tuple deletion can no longer be enabled, since closure computation was already called");
       return false;
     }
@@ -1101,21 +941,21 @@ public final class ForwardChainer {
    * calls closure computation only once at the very end of the deletion process, whereas this method
    * calls it for the tuple bound to parameter tuple
    * <p>
-   * note: this method obtains a lock of this.tupleStore
+   * note: this method obtains a lock of _tupleStore
    *
    * @return false otherwise
    */
   public final boolean deleteTuple(int[] tuple) {
-    synchronized (this.tupleStore) {
+    synchronized (_tupleStore) {
       // use the proxy of tuple elements in case equivalence class reduction has been enabled
-      if (this.tupleStore.equivalenceClassReduction) {
+      if (_tupleStore.equivalenceClassReduction) {
         int[] newTuple = new int[tuple.length];
         for (int i = 0; i < tuple.length; i++)
-          newTuple[i] = this.tupleStore.getProxy(tuple[i]);
+          newTuple[i] = _tupleStore.getProxy(tuple[i]);
         tuple = newTuple;
       }
       // obtain generation: no need to call containsKey()
-      Integer tgen = this.tupleStore.tupleToGeneration.get(tuple);
+      Integer tgen = _tupleStore.tupleToGeneration.get(tuple);
       // tuple NOT contained in tuple store
       if (tgen == null)
         return false;
@@ -1123,37 +963,37 @@ public final class ForwardChainer {
       // closure computation, thus no need to go further here
       if ((tgen % 2) != 0)
         return false;
-      if (this.verbose)
+      if (_config.isVerbose())
         logger.info("\n  falling back to generation " + tgen + " ... ");
       // remove tuple from the tuple store, also removes tuple-to-generation mapping, if enabled
-      this.tupleStore.removeTuple(tuple);
+      _tupleStore.removeTuple(tuple);
       // remove potentially dependent materialized tuples: first, determine the relevant tuples
       // (side note: seems that iterator plus remove() is not allowed for int[])
       Integer egen;
-      final ArrayList<int[]> toBeDeleted = new ArrayList<int[]>();
+      final ArrayList<int[]> toBeDeleted = new ArrayList<>();
       // this computation could in principle be speeded up in case we would have a generation-to-tuple mapping
-      for (int[] element : this.tupleStore.allTuples) {
-        egen = this.tupleStore.tupleToGeneration.get(element);
+      for (int[] element : _tupleStore.allTuples) {
+        egen = _tupleStore.tupleToGeneration.get(element);
         // only delete entailed tuples with a greater generation
         if (((egen % 2) != 0) && (egen > tgen))
           toBeDeleted.add(element);
       }
       // then remove those tuples
       for (int[] element : toBeDeleted) {
-        this.tupleStore.removeTuple(element);
+        _tupleStore.removeTuple(element);
       }
       // delete old vs. new separation for proxies, clusters, and mega-clusters, and do not modify them
       // separately (too complex and expensive): reduces to compress level = 1
       compress(1);
       // and finally call closure computation again, even for only this single tuple
-      if (this.verbose) {
+      if (_config.isVerbose()) {
         logger.info("done");
         logger.info("  calling closure computation again ...");
       }
-      computeClosure();
+      computeClosure(_config.getIterations(),_config.isCleanupRepository());
       // check whether tuple is still in the set of all tuples, i.e., someone tried to delete an
       // entailed tuple which will NOT work (since it is reintroduced through closure computation!
-      return this.tupleStore.allTuples.contains(tuple);
+      return _tupleStore.allTuples.contains(tuple);
     }
   }
 
@@ -1161,7 +1001,7 @@ public final class ForwardChainer {
    * use this method if you want to delete SEVERAL tuples at once, since both this and the above method
    * always call computeClosure() at the very end (expensive!), independent of the number of tuples deleted
    * <p>
-   * note: this method obtains a lock of this.tupleStore
+   * note: this method obtains a lock of _tupleStore
    *
    * @return false otherwise, i.e., EITHER at least one tuple from tuples was not an element of the set
    * of all tuples OR the tuple under deletion is an entailed tuple that is later introduced
@@ -1169,18 +1009,18 @@ public final class ForwardChainer {
    * in the set of all tuples
    */
   public final boolean deleteTuples(Collection<int[]> tuples) {
-    synchronized (this.tupleStore) {
+    synchronized (_tupleStore) {
       // empty collection: return true (like an empty conjunction)
       if (tuples.isEmpty())
         return true;
       // replace URIs by their proxies in tuples in case equivalence class reduction has been enabled
-      if (this.tupleStore.equivalenceClassReduction) {
-        Collection<int[]> newTuples = new ArrayList<int[]>(tuples.size());
+      if (_tupleStore.equivalenceClassReduction) {
+        Collection<int[]> newTuples = new ArrayList<>(tuples.size());
         int[] newTuple;
         for (int[] tuple : tuples) {
           newTuple = new int[tuple.length];
           for (int i = 0; i < tuple.length; i++)
-            newTuple[i] = this.tupleStore.getProxy(tuple[i]);
+            newTuple[i] = _tupleStore.getProxy(tuple[i]);
           newTuples.add(newTuple);
         }
         tuples = newTuples;
@@ -1188,9 +1028,9 @@ public final class ForwardChainer {
       // obtain _lowest_ generation number: minimum computation
       int lowest = Integer.MAX_VALUE;  // highly unlikely to be found in the set of all tuples
       Integer tgen;
-      final ArrayList<int[]> toBeDeleted = new ArrayList<int[]>();
+      final ArrayList<int[]> toBeDeleted = new ArrayList<>();
       for (int[] tuple : tuples) {
-        tgen = this.tupleStore.tupleToGeneration.get(tuple);
+        tgen = _tupleStore.tupleToGeneration.get(tuple);
         // only take uploaded (not entailed) tuples into account
         if ((tgen != null) && ((tgen % 2) == 0)) {  // nice unboxing :*)
           toBeDeleted.add(tuple);
@@ -1201,31 +1041,31 @@ public final class ForwardChainer {
       // none of the tuples are contained in the set of all tuples
       if (lowest == Integer.MAX_VALUE)
         return false;
-      if (this.verbose)
+      if (_config.isVerbose())
         logger.info("\n  falling back to generation " + lowest + " ... ");
       // return value = true iff card(tuples) == card(toBeDeleted)
       boolean result = (tuples.size() == toBeDeleted.size());
       // delete the uploaded tuples from tuples
       for (int[] tuple : toBeDeleted) {
-        this.tupleStore.removeTuple(tuple);
+        _tupleStore.removeTuple(tuple);
       }
       // delete the potentially relevant entailed tuples
       Integer egen;
       toBeDeleted.clear();  // reuse toBeDeleted
-      for (int[] element : this.tupleStore.allTuples) {
-        egen = this.tupleStore.tupleToGeneration.get(element);
+      for (int[] element : _tupleStore.allTuples) {
+        egen = _tupleStore.tupleToGeneration.get(element);
         if (((egen % 2) != 0) && (egen > lowest))
           toBeDeleted.add(element);
       }
       for (int[] element : toBeDeleted) {
-        this.tupleStore.removeTuple(element);
+        _tupleStore.removeTuple(element);
       }
       compress(1);
-      if (this.verbose) {
+      if (_config.isVerbose()) {
         logger.info("done");
         logger.info("  calling closure computation again ...");
       }
-      computeClosure();
+      computeClosure(_config.getIterations(), _config.isCleanupRepository());
       return result;
     }
   }
@@ -1233,7 +1073,7 @@ public final class ForwardChainer {
   /**
    * transaction 1: addTuplesToRepository()
    * adds a collection of tuples to the repository;
-   * this quasi-synchronized method obtains a lock on this.tupleStore;
+   * this quasi-synchronized method obtains a lock on _tupleStore;
    * note that the generation counter from TupleStore is incremented by 2 _before_
    * the tuples are added in order to distinguish the tuples involved in this transactions
    * from `ordinary' tuples that are `only' uploaded;
@@ -1246,15 +1086,15 @@ public final class ForwardChainer {
    */
   public final boolean addTuplesToRepository(Collection<int[]> tuples) {
     if (tupleDeletionEnabled()) {
-      synchronized (this.tupleStore) {
+      synchronized (_tupleStore) {
         // remember what has been added in case things go wrong
-        final ArrayList<int[]> added = new ArrayList<int[]>();
+        final ArrayList<int[]> added = new ArrayList<>();
         try {
           // each `positive' transaction increments the generation counter;
           // since NO closure computation is involved, it must be incremented by 2
-          this.tupleStore.generation = this.tupleStore.generation + 2;
+          _tupleStore.generation = _tupleStore.generation + 2;
           for (int[] tuple : tuples) {
-            this.tupleStore.addTuple(tuple);
+            _tupleStore.addTuple(tuple);
             added.add(tuple);
           }
           return true;
@@ -1263,8 +1103,8 @@ public final class ForwardChainer {
           // if something went wrong during the transaction, iterate over the remembered tuples and
           // redo the insertions, not necessarily _all_ tuples
           for (int[] tuple : added)
-            this.tupleStore.removeTuple(tuple);
-          this.tupleStore.generation = this.tupleStore.generation - 2;
+            _tupleStore.removeTuple(tuple);
+          _tupleStore.generation = _tupleStore.generation - 2;
           return false;
         }
       }
@@ -1285,7 +1125,7 @@ public final class ForwardChainer {
    * note that the entailed tuples are NOT deleted, only the specified tuples;
    * in case closure computation is never called, i.e., the repository is only used for
    * querying the explicit uploaded information, use this method instead of nethod below;
-   * this quasi-synchronized method obtains a lock on this.tupleStore
+   * this quasi-synchronized method obtains a lock on _tupleStore
    *
    * @return false iff an error happened during the transaction or in case tuple deletion
    * has NOT been enabled;
@@ -1294,13 +1134,13 @@ public final class ForwardChainer {
    */
   public final boolean removeTuplesFromRepository(Collection<int[]> tuples) {
     if (tupleDeletionEnabled()) {
-      synchronized (this.tupleStore) {
-        final Hashtable<int[], Integer> tuple2generation = new Hashtable<int[], Integer>();
+      synchronized (_tupleStore) {
+        final Hashtable<int[], Integer> tuple2generation = new Hashtable<>();
         try {
           int generation;
           // remove tuples from repository, but remember their generation
           for (int[] tuple : tuples) {
-            generation = this.tupleStore.removeTupleReturnGeneration(tuple);
+            generation = _tupleStore.removeTupleReturnGeneration(tuple);
             // only record tuples that were part of the repository
             if (generation != -1)
               tuple2generation.put(tuple, generation);
@@ -1311,7 +1151,7 @@ public final class ForwardChainer {
           // if something went wrong during transaction, iterate over removed tuples
           // and undo the deletions
           for (Map.Entry<int[], Integer> entry : tuple2generation.entrySet())
-            this.tupleStore.addTupleWithGeneration(entry.getKey(), entry.getValue());
+            _tupleStore.addTupleWithGeneration(entry.getKey(), entry.getValue());
           return false;
         }
       }
@@ -1326,19 +1166,19 @@ public final class ForwardChainer {
    * the tuple-to-be-deleted-TO-generation mapping as given by parameter mapping and is
    * exclusively used by deleteFromRepository()
    */
-  private final boolean deleteTuplesRecordGenerations(Collection<int[]> tuples,
-                                                      Hashtable<int[], Integer> mapping) {
+  private boolean deleteTuplesRecordGenerations(Collection<int[]> tuples,
+                                                Hashtable<int[], Integer> mapping) {
     // empty collection: return true (like an empty conjunction)
     if (tuples.isEmpty())
       return true;
     // replace URIs by their proxies in tuples in case equivalence class reduction has been enabled
-    if (this.tupleStore.equivalenceClassReduction) {
-      Collection<int[]> newTuples = new ArrayList<int[]>(tuples.size());
+    if (_tupleStore.equivalenceClassReduction) {
+      Collection<int[]> newTuples = new ArrayList<>(tuples.size());
       int[] newTuple;
       for (int[] tuple : tuples) {
         newTuple = new int[tuple.length];
         for (int i = 0; i < tuple.length; i++)
-          newTuple[i] = this.tupleStore.getProxy(tuple[i]);
+          newTuple[i] = _tupleStore.getProxy(tuple[i]);
         newTuples.add(newTuple);
       }
       tuples = newTuples;
@@ -1346,9 +1186,9 @@ public final class ForwardChainer {
     // obtain _lowest_ generation number: minimum computation
     int lowest = Integer.MAX_VALUE;  // highly unlikely generation to be found in the set of all tuples
     Integer tgen;
-    final ArrayList<int[]> toBeDeleted = new ArrayList<int[]>();
+    final ArrayList<int[]> toBeDeleted = new ArrayList<>();
     for (int[] tuple : tuples) {
-      tgen = this.tupleStore.tupleToGeneration.get(tuple);
+      tgen = _tupleStore.tupleToGeneration.get(tuple);
       // only take uploaded (not entailed) tuples into account at this point
       if ((tgen != null) && ((tgen % 2) == 0)) {  // nice unboxing :*)
         toBeDeleted.add(tuple);
@@ -1359,38 +1199,38 @@ public final class ForwardChainer {
     // none of the tuples are contained in the set of all tuples
     if (lowest == Integer.MAX_VALUE)
       return false;
-    if (this.verbose)
+    if (_config.isVerbose())
       logger.info("\n  falling back to generation " + lowest + " ... ");
     // return value = true iff card(tuples) == card(toBeDeleted)
     boolean result = (tuples.size() == toBeDeleted.size());
     // delete the uploaded tuples from tuples and record their generation
     int generation;
     for (int[] tuple : toBeDeleted) {
-      generation = this.tupleStore.removeTupleReturnGeneration(tuple);
+      generation = _tupleStore.removeTupleReturnGeneration(tuple);
       if (generation != -1)
         mapping.put(tuple, generation);
     }
     // delete the potentially relevant entailed tuples
     Integer egen;
     toBeDeleted.clear();  // reuse toBeDeleted
-    for (int[] element : this.tupleStore.allTuples) {
-      egen = this.tupleStore.tupleToGeneration.get(element);
+    for (int[] element : _tupleStore.allTuples) {
+      egen = _tupleStore.tupleToGeneration.get(element);
       if (((egen % 2) != 0) && (egen > lowest))
         toBeDeleted.add(element);
     }
     for (int[] element : toBeDeleted) {
-      generation = this.tupleStore.removeTupleReturnGeneration(element);
+      generation = _tupleStore.removeTupleReturnGeneration(element);
       if (generation != -1)
         mapping.put(element, generation);
     }
     // throw away auxiliary data structures and do NOT individually remove tuples
     compress(1);
-    if (this.verbose) {
+    if (_config.isVerbose()) {
       logger.info("done");
       logger.info("  calling closure computation again ...");
     }
     // call closure computation again to reestablish the entailed tuples and auxiliary structures
-    computeClosure();
+    computeClosure(_config.getIterations(), _config.isCleanupRepository());
     return result;
   }
 
@@ -1399,7 +1239,7 @@ public final class ForwardChainer {
    * deletes a collection of tuples from the repository; not only the direct tuples
    * are deleted, but also the entailed tuples which solely depend on the deleted
    * tuples;
-   * this quasi-synchronized method obtains a lock on this.tupleStore
+   * this quasi-synchronized method obtains a lock on _tupleStore
    *
    * @return false iff an error appeared during the transaction or in case tuple deletion
    * has NOT been enabled;
@@ -1408,9 +1248,9 @@ public final class ForwardChainer {
    */
   public final boolean deleteTuplesFromRepository(Collection<int[]> tuples) {
     if (tupleDeletionEnabled()) {
-      synchronized (this.tupleStore) {
-        final Hashtable<int[], Integer> tuple2generation = new Hashtable<int[], Integer>();
-        final int oldGeneration = this.tupleStore.generation;
+      synchronized (_tupleStore) {
+        final Hashtable<int[], Integer> tuple2generation = new Hashtable<>();
+        final int oldGeneration = _tupleStore.generation;
         try {
           // update tuple2generation from inside deleteTuplesRecordGenerations()
           deleteTuplesRecordGenerations(tuples, tuple2generation);
@@ -1419,9 +1259,9 @@ public final class ForwardChainer {
           logger.error(e.toString());
           // if something went wrong during transaction, iterate over removed tuples
           // and undo the deletions
-          this.tupleStore.generation = oldGeneration;
+          _tupleStore.generation = oldGeneration;
           for (Map.Entry<int[], Integer> entry : tuple2generation.entrySet())
-            this.tupleStore.addTupleWithGeneration(entry.getKey(), entry.getValue());
+            _tupleStore.addTupleWithGeneration(entry.getKey(), entry.getValue());
           return false;
         }
       }
@@ -1434,7 +1274,7 @@ public final class ForwardChainer {
   /**
    * transaction 4: computeClosureFromRepository()
    * a `nullary' transaction that computes the deductive closure for the repository;
-   * this quasi-synchronized method obtains a lock on this.tupleStore
+   * this quasi-synchronized method obtains a lock on _tupleStore
    *
    * @return false iff an error appeared during the transaction;
    * note that we gurantee that the effects which have happended during the
@@ -1442,20 +1282,20 @@ public final class ForwardChainer {
    */
   public final boolean computeClosureFromRepository() {
     if (tupleDeletionEnabled()) {
-      synchronized (this.tupleStore) {
-        final int deleteThatGeneration = this.tupleStore.generation + 1;
+      synchronized (_tupleStore) {
+        final int deleteThatGeneration = _tupleStore.generation + 1;
         try {
-          computeClosure();
+          computeClosure(_config.getIterations(),_config.isCleanupRepository());
           return true;
         } catch (Exception e) {
           logger.error(e.toString());
           // undo the effects of the closure computation
-          for (int[] tuple : this.tupleStore.allTuples) {
-            if (this.tupleStore.tupleToGeneration.get(tuple) == deleteThatGeneration)
+          for (int[] tuple : _tupleStore.allTuples) {
+            if (_tupleStore.tupleToGeneration.get(tuple) == deleteThatGeneration)
               // remove the ENTAILED tuple (ODD generation number)
-              this.tupleStore.removeTuple(tuple);
+              _tupleStore.removeTuple(tuple);
           }
-          this.tupleStore.generation = deleteThatGeneration - 1;
+          _tupleStore.generation = deleteThatGeneration - 1;
           return false;
         }
       }
@@ -1465,45 +1305,36 @@ public final class ForwardChainer {
       return false;
   }
 
+  public ForwardChainer copyForwardChainer(TupleStore tupleStoreCopy, RuleStore ruleStoreCopy, int noOfCores) {
+
+    ForwardChainer copy = new ForwardChainer(tupleStoreCopy, ruleStoreCopy, _config);
+    copy.generationCounter = generationCounter;
+    // copy tuple store and rule store
+    // ***WARNING***: do not let work this and copy in PARALLEL !!!!!
+    // reuse thread pool of this object
+    copy.threadPool = this.threadPool;
+    copy.noOfTasks = _ruleStore.allRules.size();
+    // take over blankCounter, although not necessary
+    // copy over information related to deletion of tuples (independent of whether enabled or disabled)
+    copy._tupleStore.generation = _tupleStore.generation;
+    if (tupleDeletionEnabled())
+      copy._tupleStore.tupleToGeneration =
+              new TCustomHashMap<>(ForwardChainer.DEFAULT_HASHING_STRATEGY, _tupleStore.tupleToGeneration);
+    else
+      copy._tupleStore.tupleToGeneration = null;
+    return copy;
+  }
+
+  /**
+  public void setcleanUpRepository(boolean b) {
+    _cleanUpRepository = true;
+  }
+  **/
+
   /**
    * used below to memoize the result of a join of two tables
    * in complexJoin()
    */
-  private class Pair {
 
-    final protected Object first;
-
-    final protected Object second;
-
-    public Pair(Object first, Object second) {
-      this.first = first;
-      this.second = second;
-    }
-
-    /**
-     * make sure that this equals obj by NOT distinguishing between first and second
-     */
-    public boolean equals(Object obj) {
-      Pair pair = (Pair) obj;
-      if (this.first.equals(pair.first) && this.second.equals(pair.second))
-        return true;
-      else if (this.first.equals(pair.second) && this.second.equals(pair.first))
-        return true;
-      else
-        return false;
-    }
-
-    /**
-     * hash code does not distinguish between first and second arg of a pair, thus
-     * adds the hashes of first and second:
-     * IF p.first == x && p.second == y &&
-     * q.first == y && q.second == x
-     * THEN p.hashCode() == q.hashCode()
-     */
-    public int hashCode() {
-      return first.hashCode() + second.hashCode();
-    }
-
-  }
 
 }

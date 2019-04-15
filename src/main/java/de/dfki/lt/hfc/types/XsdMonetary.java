@@ -116,7 +116,7 @@ public final class XsdMonetary extends XsdAnySimpleType {
    * the XSD type specification
    */
   public String toName() {
-    return Double.toString(this.amount) + this.currency;
+    return this.amount + this.currency;
   }
 
   /**

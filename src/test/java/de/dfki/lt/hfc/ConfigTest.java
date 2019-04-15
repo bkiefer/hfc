@@ -18,16 +18,16 @@ public class ConfigTest {
     public void test_ValidConfig() throws IOException {
         Config config = Config.getDefaultConfig();
         assertNotNull(config);
-        assertEquals(true, config.verbose);
-        assertEquals("UTF-8", config.characterEncoding);
-        assertEquals(4, config.noOfCores);
-        assertEquals(500000, config.noOfTuples);
-        assertEquals(100000, config.noOfAtoms);
-        assertEquals(false,config.eqReduction);
-        assertEquals(false, config.gc);
-        assertEquals(true, config.cleanUpRepository);
+        assertEquals(true, config.isVerbose());
+        assertEquals("UTF-8", config.getCharacterEncoding());
+        assertEquals(4, config.getNoOfCores());
+        assertEquals(500000, config.getNoOfTuples());
+        assertEquals(100000, config.getNoOfAtoms());
+        assertEquals(false,config.isEqReduction());
+        assertEquals(false, config.isGarbageCollection());
+        assertEquals(true, config.isCleanupRepository());
         assertEquals(true, config.isShortIsDefault());
-        assertEquals("./src/resources/default.nt", config.tupleFiles.get(0));
+        assertEquals("./src/resources/default.nt", config.getTupleFiles().get(0));
     }
 
     @Test (expected = java.lang.NullPointerException.class)

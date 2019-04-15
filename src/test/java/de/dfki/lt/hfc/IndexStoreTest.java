@@ -32,7 +32,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class IndexStoreTest {
 
-  static ForwardChainer fc;
+  static Hfc fc;
 
   static String[] testSub1 = new String[]{"<rdf:type>", "<rdf:type>", "<rdf:Property>"};
   static String[] testSub2 = new String[]{"<test:sensor>", "<rdfs:subClassOf>", "<owl:Thing>"};
@@ -44,7 +44,7 @@ public class IndexStoreTest {
   @Before
   public void  setUp() throws Exception {
 
-    fc =  new ForwardChainer(Config.getInstance(getResource("IndexStoreTest.yml")));
+    fc =  new Hfc(Config.getInstance(getResource("IndexStoreTest.yml")));
 
   }
 
@@ -66,7 +66,7 @@ public class IndexStoreTest {
       int c = 0;
       for (int[] i : res){
         System.out.println(c++ + ": " + Arrays.toString(i));
-        System.out.println("ext: " + fc.tupleStore.toExpandedString(i));
+        System.out.println("ext: " + fc._tupleStore.toExpandedString(i));
       }
       assertEquals(156,fc.config.indexStore.lookup(new XsdDate(0,0,0)).size());
       assertEquals(1,fc.config.indexStore.getSecIndex().size());
@@ -76,7 +76,7 @@ public class IndexStoreTest {
   @Test
   public void  update(){
     // the size(number of used keys) of the primary index should be unchanged, but the one of the second index must be increased by 1.
-    fc.tupleStore.addTuple(new String[]{"\"0000-00-00\"^^<xsd:date>", "<rdf:type>", "<rdf:type>", "<rdf:Property>", "\"0000-00-02\"^^<xsd:date>","\"0000-00-03\"^^<xsd:date>"});
+    fc._tupleStore.addTuple(new String[]{"\"0000-00-00\"^^<xsd:date>", "<rdf:type>", "<rdf:type>", "<rdf:Property>", "\"0000-00-02\"^^<xsd:date>","\"0000-00-03\"^^<xsd:date>"});
     assertEquals(1,fc.config.indexStore.getPrimIndex().size());
     assertEquals(2,fc.config.indexStore.getSecIndex().size());
   }
@@ -105,11 +105,11 @@ public class IndexStoreTest {
   @Test
   public void  prepareLookup() {
     List<Integer> clause = Arrays.asList(
-        new Integer[]{fc.tupleStore.putObject("\"0000-00-00\"^^<xsd:date>"),
+        new Integer[]{fc._tupleStore.putObject("\"0000-00-00\"^^<xsd:date>"),
         -1,-2,-3,-4,-5});
     Map<Integer, QRelation> integerQRelationMap = new HashMap<Integer, QRelation>();
-    Integer start = fc.tupleStore.putObject("\"0000-00-01\"^^<xsd:date>");
-    Integer end = fc.tupleStore.putObject("\"0000-00-02\"^^<xsd:date>");
+    Integer start = fc._tupleStore.putObject("\"0000-00-01\"^^<xsd:date>");
+    Integer end = fc._tupleStore.putObject("\"0000-00-02\"^^<xsd:date>");
     AllenEqual equal = new AllenEqual("Eq",start,end,4);
     integerQRelationMap.put(-4,equal );
     integerQRelationMap.put(-5,equal );

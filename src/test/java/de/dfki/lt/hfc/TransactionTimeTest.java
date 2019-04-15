@@ -25,7 +25,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class TransactionTimeTest {
 
-  static ForwardChainer fc;
+  static Hfc fc;
 
   // currently, we were only using these modals from the logic ontology
   static String DONT_KNOW = "<logic:dontknow>";
@@ -42,7 +42,7 @@ public class TransactionTimeTest {
 
   @BeforeClass
   public static void init() throws Exception {
-    fc =	new ForwardChainer(Config.getInstance(getResource("TestTransaction.yml")));
+    fc =	new Hfc(Config.getInstance(getResource("TestTransaction.yml")));
     // further PAL-specific namespaces (short-to-long mappings, XSD DTs-to-Java class mappings)
     // further PAL-specific tuples (special XSD DT)
     // further PAL-specific triples from the inidividual sub-ontologies: make them 5-tuples
@@ -60,13 +60,13 @@ public class TransactionTimeTest {
 
   @AfterClass
   public static void finish() {
-    fc.shutdownNoExit();
+    fc.shutdown();
   }
 
   @Test
   public void test() throws QueryParseException {
     fc.computeClosure();
-    Query q = new Query(fc);
+    Query q = new Query(fc._tupleStore);
     BindingTable bt = q.query("SELECT * WHERE ?s ?p ?o");  // 0 triples
     assertEquals(0, bt.size());
     bt = q.query("SELECT * WHERE ?s ?p ?o ?ts");  // 0 quadruples

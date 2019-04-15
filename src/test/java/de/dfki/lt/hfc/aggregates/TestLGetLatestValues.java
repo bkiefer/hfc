@@ -31,7 +31,7 @@ import static org.junit.Assert.assertEquals;
  * @version Wed Mar 23 16:49:29 CET 2016
  */
 public class TestLGetLatestValues {
-  static ForwardChainer fc;
+  static Hfc fc;
 
   public static String getResource(String name) {
     return TestingUtils.getTestResource("LGetLatestValues", name);
@@ -42,9 +42,9 @@ public class TestLGetLatestValues {
   public static void init() throws Exception {
 
     // forward chainer actually not needed -- tuple store and query object would suffice !
-    fc =	new ForwardChainer(Config.getDefaultConfig());
-    fc.tupleStore.namespace.putForm("pal", "http://www.lt-world.org/pal.owl#", true);
-    fc.tupleStore.namespace.putForm("dom", "http://www.lt-world.org/dom.owl#", true);
+    fc =	new Hfc(Config.getDefaultConfig());
+    fc._tupleStore.namespace.putForm("pal", "http://www.lt-world.org/pal.owl#", true);
+    fc._tupleStore.namespace.putForm("dom", "http://www.lt-world.org/dom.owl#", true);
 
     // manually-constructed child test data from PAL
     //   <pal:lisa> <rdf:type> <dom:Child> "5544"^^<xsd:long> .
@@ -70,7 +70,7 @@ public class TestLGetLatestValues {
   @Test
   public void test() throws QueryParseException {
 
-    Query q = new Query(fc.tupleStore);
+    Query q = new Query(fc._tupleStore);
 
     String[][] expected = {
         { "<dom:bmi>", "\"15.9\"^^<xsd:kg_m2>", "<pal:lisa>", "\"5544\"^^<xsd:long>" },
@@ -94,7 +94,7 @@ public class TestLGetLatestValues {
         + "& ?lv ?prop ?val ?t "
         + "AGGREGATE ?measurement ?result ?patient ?time = LGetLatestValues ?prop ?val ?child ?t ?t");
 
-    // printExpected(bt, fc.tupleStore);
+    // printExpected(bt, fc._tupleStore);
 
     //   =============================================================================================
     //   | ?measurement         | ?result              | ?patient             | ?time                |

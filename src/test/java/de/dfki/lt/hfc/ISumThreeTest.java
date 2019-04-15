@@ -8,7 +8,7 @@ import org.junit.Test;
 import static de.dfki.lt.hfc.TestingUtils.*;
 
 public class ISumThreeTest {
-  static ForwardChainer fc;
+  static Hfc fc;
 
   private static String getResource(String name) {
     return TestingUtils.getTestResource("ISum3", name);
@@ -16,7 +16,7 @@ public class ISumThreeTest {
   @BeforeClass
   public static void init() throws Exception {
 
-    fc =  new ForwardChainer(Config.getInstance(getResource("ISum3.yml")));
+    fc =  new Hfc(Config.getInstance(getResource("ISum3.yml")));
 
     // compute deductive closure
 
@@ -31,10 +31,10 @@ public class ISumThreeTest {
     String[][] expected = {
         //no table in the output
     };
-    Query q = new Query(fc.tupleStore);
+    Query q = new Query(fc._tupleStore);
     // WILL NEVER TERMINATE.
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    //printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
+    //printExpected(bt, fc._tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     //checkResult(expected, bt, bt.getVars());
   }
 

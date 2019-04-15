@@ -9,7 +9,7 @@ import org.junit.Test;
 import de.dfki.lt.hfc.*;
 
 public class TestRemoveSupers {
-  static ForwardChainer fc;
+  static Hfc fc;
 
   public static String getResource(String name) {
     return TestingUtils.getTestResource("LGetLatest", name);
@@ -38,7 +38,7 @@ public class TestRemoveSupers {
   @BeforeClass
   public static void init() throws Exception {
 
-    fc =	new ForwardChainer(Config.getInstance(getTestResource("test.yml")));
+    fc =	new Hfc(Config.getInstance(getTestResource("test.yml")));
 
     // upload instance test files
     fc.uploadTuples(getResource("dialframe.nt"));
@@ -54,7 +54,7 @@ public class TestRemoveSupers {
 
   @Test
   public void test1() throws QueryParseException {
-    Query q = new Query(fc.tupleStore);
+    Query q = new Query(fc._tupleStore);
     String[][] expected = {
         { "<dafn:AcceptOffer>" },
         { "<dafn:DeclineOffer>" }
@@ -67,7 +67,7 @@ public class TestRemoveSupers {
 
   @Test
   public void test2() throws QueryParseException {
-    Query q = new Query(fc.tupleStore);
+    Query q = new Query(fc._tupleStore);
     String[][] expected = {
         { "<dafn:Agreement>" },
         { "<dafn:Confirm>" },
@@ -82,7 +82,7 @@ public class TestRemoveSupers {
 
   @Test
   public void test3() throws QueryParseException {
-    Query q = new Query(fc.tupleStore);
+    Query q = new Query(fc._tupleStore);
     String[][] expected = {
         { "<dafn:Agreement>" },
     };

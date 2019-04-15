@@ -1,18 +1,16 @@
 package de.dfki.lt.hfc;
-import static de.dfki.lt.hfc.TestingUtils.printExpected;
-import static org.junit.Assert.*;
+
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static de.dfki.lt.hfc.TestingUtils.checkResult;
-import static de.dfki.lt.hfc.TestingUtils.checkResult;
-
 
 
 public class ConcatenateFourTest {
-  static ForwardChainer fc;
+  
+  static Hfc fc;
 
   private static String getResource(String name) {
     return TestingUtils.getTestResource("Concatenate4", name);
@@ -20,7 +18,7 @@ public class ConcatenateFourTest {
   @BeforeClass
   public static void init() throws Exception {
 
-    fc =  new ForwardChainer(Config.getInstance(getResource("Concatenate4.yml")));
+    fc =  new Hfc(Config.getInstance(getResource("Concatenate4.yml")));
 
     // compute deductive closure
     fc.computeClosure();
@@ -29,8 +27,8 @@ public class ConcatenateFourTest {
   @Test
   public void test() throws QueryParseException  {
     // TODO: FIX EXPECTED DATA
-    System.out.println(fc.tupleStore.idToJavaObject);
-    System.out.println(fc.tupleStore.objectToId);
+    System.out.println(fc._tupleStore.idToJavaObject);
+    System.out.println(fc._tupleStore.objectToId);
     String[][] expected = {
         { "<test:dfki>", "<test:hasName>", "\"DFKI\"^^<xsd:string>" },
         { "<test:dfki>", "<test:hasDoubleName>", "\"German Research Center for Artificial InteligenceGerman Research Center for Artificial Inteligence\"^^<xsd:string>" },
@@ -62,9 +60,9 @@ public class ConcatenateFourTest {
     //{ "<test:dfki>", "<test:hasName>", ""DFKI"^^<xsd:string>" },
     //{ "<test:dfki>", "<test:hasName>", ""DFKI"^^<xsd:string>" },
 
-    Query q = new Query(fc.tupleStore);
+    Query q = new Query(fc._tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    //printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
+    //printExpected(bt, fc._tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     checkResult(expected, bt, bt.getVars());
   }
 

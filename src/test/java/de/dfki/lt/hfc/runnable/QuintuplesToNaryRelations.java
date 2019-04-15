@@ -1,9 +1,14 @@
 package de.dfki.lt.hfc.runnable;
 
+import de.dfki.lt.hfc.Config;
 import de.dfki.lt.hfc.ForwardChainer;
+import de.dfki.lt.hfc.Hfc;
 import de.dfki.lt.hfc.TupleStore;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import static de.dfki.lt.hfc.TestingUtils.getTestResource;
 import static de.dfki.lt.hfc.runnable.Utils.*;
 
 public class QuintuplesToNaryRelations {
@@ -23,8 +28,25 @@ public class QuintuplesToNaryRelations {
 
 	public static void main(String[] args) throws Exception {
 
+
+		Config config = Config.getDefaultConfig();
+		Map update = new HashMap<>();
+		update.put(Config.NOOFCORES, 2);
+		update.put(Config.VERBOSE, true);
+		update.put(Config.RDFCHECK, false);
+		update.put(Config.EQREDUCTION, false);
+		update.put(Config.MINARGS, 3);
+		update.put(Config.MAXARGS, 5);
+		update.put(Config.NOOFATOMS, NO_OF_ATOMS);
+		update.put(Config.NOOFTUPLES, NO_OF_TUPLES);
+		update.put(Config.RULEFILES,config.getTupleFiles().add(IN_FILE));
+		update.put(Config.RULEFILES,config.getRuleFiles().add(getTestResource("default.rdl")));
+		config.updateConfig(update);
+		//   time java -server -cp .:../lib/trove-2.1.0.jar -Xmx1024m de/dfki/lt/hfc/tests/MaterializedTriplesToQuintuples
+		Hfc fc = new Hfc(config);
+		/**
 		//   time java -server -cp .:../lib/trove-2.1.0.jar -Xmx1024m de/dfki/lt/hfc/tests/QuintuplesToNaryRelations
-		ForwardChainer fc =	new ForwardChainer(2,      // noOfCores
+		Hfc fc =	new ForwardChainer(2,      // noOfCores
 																					 true,   // verbose
 																					 false,  // rdfCheck
 																					 false,  // equiv class reduction
@@ -35,8 +57,9 @@ public class QuintuplesToNaryRelations {
 																					 IN_FILE,
 																					 getResource("default.rdl")
 																					 );
+		 **/
 
-		TupleStore ts = fc.tupleStore;
+		TupleStore ts = fc._tupleStore;
 		int[] triple;
 		int counter = 0;
 		int blankNodeId;

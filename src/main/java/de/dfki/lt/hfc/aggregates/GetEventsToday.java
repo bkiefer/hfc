@@ -35,7 +35,7 @@ public final class GetEventsToday extends GetEventsLastNDays {
     long end = computeMidnight(currentTime);
     for (int[] entry : table) {
       long currentValue = ((XsdLong) (getObject(entry[sortColumnNo]))).value;
-      if (Long.compare(currentValue, currentTime) <= 0 && Long.compare(currentValue, end) >= 0)
+      if (currentValue <= currentTime && Long.compare(currentValue, end) >= 0)
         resultTable.add(entry);
     }
   }

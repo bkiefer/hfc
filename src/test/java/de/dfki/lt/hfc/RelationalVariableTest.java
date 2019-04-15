@@ -12,7 +12,7 @@ import static de.dfki.lt.hfc.TestingUtils.checkResult;
 
 
 public class RelationalVariableTest {
-  static ForwardChainer fc;
+  static Hfc fc;
 
   private static String getResource(String name) {
     return TestingUtils.getTestResource("RelationalVariable", name);
@@ -20,7 +20,7 @@ public class RelationalVariableTest {
   @BeforeClass
   public static void init() throws Exception {
 
-    fc =  new ForwardChainer(Config.getInstance(getResource("RelationalVariable.yml")));
+    fc =  new Hfc(Config.getInstance(getResource("RelationalVariable.yml")));
     // compute deductive closure
     fc.computeClosure();
   }
@@ -64,9 +64,9 @@ public class RelationalVariableTest {
         { "_:b1", "<owl:onProperty>", "<test:q>" },
 
     };
-    Query q = new Query(fc.tupleStore);
+    Query q = new Query(fc._tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    //printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
+    //printExpected(bt, fc._tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     checkResult(expected, bt, bt.getVars());
   }
 

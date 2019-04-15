@@ -16,7 +16,7 @@ import static de.dfki.lt.hfc.TestingUtils.checkResult;
 
 
 public class BlankNodeTwoTest {
-  static ForwardChainer fc;
+  static Hfc fc;
 
   private static String getResource(String name) {
     return TestingUtils.getTestResource("BlankNode2", name);
@@ -45,7 +45,7 @@ public class BlankNodeTwoTest {
   @BeforeClass
   public static void init() throws Exception {
 
-    fc =  new ForwardChainer(Config.getInstance(getResource("BlankNode2.yml")));
+    fc =  new Hfc(Config.getInstance(getResource("BlankNode2.yml")));
 
     // compute deductive closure
     fc.computeClosure();
@@ -72,9 +72,9 @@ public class BlankNodeTwoTest {
         { "<test:db>", "<rdf:type>", "<test:Company>" },
 //      { "<test:dfki>", "<test:hasName>", ""DFKI GmbH"^^<xsd:string>" },
         { "<test:dfki>", "<test:hasName>", "\"DFKI GmbH\"^^<xsd:string>" },
-//      { "<test:sri>", "<test:new1>", "_:de.dfki.lt.hfc.ForwardChainer@61a485d21" },
-//      { "<test:sri>", "<test:new1>", "_:de.dfki.lt.hfc.ForwardChainer@61a485d24" },
-        { "<test:sri>", "<test:new1>", "_:de.dfki.lt.hfc.ForwardChainer@45283ce21" },
+//      { "<test:sri>", "<test:new1>", "_:de.dfki.lt.hfc.Hfc@61a485d21" },
+//      { "<test:sri>", "<test:new1>", "_:de.dfki.lt.hfc.Hfc@61a485d24" },
+        { "<test:sri>", "<test:new1>", "_:de.dfki.lt.hfc.Hfc@45283ce21" },
 //      { "<xsd:string>", "<rdf:type>", "<rdfs:Datatype>" },
         { "<xsd:string>", "<rdf:type>", "<rdfs:Datatype>" },
 //      { "<owl:Nothing>", "<rdfs:subClassOf>", "<owl:Thing>" },
@@ -85,35 +85,35 @@ public class BlankNodeTwoTest {
         { "<test:sri>", "<test:hasName>", "\"SRI\"^^<xsd:string>" },
 //      { "<owl:Thing>", "<owl:disjointWith>", "<owl:Nothing>" },
         { "<owl:Thing>", "<owl:disjointWith>", "<owl:Nothing>" },
-//      { "<test:sri>", "<test:new2>", "_:de.dfki.lt.hfc.ForwardChainer@61a485d24" },
-//      { "<test:sri>", "<test:new2>", "_:de.dfki.lt.hfc.ForwardChainer@61a485d21" },
-        { "<test:sri>", "<test:new2>", "_:de.dfki.lt.hfc.ForwardChainer@45283ce21" },
+//      { "<test:sri>", "<test:new2>", "_:de.dfki.lt.hfc.Hfc@61a485d24" },
+//      { "<test:sri>", "<test:new2>", "_:de.dfki.lt.hfc.Hfc@61a485d21" },
+        { "<test:sri>", "<test:new2>", "_:de.dfki.lt.hfc.Hfc@45283ce21" },
 //      { "<test:dfki>", "<test:hasName>", ""Deutsches Forschungszentrum für Künstliche Intelligenz"@de" },
         { "<test:dfki>", "<test:hasName>", "\"Deutsches Forschungszentrum für Künstliche Intelligenz\"@de" },
 //      { "<test:sri>", "<rdf:type>", "<test:Company>" },
         { "<test:sri>", "<rdf:type>", "<test:Company>" },
-//      { "<test:db>", "<test:new2>", "_:de.dfki.lt.hfc.ForwardChainer@61a485d22" },
-//      { "<test:db>", "<test:new2>", "_:de.dfki.lt.hfc.ForwardChainer@61a485d25" },
-        { "<test:db>", "<test:new2>", "_:de.dfki.lt.hfc.ForwardChainer@45283ce22" },
+//      { "<test:db>", "<test:new2>", "_:de.dfki.lt.hfc.Hfc@61a485d22" },
+//      { "<test:db>", "<test:new2>", "_:de.dfki.lt.hfc.Hfc@61a485d25" },
+        { "<test:db>", "<test:new2>", "_:de.dfki.lt.hfc.Hfc@45283ce22" },
 //      { "<test:dfki>", "<test:hasName>", ""German Research Center for Artificial Inteligence"@en" },
         { "<test:dfki>", "<test:hasName>", "\"German Research Center for Artificial Inteligence\"@en" },
-//      { "<test:db>", "<test:new1>", "_:de.dfki.lt.hfc.ForwardChainer@61a485d22" },
-//      { "<test:db>", "<test:new1>", "_:de.dfki.lt.hfc.ForwardChainer@61a485d25" },
-        { "<test:db>", "<test:new1>", "_:de.dfki.lt.hfc.ForwardChainer@45283ce22" },
+//      { "<test:db>", "<test:new1>", "_:de.dfki.lt.hfc.Hfc@61a485d22" },
+//      { "<test:db>", "<test:new1>", "_:de.dfki.lt.hfc.Hfc@61a485d25" },
+        { "<test:db>", "<test:new1>", "_:de.dfki.lt.hfc.Hfc@45283ce22" },
 //      { "<owl:Thing>", "<rdf:type>", "<owl:Class>" },
         { "<owl:Thing>", "<rdf:type>", "<owl:Class>" },
-//      { "<test:dfki>", "<test:new1>", "_:de.dfki.lt.hfc.ForwardChainer@61a485d23" },
-//      { "<test:dfki>", "<test:new1>", "_:de.dfki.lt.hfc.ForwardChainer@61a485d20" },
-        { "<test:dfki>", "<test:new1>", "_:de.dfki.lt.hfc.ForwardChainer@45283ce20" },
-//      { "<test:dfki>", "<test:new2>", "_:de.dfki.lt.hfc.ForwardChainer@61a485d20" },
-//      { "<test:dfki>", "<test:new2>", "_:de.dfki.lt.hfc.ForwardChainer@61a485d23" },
-        { "<test:dfki>", "<test:new2>", "_:de.dfki.lt.hfc.ForwardChainer@45283ce20" },
+//      { "<test:dfki>", "<test:new1>", "_:de.dfki.lt.hfc.Hfc@61a485d23" },
+//      { "<test:dfki>", "<test:new1>", "_:de.dfki.lt.hfc.Hfc@61a485d20" },
+        { "<test:dfki>", "<test:new1>", "_:de.dfki.lt.hfc.Hfc@45283ce20" },
+//      { "<test:dfki>", "<test:new2>", "_:de.dfki.lt.hfc.Hfc@61a485d20" },
+//      { "<test:dfki>", "<test:new2>", "_:de.dfki.lt.hfc.Hfc@61a485d23" },
+        { "<test:dfki>", "<test:new2>", "_:de.dfki.lt.hfc.Hfc@45283ce20" },
 
     };
 
-    Query q = new Query(fc.tupleStore);
+    Query q = fc.getQuery();
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    //printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
+    //printExpected(bt, fc._tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     checkResult(expected, bt, bt.getVars());
   }
 

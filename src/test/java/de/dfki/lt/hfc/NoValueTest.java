@@ -8,7 +8,7 @@ import org.junit.Test;
 import static de.dfki.lt.hfc.TestingUtils.*;
 
 public class NoValueTest {
-  static ForwardChainer fc;
+  static Hfc fc;
 
   private static String getResource(String name) {
     return TestingUtils.getTestResource("NoValue", name);
@@ -17,7 +17,7 @@ public class NoValueTest {
   @BeforeClass
   public static void init() throws Exception {
 
-    fc =  new ForwardChainer(Config.getInstance(getResource("NoValue.yml")));
+    fc =  new Hfc(Config.getInstance(getResource("NoValue.yml")));
 
     // compute deductive closure
 
@@ -56,9 +56,9 @@ public class NoValueTest {
         { "<test:dfki>", "<test:hasName>", "\"Deutsches Forschungszentrum für Künstliche Intelligenz\"@de" },
         { "<test:sri>", "<rdf:type>", "<test:Company>" }
     };
-    Query q = new Query(fc.tupleStore);
+    Query q = new Query(fc._tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    //printExpected(bt, fc.tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
+    //printExpected(bt, fc._tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     checkResult(expected, bt, bt.getVars());
   }
 

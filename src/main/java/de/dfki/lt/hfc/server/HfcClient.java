@@ -90,7 +90,7 @@ public class HfcClient {
       }
     } catch (XmlRpcException exception) {
       logger.error("HfcClient: XML-RPC Fault #" +
-              Integer.toString(exception.code) +
+              exception.code +
               ": " + exception.toString());
     } catch (Exception exception) {
       logger.error("HfcClient: " + exception.toString());

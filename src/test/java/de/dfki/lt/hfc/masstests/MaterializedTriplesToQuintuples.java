@@ -3,15 +3,18 @@ package de.dfki.lt.hfc.masstests;
 import static de.dfki.lt.hfc.TestingUtils.*;
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
+
 import de.dfki.lt.hfc.*;
-import de.dfki.lt.hfc.ForwardChainer;
-import de.dfki.lt.hfc.TupleStore;
-import de.dfki.lt.hfc.types.XsdInt;
+
 
 import static de.dfki.lt.hfc.TestingUtils.getTestResource;
 
+import de.dfki.lt.hfc.types.XsdInt;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MaterializedTriplesToQuintuples {
@@ -31,39 +34,41 @@ public class MaterializedTriplesToQuintuples {
 		return (int)(Math.round(Math.random() * max));
 	}
 
+
 	@Test
 	public void writeMaterializedTriples() throws Exception {
     //   time java -server -cp .:../lib/trove-2.1.0.jar -Xmx1024m de/dfki/lt/hfc/tests/MaterializedTriplesToFile
 	  int tuples = 0;
 	  {
-	    ForwardChainer fc = new ForwardChainer(Config.getInstance(getTestResource("test_eq.yml")));
+	    Hfc fc = new Hfc(Config.getInstance(getTestResource("test_eq.yml")));
 	    fc.uploadTuples(getTestResource("ltworld.jena.nt"));
 	    fc.computeClosure();
-	    tuples = fc.tupleStore.getAllTuples().size();
-	    fc.tupleStore.writeTuples(IN_FILE);
+	    tuples = fc._tupleStore.getAllTuples().size();
+	    fc._tupleStore.writeTuples(IN_FILE);
 	    fc.shutdownNoExit();
 	  }
 
-    ForwardChainer fc2 = new ForwardChainer(Config.getInstance(getTestResource("Empty.yml")));
+    Hfc fc2 = new Hfc(Config.getInstance(getTestResource("Empty.yml")));
     fc2.uploadTuples(IN_FILE);
-		int tuples2 = fc2.tupleStore.getAllTuples().size();
+		int tuples2 = fc2._tupleStore.getAllTuples().size();
     fc2.shutdownNoExit();
     assertEquals(tuples, tuples2);
   }
 
 
+
 	@Test
 	public void triplesToQuintuplesTest() throws Exception {
-    {
-      ForwardChainer fc = new ForwardChainer(Config.getInstance(getTestResource("test_eq.yml")));
-      fc.uploadTuples(getTestResource("ltworld.jena.nt"));
-      fc.computeClosure();
-      fc.tupleStore.writeTuples(IN_FILE);
-      fc.shutdownNoExit();
-    }
-
+    	{
+      		Hfc fc = new Hfc(Config.getInstance(getTestResource("test_eq.yml")));
+      		fc.uploadTuples(getTestResource("ltworld.jena.nt"));
+      		fc.computeClosure();
+      		fc._tupleStore.writeTuples(IN_FILE);
+      		fc.shutdownNoExit();
+    	}
 		//   time java -server -cp .:../lib/trove-2.1.0.jar -Xmx1024m de/dfki/lt/hfc/tests/MaterializedTriplesToQuintuples
-		ForwardChainer fc =	new ForwardChainer(2,      // noOfCores
+		Map namespaces = new HashMap<>();
+		Config config = Config.getInstance(2,      // noOfCores
 																					 false,   // verbose
 																					 false,  // rdfCheck
 																					 true,   // eqReduction
@@ -74,9 +79,11 @@ public class MaterializedTriplesToQuintuples {
 																					 IN_FILE,
 																					 getTestResource("default.eqred.rdl")
 																					 );
-		fc.tupleStore.namespace.putForm("ltw", "http://www.lt-world.org/ltw.owl#", false);
-		fc.tupleStore.namespace.putForm("lt", "http://www.lt-world.org/lt.owl#", false);
-		TupleStore ts = fc.tupleStore;
+
+		config.addNamespace("ltw", "http://www.lt-world.org/ltw.owl#");
+		config.addNamespace("lt", "http://www.lt-world.org/lt.owl#");
+		Hfc fc = new Hfc(config);
+		TupleStore ts = fc._tupleStore;
 		int start, end;
 		int[] tuple;
 		ArrayList<int[]> newTuples = new ArrayList<int[]>(NO_OF_TUPLES);
@@ -99,7 +106,7 @@ public class MaterializedTriplesToQuintuples {
 		int tuples = ts.getAllTuples().size();
 		ts.writeTuples(newTuples, OUT_FILE);
 
-		fc =  new ForwardChainer(2,      // noOfCores
+		config =  Config.getInstance(2,      // noOfCores
         false,   // verbose
         false,  // rdfCheck
         true,   // eqReduction
@@ -109,11 +116,13 @@ public class MaterializedTriplesToQuintuples {
         NO_OF_TUPLES,
         OUT_FILE,
         getTestResource("default.eqred.rdl"));
-		fc.tupleStore.namespace.putForm("ltw", "http://www.lt-world.org/ltw.owl#", false);
-		fc.tupleStore.namespace.putForm("lt", "http://www.lt-world.org/lt.owl#", false);
-		assertEquals(tuples, fc.tupleStore.getAllTuples().size());
+		fc = new Hfc(config);
+		fc.addNamespace("ltw", "http://www.lt-world.org/ltw.owl#");
+		fc.addNamespace("lt", "http://www.lt-world.org/lt.owl#");
+		assertEquals(tuples, fc._tupleStore.getAllTuples().size());
 
 		fc.shutdownNoExit();
 	}
+
 
 }

@@ -958,7 +958,7 @@ class QueryParser {
         case 58:
           break;
         case 3: {
-          if (interval == true) yybegin(INTERVAL);
+          if (interval) yybegin(INTERVAL);
           else yybegin(state);
         }
         case 59:

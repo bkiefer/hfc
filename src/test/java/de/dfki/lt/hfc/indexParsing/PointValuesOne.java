@@ -1,7 +1,7 @@
 package de.dfki.lt.hfc.indexParsing;
 
 import de.dfki.lt.hfc.Config;
-import de.dfki.lt.hfc.ForwardChainer;
+import de.dfki.lt.hfc.Hfc;
 
 import de.dfki.lt.hfc.TestingUtils;
 import de.dfki.lt.hfc.types.Xsd3DPoint;
@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class PointValuesOne {
 
-    static ForwardChainer fc;
+    static Hfc fc;
 
 
     private static String getResource(String name) {
@@ -30,27 +30,27 @@ public class PointValuesOne {
     @BeforeClass
     public static void init() throws Exception {
 
-        fc =  new ForwardChainer(Config.getInstance(getResource("IndexParsing.yml")));
+        fc =  new Hfc(Config.getInstance(getResource("IndexParsing.yml")));
     }
 
     @Test
     public void testIndexNoClosure(){
-        assertEquals(11, fc.tupleStore.indexStore.size());
+        assertEquals(11, fc._tupleStore.indexStore.size());
         Xsd3DPoint key = new Xsd3DPoint(0,0,1);
-        Set<int[]> values = fc.tupleStore.indexStore.lookup(key);
+        Set<int[]> values = fc._tupleStore.indexStore.lookup(key);
         assertEquals(1,values.size());
 
         key = new Xsd3DPoint(0,0,2);
-        values = fc.tupleStore.indexStore.lookup(key);
+        values = fc._tupleStore.indexStore.lookup(key);
         assertEquals(1,values.size());
         fc.computeClosure();
-        assertEquals(11,fc.tupleStore.indexStore.size());
+        assertEquals(11,fc._tupleStore.indexStore.size());
         key = new Xsd3DPoint(0,0,1);
-        values = fc.tupleStore.indexStore.lookup(key);
+        values = fc._tupleStore.indexStore.lookup(key);
         assertEquals(7,values.size());
 
         key = new Xsd3DPoint(0,0,2);
-        values = fc.tupleStore.indexStore.lookup(key);
+        values = fc._tupleStore.indexStore.lookup(key);
         assertEquals(7,values.size());
 
     }

@@ -46,7 +46,7 @@ class Table {
   /**
    * hide table, delta, and generation in a proxy to allow clause-resharing, even across rules
    */
-  protected Proxy proxy;
+  protected final Proxy proxy;
 
   /**
    *

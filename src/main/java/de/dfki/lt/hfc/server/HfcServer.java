@@ -1,9 +1,6 @@
 package de.dfki.lt.hfc.server;
 
-import de.dfki.lt.hfc.Config;
-import de.dfki.lt.hfc.ForwardChainer;
-import de.dfki.lt.hfc.Query;
-import de.dfki.lt.hfc.WrongFormatException;
+import de.dfki.lt.hfc.*;
 import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.server.PropertyHandlerMapping;
 import org.apache.xmlrpc.server.XmlRpcServer;
@@ -37,7 +34,7 @@ public class HfcServer {
   /**
    * forward chainer generated from the input args of the main method
    */
-  private ForwardChainer hfc;
+  private Hfc hfc;
 
   /**
    * the query object generated form the tuple store sitting inside the
@@ -74,7 +71,7 @@ public class HfcServer {
       System.exit(1);
     }
     // construct minimal forward chainer
-    this.hfc = new ForwardChainer(Config.getInstance(configFile));
+    this.hfc = new Hfc();
     // upload additional namespace, tuple, and rule files, if specified
     // always compute closure
     this.hfc.computeClosure();
@@ -86,7 +83,7 @@ public class HfcServer {
       }
     }
     // construct query store
-    this.query = new Query(this.hfc.tupleStore);
+    this.query = this.hfc.getQuery();
   }
 
   /**
@@ -143,7 +140,7 @@ public class HfcServer {
       logger.info("\n  HFC server started, waiting for input ...");
     } catch (XmlRpcException exception) {
       logger.error("\n  HfcServer: XML-RPC Fault #" +
-              Integer.toString(exception.code) +
+              exception.code +
               ": " + exception.toString());
     } catch (Exception exception) {
       logger.error("\n  HfcServer: " + exception.toString());

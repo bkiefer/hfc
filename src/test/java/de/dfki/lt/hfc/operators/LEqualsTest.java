@@ -25,7 +25,7 @@ public class LEqualsTest {
     ns.putForm("pal", "http://www.dfki.de/lt/onto/pal/pal.owl#",ns.isShortIsDefault());
     Config config = Config.getDefaultConfig();
     config.namespace = ns;
-    config.verbose = false;
+    config.setVerbose(false) ;
     ts = new TupleStore(config);
     ts.readTuples(getResource("tuples.nt"));
     q = new Query(ts);

@@ -59,7 +59,7 @@ public class ZOrder {
       for (long bit = 0; bit < this.bits; bit++) {
         long distance = (dimensions * bit) - bit;
         shifted |= shift & distance;
-        mask |= 1L << bit << ((~(shift - 1)) & distance);
+        mask |= 1L << bit << ((-shift) & distance);
       }
 
       if (shifted != 0) {

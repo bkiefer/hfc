@@ -28,7 +28,7 @@ public class HfcServerApi {
    *
    * @see HfcServer.startServer()
    */
-  protected static ForwardChainer HFC;
+  protected static Hfc HFC;
 
   /**
    * this class instance of class Query is assigned when starting the HFC Web Server
@@ -74,7 +74,7 @@ public class HfcServerApi {
     ArrayList<String> tuple = new ArrayList<String>();
     while (st.hasMoreTokens())
       tuple.add(st.nextToken());
-    return HfcServerApi.HFC.tupleStore.ask(tuple);
+    return HfcServerApi.HFC.ask(tuple);
   }
 
   /**
@@ -113,7 +113,7 @@ public class HfcServerApi {
     // if equivalence class reduction is turned on and a cleanup has been performed,
     // further closure computations might be necessary, since cleanups are performed
     // after a closure computation which potentially make passive rules again active
-    if (HfcServerApi.HFC.tupleStore.equivalenceClassReduction && HfcServerApi.HFC.getCleanUpRepository()) {
+    if (HfcServerApi.HFC.isEquivalenceClassReduction() && HfcServerApi.HFC.isCleanUpRepository()) {
       while (HfcServerApi.HFC.computeClosure()) {
       }
     }
@@ -146,12 +146,12 @@ public class HfcServerApi {
       final String configName = st.nextToken();
       Config config = Config.getInstance(configName);
       // new HFC
-      HfcServerApi.HFC = new ForwardChainer(config);
+      HfcServerApi.HFC = new Hfc(config);
       // further tuples to upload
       while (st.hasMoreTokens()) {
         HfcServerApi.HFC.uploadTuples(st.nextToken());
       }
-      HfcServerApi.QUERY = new Query(HfcServerApi.HFC.tupleStore);
+      HfcServerApi.QUERY = HFC.getQuery();
       return 0;  // to please XML-RPC
     } catch (Exception exception) {
       // be careful
@@ -170,7 +170,7 @@ public class HfcServerApi {
   public synchronized Integer stop(String command) {
     try {
       logger.info("  shutting down HFC server ...");
-      HfcServerApi.HFC.shutdownNoExit();
+      HfcServerApi.HFC.shutdown();
       HfcServerApi.HFC = null;
       HfcServerApi.QUERY = null;
       return 0;

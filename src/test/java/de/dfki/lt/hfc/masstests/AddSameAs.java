@@ -1,7 +1,8 @@
 package de.dfki.lt.hfc.masstests;
 
 import de.dfki.lt.hfc.Config;
-import de.dfki.lt.hfc.ForwardChainer;
+import de.dfki.lt.hfc.Hfc;
+import de.dfki.lt.hfc.Hfc;
 import de.dfki.lt.hfc.WrongFormatException;
 import static org.junit.Assert.*;
 
@@ -19,9 +20,9 @@ import java.io.*;
 public class AddSameAs {
 
   // shortIsDefault no longer a static field in class NamespaceManager
-  public static ForwardChainer getFwChainer(boolean eqRed)
+  public static Hfc getFwChainer(boolean eqRed)
       throws FileNotFoundException, WrongFormatException, IOException {
-    ForwardChainer fc = new ForwardChainer(Config.getInstance(getTestResource(eqRed? "AddSameAs_eqRed.yml":"AddSameAs.yml")));
+    Hfc fc = new Hfc(Config.getInstance(getTestResource(eqRed? "AddSameAs_eqRed.yml":"AddSameAs.yml")));
     fc.uploadTuples(getTestResource("ltworld.jena.nt"));
     fc.computeClosure();
     return fc;
@@ -31,8 +32,8 @@ public class AddSameAs {
 	public void sameAsTestShortDefault() throws Exception {
     //boolean save = NamespaceManager.shortIsDefault;  // NO LONGER A STATIC FIELD
     //NamespaceManager.shortIsDefault = true;
-    ForwardChainer fc =	getFwChainer(true);
-		assertEquals(511049, fc.tupleStore.getAllTuples().size());
+    Hfc fc =	getFwChainer(true);
+		assertEquals(511049, fc._tupleStore.getAllTuples().size());
 		fc.shutdownNoExit();
     //NamespaceManager.shortIsDefault = save;
 	}
@@ -41,9 +42,9 @@ public class AddSameAs {
   public void sameAsTestLongDefault() throws Exception {
     //boolean save = NamespaceManager.shortIsDefault;
     //NamespaceManager.shortIsDefault = false;
-    ForwardChainer fc = getFwChainer(true);
+    Hfc fc = getFwChainer(true);
     // TODO: THIS IS WRONG: THE NUMBERS MUST BE EQUAL
-    assertEquals(511049, fc.tupleStore.getAllTuples().size());
+    assertEquals(511049, fc._tupleStore.getAllTuples().size());
     fc.shutdownNoExit();
 
     //NamespaceManager.shortIsDefault = save;
@@ -54,8 +55,8 @@ public class AddSameAs {
     //boolean save = NamespaceManager.shortIsDefault;
     //NamespaceManager.shortIsDefault = true;
 
-    ForwardChainer fc = getFwChainer(false);
-    assertEquals(548142, fc.tupleStore.getAllTuples().size());
+    Hfc fc = getFwChainer(false);
+    assertEquals(548142, fc._tupleStore.getAllTuples().size());
     fc.shutdownNoExit();
 
     //NamespaceManager.shortIsDefault = save;
@@ -66,8 +67,8 @@ public class AddSameAs {
     //boolean save = NamespaceManager.shortIsDefault;
     //NamespaceManager.shortIsDefault = false;
 
-    ForwardChainer fc = getFwChainer(false);
-    assertEquals(548142, fc.tupleStore.getAllTuples().size());
+    Hfc fc = getFwChainer(false);
+    assertEquals(548142, fc._tupleStore.getAllTuples().size());
     fc.shutdownNoExit();
 
     //NamespaceManager.shortIsDefault = save;

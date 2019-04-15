@@ -15,7 +15,7 @@ import static junit.framework.TestCase.fail;
  */
 public class QueryTest_LookupTimeCombi {
 
-  static ForwardChainer fc;
+  static Hfc fc;
 
   private static String getResource(String name) {
     return TestingUtils.getTestResource("Query", name);
@@ -24,7 +24,7 @@ public class QueryTest_LookupTimeCombi {
   @BeforeClass
   public static void init() throws Exception {
 
-    fc = new ForwardChainer(Config.getInstance(getResource("TimeCombi.yml")));
+    fc = new Hfc(Config.getInstance(getResource("TimeCombi.yml")));
 
 
     // compute deductive closure
@@ -49,7 +49,7 @@ public class QueryTest_LookupTimeCombi {
    */
   @Test
   public void testSelectWhere() {
-    TupleStore tupleStore = fc.tupleStore;
+    TupleStore tupleStore = fc._tupleStore;
     Query query = new Query(tupleStore);
     try {
       //Start
@@ -68,7 +68,7 @@ public class QueryTest_LookupTimeCombi {
 
   @Test
   public void testSelectDistinctWhere() {
-    TupleStore tupleStore = fc.tupleStore;
+    TupleStore tupleStore = fc._tupleStore;
     Query query = new Query(tupleStore);
     try { // F
       BindingTable bt = query.query(
@@ -85,7 +85,7 @@ public class QueryTest_LookupTimeCombi {
 
   @Test
   public void testSelectWhereFilter() {
-    TupleStore tupleStore = fc.tupleStore;
+    TupleStore tupleStore = fc._tupleStore;
     Query query = new Query(tupleStore);
     try { // F
       BindingTable bt = query.query(
@@ -103,7 +103,7 @@ public class QueryTest_LookupTimeCombi {
 
   @Test
   public void testSelectDistinctWhereFilter() {
-    TupleStore tupleStore = fc.tupleStore;
+    TupleStore tupleStore = fc._tupleStore;
     Query query = new Query(tupleStore);
     try { // F
       BindingTable bt = query.query(
@@ -121,7 +121,7 @@ public class QueryTest_LookupTimeCombi {
 
   @Test
   public void testSelectWhereAggregate() {
-    TupleStore tupleStore = fc.tupleStore;
+    TupleStore tupleStore = fc._tupleStore;
     Query query = new Query(tupleStore);
     try { // F
 

@@ -292,13 +292,13 @@ public final class TupleStore {
     this.indexStore = config.indexStore;
     //TODO not sure if we need this
     //this.config = config;
-    init(config.verbose, config.rdfCheck, config.eqReduction, config.minArgs, config.maxArgs,
-            config.subjectPosition, config.predicatePosition, config.objectPosition,
-            config.noOfAtoms, config.noOfTuples);
-    this.inputCharacterEncoding = config.characterEncoding;
-    this.outputCharacterEncoding = config.characterEncoding;
-    if (!config.tupleFiles.isEmpty())
-      for (String tuplefile : config.tupleFiles) {
+    init(config.isVerbose(), config.isRdfCheck(), config.isEqReduction(), config.getMinArgs(), config.getMaxArgs(),
+            config.getSubjectPosition(), config.getPredicatePosition(), config.getObjectPosition(),
+            config.getNoOfAtoms(), config.getNoOfTuples());
+    this.inputCharacterEncoding = config.getCharacterEncoding();
+    this.outputCharacterEncoding = config.getCharacterEncoding();
+    if (!config.getTupleFiles().isEmpty())
+      for (String tuplefile : config.getTupleFiles()) {
         readTuples(tuplefile);
       }
   }
@@ -659,9 +659,7 @@ public final class TupleStore {
           newReflexiveTuple[pos++] = i;
           newReflexiveTuple[pos++] = this.uriToEquivalenceRelation.get(i);
           newReflexiveTuple[pos++] = i;
-          for (int j = pos; j < tuple.length; j++) {
-            newReflexiveTuple[j] = tuple[j];
-          }
+          if (tuple.length - pos >= 0) System.arraycopy(tuple, pos, newReflexiveTuple, pos, tuple.length - pos);
           addTuple(newReflexiveTuple);
           break;
         }
@@ -1091,8 +1089,7 @@ public final class TupleStore {
     if (front != null)
       etuple.add(front);
     etuple.addAll(in);
-    for (String back : backs)
-      etuple.add(back);
+    etuple.addAll(Arrays.asList(backs));
     return etuple;
   }
 
@@ -1512,7 +1509,7 @@ public final class TupleStore {
    * in the tuple store
    */
   public boolean ask(ArrayList<String> externalTuple) {
-    return ask(externalTuple.toArray(new String[externalTuple.size()]));
+    return ask(externalTuple.toArray(new String[0]));
   }
 
   /**

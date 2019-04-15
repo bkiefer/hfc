@@ -4,7 +4,7 @@ import static de.dfki.lt.hfc.runnable.Utils.getResource;
 
 import java.util.ArrayList;
 import de.dfki.lt.hfc.*;
-import de.dfki.lt.hfc.ForwardChainer;
+import de.dfki.lt.hfc.Hfc;
 import de.dfki.lt.hfc.TupleStore;
 import de.dfki.lt.hfc.types.XsdInt;
 
@@ -28,9 +28,9 @@ public class TriplesWithoutTimeToQuintuplesWithTime {
 	public static void main(String[] args) throws Exception {
 
 		//   time java -server -cp .:../lib/trove-2.1.0.jar -Xmx1024m de/dfki/lt/hfc/tests/MaterializedTriplesToQuintuples
-		ForwardChainer fc =	new ForwardChainer(Config.getDefaultConfig());
+		Hfc fc =	new Hfc(Config.getDefaultConfig());
 		fc.uploadTuples(IN_FILE);
-		TupleStore ts = fc.tupleStore;
+		TupleStore ts = fc._tupleStore;
 		int start, end;
 		int[] tuple;
 		ArrayList<int[]> newTuples = new ArrayList<int[]>(NO_OF_TUPLES);

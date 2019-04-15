@@ -1,7 +1,7 @@
 package de.dfki.lt.hfc.indexParsing;
 
 import de.dfki.lt.hfc.Config;
-import de.dfki.lt.hfc.ForwardChainer;
+import de.dfki.lt.hfc.Hfc;
 
 import de.dfki.lt.hfc.TestingUtils;
 import de.dfki.lt.hfc.types.XsdDate;
@@ -22,7 +22,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class DateValuesOne {
 
-    static ForwardChainer fc;
+    static Hfc fc;
     static String[] testSub1 = new String[]{"<test:Sensor1>", "<test:hasValue>", "\"142\"^^<xsd:long>"};
     static String[] testSub2 = new String[]{"<test:Sensor2>", "<test:hasValue>", "\"242\"^^<xsd:long>"};
 
@@ -33,27 +33,27 @@ public class DateValuesOne {
     @BeforeClass
     public static void init() throws Exception {
 
-        fc =  new ForwardChainer(Config.getInstance(getResource("test_transaction_date0.yml")));
+        fc =  new Hfc(Config.getInstance(getResource("test_transaction_date0.yml")));
     }
 
 
 
     @Test
     public void testIndexClosure(){
-        assertEquals(11,fc.tupleStore.indexStore.size());
+        assertEquals(11,fc._tupleStore.indexStore.size());
         XsdDate key = new XsdDate(0,0,1);
-        Set<int[]> values = fc.tupleStore.indexStore.lookup(key);
+        Set<int[]> values = fc._tupleStore.indexStore.lookup(key);
         assertEquals(1,values.size());
         key = new XsdDate(0,0,2);
-        values = fc.tupleStore.indexStore.lookup(key);
+        values = fc._tupleStore.indexStore.lookup(key);
         assertEquals(1,values.size());
         fc.computeClosure();
-        assertEquals(11,fc.tupleStore.indexStore.size());
+        assertEquals(11,fc._tupleStore.indexStore.size());
          key = new XsdDate(0,0,1);
-         values = fc.tupleStore.indexStore.lookup(key);
+         values = fc._tupleStore.indexStore.lookup(key);
         assertEquals(7,values.size());
         key = new XsdDate(0,0,2);
-        values = fc.tupleStore.indexStore.lookup(key);
+        values = fc._tupleStore.indexStore.lookup(key);
         assertEquals(7,values.size());
     }
 

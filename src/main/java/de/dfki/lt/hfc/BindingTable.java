@@ -320,7 +320,7 @@ public class BindingTable {
           for (int j = 0; j < difference; j++)
             sb.append(" ");
         } else {
-          sb.append(element.substring(0, maxLength));
+          sb.append(element, 0, maxLength);
         }
         sb.append(" ");
       }

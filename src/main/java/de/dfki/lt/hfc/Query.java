@@ -2,7 +2,6 @@ package de.dfki.lt.hfc;
 
 import de.dfki.lt.hfc.qrelations.QRelation;
 import de.dfki.lt.hfc.qrelations.QRelationFactory;
-import de.dfki.lt.hfc.types.AnyType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,14 +66,7 @@ public class Query {
     QRelationFactory.initFactory(tupleStore);
   }
 
-  /**
-   * the unary constructor internalizes the tuple store that `sits'
-   * inside the forward chainer
-   */
-  public Query(ForwardChainer fc) {
-    this.tupleStore = fc.tupleStore;
-    QRelationFactory.initFactory(fc.tupleStore);
-  }
+
 
   /**
    * a predicate symbol is neither a URI, a blank node, a variable, nor an XSD atom
@@ -605,7 +597,8 @@ public class Query {
     if (projectedVars.contains("*")) {
       if (makeDistinct)
         // nothing to do for the positive case, since bt's table is already of type THashSet
-        return;
+      {
+      }
       else
         // even though bt does not contain duplicates, we make its table a hash set, since
         // structurally-equivalent int arrays are counted as different objects

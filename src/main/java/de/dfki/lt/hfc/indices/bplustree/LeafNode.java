@@ -1,6 +1,7 @@
 package de.dfki.lt.hfc.indices.bplustree;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -87,7 +88,7 @@ public class LeafNode<Key extends Comparable> extends Node<Key> {
 
     // insert new key and value
     this.setKey(index, key);
-    this.setValue(index, new HashSet<int[]>(Arrays.asList(value)));
+    this.setValue(index, new HashSet<int[]>(Collections.singletonList(value)));
     ++this.keyCount;
   }
 

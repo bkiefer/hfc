@@ -79,7 +79,7 @@ public final class XsdBoolean extends XsdAnySimpleType {
    * returns a java.lang.Boolean container for an HFC XsdBoolean object
    */
   public Object toJava() {
-    return new Boolean(this.value);
+    return Boolean.valueOf(this.value);
   }
 
   @Override

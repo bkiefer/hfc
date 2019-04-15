@@ -310,11 +310,12 @@ public class Rule {
     this.rstore = rstore;
   }
 
+
   /**
    * to have a proper working toString() method, a rule must be associated with
    * its tuple store to perform external decoding
    */
-  public String toString() {
+    public String toString() {
     return toString(this.tstore);
   }
 
@@ -323,7 +324,7 @@ public class Rule {
    * NOTE: printer is incomplete as it misses general tests and actions
    */
   public String toString(TupleStore store) {
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     sb.append(getName()).append("\n");
     for (int[] tuple : ante)
       sb.append(store.toString(tuple)).append("\n");
@@ -340,5 +341,6 @@ public class Rule {
     // NOTE: general tests and actions are not printed at the moment
     return sb.toString();
   }
+
 
 }

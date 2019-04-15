@@ -6,7 +6,7 @@ import org.junit.*;
 
 
 public class LGetLatestTest {
-  static ForwardChainer fc;
+  static Hfc fc;
 
   private static String getResource(String name) {
     return TestingUtils.getTestResource("LGetLatest", name);
@@ -15,7 +15,7 @@ public class LGetLatestTest {
   @Before
   public  void init() throws Exception {
 
-    fc =  new ForwardChainer(Config.getInstance(getResource("test.yml")));
+    fc =  new Hfc(Config.getInstance(getResource("test.yml")));
 
     // compute deductive closure
 
@@ -109,7 +109,7 @@ public class LGetLatestTest {
         { "<owl:inverseOf>", "<owl:inverseOf>", "<owl:inverseOf>" },
 
     };
-    Query q = new Query(fc.tupleStore);
+    Query q = new Query(fc._tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
     checkResult(expected, bt, bt.getVars());
   }

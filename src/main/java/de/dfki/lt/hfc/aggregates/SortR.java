@@ -43,9 +43,7 @@ public class SortR extends AggregationalOperator {
     });
 
     // no need to throw away the last two columns
-    for (int[] tuple : table) {
-      resultTable.add(tuple);
-    }
+    resultTable.addAll(Arrays.asList(table));
     return bt;
   }
 }

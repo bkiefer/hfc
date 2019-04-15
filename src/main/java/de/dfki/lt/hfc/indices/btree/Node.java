@@ -23,15 +23,15 @@ public class Node<K extends Comparable> {
    */
   protected int mCurrentKeyNum;
 
-  /**
-   * array of key value pairs, i.e., the data stored in this node
-   */
-  protected KeyValuePair<K> mKeys[];
+    /**
+     * array of key value pairs, i.e., the data stored in this node
+     */
+    protected KeyValuePair<K>[] mKeys;
 
-  /**
-   * links to the children of this node
-   */
-  protected Node mChildren[];
+    /**
+     * links to the children of this node
+     */
+    protected Node[] mChildren;
 
   /**
    * the right neighbour of this node. This was introduced for convenience when computing values for intervals.

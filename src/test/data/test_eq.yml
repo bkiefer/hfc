@@ -14,7 +14,6 @@ namespaces:
   rdfs:  http://www.w3.org/2000/01/rdf-schema#
   owl:  http://www.w3.org/2002/07/owl#
   test: http://www.dfki.de/lt/onto/test.owl#
-  test: http://www.dfki.de/lt/onto/test.owl#
   lt: http://www.lt-world.org/ltw.owl#
   reg: http://registry.dfki.de#
   d_time: http://www.dfki.de/lt/onto/time.owl#

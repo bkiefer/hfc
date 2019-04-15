@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -141,7 +142,7 @@ public class IndexStore {
           try {
             this.primIndexKey = Class.forName(TYPE_PATH + entry.getValue());
           } catch (ClassNotFoundException e) {
-            logger.error(e.getStackTrace().toString());
+            logger.error(Arrays.toString(e.getStackTrace()));
           }
           break;
         }
