@@ -115,7 +115,9 @@ public class Config {
    * @param ruleFile
    * @return
    */
-  public static Config getInstance(int noOfCores, boolean verbose, boolean rdfCheck, boolean eqReduction, int minNoOfArgs, int maxNoOfArgs, int noOfAtoms, int noOfTuples, String tupleFile, String ruleFile) throws FileNotFoundException {
+  public static Config getInstance(int noOfCores, boolean verbose, boolean rdfCheck, boolean eqReduction,
+                                   int minNoOfArgs, int maxNoOfArgs, int noOfAtoms, int noOfTuples,
+                                   String tupleFile, String ruleFile) throws FileNotFoundException {
     String configPath = path + "DefaultConfig.yml";
     Config config = getInstance(configPath);
     //overwrite/extend default settings of the config
@@ -138,8 +140,45 @@ public class Config {
   }
 
 
+  public void addRuleFile(String ruleFile){
+    List ruleFiles = (List) configs.get(RULEFILES);
+    ruleFiles.add(ruleFile);
+    configs.put(RULEFILES, ruleFiles);
+  }
+
+  public void addRuleFiles(List<String> files){
+    List ruleFiles = (List) configs.get(RULEFILES);
+    ruleFiles.addAll(files);
+    configs.put(RULEFILES, ruleFiles);
+  }
+
+  public void replaceRuleFiles(List<String> files){
+    configs.put(RULEFILES, files);
+  }
+
+  public void addTupleFile(String tupleFile){
+    List tupleFiles = (List) configs.get(TUPLEFILES);
+    tupleFiles.add(tupleFile);
+    configs.put(TUPLEFILES, tupleFiles);
+  }
+  
+  public void addTupleFiles(List<String> files){
+    List tupleFiles = (List) configs.get(TUPLEFILES);
+    tupleFiles.addAll(files);
+    configs.put(TUPLEFILES, tupleFiles);
+  }
+
+
+  public void replaceTupleFiles(List<String> files){
+    configs.put(TUPLEFILES, files);
+  }
+
   public void updateConfig(Map<String, Object> configuration) {
-    configs.putAll(configuration);
+    //ignore changes that were made to the Tuplefiles, Rulefiles and the Namespaces
+    configuration.entrySet().stream().
+            filter(x -> !x.equals(TUPLEFILES) && !x.equals(RULEFILES) && !x.equals(NAMESPACES)).
+            forEach(x -> configs.put(x.getKey(), x.getValue()));
+    //configs.putAll(configuration);
   }
 
 
@@ -154,15 +193,9 @@ public class Config {
 
 
   public void addNamespace(String shortForm, String longForm) {
-    Namespace ns = new Namespace(shortForm, longForm, (Boolean) configs.get(SHORTISDEFAULT));
-    namespace.shortToNs.put(shortForm, ns);
-    namespace.longToNs.put(longForm, ns);
+    namespace.putForm(shortForm, longForm, (Boolean) configs.get(SHORTISDEFAULT));
   }
 
-
-  public void putNamespace(String shortNamespace, String longNamespace) {
-    namespace.putForm(shortNamespace, longNamespace, (Boolean) configs.get(SHORTISDEFAULT));
-  }
 
 
   public void setShortIsDefault(boolean shortIsDefault) {

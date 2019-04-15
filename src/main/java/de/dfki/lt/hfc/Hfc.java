@@ -126,6 +126,8 @@ public class Hfc {
    * from parameter settings which affect fields in these objects;
    * the fields for the rule store and forward chainer are assigned values
    * the first time rules are uploaded to HFC
+   * This method cannot be used to change namespaces, tuplefiles or rulefiles.
+   * Please use the dedicated methods to do so.
    */
   public void customizeHfc(Map<String, Object> settings) {
     logger.info("HFC settings: " + settings);
@@ -138,7 +140,7 @@ public class Hfc {
 
 
   public void addNamespace(String shortForm, String longForm) {
-    config.putNamespace(shortForm, longForm);
+    config.addNamespace(shortForm, longForm);
   }
 
   public void readTuples(BufferedReader tupleReader)
@@ -149,7 +151,7 @@ public class Hfc {
   public void readTuples(BufferedReader tupleReader, HashMap<String, String> namespaceMappings)
           throws WrongFormatException, IOException {
     for (Map.Entry<String, String> e : namespaceMappings.entrySet())
-      config.putNamespace(e.getKey(), e.getValue());
+      config.addNamespace(e.getKey(), e.getValue());
     _tupleStore.readTuples(tupleReader);
   }
 
@@ -263,9 +265,11 @@ public class Hfc {
     _tupleStore.readTuples(filename, front, backs);
   }
 
+
   public void uploadTuples(String filename) throws IOException, WrongFormatException {
     _tupleStore.readTuples(filename);
   }
+
 
   /**
    * add tuples, represented as int[], to the set of all tuples;
@@ -279,6 +283,7 @@ public class Hfc {
         success = false;
     return success;
   }
+
 
   /**
    * remove tuples, represented as int[], from the set of all tuples;
@@ -322,6 +327,7 @@ public class Hfc {
     }
   }
 
+
   /**
    * uploads further rules stored in a file to an already established forward chainer;
    * the set of all rules is returned;
@@ -338,6 +344,7 @@ public class Hfc {
       _forwardChainer.noOfTasks = _ruleStore.allRules.size();
   }
 
+
   public BindingTable executeQuery(String query) throws QueryParseException {
     Query q = new Query(_tupleStore);
     // do we want to generate a new Query object for each call of query() (is not needed)?
@@ -345,6 +352,7 @@ public class Hfc {
     // otherwise, we would need to synchronize a class-based Query object here
     return q.query(query);
   }
+
 
   public boolean computeClosure() {
     logger.info("Compute closure starting with "+ _tupleStore.allTuples.size()+" tuples");
@@ -357,6 +365,8 @@ public class Hfc {
       return false;
     }
   }
+
+
   public boolean computeClosure(int iterations, boolean cleanupRepository) {
     if (null != _forwardChainer){
       return _forwardChainer.computeClosure(iterations, cleanupRepository);
@@ -364,8 +374,8 @@ public class Hfc {
       _tupleStore.cleanUpTupleStore();
       return  false;
     }
-
   }
+
 
   public boolean computeClosure(Set<int[]> newTuples){
     if (null != _forwardChainer) {
@@ -376,6 +386,7 @@ public class Hfc {
     }
   }
 
+
   public boolean computeClosure(Set<int[]> newTuples, int iterations, boolean cleanupRepository){
     if (null != _forwardChainer) {
       return _forwardChainer.computeClosure(newTuples,iterations, cleanupRepository);
@@ -384,7 +395,6 @@ public class Hfc {
       return false;
     }
   }
-
 
 
   /**
@@ -400,8 +410,9 @@ public class Hfc {
     TupleStore tupleStoreCopy = _tupleStore.copyTupleStore();
     RuleStore ruleStoreCopy = _ruleStore.copyRuleStore(tupleStoreCopy);
     ForwardChainer fcCopy = _forwardChainer.copyForwardChainer(tupleStoreCopy, ruleStoreCopy, noOfCores);
-    return new Hfc(config, tupleStoreCopy, ruleStoreCopy, fcCopy);
+    return new Hfc(configCopy, tupleStoreCopy, ruleStoreCopy, fcCopy);
   }
+
 
   public boolean isEquivalenceClassReduction() {
     return config.isEqReduction();
@@ -439,6 +450,7 @@ public class Hfc {
     return _forwardChainer.tupleDeletionEnabled();
   }
 
+
   public void setNoOfCores(int i) {
     config.updateConfig(Config.NOOFCORES, i);
   }
@@ -448,6 +460,6 @@ public class Hfc {
     config.setVerbose(b);
     _tupleStore.verbose = b;
     _ruleStore.verbose = b;
-
   }
+
 }
