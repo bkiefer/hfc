@@ -47,17 +47,7 @@ public final class ForwardChainer {
   
   private final RuleStore _ruleStore;
     private final Config _config;
-    //private  int _noOfIterations;
-  //private  Integer _noOfCores;
-  //private  boolean _gc;
 
-
-  /**
-   * a constant that controls whether a warning is printed in case an invalid
-   * tuple is read in;
-   * a similar variable exists in class RuleStore
-   */
-  //public boolean verbose;
 
   /**
    * generation counter is incremented during each iteration, independent of how
@@ -80,8 +70,7 @@ public final class ForwardChainer {
    * needed to to start a new iteration
    */
   private CountDownLatch doneSignal;
-  //private boolean _cleanUpRepository;
-  //private boolean _eqReduction;
+
 
 
   /**

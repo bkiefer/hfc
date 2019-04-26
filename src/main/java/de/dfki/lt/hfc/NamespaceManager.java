@@ -157,7 +157,6 @@ public final class NamespaceManager {
    * a mapping between XSD type specifiers and Java classes representing these types
    * in HFC; now in XsdAnySimpleType, where it belongs
    */
-  //protected HashMap<String, Constructor<XsdAnySimpleType>> typeToConstructor = new HashMap<String, Constructor<XsdAnySimpleType>>();
   public void addNamespace(Namespace ns) {
     this.allNamespaces.add(ns);
     this.shortToNs.put(ns.SHORT_NAMESPACE, ns);
@@ -168,6 +167,8 @@ public final class NamespaceManager {
    * adds a new mapping to the namespace
    */
   public void putForm(String shortForm, String longForm, boolean shortIsDefault) {
+    assert !shortForm.isEmpty();
+    assert !longForm.isEmpty();
     if (shortToNs.containsKey(shortForm))
       shortToNs.get(shortForm).setIsShort(shortIsDefault);
     else if (longToNs.containsKey(longForm))

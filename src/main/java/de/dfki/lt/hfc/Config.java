@@ -161,7 +161,7 @@ public class Config {
     tupleFiles.add(tupleFile);
     configs.put(TUPLEFILES, tupleFiles);
   }
-  
+
   public void addTupleFiles(List<String> files){
     List tupleFiles = (List) configs.get(TUPLEFILES);
     tupleFiles.addAll(files);
