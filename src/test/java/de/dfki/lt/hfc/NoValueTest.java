@@ -27,7 +27,6 @@ public class NoValueTest {
 
   @Test
   public void test() throws QueryParseException  {
-    // TODO: FIX EXPECTED DATA
 
     String[][] expected = {
         //tuple too short
@@ -58,7 +57,6 @@ public class NoValueTest {
     };
     Query q = new Query(fc._tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    //printExpected(bt, fc._tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     checkResult(expected, bt, bt.getVars());
   }
 

@@ -27,7 +27,6 @@ public class PrintFalseTest {
 
   @Test
   public void test() throws QueryParseException  {
-    // TODO: FIX EXPECTED DATA
 
     String[][] expected = {
         { "<test:db>", "<test:hasName>", "\"Daimler Benz\"^^<xsd:string>" },
@@ -53,7 +52,6 @@ public class PrintFalseTest {
     };
     Query q = fc.getQuery();
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    //TestLGetLatest.printExpected(bt, fc._tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     checkResult(expected, bt, bt.getVars());
   }
 

@@ -183,7 +183,6 @@ public class TestingUtils {
       check(bt.iterator(vars), expected,
           new NextAsIntCall(hfc._tupleStore));
     } catch (BindingTableIteratorException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
   }

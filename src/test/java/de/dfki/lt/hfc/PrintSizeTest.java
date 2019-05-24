@@ -43,8 +43,6 @@ public class PrintSizeTest {
 
   @Test
   public void test() throws QueryParseException, WrongFormatException, IOException  {
-    // TODO: FIX EXPECTED DATA
-
      // load NamespaceManager
     NamespaceManager namespace = NamespaceManager.getInstance();
 
@@ -82,8 +80,6 @@ public class PrintSizeTest {
     };
     Query q = hfc.getQuery();
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    //TestLGetLatest.printExpected(bt, fc._tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
-
     rop.apply(new BindingTable[]{bt});
     String temp = outContent.toString();
     checkResult(expected, bt, bt.getVars());

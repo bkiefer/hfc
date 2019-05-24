@@ -72,15 +72,9 @@ public class RuleStoreTest {
     String ruleFile = new String(getTestResource("default.test.rdl"));
     RuleStore rstest = new RuleStore(false, true, 2, 3, tupleStore, ruleFile);
     rstest.writeRules(getTempFile("fileRules"));
-    // TODO: this test is nonsense, it tests if the string is empty, which is
-    // never the case
-    assertFalse("fileRules".isEmpty());
     //test for case verbose != true
     RuleStore rsverbosefalse = new RuleStore(false, true, 2, 3, tupleStore, ruleFile);
     rsverbosefalse.writeRules(getTempFile("fileRules1"));
-    // TODO: this test is nonsense, it tests if the string is empty, which is
-    // never the case
-    assertFalse("fileRules1".isEmpty());
   }
 
   @Test
@@ -89,11 +83,10 @@ public class RuleStoreTest {
     //TupleStore tupleStore = new TupleStore(2, 4);
     TupleStore ts = new TupleStore(false, true, false, 2, 5,0,1,2, 4, 2, namespace, getTestResource("default.nt"));
     RuleStore rs = new RuleStore(Config.getDefaultConfig(),ts);
-    rs.copyRuleStore(ts);
-    // TODO: this test is nonsense, it tests that the two rule stores are not
-    // the same object
-    assertFalse(rs == rs.copyRuleStore(ts));
-    //TODO one more branch
+    RuleStore copy = rs.copyRuleStore(ts);
+    assertFalse(rs == copy);
+    assertTrue(rs.tupleStore == copy.tupleStore);
+    assertTrue(rs.rdfCheck == copy.rdfCheck);
   }
 
 }

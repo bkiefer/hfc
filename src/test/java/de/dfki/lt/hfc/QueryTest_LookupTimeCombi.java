@@ -1,6 +1,5 @@
 package de.dfki.lt.hfc;
 
-import junit.framework.Assert;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -75,7 +74,7 @@ public class QueryTest_LookupTimeCombi {
           "SELECT DISTINCT ?s ?o WHERE [\"1\"^^<xsd:long>, \"6\"^^<xsd:long>] ?s <test:hasValue> ?o D \"100\"^^<xsd:long>  \"1550\"^^<xsd:long> ");
       assertNotNull(bt);
       assertFalse(bt.isEmpty());
-      Assert.assertEquals(5, bt.size());
+      assertEquals(5, bt.size());
       assertEquals(2, bt.getVars().length);
     } catch (QueryParseException e) {
       e.printStackTrace();

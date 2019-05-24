@@ -226,10 +226,7 @@ public final class TupleStore {
    */
   protected int blankNodeSuffixNo = 0;
 
-//    /**
-//     * used during output, when IDs (ints) are replaced by URI or XSD names
-//     */
-//    public ArrayList<AnyType> idToObject;
+
   protected String blankNodeSuffix = null;
   /**
    * a mapping used by tests & actions to speed up processing
@@ -290,8 +287,6 @@ public final class TupleStore {
   public TupleStore(Config config) throws IOException, WrongFormatException {
     this.namespace = config.namespace;
     this.indexStore = config.indexStore;
-    //TODO not sure if we need this
-    //this.config = config;
     init(config.isVerbose(), config.isRdfCheck(), config.isEqReduction(), config.getMinArgs(), config.getMaxArgs(),
             config.getSubjectPosition(), config.getPredicatePosition(), config.getObjectPosition(),
             config.getNoOfAtoms(), config.getNoOfTuples());
@@ -865,7 +860,6 @@ public final class TupleStore {
    * brand new, or retrieves the already generated int in case the string
    * argument has already been seen
    * <p>
-   * TODO: LONG TO SHORT MAPPINGS MUST HAVE BEEN DONE BEFOREHAND
    */
   public int[] internalizeTuple(List<String> stringTuple) {
     int[] intTuple = new int[stringTuple.size()];
@@ -880,7 +874,6 @@ public final class TupleStore {
    * brand new, or retrieves the already generated int in case the string
    * argument has already been seen
    * <p>
-   * TODO: LONG TO SHORT MAPPINGS MUST HAVE BEEN DONE BEFOREHAND
    */
   public int[] internalizeTuple(String... stringTuple) {
     int[] intTuple = new int[stringTuple.length];
@@ -896,7 +889,6 @@ public final class TupleStore {
    * this method is used when an external tuple file is read in;
    * lineNo refers to the line number in the file that is read in
    * <p>
-   * TODO: LONG TO SHORT MAPPINGS MUST HAVE BEEN DONE BEFOREHAND
    *
    * @return the int[] representation of parameter stringTuple, otherwise
    * @throws WrongFormatException
@@ -919,7 +911,6 @@ public final class TupleStore {
   /**
    * addTuple(String[]) performs the internalization and then calls addTuple(int[])
    * <p>
-   * TODO: LONG TO SHORT MAPPINGS MUST HAVE BEEN DONE BEFOREHAND
    */
   public synchronized boolean addTuple(String[] stringTuple) {
     return addTuple(internalizeTuple(stringTuple));
@@ -1268,7 +1259,7 @@ public final class TupleStore {
         break;
       else
         // normalize the namespace
-        sb.append(token); //TODO removed normalizeNamespace call
+        sb.append(token);
     }
     token = sb.append(">").toString();
     tuple.add(token);
@@ -1326,7 +1317,6 @@ public final class TupleStore {
         bareAtom = false;
         if (!(token.equals("^^") || token.equals("<") || token.equals(">")))
           // normalize namespace
-          token = token; //TODO removed normalizeNamespace call
         sb.append(token);
       }
     }

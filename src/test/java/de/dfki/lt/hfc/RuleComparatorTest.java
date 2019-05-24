@@ -1,6 +1,5 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.TestingUtils.getTestResource;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

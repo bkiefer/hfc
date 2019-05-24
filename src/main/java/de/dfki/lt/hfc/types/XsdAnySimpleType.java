@@ -69,14 +69,7 @@ public abstract class XsdAnySimpleType extends AnyType {
     return value.substring(1, index - 2);
   }
 
-  /* TODO: find a more clever way to collect the subtypes of XsdAnySimpleType
-  private static void loadSimpleTypes() {
-    Package p = AnyType.class.getPackage();
-    AnyType.class.getClassLoader().getResources(name)
-    Class cl = Class.forName(TYPE_PATH + "XsdAnySimpleType");
-    ClassLoader.getSystemClassLoader().
-  }
-  */
+
 
   private static void loadSimpleTypes() {
     final String[] simpleXsdClasses = {

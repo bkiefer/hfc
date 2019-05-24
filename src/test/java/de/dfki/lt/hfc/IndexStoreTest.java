@@ -23,9 +23,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * NOTE: the prepareLookup method is not explicitely tested here. However, it is tested implicitely
+ * NOTE: the prepareLookup method is not explicitly tested here. However, it is tested implicitly
  * by QueryTest
- * TODO test it here
+
  *
  * @author Christian Willms - Date: 30.08.17 18:45.
  * @version 30.08.17
@@ -34,8 +34,6 @@ public class IndexStoreTest {
 
   static Hfc fc;
 
-  static String[] testSub1 = new String[]{"<rdf:type>", "<rdf:type>", "<rdf:Property>"};
-  static String[] testSub2 = new String[]{"<test:sensor>", "<rdfs:subClassOf>", "<owl:Thing>"};
 
   private static String getResource(String name) {
     return TestingUtils.getTestResource("Index_Parsing", name);
@@ -63,11 +61,6 @@ public class IndexStoreTest {
       fc.computeClosure();
       assertEquals(1,fc.config.indexStore.getPrimIndex().size());
       Set<int[]> res = fc.config.indexStore.lookup(new XsdDate(0,0,0));
-      int c = 0;
-      for (int[] i : res){
-        System.out.println(c++ + ": " + Arrays.toString(i));
-        System.out.println("ext: " + fc._tupleStore.toExpandedString(i));
-      }
       assertEquals(156,fc.config.indexStore.lookup(new XsdDate(0,0,0)).size());
       assertEquals(1,fc.config.indexStore.getSecIndex().size());
       assertEquals(156,fc.config.indexStore.lookup(new XsdDate(0,0,1),new XsdDate(0,0,2)).size());

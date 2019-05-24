@@ -26,7 +26,6 @@ public class NoSubClassOfTest {
 
   @Test
   public void test() throws QueryParseException  {
-    // TODO: FIX EXPECTED DATA
     //test fails
     String[][] expected = {
         { "<test:ResearchInstitute>", "<rdfs:subClassOf>", "<test:Company>" },
@@ -67,7 +66,6 @@ public class NoSubClassOfTest {
     };
     Query q = new Query(fc._tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    // printExpected(bt, fc._tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     checkResult(expected, bt, bt.getVars());
   }
 

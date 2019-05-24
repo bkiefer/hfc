@@ -27,7 +27,6 @@ public class IsNotSubtypeOfTest {
 
   @Test
   public void test() throws QueryParseException  {
-    // TODO: FIX EXPECTED DATA
 
     String[][] expected = {
         { "<test:uno>", "<test:isAffiliatedWith>", "<test:dfki>" },
@@ -72,7 +71,6 @@ public class IsNotSubtypeOfTest {
     };
     Query q = new Query(fc._tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-
     checkResult(expected, bt, bt.getVars());
   }
 

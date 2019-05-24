@@ -29,7 +29,6 @@ public class ISumOneTest {
 
   @Test
   public void test() throws QueryParseException  {
-    // TODO: FIX EXPECTED DATA
 
     String[][] expected = {
 
@@ -61,7 +60,6 @@ public class ISumOneTest {
     };
     Query q = new Query(fc._tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    //TestLGetLatest.printExpected(bt, fc._tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     checkResult(expected, bt, bt.getVars());
   }
 

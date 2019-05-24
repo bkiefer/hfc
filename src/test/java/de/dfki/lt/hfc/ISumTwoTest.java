@@ -30,7 +30,6 @@ public class ISumTwoTest {
 
   @Test
   public void test() throws QueryParseException  {
-    // TODO: FIX EXPECTED DATA
 
     String[][] expected = {
         { "<test:sri>", "<test:hasName>", "\"SRI\"^^<xsd:string>" },
@@ -65,7 +64,6 @@ public class ISumTwoTest {
     Query q = fc.getQuery();
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
     System.out.println(bt.toString());
-    //printExpected(bt, fc._tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     checkResult(expected, bt, bt.getVars());
   }
 

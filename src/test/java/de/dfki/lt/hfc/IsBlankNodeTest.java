@@ -39,7 +39,7 @@ public final class IsBlankNodeTest{
     // store values in TupleStore, save integer-key in database
     int[] args = new int[5];
 
-    args[0] = store.putObject((new XsdString("0")).toString()); // TODO was toString(true); before
+    args[0] = store.putObject((new XsdString("0")).toString());
     args[1] = store.putObject((new XsdInt(1)).toString());
     args[2] = store.putObject((new XsdBoolean(false)).toString());
     args[3] = store.putObject((new Uri("<rdf:type>", NamespaceManager.RDF)).toString());

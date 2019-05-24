@@ -96,9 +96,9 @@ public class TupleStoreTest {
         TupleStore objectfortest = new TupleStore(Config.getInstance(getTestResource("Empty.yml")));
         int id = objectfortest.putObject("www.bbc.com");
         assertFalse(objectfortest.getObject(5) == null);
-        assertEquals("\"www.bbc.com\"^^<xsd:string>", objectfortest.getObject(id).toString()); //TODO was objectfortest.namespace.shortIsDefault before
+        assertEquals("\"www.bbc.com\"^^<xsd:string>", objectfortest.getObject(id).toString());
         assertFalse(objectfortest.putObject("?") == 0);
-        assertEquals("\"?\"^^<xsd:string>", objectfortest.getObject(7).toString()); //TODO was objectfortest.namespace.shortIsDefault before
+        assertEquals("\"?\"^^<xsd:string>", objectfortest.getObject(7).toString());
         assertEquals("?-100", objectfortest.getObject(-100), new Variable("?-100"));
     }
 
@@ -120,8 +120,8 @@ public class TupleStoreTest {
     public void testisValidTuple() throws FileNotFoundException, WrongFormatException, IOException {
         TupleStore objectfortest = new TupleStore(Config.getDefaultConfig());
         ArrayList<String> stringTuple = new ArrayList<String>();
-        stringTuple.add("hello");
-        stringTuple.add("world");// test for case stringTuple.size < maxNoOfArgs
+        stringTuple.add("\"hello\"");
+        stringTuple.add("\"world\"");// test for case stringTuple.size < maxNoOfArgs
         assertFalse(objectfortest.isValidTuple(stringTuple, 2));
         ArrayList<String> stringTuple2 = new ArrayList<String>();
         stringTuple2.add("hello");
@@ -140,9 +140,8 @@ public class TupleStoreTest {
         TupleStore objecToTestRdfFalse = new TupleStore(false, false, true, 2, 5,0,1,2, 4, 2, namespace,
                 getTestResource("default.nt"));
         assertTrue(objecToTestRdfFalse.isValidTuple(stringTuple, 3));
-        // TODO test for case TupleStore.isAtom(stringTuple.get(0)
-
-        // TODO test for case !TupleStore.isUri(stringTuple.get(1)))
+        assertTrue(objectfortest.isAtom(stringTuple.get(0)));
+        assertTrue(objectfortest.isAtom(stringTuple.get(1)));
     }
 
     @Test
@@ -157,11 +156,6 @@ public class TupleStoreTest {
         assertFalse(TupleStore.isUri("hgghdgh"));
     }
 
-//    @Test
-//    public void testisUri2() throws IOException, WrongFormatException {
-//        TupleStore objecttotest = new TupleStore(Config.getDefaultConfig());
-//        assertFalse(objecttotest.isUri(0));
-//    }
 
     @Test
     public void testisBlankNode1() {
@@ -285,26 +279,6 @@ public class TupleStoreTest {
         assertTrue(objectfortest.addTuple(tuple));
     }
 
-  /* TODO: THIS IS SOME KIND OF ANTI-TEST: THIS DOES NOT WORK. SEE
-   * Hfc.myNormalizeNamespaces
-  @Test
-  public void testaddTuple3() throws WrongFormatException {
-    TupleStore objectfortest = new TupleStore(1, 6);
-    objectfortest.namespace.shortIsDefault = true;
-    String[] in = {
-        "<http://www.dfki.de/lt/onto/pal/rifca.owl>",
-        "<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>",
-        "<http://www.w3.org/2002/07/owl#Ontology>"
-    };
-    String[] exp = {
-        "<http://www.dfki.de/lt/onto/pal/rifca.owl>",
-        "<rdfs:type>",
-        "<owl:Ontology>"
-    };
-    int[] tuple = objectfortest.addTuple(Arrays.asList(in), 0);
-    assertArrayEquals(tuple, objectfortest.addTuple(Arrays.asList(exp), 0));
-  }
-  */
 
     @Test
     public void testgetTuples1()
@@ -327,7 +301,6 @@ public class TupleStoreTest {
         objectfortest.namespace.putForm("foo", "http://www.dfki.de/lt/onto/foo.owl#", false);
         // test for case if (result == null)
         assertTrue(objectfortest.getTuples(2, "hello").isEmpty());
-        // TODO test for case if (result!=null)
         String[] tuple = {"<foo:bar>", "<foo:hasValue>", "hello"};
         objectfortest.addTuple(tuple);
         assertEquals(1, objectfortest.getTuples(2, "hello").size());
@@ -413,7 +386,6 @@ public class TupleStoreTest {
         TupleStore objectfortest = new TupleStore(Config.getDefaultConfig());
         int[] tuple = new int[1];
         tuple[0] = 1;
-        // TODO: is nondeterministic, why?
         String s = objectfortest.toString(tuple);
         assertTrue(s.equals("<rdfs:subClassOf> .")
                 || s.equals("<http://www.w3.org/2000/01/rdf-schema#subClassOf> ."));
@@ -475,10 +447,11 @@ public class TupleStoreTest {
         NamespaceManager namespace = NamespaceManager.getInstance();
         TupleStore objectfortest = new TupleStore(false, true, true, 2, 5,0,1,2, 4, 2, namespace,
                 getTestResource("default.nt"));
-        objectfortest.copyTupleStore();
-        // TODO check these assertions
+        TupleStore copy = objectfortest.copyTupleStore();
+        assertTrue(objectfortest.allTuples.size() == copy.allTuples.size());
+        assertTrue(objectfortest.indexStore == copy.indexStore);
         assertFalse(objectfortest == objectfortest.copyTupleStore());
-        assertTrue(objectfortest != objectfortest.copyTupleStore());
+
 
     }
 

@@ -43,7 +43,6 @@ public class AddSameAs {
     //boolean save = NamespaceManager.shortIsDefault;
     //NamespaceManager.shortIsDefault = false;
     Hfc fc = getFwChainer(true);
-    // TODO: THIS IS WRONG: THE NUMBERS MUST BE EQUAL
     assertEquals(511049, fc._tupleStore.getAllTuples().size());
     fc.shutdownNoExit();
 

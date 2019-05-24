@@ -29,7 +29,6 @@ public class MegaclusterTest {
 
   @Test
   public void test() throws QueryParseException  {
-    // TODO: FIX EXPECTED DATA
 
     String[][] expected = {
         { "<test:dfki>", "<test:hasName>", "\"DFKI\"^^<xsd:string>" },
@@ -61,7 +60,6 @@ public class MegaclusterTest {
     };
     Query q = new Query(fc._tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    //TestLGetLatest.printExpected(bt, fc._tupleStore); // TODO: THIS SHOULD BE REMOVED WHEN FINISHED
     checkResult(expected, bt, bt.getVars());
   }
 
