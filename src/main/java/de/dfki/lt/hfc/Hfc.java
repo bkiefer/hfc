@@ -1,8 +1,11 @@
 package de.dfki.lt.hfc;
 
+import de.dfki.lt.hfc.restAPI.RestController;
 import de.dfki.lt.hfc.types.XsdLong;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,6 +15,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.*;
 
+@SpringBootApplication
 public class Hfc {
 
   /**
@@ -28,6 +32,7 @@ public class Hfc {
    * A basic LOGGER.
    */
   private static final Logger logger = LoggerFactory.getLogger(Hfc.class);
+  private RestController _restController;
 
   /**
    * I'm making _all_ the potentially relevant object directly accessable
@@ -62,6 +67,7 @@ public class Hfc {
     try {
       this.config = Config.getDefaultConfig();
       _tupleStore = new TupleStore(config);
+      _restController = new RestController(this);
       _ruleStore = new RuleStore(config,_tupleStore);
       _forwardChainer = new ForwardChainer(_tupleStore, _ruleStore, config);
       init();
@@ -76,6 +82,7 @@ public class Hfc {
   public Hfc(Config config) throws IOException, WrongFormatException {
     this.config = config;
     _tupleStore = new TupleStore(config);
+    _restController = new RestController(this);
     _ruleStore = new RuleStore(config,_tupleStore);
     _forwardChainer = new ForwardChainer(_tupleStore, _ruleStore, config);
     init();
@@ -90,6 +97,7 @@ public class Hfc {
   @Deprecated
   public Hfc(Config config, TupleStore ts, RuleStore rs){
     this.config = config;
+    _restController = new RestController(this);
     _tupleStore = ts;
     _ruleStore = rs;
     _forwardChainer = new ForwardChainer(_tupleStore, _ruleStore, config);
@@ -98,6 +106,7 @@ public class Hfc {
 
   private Hfc(Config config, TupleStore tupleStoreCopy, RuleStore ruleStoreCopy, ForwardChainer fcCopy) {
     this.config = config;
+    _restController = new RestController(this);
     this._tupleStore = tupleStoreCopy;
     this._ruleStore = ruleStoreCopy;
     this._forwardChainer = fcCopy;
@@ -460,6 +469,10 @@ public class Hfc {
     config.setVerbose(b);
     _tupleStore.verbose = b;
     _ruleStore.verbose = b;
+  }
+
+  public static void main(String[] args) {
+    SpringApplication.run(Hfc.class, args);
   }
 
 }
