@@ -475,4 +475,12 @@ public class Hfc {
     SpringApplication.run(Hfc.class, args);
   }
 
+  public String status() {
+    StringBuilder strbld = new StringBuilder(INFO+"\n");
+    strbld.append("Tuples: " + _tupleStore.noOfTuples);
+    strbld.append("Atoms: " + _tupleStore.noOfAtoms);
+    strbld.append("Rules: " + _ruleStore.allRules.size());
+    strbld.append("Namespaces " + _tupleStore.namespace.longToNs.size());
+    return strbld.toString();
+  }
 }

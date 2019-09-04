@@ -39,5 +39,10 @@ public class RestController {
       hfc.shutdownNoExit();
   }
 
+  @RequestMapping("/status")
+  public String status(){
+    return hfc.status();
+  }
+
 
 }
