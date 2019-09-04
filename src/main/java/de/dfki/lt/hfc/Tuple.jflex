@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import de.dfki.lt.hfc.types.XsdString;
+import de.dfki.lt.hfc.types.Uri;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -54,7 +55,7 @@ import java.util.regex.Pattern;
      if (string.length() != 0){
         // complete type in order to recognize duplicates (perhaps output a message?)
         match = "\"" + string.toString() + "\"";
-        if (ts.namespace.shortIsDefault)
+        if (ts.namespace.isShortIsDefault())
             match += "^^" + XsdString.SHORT_NAME;
         else
             match += "^^" + XsdString.LONG_NAME;
@@ -98,10 +99,10 @@ import java.util.regex.Pattern;
             logger.info("  overall " + ts.allTuples.size() + " unique tuples");
                  // some further statistics
             int noOfURIs = 0, noOfBlanks = 0, noOfAtoms = 0;
-            for (int i = 0; i < ts.idToObject.size(); i++) {
-                if (ts.idToObject.get(i).startsWith("<"))
+            for (int i = 0; i < ts.idToJavaObject.size(); i++) {
+                if (ts.idToJavaObject.get(i) instanceof Uri) //.startsWith("<"))
                          ++noOfURIs;
-                else if (ts.idToObject.get(i).startsWith("_"))
+                else if (ts.idToJavaObject.get(i) instanceof Uri) //.startsWith("_"))
                          ++noOfBlanks;
                 else
                          ++noOfAtoms;
@@ -147,14 +148,14 @@ OctDigit          = [0-7]
 <YYINITIAL> {
 
 {URI} {match = yytext();
-        t.add(ts.namespace.normalizeNamespace(match));
+        t.add(match);
       }
 
-\^\^<xsd:{NONWHITESPACE}+> {match = "\""+handleUnicode(string.toString())+"\"" + ts.namespace.normalizeNamespace(yytext());
+\^\^<xsd:{NONWHITESPACE}+> {match = "\""+handleUnicode(string.toString())+"\"" + yytext();
                            t.add(match);
                            string.setLength(0);}
 
-\^\^<{NONWHITESPACE}+#{NONWHITESPACE}+> {match = "\""+handleUnicode(string.toString())+"\"" + ts.namespace.normalizeNamespace(yytext());
+\^\^<{NONWHITESPACE}+#{NONWHITESPACE}+> {match = "\""+handleUnicode(string.toString())+"\"" + yytext();
                             t.add(match);
                             string.setLength(0);}
 
