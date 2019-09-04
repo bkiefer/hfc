@@ -1,11 +1,16 @@
 package de.dfki.lt.hfc.restAPI;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 import de.dfki.lt.hfc.BindingTable;
 import de.dfki.lt.hfc.Hfc;
 import de.dfki.lt.hfc.QueryParseException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
@@ -20,10 +25,10 @@ public class RestController {
     this.hfc = hfc;
   }
 
-  @RequestMapping("/query")
-  public BindingTable query(@RequestParam(value="query") String queryString) {
+  @RequestMapping(value = "/query", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<BindingTable> query(@RequestParam(value="query") String queryString) {
     try {
-      return hfc.executeQuery(queryString);
+      return new ResponseEntity<BindingTable>(hfc.executeQuery(queryString), HttpStatus.OK);
     } catch (QueryParseException e) {
       e.printStackTrace();
       throw new ResponseStatusException(
@@ -31,7 +36,7 @@ public class RestController {
     }
   }
 
-  @RequestMapping("/shutdown")
+  @RequestMapping(value = "/shutdown", produces = MediaType.APPLICATION_JSON_VALUE)
   public void shoutdown(@RequestParam(value="exit", defaultValue = "true") boolean exit){
     if (exit)
       hfc.shutdown();
@@ -39,10 +44,14 @@ public class RestController {
       hfc.shutdownNoExit();
   }
 
-  @RequestMapping("/status")
-  public String status(){
-    return hfc.status();
+  @RequestMapping(value = "/status", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> status(){
+    return new ResponseEntity<>(hfc.status(), HttpStatus.OK);
   }
 
+  @PostMapping(value = "/table", consumes = MediaType.APPLICATION_JSON_VALUE,  produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<Integer> addTuples(@RequestBody List<List<String>> tuples){
+    return new ResponseEntity<Integer>(hfc.addTuples(tuples, null,null), HttpStatus.OK);
+  }
 
 }
