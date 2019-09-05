@@ -18,7 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 @org.springframework.web.bind.annotation.RestController
 public class RestController {
 
-  private final Hfc hfc;
+  protected final Hfc hfc;
   private final AtomicLong counter = new AtomicLong();
 
   public RestController(Hfc hfc) {
