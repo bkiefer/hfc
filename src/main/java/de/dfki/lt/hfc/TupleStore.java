@@ -349,7 +349,7 @@ public final class TupleStore {
    * a simple STATIC method, translating an int array into something readable (N-tuple syntax)
    */
   public static void printTuple(int[] tuple, ArrayList<String> mapping) {
-    logger.info(toString(tuple, mapping));
+    logger.debug(toString(tuple, mapping));
   }
 
   /**
@@ -762,7 +762,7 @@ public final class TupleStore {
       throw new WrongFormatException("  " + lineNo + message);
     }
     if (this.verbose)
-      logger.info("  " + lineNo + message);
+      logger.debug("  " + lineNo + message);
     return false;
   }
 
@@ -775,7 +775,7 @@ public final class TupleStore {
       throw new RuntimeException("FATAL ERROR");
     }
     if (this.verbose)
-      logger.info("  " + message);
+      logger.debug("  " + message);
     return false;
   }
 
@@ -1189,7 +1189,7 @@ public final class TupleStore {
    */
   public void readTuples(String filename) throws FileNotFoundException, IOException, WrongFormatException {
     if (this.verbose)
-      logger.info("\n  reading tuples from " + filename + " ...");
+      logger.debug("\n  reading tuples from " + filename + " ...");
     readTuples(Files.newBufferedReader(new File(filename).toPath(),
             Charset.forName(this.inputCharacterEncoding)));
   }
@@ -1204,7 +1204,7 @@ public final class TupleStore {
    */
   public void readTuples(String filename, String front, String... backs)
           throws FileNotFoundException, IOException, WrongFormatException {
-    logger.info("\n  reading tuples from " + filename + " ...");
+    logger.debug("\n  reading tuples from " + filename + " ...");
     readTuples(Files.newBufferedReader(new File(filename).toPath(),
             Charset.forName(this.inputCharacterEncoding)), front, backs);
   }
@@ -1359,7 +1359,7 @@ public final class TupleStore {
    */
   public void writeTuples(Collection<int[]> collection, String filename) {
     if (this.verbose)
-      logger.info("  writing tuples to " + filename + " ...");
+      logger.debug("  writing tuples to " + filename + " ...");
     try {
       PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(filename),
               this.outputCharacterEncoding));
@@ -1379,7 +1379,7 @@ public final class TupleStore {
    */
   public void writeExpandedTuples(String filename) {
     if (this.verbose)
-      logger.info("  writing tuples to " + filename + " ...");
+      logger.debug("  writing tuples to " + filename + " ...");
     try {
       PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(filename),
               this.outputCharacterEncoding));
@@ -1401,7 +1401,7 @@ public final class TupleStore {
    */
   public void writeTupleStore(String filename) {
     if (this.verbose)
-      logger.info("  writing tuple store to " + filename + " ...");
+      logger.debug("  writing tuple store to " + filename + " ...");
     try {
       PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(filename),
               this.outputCharacterEncoding));
