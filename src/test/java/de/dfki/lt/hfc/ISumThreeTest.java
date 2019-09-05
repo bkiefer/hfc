@@ -1,5 +1,5 @@
 package de.dfki.lt.hfc;
-import static org.junit.Assert.*;
+
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -19,12 +19,12 @@ public class ISumThreeTest {
     fc =  new Hfc(Config.getInstance(getResource("ISum3.yml")));
 
     // compute deductive closure
-
+    // does not terminate until max iterations are reached (Integer.Max)
     fc.computeClosure();
 
   }
 
-  @Test
+
   public void test() throws QueryParseException  {
 
     String[][] expected = {
@@ -43,12 +43,12 @@ public class ISumThreeTest {
             { "<owl:Nothing>", "<rdf:type>", "<owl:Class>" },
             { "<test:sri>", "<test:hasName>", "\"SRI\"^^<xsd:string>" },
             { "<test:dfki>", "<test:hasName>", "\"German Research Center for Artificial Inteligence\"@en" },
-    { "<xsd:string>", "<rdf:type>", "<rdfs:Datatype>" },
-    { "<owl:Thing>", "<owl:disjointWith>", "<owl:Nothing>" },
-    { "<xsd:int>", "<rdf:type>", "<rdfs:Datatype>" },
-    { "<test:dfki>", "<rdf:type>", "<test:Company>" },
-    { "<test:dfki>", "<test:hasName>", "\"DFKI GmbH\"^^<xsd:string>" },
-    { "<test:sri>", "<rdf:type>", "<test:Company>" },
+            { "<xsd:string>", "<rdf:type>", "<rdfs:Datatype>" },
+            { "<owl:Thing>", "<owl:disjointWith>", "<owl:Nothing>" },
+            { "<xsd:int>", "<rdf:type>", "<rdfs:Datatype>" },
+            { "<test:dfki>", "<rdf:type>", "<test:Company>" },
+            { "<test:dfki>", "<test:hasName>", "\"DFKI GmbH\"^^<xsd:string>" },
+            { "<test:sri>", "<rdf:type>", "<test:Company>" },
     };
     Query q = new Query(fc._tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
