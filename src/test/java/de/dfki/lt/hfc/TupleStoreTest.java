@@ -471,33 +471,6 @@ public class TupleStoreTest {
       }
       assertEquals(1, tuple.size());
       assertEquals("\"$rangeRestrictionViolated\"^^<xsd:string>", tuple.get(0));
-      System.out.println(tuple.get(0));
     }
 
-
-//    @Test
-//    public void printSystemTime(){
-//        Long millis = System.currentTimeMillis();
-//        System.out.println(millis);
-//        LocalDateTime date =
-//                LocalDateTime.ofInstant(Instant.ofEpochMilli(millis), ZoneId.systemDefault());
-//        System.out.println(new XsdDateTime(date.getYear(), date.getMonthValue(), date.getDayOfMonth(),date.getHour(), date.getMinute(), date.getSecond()).toString(true));
-//        date = LocalDateTime.ofInstant(Instant.ofEpochMilli(millis + 7776000000l), ZoneId.systemDefault());
-//        System.out.println(new XsdDateTime(date.getYear(), date.getMonthValue(), date.getDayOfMonth(),date.getHour(), date.getMinute(), date.getSecond()).toString(true));
-//        date = LocalDateTime.ofInstant(Instant.ofEpochMilli(1530703698l), ZoneId.systemDefault());
-//        System.out.println(new XsdDateTime(date.getYear(), date.getMonthValue(), date.getDayOfMonth(),date.getHour(), date.getMinute(), date.getSecond()).toString(true));
-//        date = LocalDateTime.ofInstant(Instant.ofEpochMilli(1530703698l * 1000l), ZoneId.systemDefault());
-//        System.out.println(1530703698l * 1000l);
-//        System.out.println(new XsdDateTime(date.getYear(), date.getMonthValue(), date.getDayOfMonth(),date.getHour(), date.getMinute(), date.getSecond()).toString(true));
-//
-//        date = LocalDateTime.ofInstant(Instant.ofEpochMilli(1523105628l * 1000l), ZoneId.systemDefault());
-//        System.out.println(1523105628l * 1000l);
-//        System.out.println(new XsdDateTime(date.getYear(), date.getMonthValue(), date.getDayOfMonth(),date.getHour(), date.getMinute(), date.getSecond()).toString(true));
-//
-//
-//
-//        //LocalDateTime datetest = LocalDateTime.ofInstant(Instant.ofEpochMilli(1530703698), ZoneId.systemDefault());
-//        //System.out.println(datetest);
-//
-//    }
 }
