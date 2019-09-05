@@ -1315,6 +1315,7 @@ public final class TupleStore {
         break;
       else {
         bareAtom = false;
+        sb.append("^^").append(namespace.getXSDNamespace(st));
         if (!(token.equals("^^") || token.equals("<") || token.equals(">")))
           // normalize namespace
         sb.append(token);
@@ -1339,6 +1340,7 @@ public final class TupleStore {
     tuple.add(buf.toString());
     return token;
   }
+
 
   /**
    * a simple version that writes all tuple from the tuple store to a file using

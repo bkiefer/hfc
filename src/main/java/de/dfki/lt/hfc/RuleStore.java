@@ -204,16 +204,6 @@ public final class RuleStore {
     this.tupleStore = tupleStore;
   }
 
-//	/**
-//	 * initializes the rule store with the information stored in file ruleFile
-//	 * @throws IOException
-//	 */
-//	public RuleStore(TupleStore tupleStore, String ruleFile)
-//	    throws IOException {
-//		this(tupleStore);
-//		readRules(ruleFile);
-//	}
-
 
   public RuleStore(Config config, TupleStore tupleStore) throws IOException {
     this(tupleStore);
@@ -1251,7 +1241,6 @@ public final class RuleStore {
    * @throws IOException
    */
   protected ArrayList<Rule> readRules(BufferedReader br) throws IOException {
-    int minPos, maxPos;
     String line, token;
     StringTokenizer st;
     int noOfRules = 0;

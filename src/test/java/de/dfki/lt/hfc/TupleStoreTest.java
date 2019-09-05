@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.logging.Logger;
 
 import de.dfki.lt.hfc.types.Uri;
 import de.dfki.lt.hfc.types.Variable;
@@ -454,6 +456,24 @@ public class TupleStoreTest {
 
 
     }
+
+    @Test
+    public void parseAtom() throws IOException, WrongFormatException {
+      String atom = "\"$rangeRestrictionViolated\"^^<xsd:string>";
+      ArrayList<String> tuple = new ArrayList<String>();
+      TupleStore objectForTest = new TupleStore(Config.getDefaultConfig());
+      StringTokenizer tokenizer = new StringTokenizer(atom, " ?<>\"\\", true);
+      while (tokenizer.hasMoreTokens()) {
+        String token = tokenizer.nextToken();
+          if(token.equals("\"")){
+              objectForTest.parseAtom(tokenizer, tuple);
+          }
+      }
+      assertEquals(1, tuple.size());
+      assertEquals("\"$rangeRestrictionViolated\"^^<xsd:string>", tuple.get(0));
+      System.out.println(tuple.get(0));
+    }
+
 
 //    @Test
 //    public void printSystemTime(){

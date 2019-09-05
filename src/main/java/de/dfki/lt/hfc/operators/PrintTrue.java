@@ -1,6 +1,8 @@
 package de.dfki.lt.hfc.operators;
 
 import de.dfki.lt.hfc.FunctionalOperator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * prints the arguments given to apply() to standard out
@@ -13,12 +15,17 @@ import de.dfki.lt.hfc.FunctionalOperator;
 public final class PrintTrue extends FunctionalOperator {
 
   /**
+   * A basic LOGGER.
+   */
+  private static final Logger logger = LoggerFactory.getLogger(PrintTrue.class);
+
+  /**
    * @return FunctionalOperator.TRUE
    */
   public int apply(int[] args) {
     for (int i = 0; i < args.length; i++)
-      System.out.print(getExternalRepresentation(args[i]) + " ");
-    System.out.println();
+      logger.info(getExternalRepresentation(args[i]) + " ");
+    logger.info("\n");
     return FunctionalOperator.TRUE;
   }
 

@@ -96,7 +96,7 @@ public class Config {
    * @return an instance of Config containing the default settings
    */
   public static Config getDefaultConfig() throws IOException {
-    String configPath = path + "DefaultConfig.yml";
+      String configPath = path + "DefaultConfig.yml";
     return getInstance(configPath);
   }
 

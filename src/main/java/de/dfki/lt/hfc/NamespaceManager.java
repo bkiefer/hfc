@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.StringTokenizer;
 
 /**
  * NamespaceManager implements a bidirectional mapping between strings, given by
@@ -262,5 +263,25 @@ public final class NamespaceManager {
       return longToNs.get(namespaceString);
     else // we encountered an unknown namespace
       throw new IllegalArgumentException("Unknown NamespaceManager " + namespaceString);
+  }
+
+  public String getXSDNamespace(StringTokenizer st) {
+    StringBuilder stb = new StringBuilder();
+    String token;
+    while(st.hasMoreTokens()){
+      token = st.nextToken();
+      if (!token.equals(">")){
+        stb.append(token);
+      } else {
+        stb.append(token);
+        break;
+      }
+    }
+    String namespace = stb.toString();
+    if (namespace.endsWith(">")){
+      return namespace;
+    } else {
+      throw new IllegalArgumentException("Illegal or unknown namespace: " + namespace);
+    }
   }
 }
