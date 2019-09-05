@@ -26,9 +26,6 @@ public class ConcatenateFourTest {
 
   @Test
   public void test() throws QueryParseException  {
-    // TODO: FIX EXPECTED DATA
-    System.out.println(fc._tupleStore.idToJavaObject);
-    System.out.println(fc._tupleStore.objectToId);
     String[][] expected = {
         { "<test:dfki>", "<test:hasName>", "\"DFKI\"^^<xsd:string>" },
         { "<test:dfki>", "<test:hasDoubleName>", "\"German Research Center for Artificial InteligenceGerman Research Center for Artificial Inteligence\"^^<xsd:string>" },

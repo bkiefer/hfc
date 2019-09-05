@@ -66,7 +66,6 @@ public class NoSubClassOfTest {
     };
     Query q = new Query(fc._tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    printExpected(bt,fc._tupleStore);
     checkResult(expected, bt, bt.getVars());
   }
 

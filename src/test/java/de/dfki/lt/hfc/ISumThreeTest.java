@@ -3,7 +3,6 @@ package de.dfki.lt.hfc;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Test;
 
 import static de.dfki.lt.hfc.TestingUtils.*;
 
