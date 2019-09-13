@@ -71,8 +71,8 @@ public class BindingTable {
    * assigns the null value to all four public fields
    */
   public BindingTable() {
-    this.table = null;
-    this.nameToPos = null;
+    this.table = new THashSet<int[]>();
+    this.nameToPos = new TreeMap<Integer, Integer>();
     this.nameToExternalName = null;
     this.tupleStore = null;
   }
@@ -83,7 +83,7 @@ public class BindingTable {
    */
   public BindingTable(Set<int[]> table) {
     this.table = table;
-    this.nameToPos = null;
+    this.nameToPos = new TreeMap<Integer, Integer>();
     this.nameToExternalName = null;
     this.tupleStore = null;
   }
@@ -97,7 +97,7 @@ public class BindingTable {
   public BindingTable(TupleStore tupleStore) {
 
     this.table = new THashSet<int[]>();
-    this.nameToPos = null;
+    this.nameToPos = new TreeMap<Integer, Integer>();
     this.nameToExternalName = null;
     this.tupleStore = tupleStore;
   }
@@ -240,6 +240,7 @@ public class BindingTable {
   public String toString() {
     int maxLength = -1;
     int size = this.nameToPos.keySet().size();
+
     Integer[] nameArray = new Integer[size];
     for (Integer name : this.nameToPos.keySet())
       nameArray[--size] = name;
@@ -368,22 +369,22 @@ public class BindingTable {
     this.isExpanded = true;
     // compute maximal tuple length to guarantee termination
     int max = 0;
-    for (int[] tuple : this.table)
-      if (tuple.length > max)
-        max = tuple.length;
-    Set<int[]> newTuples = new THashSet<int[]>();
-    final TIntObjectHashMap<TIntArrayList> proxyToUris = this.tupleStore.proxyToUris;
-    // move over each tuple position in every tuple
-    for (int pos = 0; pos < max; pos++) {
-      // need this sequence of for loops, since I'm not allowed to enlarge the set during iteration
-      for (int[] tuple : this.table) {
-        // tuples might be of different length
-        if (pos < tuple.length)
-          if (proxyToUris.containsKey(tuple[pos]))
-            expandTuple(tuple, proxyToUris, newTuples, pos);
-      }
-      this.table.addAll(newTuples);
-      newTuples.clear();
+      for (int[] tuple : this.table)
+        if (tuple.length > max)
+          max = tuple.length;
+      Set<int[]> newTuples = new THashSet<int[]>();
+      final TIntObjectHashMap<TIntArrayList> proxyToUris = this.tupleStore.proxyToUris;
+      // move over each tuple position in every tuple
+      for (int pos = 0; pos < max; pos++) {
+        // need this sequence of for loops, since I'm not allowed to enlarge the set during iteration
+        for (int[] tuple : this.table) {
+          // tuples might be of different length
+          if (pos < tuple.length)
+            if (proxyToUris.containsKey(tuple[pos]))
+              expandTuple(tuple, proxyToUris, newTuples, pos);
+        }
+        this.table.addAll(newTuples);
+        newTuples.clear();
     }
   }
 

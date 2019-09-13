@@ -37,7 +37,7 @@ public class Config {
    */
   private static final Logger logger = LoggerFactory.getLogger(Config.class);
 
-  private static String path = "./src/resources/";
+  private static String path = "./src/main/resources/";
 
   private final Map<String, Object> configs;
 

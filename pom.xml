@@ -7,7 +7,7 @@
 
   <groupId>de.dfki.lt.hfc</groupId>
   <artifactId>hfc</artifactId>
-  <version>1.2.5_Rest-SNAPSHOT</version>
+  <version>1.2.6-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <inceptionYear>2015</inceptionYear>
@@ -108,23 +108,7 @@
 
   <dependencies>
 
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-      <version>2.1.4.RELEASE</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.1.4.RELEASE</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.jayway.jsonpath</groupId>
-      <artifactId>json-path</artifactId>
-      <version>2.4.0</version>
-      <scope>test</scope>
-    </dependency>
+
 
     <dependency>
       <groupId>com.antlr.grammarsv4</groupId>
@@ -183,27 +167,9 @@
     </dependency>
 
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.12</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>1.7.19</version>
-      <exclusions>
-        <exclusion>
-          <artifactId>slf4j-api</artifactId>
-          <groupId>org.slf4j</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.17</version>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
+      <version>2.9.0</version>
     </dependency>
 
   </dependencies>

@@ -33,7 +33,7 @@ public class PrintSizeTest {
   @BeforeClass
   public static void init() throws Exception {
 
-    hfc =  new Hfc(Config.getInstance(getResource("PrintSize.yml")));
+    hfc =  new Hfc(getResource("PrintSize.yml"));
 
     // compute deductive closure
 

@@ -1,11 +1,8 @@
 package de.dfki.lt.hfc;
 
-import de.dfki.lt.hfc.restAPI.RestController;
 import de.dfki.lt.hfc.types.XsdLong;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,7 +12,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.*;
 
-@SpringBootApplication
+
 public class Hfc {
 
   /**
@@ -23,6 +20,7 @@ public class Hfc {
    * HFC version number string
    */
   public static final String VERSION = "6.3.0";
+
   /**
    * HFC info string
    */
@@ -32,7 +30,7 @@ public class Hfc {
    * A basic LOGGER.
    */
   private static final Logger logger = LoggerFactory.getLogger(Hfc.class);
-  private RestController _restController;
+
 
   /**
    * I'm making _all_ the potentially relevant object directly accessable
@@ -43,6 +41,7 @@ public class Hfc {
    * transaction time time stamp used by Hfc.readTuples(BufferedReader tupleReader)
    */
   public long timeStamp = 0L;
+
   /**
    * fields we would like to customize in NamespaceManager, TupleStore, RuleStore, and ForwardChainer
    * and which can be altered by calling customizeHfc() below;
@@ -55,7 +54,9 @@ public class Hfc {
    * the DEFAULT settings basically address the RDF triple case without equivalence class reduction
    */
   protected Config config;
+
   private  RuleStore _ruleStore = null;
+
   private ForwardChainer _forwardChainer = null;
 
 
@@ -67,7 +68,6 @@ public class Hfc {
     try {
       this.config = Config.getDefaultConfig();
       _tupleStore = new TupleStore(config);
-      _restController = new RestController(this);
       _ruleStore = new RuleStore(config,_tupleStore);
       _forwardChainer = new ForwardChainer(_tupleStore, _ruleStore, config);
       init();
@@ -79,10 +79,18 @@ public class Hfc {
     }
   }
 
+
+  public Hfc(String configPath) throws IOException, WrongFormatException {
+    this.config = Config.getInstance(configPath);
+    _tupleStore = new TupleStore(config);
+    _ruleStore = new RuleStore(config,_tupleStore);
+    _forwardChainer = new ForwardChainer(_tupleStore, _ruleStore, config);
+    init();
+  }
+
   public Hfc(Config config) throws IOException, WrongFormatException {
     this.config = config;
     _tupleStore = new TupleStore(config);
-    _restController = new RestController(this);
     _ruleStore = new RuleStore(config,_tupleStore);
     _forwardChainer = new ForwardChainer(_tupleStore, _ruleStore, config);
     init();
@@ -97,7 +105,6 @@ public class Hfc {
   @Deprecated
   public Hfc(Config config, TupleStore ts, RuleStore rs){
     this.config = config;
-    _restController = new RestController(this);
     _tupleStore = ts;
     _ruleStore = rs;
     _forwardChainer = new ForwardChainer(_tupleStore, _ruleStore, config);
@@ -106,7 +113,6 @@ public class Hfc {
 
   private Hfc(Config config, TupleStore tupleStoreCopy, RuleStore ruleStoreCopy, ForwardChainer fcCopy) {
     this.config = config;
-    _restController = new RestController(this);
     this._tupleStore = tupleStoreCopy;
     this._ruleStore = ruleStoreCopy;
     this._forwardChainer = fcCopy;
@@ -157,12 +163,6 @@ public class Hfc {
     _tupleStore.readTuples(tupleReader);
   }
 
-  public void readTuples(BufferedReader tupleReader, HashMap<String, String> namespaceMappings)
-          throws WrongFormatException, IOException {
-    for (Map.Entry<String, String> e : namespaceMappings.entrySet())
-      config.addNamespace(e.getKey(), e.getValue());
-    _tupleStore.readTuples(tupleReader);
-  }
 
   public void readTuples(File tuples)
           throws WrongFormatException, IOException {
@@ -202,6 +202,8 @@ public class Hfc {
     return id;
   }
 
+
+
   /**
    * TODO keep this?
    * Normalize namespaces, and get ids directly to put in the tuples without
@@ -215,7 +217,9 @@ public class Hfc {
    *              This is done so i can add the <it>now<it/> time stamp transparently
    *              TODO: refactor, and make this part of HFC core
    */
-  public int addTuples(List<List<String>> rows, String front, String... backs) {
+  /**
+
+   public int addTuples(List<List<String>> rows, String front, String... backs) {
     // normalize namespaces for front and backs
     int frontId = -1;    // Java wants an initial value
     if (front != null)
@@ -253,6 +257,17 @@ public class Hfc {
       }
     }
     return noOfTuples;
+  }
+   */
+
+  public int addTuples(List<List<String>> tuples){
+    int noOfTuples = 0;
+    for(List<String> tuple : tuples){
+      _tupleStore.addTuple(tuple.toArray(new String[tuple.size()]));
+      ++noOfTuples;
+    }
+    return noOfTuples;
+
   }
 
   /**
@@ -471,16 +486,25 @@ public class Hfc {
     _ruleStore.verbose = b;
   }
 
-  public static void main(String[] args) {
-    SpringApplication.run(Hfc.class, args);
+  public Config getConfig(){
+    return config;
   }
 
-  public String status() {
-    StringBuilder strbld = new StringBuilder(INFO+"\n");
-    strbld.append("Tuples: " + _tupleStore.noOfTuples);
-    strbld.append("Atoms: " + _tupleStore.noOfAtoms);
-    strbld.append("Rules: " + _ruleStore.allRules.size());
-    strbld.append("Namespaces " + _tupleStore.namespace.longToNs.size());
-    return strbld.toString();
+  public HfcStatus status() {
+    return new HfcStatus();
+  }
+
+  protected class HfcStatus {
+
+    private final String Version = INFO;
+
+    private int tuples = _tupleStore.noOfTuples;
+
+    private int atoms =  _tupleStore.noOfAtoms;
+
+    private int rules = _ruleStore.allRules.size();
+
+    private int namespaces = _tupleStore.namespace.longToNs.size();
+
   }
 }

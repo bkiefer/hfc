@@ -22,7 +22,7 @@ public class QueryTest_LookupPointInTime {
     @BeforeClass
     public static void init() throws Exception {
 
-        hfc =  new Hfc(Config.getInstance(getResource("LookupPointInTime.yml")));
+        hfc =  new Hfc(getResource("LookupPointInTime.yml"));
 
         // compute deductive closure
         // TODO move this into extra tests -> fcInterval.computeClosure();

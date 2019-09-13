@@ -31,6 +31,7 @@ public class Uri extends AnyType {
     this.value = value;
   }
 
+
   /**
    * NOTE: shortIsDefault can be ignored at the moment
    */

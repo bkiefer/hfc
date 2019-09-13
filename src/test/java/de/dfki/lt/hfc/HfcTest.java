@@ -21,8 +21,8 @@ public class HfcTest {
    *Test default Config;
    *
    */
-   public void testHfc() throws IOException {
-     Hfc fc = new Hfc();
+   public void testHfc() throws IOException, WrongFormatException {
+     Hfc fc = new Hfc(Config.getDefaultConfig());
      assertNotNull(fc);
   }
 
@@ -32,6 +32,15 @@ public class HfcTest {
      assertNotNull(fc);
   }
 
+  @Test
+  public void testExecuteQuery() throws QueryParseException {
+     Hfc fc = new Hfc();
+     assertNotNull(fc);
+     BindingTable bt = fc.executeQuery("Select ?x ?y Where ?x <owl:subClassOf> ?y");
+     assertNotNull(bt);
+     bt.expandBindingTable();
+     System.out.println(bt.toString());
+  }
   /**
   public void testHfc2() throws IOException, WrongFormatException {
      Config config = Config.getInstance(getTestResource("test.yml"));
