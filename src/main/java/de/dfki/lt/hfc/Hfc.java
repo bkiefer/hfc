@@ -144,14 +144,21 @@ public class Hfc {
    * This method cannot be used to change namespaces, tuplefiles or rulefiles.
    * Please use the dedicated methods to do so.
    */
-  public void customizeHfc(Map<String, Object> settings) {
+  private void customizeHfc(Map<String, Object> settings) {
     logger.info("HFC settings: " + settings);
     // make the settings available via protected fields in this class;
     // alphabetical order:
     this.config.updateConfig(settings);
   }
 
-
+  public void updateConfig(String path){
+   try {
+    customizeHfc(Config.getMapping(path));
+   } catch (FileNotFoundException e) {
+    e.printStackTrace();
+    System.err.println("Config File " + path + " not found. Will be ignored");
+   }
+  }
 
 
   public void addNamespace(String shortForm, String longForm) {
@@ -269,6 +276,7 @@ public class Hfc {
     return noOfTuples;
 
   }
+
 
   /**
    * read in tuples stored in a file with name filename;

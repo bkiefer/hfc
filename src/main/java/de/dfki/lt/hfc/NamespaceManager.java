@@ -261,8 +261,15 @@ public final class NamespaceManager {
       return shortToNs.get(namespaceString);
     else if (longToNs.containsKey(namespaceString))
       return longToNs.get(namespaceString);
-    else // we encountered an unknown namespace
-      throw new IllegalArgumentException("Unknown NamespaceManager " + namespaceString);
+    else { // we encountered an unknown namespace
+      //throw new UnknownNamespaceException("Unknown NamespaceManager " + namespaceString);
+      // write a log message then create a new namespace
+      logger.info("Encountered unknown namespace {} created new namespace mapping", namespaceString);
+      Namespace namespace = new Namespace(namespaceString, namespaceString, shortIsDefault);
+      shortToNs.put(namespaceString, namespace);
+      longToNs.put(namespaceString, namespace);
+      return namespace;
+    }
   }
 
   public String getXSDNamespace(StringTokenizer st) {

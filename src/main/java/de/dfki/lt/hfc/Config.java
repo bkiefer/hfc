@@ -89,6 +89,13 @@ public class Config {
     return new Config((Map<String, Object>) yaml.load(in));
   }
 
+  public static Map<String,Object> getMapping(String configFileName) throws FileNotFoundException {
+    Yaml yaml = new Yaml();
+    File confFile = new File(configFileName);
+    InputStream in = new FileInputStream(confFile);
+    return (Map<String, Object>) yaml.load(in);
+  }
+
 
   /**
    * the DEFAULT settings basically address the RDF triple case without equivalence class reduction
