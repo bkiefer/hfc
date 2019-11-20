@@ -299,7 +299,16 @@ public class Hfc {
 
 
   public void uploadTuples(String filename) throws IOException, WrongFormatException {
-    _tupleStore.readTuples(filename);
+
+      _tupleStore.readTuples(filename);
+
+  }
+
+  public void uploadTuples(String filename, boolean addTS) throws IOException, WrongFormatException {
+    if(addTS)
+      _tupleStore.readTuples(filename);
+    else
+      _tupleStore.readTuples(filename, addTS);
   }
 
 
@@ -388,9 +397,11 @@ public class Hfc {
 
   public boolean computeClosure() {
     logger.info("Compute closure starting with "+ _tupleStore.allTuples.size()+" tuples");
+    System.err.println("Compute closure starting with "+ _tupleStore.allTuples.size()+" tuples");
     if (null != _forwardChainer) {
       boolean result =  _forwardChainer.computeClosure(config.getIterations(), config.isCleanupRepository());
       logger.info("Finished  closure ending with " + _tupleStore.allTuples.size()+ " tuples");
+      System.err.println("Finished  closure ending with " + _tupleStore.allTuples.size()+ " tuples");
       return result;
     } else {
       _tupleStore.cleanUpTupleStore();
@@ -509,6 +520,8 @@ public class Hfc {
     private int tuples = _tupleStore.noOfTuples;
 
     private int atoms =  _tupleStore.noOfAtoms;
+
+    private int realTuples = _tupleStore.allTuples.size();
 
     private int rules = _ruleStore.allRules.size();
 

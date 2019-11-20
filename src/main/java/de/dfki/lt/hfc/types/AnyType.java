@@ -33,12 +33,10 @@ public abstract class AnyType implements Comparable {
     this.ns = ns;
   }
 
-//  /**
-//   * returns a compliant external representation for subtypes
-//   * of AnyType, viz., URIs, blank nodes, and various forms of
-//   * XSD atoms
-//   */
-//  public abstract String toString(boolean shortIsDefault);
+  public Namespace getNamespace(){
+    return this.ns;
+  }
+
 
   /**
    * contrary to toString(), toName() returns a somewhat `abstracted'
@@ -100,6 +98,7 @@ public abstract class AnyType implements Comparable {
     public Object toJava() {
       return this;
     }
+
 
     @Override
     public int compareTo(Object o) {

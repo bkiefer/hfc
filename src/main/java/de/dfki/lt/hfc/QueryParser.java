@@ -422,8 +422,8 @@ class QueryParser {
 
   private void handleVar(String var) throws QueryParseException {
     if (this.state == FILTER) {
-      logger.info(" foundVars " + foundVars);
-      logger.info(" Var " + var);
+      logger.debug(" foundVars " + foundVars);
+      logger.debug(" Var " + var);
       if (!this.foundVars.contains(var))
         throw new QueryParseException("unknown variable " + var + " used in FILTER");
     }

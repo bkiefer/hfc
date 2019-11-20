@@ -336,7 +336,7 @@ public final class RuleStore {
   private boolean sayItLoud(String rulename, String message) {
     if (this.exitOnError) {
       logger.error(" FATAL: " + rulename + message);
-      throw new RuntimeException("FATAL ERROR");
+      throw new RuntimeException("FATAL ERROR" + rulename + message);
     }
     if (this.verbose)
       logger.debug(" ERROR(ignored): " + rulename + message);
@@ -1055,7 +1055,7 @@ public final class RuleStore {
         if (this.varToId.containsKey(token))
           result = this.varToId.get(token);
         else
-          return sayItLoud(rule.name, ": incorrect action (unknown RHS binder variable)");
+          return sayItLoud(rule.name, ": incorrect action (unknown RHS binder variable "+ token +")");
       } else {
         return sayItLoud(rule.name, ": incorrect action (no RHS binder variable)");
       }
@@ -1263,6 +1263,7 @@ public final class RuleStore {
         continue;
       // rules MUST start with a rule name, indicated by a leading '$'
       if (line.startsWith("$")) {
+        //System.err.println("Reading Rule " + line);
         isNew = true;
         // check whether a rule of this _name_ already exists
         if (this.allRuleNames.contains(line)) {

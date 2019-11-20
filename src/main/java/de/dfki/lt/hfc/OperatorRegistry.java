@@ -133,7 +133,7 @@ public final class OperatorRegistry {
     } catch (Exception e) {
       //System.out.println("  registering operator " + className + " fails: no such corresponding Java class");
       if (OperatorRegistry.EXIT_WHEN_REGISTRATION_FAILS)
-        throw new RuntimeException("FATAL ERROR");
+        throw new RuntimeException("FATAL ERROR " +className);
       return null;
     }
   }

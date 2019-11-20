@@ -190,7 +190,7 @@ public class Query {
     BindingTable bt = queryAndJoin(patterns, tables, lkps);
     // bt now refers to the joined tables, so potential filter conditions can be applied
     if (queryParser.hasFilter) {
-      logger.info("Has Filter " + queryParser.hasFilter + "\n varvarIneqs: " + varvarIneqs + "\n varconstIneqs " + varconstIneqs + " \n predicates " + predicates);
+      logger.debug("Has Filter " + queryParser.hasFilter + "\n varvarIneqs: " + varvarIneqs + "\n varconstIneqs " + varconstIneqs + " \n predicates " + predicates);
       //TODO for testing only
       bt.tupleStore = tupleStore;
       //TODO end

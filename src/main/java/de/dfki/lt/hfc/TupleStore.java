@@ -1,5 +1,6 @@
 package de.dfki.lt.hfc;
 
+
 import de.dfki.lt.hfc.types.*;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.map.hash.TCustomHashMap;
@@ -140,6 +141,8 @@ public final class TupleStore {
    * @see #minNoOfARgs
    */
   public int maxNoOfArgs = 5;
+
+  private boolean addTS = false;
   /**
    * a constant that controls whether a warning is printed in case an invalid
    * tuple is read in;
@@ -899,6 +902,8 @@ public final class TupleStore {
     if (!isValidTuple(stringTuple, lineNo))
       return null;
     // internalize tuple
+    if(this.addTS)
+      stringTuple.add(currentTime());
     int[] intTuple = internalizeTuple(stringTuple);
     if (addTuple(intTuple))
       return intTuple;
@@ -906,6 +911,13 @@ public final class TupleStore {
       sayItLoud(lineNo, ": tuple specified twice");
       return null;
     }
+  }
+
+  private java.lang.String currentTime() {
+    StringBuilder stringBuilder = new StringBuilder("\"");
+    stringBuilder.append(System.currentTimeMillis());
+    stringBuilder.append("\"^^<xsd:long>");
+    return stringBuilder.toString();
   }
 
   /**
@@ -1195,6 +1207,24 @@ public final class TupleStore {
   }
 
   /**
+   * read in the tuple file as it is
+   *
+   * @param filename
+   * @throws FileNotFoundException
+   * @throws IOException
+   * @throws WrongFormatException
+   */
+  public void readTuples(String filename, boolean addTs) throws FileNotFoundException, IOException, WrongFormatException {
+    if (this.verbose)
+      logger.debug("\n  reading tuples from " + filename + " ...");
+    boolean old_addTS = this.addTS;
+    this.addTS = addTs;
+    readTuples(Files.newBufferedReader(new File(filename).toPath(),
+            Charset.forName(this.inputCharacterEncoding)));
+    this.addTS = old_addTS;
+  }
+
+  /**
    * read in the tuple file and add potential front and back elements to every tuple
    *
    * @param filename
@@ -1363,8 +1393,10 @@ public final class TupleStore {
     try {
       PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(filename),
               this.outputCharacterEncoding));
-      for (int[] tuple : collection)
+      for (int[] tuple : collection) {
+        logger.info("Writing tuple: " + toExpandedString(tuple));
         pw.println(toString(tuple));
+      }
       pw.flush();
       pw.close();
     } catch (IOException e) {
@@ -1461,8 +1493,10 @@ public final class TupleStore {
   public String toExpandedString(int[] tuple) {
     StringBuilder sb = new StringBuilder();
     String literal;
+    System.err.println(Arrays.toString(tuple));
     for (int i = 0; i < tuple.length; i++) {
       // distinguish between URIs vs. XSD atoms or blank nodes
+      System.err.println(tuple[i] +" -> "+ getObject(tuple[i]));
       literal = getObject(tuple[i]).toString();
       if (TupleStore.isAtom(literal) || TupleStore.isBlankNode(literal))
         sb.append(toUnicode(literal.replace("xsd:", this.namespace.getLongForm("xsd")) + " "));

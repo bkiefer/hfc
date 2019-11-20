@@ -8,7 +8,6 @@ import java.util.Objects;
  *
  * @author (C) Hans-Ulrich Krieger
  * @version Fri Jan 29 19:32:15 CET 2016
- * @see http://www.w3.org/TR/xmlschema11-2/
  * @since JDK 1.5
  */
 public final class XsdLong extends XsdNumber {
