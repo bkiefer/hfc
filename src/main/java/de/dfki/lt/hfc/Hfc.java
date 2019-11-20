@@ -224,8 +224,6 @@ public class Hfc {
    *              This is done so i can add the <it>now<it/> time stamp transparently
    *              TODO: refactor, and make this part of HFC core
    */
-  /**
-
    public int addTuples(List<List<String>> rows, String front, String... backs) {
     // normalize namespaces for front and backs
     int frontId = -1;    // Java wants an initial value
@@ -265,7 +263,6 @@ public class Hfc {
     }
     return noOfTuples;
   }
-   */
 
   public int addTuples(List<List<String>> tuples){
     int noOfTuples = 0;
