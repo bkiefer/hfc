@@ -34,7 +34,7 @@ public class RuleComparatorTest {
         return 0;
       }});
     //for (int i = 0; i < rules.size(); i++){
-    //System.out.println(rules.get(i));
+    //
     //}
   }
 

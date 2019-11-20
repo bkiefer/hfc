@@ -33,7 +33,7 @@ public class BPlusTreeTest extends IndexStructureTest{
 
 //    @Override
 //    protected void delete(AnyType key) throws IndexingException{
-//        System.out.println("Delete key = " + key);
+//
 //        Set<int[]> val1 = mMap.remove(key);
 //        Set<int[]> val2 = bTree.delete(key);
 //        if (!((val1 == null) && (val2 == null)))
@@ -53,7 +53,7 @@ public class BPlusTreeTest extends IndexStructureTest{
 //        Set<int[]> val1 = new HashSet<>();
 //        if (keys[0].compareTo(keys[keys.length-1])<=0)
 //            for (AnyType k : keys){
-//                //System.out.println("Look for " + k);
+//                //
 //                if (mMap.containsKey(k))
 //                    val1.addAll(mMap.get(k));
 //            }
@@ -78,7 +78,7 @@ public class BPlusTreeTest extends IndexStructureTest{
     protected void validateData() throws IndexingException {
         for (Map.Entry<AnyType, Set<int[]>> entry : mMap.entrySet()) {
             try {
-                //System.out.println("Search key = " + entry.getKey());
+                //
                 Set<int[]> val = bTree.search(entry.getKey());
                 if (!entry.getValue().equals(val)) {
                     throw new IndexingException("Error in validateData(): Failed to compare value for key = " + entry.getKey() + " - " +entry.getValue() + " <> " + val);

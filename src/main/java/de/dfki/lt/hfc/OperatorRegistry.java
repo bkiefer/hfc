@@ -131,7 +131,7 @@ public final class OperatorRegistry {
       this.nameToFo.put(className, op);
       return op;
     } catch (Exception e) {
-      //System.out.println("  registering operator " + className + " fails: no such corresponding Java class");
+      //
       if (OperatorRegistry.EXIT_WHEN_REGISTRATION_FAILS)
         throw new RuntimeException("FATAL ERROR " +className);
       return null;

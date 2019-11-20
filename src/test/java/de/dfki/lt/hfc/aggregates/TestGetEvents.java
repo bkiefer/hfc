@@ -245,9 +245,9 @@ public class TestGetEvents {
 
 
     private void printValidTuples(Set<String[]> validTuples) {
-        System.out.println(" There are " + validTuples.size() + " ValidTuples: ");
+
         for (String[] tuple : validTuples) {
-            System.out.println(Arrays.toString(tuple));
+
         }
     }
 

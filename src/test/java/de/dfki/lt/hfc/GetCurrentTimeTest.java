@@ -20,13 +20,11 @@ public class GetCurrentTimeTest {
 
   @BeforeClass
   public static void init() throws Exception {
-      System.out.println("Create HFC");
-        //TODO create yaml
+
 
       Config config = Config.getInstance(getResource("GetCurrentTime.yml"));
 
       fc = new Hfc(config);
-      System.out.println("HFC created " + fc != null);
 
     // compute deductive closure
 

@@ -27,7 +27,7 @@ public class Uri extends AnyType {
 
   public Uri(String value, Namespace ns) {
     super(ns);
-//    System.out.println(value);
+
     this.value = value;
   }
 

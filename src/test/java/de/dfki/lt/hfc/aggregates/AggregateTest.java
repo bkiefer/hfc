@@ -1,7 +1,8 @@
-package de.dfki.lt.hfc;
+package de.dfki.lt.hfc.aggregates;
 
 import static org.junit.Assert.*;
 
+import de.dfki.lt.hfc.Aggregate;
 import org.junit.Test;
 
 public class AggregateTest {

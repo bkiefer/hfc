@@ -286,7 +286,7 @@ public class TestLGetLatest {
     Query q = new Query(fc._tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long> AGGREGATE ?dialact ?time = LGetLatest ?da ?t ?t \"4\"^^<xsd:int>");
     checkResult(fc, bt, expected, "?dialact", "?time");
-    //System.out.println(bt);
+    //
   }
 
   @Test
@@ -299,7 +299,7 @@ public class TestLGetLatest {
    Query q = new Query(fc._tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long> AGGREGATE ?dialact ?time = LGetLatest ?da ?t ?t \"3\"^^<xsd:int>");
     checkResult(fc, bt, expected, "?dialact", "?time");
-    //System.out.println(bt);
+    //
   }
 
   @Test
@@ -311,7 +311,7 @@ public class TestLGetLatest {
     Query q = new Query(fc._tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long> AGGREGATE ?dialact ?time = LGetLatest ?da ?t ?t \"2\"^^<xsd:int>");
     checkResult(fc, bt, expected, "?dialact", "?time");
-    //System.out.println(bt);
+    //
   }
 
   @Test
@@ -322,7 +322,7 @@ public class TestLGetLatest {
     Query q = new Query(fc._tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"540\"^^<xsd:long> AGGREGATE ?dialact ?time = LGetLatest ?da ?t ?t \"1\"^^<xsd:int>");
     checkResult(fc, bt, expected, "?dialact", "?time");
-    //System.out.println(bt);
+    //
   }
 
   @Test
@@ -349,7 +349,7 @@ public class TestLGetLatest {
     Query q = new Query(fc._tupleStore);
     BindingTable bt = q.query("SELECT ?da ?t WHERE ?da <rdf:type> <dafn:DialogueAct> & ?da <dafn:happens> ?t FILTER LGreaterEqual ?t \"548\"^^<xsd:long> AGGREGATE ?dialact = LGetLatest ?da ?t \"3\"^^<xsd:int>");
     checkResult(fc, bt, expected, "?dialact");
-    //System.out.println(bt);
+    //
   }
 
   @Test

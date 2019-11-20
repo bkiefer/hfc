@@ -143,7 +143,6 @@ public class BindingTableTest {
     Set<int[]> table0 = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
     SortedMap<Integer, Integer> nameToPos = new TreeMap<Integer, Integer>();
     BindingTable bt = new BindingTable(table0, nameToPos);
-    //System.out.println("toString " + bt.toString());//the first element is =
     assertEquals(bt.toString().substring(0, 1), "=");
     //nameToPos is full
     nameToPos.put(1, 1);
@@ -165,9 +164,7 @@ public class BindingTableTest {
     TupleStore ts = new TupleStore(false, true, true, 2, 5,0,1,2, 4, 2, namespace,
         getTestResource("default.nt"));
     BindingTable bt = new BindingTable(table, nameToPos, nameToExternalName, ts);
-    //System.out.println("IF expand set to TRUE " + bt.toString(true));
     assertEquals(bt.toString(true).substring(6, 11), "value");
-    //System.out.println("IF expand set to FALSE " + bt.toString(false));
     assertEquals(bt.toString(false).substring(6, 11), "value");
   }
 
@@ -183,7 +180,6 @@ public class BindingTableTest {
     TupleStore ts = new TupleStore(false, true, true, 2, 5,0,1,2, 4, 2, namespace,
         getTestResource("default.nt"));
     BindingTable bt = new BindingTable(table, nameToPos, nameToExternalName, ts);
-    //System.out.println("IF expand set to FALSE, maxLength to 3 " + bt.toString(3, false));
     assertEquals(bt.toString(3, false).substring(10, 13), "val");
     assertEquals(bt.toString(2, false).substring(9, 12), "val");
     assertEquals(bt.toString(3, true).substring(10, 13), "val");
@@ -198,9 +194,6 @@ public class BindingTableTest {
     tuple[2] = 2;
     objfortest.addToIndex(tuple);
     BindingTable bt1 = new BindingTable(table, nameToPos, nameToExternalName, objfortest);
-    //System.out.println("for (int[] tuple : this.table) " + bt1.toString(3, false));
-    //System.out.println("for (int[] tuple : this.table) " + bt1.toString(6, false));
-
   }
 
   @Test

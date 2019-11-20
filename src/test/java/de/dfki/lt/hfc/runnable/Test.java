@@ -28,12 +28,12 @@ public class Test {
 		TupleStore ts = new TupleStore(config);
 		Random rnd = new Random();
 		int[] tuple;
-		System.out.println();
+
 		Runtime runtime = Runtime.getRuntime();
-		System.out.println("free memory: " + (runtime.freeMemory()/1048576) + "MB");  // 1024 * 1024
-		System.out.println("total memory: " + (runtime.totalMemory()/1048576) + "MB");
-		System.out.println("max memory: " + (runtime.maxMemory()/1048576) + "MB");
-		System.out.println();
+		  // 1024 * 1024
+
+
+
 		for (int i = 0; i < (tuples/1000000); i++) {
 			start = System.currentTimeMillis();
 			for (int j = 0; j < 1000000; j++) {
@@ -49,12 +49,12 @@ public class Test {
 												 (runtime.totalMemory()/1048576) + "MB " +
 												 (runtime.maxMemory()/1048576) + "MB");
 		}
-		System.out.println();
+
 		int no = Integer.parseInt(args[2]);
-		System.out.println(args[2] + " in subject position: " + ts.getTuples(0, no).size() + " times");
-		System.out.println(args[2] + " in predicate position: " + ts.getTuples(1, no) .size() + " times");
-		System.out.println(args[2] + " in object position: " + ts.getTuples(2, no).size() + " times");
-		System.out.println();
+
+
+
+
 	}
 
 }

@@ -39,7 +39,6 @@ public class HfcTest {
      BindingTable bt = fc.executeQuery("Select ?x ?y Where ?x <owl:subClassOf> ?y");
      assertNotNull(bt);
      bt.expandBindingTable();
-     System.out.println(bt.toString());
   }
   /**
   public void testHfc2() throws IOException, WrongFormatException {
@@ -65,9 +64,6 @@ public class HfcTest {
   public void testnextBlankNode() throws FileNotFoundException, IOException, WrongFormatException {
     //test method nextBlankNode () that returns an int
     Hfc fc = new Hfc(Config.getInstance(getTestResource("nextBlankNode.yml")));
-    for (int i = 0; i < fc._tupleStore.idToJavaObject.size(); i++) {
-      System.out.println(i + ": " + fc._tupleStore.idToJavaObject.get(i).toString());
-    }
     assertEquals(51, fc.nextBlankNode());
 
     assertTrue(fc.nextBlankNode() > 0);

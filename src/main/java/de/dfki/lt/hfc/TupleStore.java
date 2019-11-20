@@ -1493,10 +1493,8 @@ public final class TupleStore {
   public String toExpandedString(int[] tuple) {
     StringBuilder sb = new StringBuilder();
     String literal;
-    System.err.println(Arrays.toString(tuple));
     for (int i = 0; i < tuple.length; i++) {
       // distinguish between URIs vs. XSD atoms or blank nodes
-      System.err.println(tuple[i] +" -> "+ getObject(tuple[i]));
       literal = getObject(tuple[i]).toString();
       if (TupleStore.isAtom(literal) || TupleStore.isBlankNode(literal))
         sb.append(toUnicode(literal.replace("xsd:", this.namespace.getLongForm("xsd")) + " "));

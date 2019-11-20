@@ -19,7 +19,7 @@ public class NamespaceManagerTest {
 
   @Test
   public void setShortIsDefault() {
-    System.out.println(NamespaceManager.instance);
+
     NamespaceManager nsm = NamespaceManager.getInstance();
     assertFalse(nsm.isShortIsDefault());
     assertFalse(nsm.shortToNs.get("test").isShort());

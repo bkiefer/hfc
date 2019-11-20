@@ -18,8 +18,8 @@ public class BenchTest {
     Hfc fc = new Hfc(Config.getInstance(TestingUtils.getTestResource("bench.yml")));
     //long mid = System.currentTimeMillis();
     fc.computeClosure();
-    //System.out.println("Reading and closure took: " + (end - start) + "ms");
-    //System.out.println("closure took: " + (end - mid) + "ms");
+    //
+    //
   }
 
   @Test
@@ -41,7 +41,7 @@ public class BenchTest {
     fc.uploadTuples(TestingUtils.getTestResource("ltworld.jena.nt"));
     fc.computeClosure();
     boolean b = fc._tupleStore.ask(new String[]{"<ltw:obj_67783>", "<ltw:lt_technologicalApplication>", "<ltw:KB_788599_Individual_78>"});
-    //System.out.println("Query parsing took: " + (end - start));
+    //
     assertTrue(b);
   }
 

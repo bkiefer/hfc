@@ -334,7 +334,7 @@ public class TupleStoreTest {
         // tuple[0] = 1;
         // tuple[1] = 2;
         // assertTrue(objectfull.removeTuple(tuple1));
-        // System.out.println("MESSAGE " + objectfull.removeTuple(tuple1));
+
     }
 
     @Test

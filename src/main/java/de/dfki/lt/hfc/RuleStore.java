@@ -1263,7 +1263,6 @@ public final class RuleStore {
         continue;
       // rules MUST start with a rule name, indicated by a leading '$'
       if (line.startsWith("$")) {
-        //System.err.println("Reading Rule " + line);
         isNew = true;
         // check whether a rule of this _name_ already exists
         if (this.allRuleNames.contains(line)) {

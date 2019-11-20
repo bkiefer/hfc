@@ -397,11 +397,9 @@ public class Hfc {
 
   public boolean computeClosure() {
     logger.info("Compute closure starting with "+ _tupleStore.allTuples.size()+" tuples");
-    System.err.println("Compute closure starting with "+ _tupleStore.allTuples.size()+" tuples");
     if (null != _forwardChainer) {
       boolean result =  _forwardChainer.computeClosure(config.getIterations(), config.isCleanupRepository());
       logger.info("Finished  closure ending with " + _tupleStore.allTuples.size()+ " tuples");
-      System.err.println("Finished  closure ending with " + _tupleStore.allTuples.size()+ " tuples");
       return result;
     } else {
       _tupleStore.cleanUpTupleStore();

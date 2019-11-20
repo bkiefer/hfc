@@ -53,7 +53,7 @@ public class LongBasicOne {
         values = fc._tupleStore.indexStore.lookup(key);
         assertEquals(156,values.size());
         //for ( int[] t : values)
-        //    System.out.println(Arrays.toString(t));
+        //
     }
 
 

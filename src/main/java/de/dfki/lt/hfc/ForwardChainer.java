@@ -149,19 +149,16 @@ public final class ForwardChainer {
       // !!! obtain a _lock_ on the table's proxy (since this is shared, and so its content) !!!
       synchronized (table.proxy) {
         if (table.getGeneration() == this.generationCounter) {
-          //System.out.print("-");
           continue;
         }
         // not so: query index, assign table/delta the right values, increment counter
         query = _tupleStore.queryIndex(rule.ante[i], rule.localQueryBindings[i]);
         // null indicates an empty result set, thus cancel rule execution!
         if (query.isEmpty()) {
-          //System.out.println("X");
           // no need to check every clause of a rule during global matching
           rule.isApplicable = false;
           return;
         }
-        //System.out.print("+");
         // instead of using the "relevant positions" of a clause, we can now use the
         // "proper positions", since duplicate variables have already been checked;
         // the right strategy can be obtained by calling proxy's getStrategy() method
@@ -171,12 +168,11 @@ public final class ForwardChainer {
         table.setOld(table.getTable());  // old and delta is used in complexJoin()
         table.setTable(query);
         table.setGeneration(this.generationCounter);
-        //System.out.println(rule.name + "(" + table + "): " + table.getDelta().size() + " " + table.getOld().size());
+
       }
     }
     // LOCAL matching does NOT rule out this rule even if there are empty deltas
     rule.isApplicable = true;
-    //System.out.println();
   }
 
   /**
@@ -245,19 +241,6 @@ public final class ForwardChainer {
     }
   }
 
-  /**
-  public boolean getCleanUpRepository() {
-    return _cleanUpRepository;
-  }
-
-  public boolean isCleanUpRepository() {
-    return _cleanUpRepository;
-  }
-
-  public boolean isEquivalenceClassReduction() {
-    return _eqReduction;
-  }
-  **/
 
   /**
    * does the recursive job for executeGlobalMatch();
@@ -342,10 +325,8 @@ public final class ForwardChainer {
   private void applyTests(Rule rule) {
     for (Cluster cluster : rule.clusters) {
       // _destructively_ restricts binding table using cluster's ineqs and tests
-      //System.out.println(rule.name + ": " + cluster.bindingTable.table.size());
       cluster.bindingTable = Calc.restrict(cluster.bindingTable, cluster.varvarIneqs, cluster.varconstIneqs);
       cluster.bindingTable = Calc.restrict(cluster.bindingTable, cluster.tests);
-      //System.out.println(rule.name + ": " + cluster.bindingTable.table.size());
       // one empty cluster suffices to let the rule fail overall (no RHS instantiations possible)
       if (cluster.bindingTable.isEmpty())
         rule.isApplicable = false;
@@ -376,7 +357,6 @@ public final class ForwardChainer {
         cluster.delta = Calc.difference(cluster.bindingTable.table, cluster.table);
         cluster.old = cluster.table;  // old and delta is used in construction of RHS tables
         cluster.table = cluster.bindingTable.table;
-        //System.out.println(rule.name + "(delta/old): " + cluster.delta.size() + " " + cluster.old.size());
       }
       // more than one independent LHS cluster: Cartesian Product (at the moment!)
       rule.megaCluster.bindingTable = complexProduct(rule.clusters, 0, false, new ArrayList<>());
@@ -627,7 +607,6 @@ public final class ForwardChainer {
       }
       // start instantiation phase
       performInstantiation(rule);
-      System.out.println(rule.output);
     } finally {
       // only at the _very end_ decrease count down latch (cf. return statements above)
       this.doneSignal.countDown();

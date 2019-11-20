@@ -103,7 +103,6 @@ public class BindingTableIteratorTest {
     // we're using Trove sets and strategy objects for table projection, the
     // underlying int arrays are still of length 3
     BindingTable bt = q.query("SELECT * WHERE ?s <rdf:type> ?o FILTER ?o != <rdfs:Datatype>");
-    // System.out.println(bt);
     BindingTableIterator it = bt.iterator();
     // printNextAsString(it);
     check(it, expected, new NextAsStringCall());
@@ -137,7 +136,6 @@ public class BindingTableIteratorTest {
         { "<rdf:predicate>", "<rdf:Property>" },
     };
     BindingTable bt = q.query("SELECT * WHERE ?s <rdf:type> ?o FILTER ?o != <rdfs:Datatype>");
-    // System.out.println(bt);
     BindingTableIterator it = bt.iterator("?s", "?o");
     check(it, expected, new NextAsStringCall());
   }
@@ -170,7 +168,7 @@ public class BindingTableIteratorTest {
     // we're using Trove sets and strategy objects for table projection, the
     // underlying int arrays are still of length 3
     BindingTable bt = q.query("SELECT * WHERE ?s <rdf:type> ?o FILTER ?o != <rdfs:Datatype>");
-    // System.out.println(bt);
+
     BindingTableIterator it = bt.iterator("?s", "?o");
 
     // printNext(it, new NextAsHfcCall());
@@ -205,7 +203,7 @@ public class BindingTableIteratorTest {
     // we're using Trove sets and strategy objects for table projection, the
     // underlying int arrays are still of length 3
     BindingTable bt = q.query("SELECT * WHERE ?s <rdf:type> ?o FILTER ?o != <rdfs:Datatype>");
-    // System.out.println(bt);
+
     BindingTableIterator it = bt.iterator("?o", "?s");
     // printNext(it, new NextAsStringCall());
     check(it, expected, new NextAsStringCall());
@@ -239,9 +237,9 @@ public class BindingTableIteratorTest {
     // we're using Trove sets and strategy objects for table projection, the
     // underlying int arrays are still of length 3
     BindingTable bt = q.query("SELECT * WHERE ?s <rdf:type> ?o FILTER ?o != <rdfs:Datatype>");
-    // System.out.println(bt);
+
     BindingTableIterator it = bt.iterator("?s", "?o", "?s", "?o");
-    //System.out.println(it.hasSize());
+
     check(it, expected, new NextAsStringCall());
   }
 
@@ -273,7 +271,7 @@ public class BindingTableIteratorTest {
     // we're using Trove sets and strategy objects for table projection, the
     // underlying int arrays are still of length 3
     BindingTable bt = q.query("SELECT * WHERE ?s <rdf:type> ?o FILTER ?o != <rdfs:Datatype>");
-    // System.out.println(bt);
+
     BindingTableIterator it = bt.iterator("?o");
     //printNext(it, new NextAsStringCall());
     check(it, expected, new NextAsStringCall());

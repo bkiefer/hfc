@@ -77,7 +77,7 @@ public class BlankNodeOneTest {
     };
 
     Query q = fc.getQuery();
-    System.out.println("Number of tuples " + fc._tupleStore.allTuples.size());
+
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
     checkResult(expected, bt, bt.getVars());
   }

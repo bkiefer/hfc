@@ -63,7 +63,7 @@ public class ISumTwoTest {
     };
     Query q = fc.getQuery();
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    System.out.println(bt.toString());
+
     checkResult(expected, bt, bt.getVars());
   }
 
