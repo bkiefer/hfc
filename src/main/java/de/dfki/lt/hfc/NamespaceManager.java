@@ -103,7 +103,7 @@ public final class NamespaceManager {
   private boolean shortIsDefault = false;
   private HashSet<Namespace> allNamespaces = new HashSet<>();
 
-  private NamespaceManager() {
+  public NamespaceManager() {
     if(instance != null)
       throw new IllegalStateException("Already instatiated");
     shortIsDefault = false;

@@ -42,7 +42,6 @@ public final class ConcatenateTest {
     args[1] = store.putObject((new XsdString("bar")).toString());
     args[2] = store.putObject((new XsdString("föö")).toString());
     args[3] = store.putObject((new XsdString("bär")).toString());
-
     args[4] = store.putObject((new XsdString("foobar")).toString());
     args[5] = store.putObject((new XsdString("foobarföö")).toString());
     args[6] = store.putObject((new XsdString("foobarfööbär")).toString());
