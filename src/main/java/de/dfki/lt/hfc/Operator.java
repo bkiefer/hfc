@@ -55,17 +55,6 @@ public abstract class Operator {
       return id;
   }
 
-  /**
-   * returns the id for a given literal (e.g., a string encoding a URI, blank node,
-   * XSD int, XSD string, etc.);
-   *
-   * @return -1, otherwise
-   */
-  public int getIdForPossiblyUnknownEntity(String literal) {
-    synchronized (this.tupleStore) {
-      return  tupleStore.putObject(literal);
-    }
-  }
 
   /**
    * returns the proxy (the representative) for a given uri which serves as the internal

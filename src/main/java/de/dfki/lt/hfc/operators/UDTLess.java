@@ -10,10 +10,6 @@ import de.dfki.lt.hfc.types.XsdUDateTime;
  * @author (C) Hans-Ulrich Krieger
  * @version Fri May 20 15:49:48 CEST 2011
  * @return FunctionalOperator.TRUE or FunctionalOperator.FALSE
- * @see FunctionalOperator
- * @see DTLess
- * @see XsdDateTime
- * @see XsdUDateTime
  * @since JDK 1.5
  */
 public final class UDTLess extends FunctionalOperator {

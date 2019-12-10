@@ -71,9 +71,6 @@ public class BlankNodeOneTest {
         { "<test:db>", "<test:new>", "_:de.dfki.lt.hfc.Hfc@77a567e12" },
         { "<owl:Thing>", "<rdf:type>", "<owl:Class>" },
         { "<test:dfki>", "<test:new>", "_:de.dfki.lt.hfc.Hfc@77a567e10" },
-        //{ "<hst:da8>", "\"755\"^^<xsd:long>", "\"755\"^^<xsd:long>" },
-        //{ "<hst:da7>", "\"731\"^^<xsd:long>", "\"731\"^^<xsd:long>" },
-        //{ "<hst:da6>", "\"686\"^^<xsd:long>", "\"686\"^^<xsd:long>" },
     };
 
     Query q = fc.getQuery();

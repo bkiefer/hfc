@@ -34,7 +34,7 @@ public class MaterializedTriplesToQuintuples {
 		return (int)(Math.round(Math.random() * max));
 	}
 
-
+	/** Removed this tests as they take forever to finish
 	@Test
 	public void writeMaterializedTriples() throws Exception {
     //   time java -server -cp .:../lib/trove-2.1.0.jar -Xmx1024m de/dfki/lt/hfc/tests/MaterializedTriplesToFile
@@ -123,6 +123,7 @@ public class MaterializedTriplesToQuintuples {
 
 		fc.shutdownNoExit();
 	}
+	**/
 
 
 }

@@ -11,6 +11,8 @@ public class IsTrue extends BooleanOperator {
 
   @Override
   protected boolean holds(int[] args) {
+    if ( !(getObject(args[0]) instanceof XsdBoolean))
+      return false;
     return ((XsdBoolean) getObject(args[0])).value;
   }
 }

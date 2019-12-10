@@ -19,9 +19,9 @@ public class QRelationAllenTest {
     AllenAfter after = new AllenAfter("After",0, 0, 0);
     assertTrue(after.isAllenRelation());
     AllenBefore before = new AllenBefore("Before",0, 0, 0);
-    assertTrue(after.isAllenRelation());
+    assertTrue(before.isAllenRelation());
     AllenMeet meet = new AllenMeet("Meet",0, 0, 0);
-    assertTrue(after.isAllenRelation());
+    assertTrue(meet.isAllenRelation());
     AllenDuring during = new AllenDuring("During",0, 0, 0);
     assertTrue(during.isAllenRelation());
     AllenEqual equal = new AllenEqual("equal",0, 0, 0);
@@ -41,9 +41,9 @@ public class QRelationAllenTest {
     AllenAfter after = new AllenAfter("After",0, 0, 0);
     assertFalse(after.isInterval());
     AllenBefore before = new AllenBefore("Before",0, 0, 0);
-    assertFalse(after.isInterval());
+    assertFalse(before.isInterval());
     AllenMeet meet = new AllenMeet("Meet",0, 0, 0);
-    assertFalse(after.isInterval());
+    assertFalse(meet.isInterval());
     AllenDuring during = new AllenDuring("During",0, 0, 0);
     assertFalse(during.isInterval());
     AllenEqual equal = new AllenEqual("equal",0, 0, 0);

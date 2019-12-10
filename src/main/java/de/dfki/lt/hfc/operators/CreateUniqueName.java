@@ -28,8 +28,6 @@ public final class CreateUniqueName extends FunctionalOperator {
    throw new IllegalArgumentException("CreateUniqueName expects a valid URI as its input");
   String tValue = ((Uri) t).value;
   // replace tValue with tValue and appended timestamp
-  String uName = t.toString().replace(tValue,tValue + "_"+System.currentTimeMillis());
-  // TODO Register and add to ts
   Uri nUri = new Uri(tValue + "_"+System.currentTimeMillis(), t.getNamespace());
   return registerObject(nUri.toString(), nUri);
  }

@@ -3,9 +3,13 @@ package de.dfki.lt.hfc;
 import static de.dfki.lt.hfc.TestingUtils.*;
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
 public class RuleStoreTest {
@@ -69,12 +73,27 @@ public class RuleStoreTest {
   @Test
   public void testwriteRules() throws FileNotFoundException, WrongFormatException, IOException {
     TupleStore tupleStore = new TupleStore(Config.getDefaultConfig());
-    String ruleFile = new String(getTestResource("default.test.rdl"));
+    String ruleFile = getTestResource("default.test.rdl");
+    File file0 = new File(getTestResource("default.test.rdl"));
     RuleStore rstest = new RuleStore(false, true, 2, 3, tupleStore, ruleFile);
     rstest.writeRules(getTempFile("fileRules"));
     //test for case verbose != true
     RuleStore rsverbosefalse = new RuleStore(false, true, 2, 3, tupleStore, ruleFile);
     rsverbosefalse.writeRules(getTempFile("fileRules1"));
+
+    File file1 = new File(getTempFile("fileRules"));
+    File file2 = new File(getTempFile("fileRules1"));
+    assertTrue(FileUtils.contentEquals(file1, file2));
+    RuleStore reload =  new RuleStore(false, true, 2, 3, tupleStore, getTempFile("fileRules1"));
+    Set<String> ruleNames = new HashSet<String>();
+    for (Rule rule : rstest.allRules){
+      ruleNames.add(rule.name);
+    }
+    Set<String> reloadedRuleNames = new HashSet<String>();
+    for (Rule rule : reload.allRules){
+      reloadedRuleNames.add(rule.name);
+    }
+    assertEquals(reloadedRuleNames, ruleNames);
   }
 
   @Test

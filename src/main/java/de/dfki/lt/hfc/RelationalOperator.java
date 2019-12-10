@@ -58,14 +58,14 @@ public abstract class RelationalOperator extends Operator {
    * relational operator
    */
   public BindingTable[] callRelationalOperator(String name, BindingTable[] args) {
-    return this.tupleStore.operatorRegistry.evaluate(name, OperatorRegistry.OPERATOR_PATH, args);
+    return this.tupleStore.evaluateRelOperator(name, OperatorRegistry.OPERATOR_PATH, args);
   }
 
   /**
    * use this method to call further _functional_ operators
    */
   public int callFunctionalOperator(String name, int[] args) {
-    return this.tupleStore.operatorRegistry.evaluate(name, OperatorRegistry.OPERATOR_PATH, args);
+    return this.tupleStore.evaluateOperator(name, OperatorRegistry.OPERATOR_PATH, args);
   }
 
   /**

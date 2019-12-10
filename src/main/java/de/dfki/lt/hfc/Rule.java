@@ -327,10 +327,10 @@ public class Rule {
     StringBuilder sb = new StringBuilder();
     sb.append(getName()).append("\n");
     for (int[] tuple : ante)
-      sb.append(store.toString(tuple)).append("\n");
+      sb.append(store.toString(tuple, false)).append("\n");
     sb.append("->\n");
     for (int[] tuple : cons)
-      sb.append(store.toString(tuple)).append("\n");
+      sb.append(store.toString(tuple, false)).append("\n");
     sb.append("@test\n");
     for (int i = 0; i < inEqConstraints.size(); i++) {
       sb.append(store.getObject(inEqConstraints.get(i)));

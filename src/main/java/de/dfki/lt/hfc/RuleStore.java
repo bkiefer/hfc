@@ -69,7 +69,6 @@ import java.util.*;
  *
  * @author (C) Hans-Ulrich Krieger
  * @version Wed Jun 22 15:20:51 CEST 2016
- * @see http://www.w3.org/TR/rdf-testcases/
  * @see de.dfki.lt.hfc.Rule
  * @see de.dfki.lt.hfc.ForwardChainer
  * @since JDK 1.5
@@ -83,7 +82,6 @@ public final class RuleStore {
    * predicate NoValue)
    *
    * @see de.dfki.lt.hfc.operators.NoValue
-   * @see evaluatePredicate
    */
   public static final int UNBOUND = 0;
   /**
@@ -132,15 +130,6 @@ public final class RuleStore {
   public boolean exitOnError = true;
 
   /**
-   * a namespace object used to expand short form namespaces into full forms
-   *
-   * TODO: THIS IS NOT USED AT ALL IN THIS CLASS AND SHOULD BE REMOVED
-   * THERE ARE STATIC REFERENCES TO NAMESPACE OF EQUIVALENCE REDUCTION
-   * IF AT ALL, CALLS SHOULD GO THROUGH TUPLESTORE
-   */
-  //protected NamespaceManager namespace;
-  /**
-   * @see de.dfki.lt.hfc.RuleStore.reorderAntecedent()
    */
   public boolean reorderAntecedent = true;
   /**
@@ -946,7 +935,7 @@ public final class RuleStore {
     // construct the fully-qualified name, using the directory path where the operators live
     predname = OperatorRegistry.OPERATOR_PATH + predname;
     // check whether there is such a functional operator/Java class with this name
-    Operator op = this.tupleStore.operatorRegistry.checkAndRegister(predname);
+    Operator op = this.tupleStore.checkAndRegisterOperator(predname);
     // now obtain potential args
     ArrayList<Integer> args = new ArrayList<Integer>();
     String token;
@@ -1357,7 +1346,7 @@ public final class RuleStore {
           continue;
           // something has gone wrong during reading of ante/cons tuple
         else {
-          eol = sayItLoud(this.lineNo, ": tuple misspelled");
+          eol = sayItLoud(this.lineNo, ": tuple misspelled " + line);
           break;
         }
       }

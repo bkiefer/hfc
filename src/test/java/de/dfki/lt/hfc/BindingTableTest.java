@@ -84,6 +84,7 @@ public class BindingTableTest {
     assertNotNull(bt5);
   }
 
+
   @Test
   public void testBindingTable6() throws IOException, WrongFormatException {
     /*test constructor BindingTable(Set<int[]> table, SortedMap<Integer, Integer> nameToPos,
@@ -110,6 +111,15 @@ public class BindingTableTest {
     TupleStore ts4 = new TupleStore(Config.getDefaultConfig());
     BindingTable bt7 = new BindingTable(nameToPos4, nameToExternalName4, ts4);
     assertNotNull(bt7);
+  }
+
+  @Test
+  public void testBindingTable8() throws  IOException, WrongFormatException{
+    /* test copy constructor protected BindingTable(BindingTable bt, TupleStore ts) */
+    BindingTable bt = new BindingTable();
+    TupleStore ts = new TupleStore(Config.getDefaultConfig());
+    BindingTable bt8 = new BindingTable(bt, ts);
+    assertNotNull(bt8);
   }
 
   @Test

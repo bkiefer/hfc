@@ -1,0 +1,12 @@
+<pal:lisa> <rdf:type> <dom:Child> "0002-00-00T00:00:00.0"^^<xsd:dateTime> .
+<pal:lisa> <dom:hasLabValue> <pal:labval22> "0002-00-00T00:00:00.0"^^<xsd:dateTime> .
+<pal:labval22> <dom:height> "133"^^<xsd:cm> "0002-00-00T00:00:00.0"^^<xsd:dateTime> .
+<pal:labval22> <dom:weight> "28.2"^^<xsd:kg> "0002-00-00T00:00:00.0"^^<xsd:dateTime> .
+<pal:labval22> <dom:bmi> "15.9"^^<xsd:kg_m2> "0002-00-00T00:00:00.0"^^<xsd:dateTime> .
+<pal:labval22> <dom:hr> "75.0"^^<xsd:min-1> "0002-00-00T00:00:00.0"^^<xsd:dateTime> .
+<pal:labval22> <dom:bsl> "162.0"^^<xsd:mg_dL> "0002-00-00T00:00:00.0"^^<xsd:dateTime> .
+<pal:labval22> <dom:bsl> "9.0"^^<xsd:mmol_L> "0002-00-00T00:00:00.0"^^<xsd:dateTime> .
+<pal:lisa> <dom:hasLabValue> <pal:labval33> "0002-01-00T00:00:00.0"^^<xsd:dateTime> .
+<pal:labval33> <dom:weight> "28.6"^^<xsd:kg> "0002-01-00T00:00:00.0"^^<xsd:dateTime> .
+<pal:labval33> <dom:bsl> "9.2"^^<xsd:mmol_L> "0002-01-00T00:00:00.0"^^<xsd:dateTime> .
+<pal:labval33> <dom:bsl> "165.6"^^<xsd:mg_dL> "0002-01-00T00:00:00.0"^^<xsd:dateTime> .

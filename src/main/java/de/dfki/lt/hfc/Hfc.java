@@ -55,9 +55,9 @@ public class Hfc {
    */
   protected Config config;
 
-  private  RuleStore _ruleStore = null;
+  protected   RuleStore _ruleStore = null;
 
-  private ForwardChainer _forwardChainer = null;
+  protected ForwardChainer _forwardChainer = null;
 
 
   /**
@@ -134,7 +134,7 @@ public class Hfc {
 
 
   public void shutdown() {
-    _forwardChainer.shutdownNoExit();
+    _forwardChainer.shutdown();
   }
 
   /** customize HFC, i.e., namespace and tuple store via key-value pairs
@@ -153,7 +153,8 @@ public class Hfc {
 
   public void updateConfig(String path){
    try {
-    customizeHfc(Config.getMapping(path));
+    customizeHfc(Config
+            .getMapping(path));
    } catch (FileNotFoundException e) {
     e.printStackTrace();
     System.err.println("Config File " + path + " not found. Will be ignored");
@@ -301,12 +302,6 @@ public class Hfc {
 
   }
 
-  public void uploadTuples(String filename, boolean addTS) throws IOException, WrongFormatException {
-    if(addTS)
-      _tupleStore.readTuples(filename);
-    else
-      _tupleStore.readTuples(filename, addTS);
-  }
 
 
   /**
@@ -468,8 +463,8 @@ public class Hfc {
     return _tupleStore.ask(tuple);
   }
 
-  public void shutdownNoExit() {
-    _forwardChainer.shutdownNoExit();
+  public boolean shutdownNoExit() {
+    return _forwardChainer.shutdownNoExit();
   }
 
   public int nextBlankNode() {
@@ -507,6 +502,7 @@ public class Hfc {
   public HfcStatus status() {
     return new HfcStatus();
   }
+
 
   protected class HfcStatus {
 

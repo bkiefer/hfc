@@ -11,7 +11,6 @@ import de.dfki.lt.hfc.types.BlankNode;
  * @author (C) Hans-Ulrich Krieger
  * @version Mon May 30 15:52:06 CEST 2011
  * @see FunctionalOperator
- * @see MakeUri for a more restricted operator (which is slightly faster)
  * @since JDK 1.5
  */
 public final class MakeBlankNode extends FunctionalOperator {

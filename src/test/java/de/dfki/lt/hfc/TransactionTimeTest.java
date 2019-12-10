@@ -60,7 +60,7 @@ public class TransactionTimeTest {
 
   @AfterClass
   public static void finish() {
-    fc.shutdown();
+    fc.shutdownNoExit();
   }
 
   @Test
@@ -75,8 +75,6 @@ public class TransactionTimeTest {
     assertEquals(4218, bt.size());
     bt = q.query("SELECT * WHERE ?pol ?s <owl:equivalentClass> ?o ?ts");  // 2 result quadruples
     assertEquals(2, bt.size());
-//    bt = q.query("SELECTALL * WHERE ?pol ?s <owl:equivalentClass> ?o ?ts");  // 25 result quadruples
-//    assertEquals(8, bt.size());
   }
 
 }

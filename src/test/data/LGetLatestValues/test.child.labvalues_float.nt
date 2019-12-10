@@ -1,0 +1,12 @@
+<pal:lisa> <rdf:type> <dom:Child> "5544"^^<xsd:float> .
+<pal:lisa> <dom:hasLabValue> <pal:labval22> "5544"^^<xsd:float> .
+<pal:labval22> <dom:height> "133"^^<xsd:cm> "5544"^^<xsd:float> .
+<pal:labval22> <dom:weight> "28.2"^^<xsd:kg> "5544"^^<xsd:float> .
+<pal:labval22> <dom:bmi> "15.9"^^<xsd:kg_m2> "5544"^^<xsd:float> .
+<pal:labval22> <dom:hr> "75.0"^^<xsd:min-1> "5544"^^<xsd:float> .
+<pal:labval22> <dom:bsl> "162.0"^^<xsd:mg_dL> "5544"^^<xsd:float> .
+<pal:labval22> <dom:bsl> "9.0"^^<xsd:mmol_L> "5544"^^<xsd:float> .
+<pal:lisa> <dom:hasLabValue> <pal:labval33> "5577"^^<xsd:float> .
+<pal:labval33> <dom:weight> "28.6"^^<xsd:kg> "5577"^^<xsd:float> .
+<pal:labval33> <dom:bsl> "9.2"^^<xsd:mmol_L> "5577"^^<xsd:float> .
+<pal:labval33> <dom:bsl> "165.6"^^<xsd:mg_dL> "5577"^^<xsd:float> .

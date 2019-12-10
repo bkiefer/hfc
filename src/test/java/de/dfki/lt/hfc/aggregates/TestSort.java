@@ -11,7 +11,7 @@ import static org.junit.Assert.assertTrue;
 
 
 /**
- * This is a collection of test for the newly introduced aggregtates
+ * This is a collection of test for the newly introduced aggregates
  * {@link Sort} and {@link SortR}
  *
  * @author (C) Christian Willms

@@ -75,7 +75,7 @@ public abstract class FunctionalOperator extends Operator {
    * operator in its own definition; for instance, DTMax2 uses DTLess
    */
   public int callFunctionalOperator(String name, int[] args) {
-    return this.tupleStore.operatorRegistry.evaluate(name, OperatorRegistry.OPERATOR_PATH, args);
+    return this.tupleStore.evaluateOperator(name, OperatorRegistry.OPERATOR_PATH, args);
   }
 
   /**

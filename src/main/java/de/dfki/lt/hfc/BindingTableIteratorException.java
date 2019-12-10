@@ -15,10 +15,6 @@ package de.dfki.lt.hfc;
 
 public final class BindingTableIteratorException extends Exception {
 
-  public BindingTableIteratorException() {
-    super();
-  }
-
   public BindingTableIteratorException(String exceptionMessage) {
     super(exceptionMessage);
   }

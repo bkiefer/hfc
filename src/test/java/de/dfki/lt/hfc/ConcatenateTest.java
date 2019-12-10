@@ -1,51 +1,58 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.TestingUtils.*;
-import de.dfki.lt.hfc.types.XsdString;
-import static org.junit.Assert.*;
+
+import de.dfki.lt.hfc.types.*;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.junit.Test;
+import static de.dfki.lt.hfc.TestingUtils.checkResult;
+import static de.dfki.lt.hfc.TestingUtils.getTestResource;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-/**
- * @author Christophe Biwer, christophe.biwer@dfki.de
- */
-public final class ConcatenateTest {
+
+public class ConcatenateTest {
 
   @Test
-  public void testcleanUpTuple() throws FileNotFoundException,
-      WrongFormatException, IOException, InterruptedException {
+  public void testConcatenate() throws FileNotFoundException,
+          WrongFormatException, IOException {
 
     // load NamespaceManager
     NamespaceManager namespace = NamespaceManager.getInstance();
 
     // create TupleStore
     TupleStore store =
-        new TupleStore(false, true, true, 2, 5,0,1,2, 4, 2, namespace,
-            getTestResource("default.nt"));
+            new TupleStore(false, true, true, 2, 5,0,1,2, 4, 2, namespace,
+                    getTestResource("default.nt"));
+
+    // store values in TupleStore, save integer-key in database
+    int[] args = new int[5];
+
+    args[0] = store.putObject((new XsdString("FooBar")).toString());
+    args[1] = store.putObject((new XsdString("Bar")).toString());
+    args[2] = store.putObject((new XsdString("Foo")).toString());
 
     // create FunctionalOperator
     FunctionalOperator fop =
-        (FunctionalOperator)store.operatorRegistry
-        .checkAndRegister("de.dfki.lt.hfc.operators.Concatenate");
+            (FunctionalOperator)store.checkAndRegisterOperator("de.dfki.lt.hfc.operators.Concatenate");
 
-    // store values in TupleStore, save integer-key in database
-    int[] args = new int[7];
-
-    args[0] = store.putObject((new XsdString("foo")).toString());
-    args[1] = store.putObject((new XsdString("bar")).toString());
-    args[2] = store.putObject((new XsdString("föö")).toString());
-    args[3] = store.putObject((new XsdString("bär")).toString());
-
-    args[4] = store.putObject((new XsdString("foobar")).toString());
-    args[5] = store.putObject((new XsdString("foobarföö")).toString());
-    args[6] = store.putObject((new XsdString("foobarfööbär")).toString());
+    // create FEqual
+    FunctionalOperator feq =
+            (FunctionalOperator)store.checkAndRegisterOperator("de.dfki.lt.hfc.operators.IEqual");
 
     // do operation
-    assertEquals(args[4], fop.apply(new int[]{args[0], args[1]}));
-    assertEquals(args[5], fop.apply(new int[]{args[0], args[1], args[2]}));
-    assertEquals(args[6], fop.apply(new int[]{args[0], args[1], args[2], args[3]}));
+    int[] ids = new int[2];
+    ids[0] = args[1];
+    ids[1] = args[2];
+    int concat = fop.apply(ids);
+    System.out.println(store.getObject(concat));
+    assertEquals("BarFoo",store.getObject(concat).toName());
   }
+
 }
+
+

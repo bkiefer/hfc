@@ -349,7 +349,7 @@ public class Query {
         // construct the fully-qualified name, using the directory path where the operators live
         first = OperatorRegistry.OPERATOR_PATH + first;
         // check whether there is such a functional operator/Java class with this name
-        Operator op = this.tupleStore.operatorRegistry.checkAndRegister(first);
+        Operator op = this.tupleStore.checkAndRegisterOperator(first);
         // continue with the args
         args = new ArrayList<Integer>();
         for (int i = 1; i < filter.size(); i++) {

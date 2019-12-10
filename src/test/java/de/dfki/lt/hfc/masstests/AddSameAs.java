@@ -19,7 +19,6 @@ import java.io.*;
  */
 public class AddSameAs {
 
-  // shortIsDefault no longer a static field in class NamespaceManager
   public static Hfc getFwChainer(boolean eqRed)
       throws FileNotFoundException, WrongFormatException, IOException {
     Hfc fc = new Hfc(Config.getInstance(getTestResource(eqRed? "AddSameAs_eqRed.yml":"AddSameAs.yml")));
@@ -30,47 +29,30 @@ public class AddSameAs {
 
 	@Test
 	public void sameAsTestShortDefault() throws Exception {
-    //boolean save = NamespaceManager.shortIsDefault;  // NO LONGER A STATIC FIELD
-    //NamespaceManager.shortIsDefault = true;
     Hfc fc =	getFwChainer(true);
 		assertEquals(511049, fc._tupleStore.getAllTuples().size());
 		fc.shutdownNoExit();
-    //NamespaceManager.shortIsDefault = save;
 	}
 
   @Test
   public void sameAsTestLongDefault() throws Exception {
-    //boolean save = NamespaceManager.shortIsDefault;
-    //NamespaceManager.shortIsDefault = false;
     Hfc fc = getFwChainer(true);
     assertEquals(511049, fc._tupleStore.getAllTuples().size());
     fc.shutdownNoExit();
-
-    //NamespaceManager.shortIsDefault = save;
   }
 
   @Test
   public void sameAsTestNoEqRedShortDefault() throws Exception {
-    //boolean save = NamespaceManager.shortIsDefault;
-    //NamespaceManager.shortIsDefault = true;
-
     Hfc fc = getFwChainer(false);
     assertEquals(548142, fc._tupleStore.getAllTuples().size());
     fc.shutdownNoExit();
-
-    //NamespaceManager.shortIsDefault = save;
   }
 
   @Test
   public void sameAsTestNoEqRedLongDefault() throws Exception {
-    //boolean save = NamespaceManager.shortIsDefault;
-    //NamespaceManager.shortIsDefault = false;
-
     Hfc fc = getFwChainer(false);
     assertEquals(548142, fc._tupleStore.getAllTuples().size());
     fc.shutdownNoExit();
-
-    //NamespaceManager.shortIsDefault = save;
   }
 
 }

@@ -46,9 +46,6 @@ import java.util.SortedMap;
  * @see de.dfki.lt.hfc.Operator
  * the abstract superclass providing useful, already implemented methods, and access
  * to this.tupleStore
- * @see de.dfki.lt.hfc.BindingTable.BindingTable(SortedMap<Integer, Integer>,
- * Map<Integer, String>,
- * TupleStore)
  * this is the proper constructor that should be called when generating the resulting
  * binding table
  * @see de.dfki.lt.hfc.aggregates.CountDistinct for an example
@@ -62,7 +59,7 @@ public abstract class AggregationalOperator extends Operator {
    * note: an identical operator exist in (abstract) class FunctionalOperator
    */
   public int callFunctionalOperator(String name, int[] args) {
-    return this.tupleStore.operatorRegistry.evaluate(name, OperatorRegistry.OPERATOR_PATH, args);
+    return this.tupleStore.evaluateOperator(name, OperatorRegistry.OPERATOR_PATH, args);
   }
 
   /**

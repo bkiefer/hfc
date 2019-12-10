@@ -3,6 +3,7 @@ package de.dfki.lt.hfc.comparators;
 import de.dfki.lt.hfc.types.XsdUDateTime;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -21,7 +22,7 @@ public class XsdUDateTimeComp {
         c1 = new XsdUDateTime(2,1,1,0,0,0);
         c2 = new XsdUDateTime(2,1,2,0,0,0);
         assertTrue( c1.compareTo(c2)< 0);
-        //underspecify facts
+        //underspecified facts
         c1 = new XsdUDateTime(2,-1,1,-1,0,1);
         c2 = new XsdUDateTime(2,-1,2,-1,0,0);
         assertTrue( c1.compareTo(c2)< 0);
@@ -34,17 +35,16 @@ public class XsdUDateTimeComp {
     public void testEqual(){
         XsdUDateTime c1 = new XsdUDateTime(2,0,0,0,0,0);
         XsdUDateTime c2 = new XsdUDateTime(2,0,0,0,0,0);
-        assertTrue( c1.compareTo(c2) == 0);
+        assertEquals( c1.compareTo(c2),0);
         c1 = new XsdUDateTime(2,1,0,0,0,0);
         c2 = new XsdUDateTime(2,1,0,0,0,0);
-        assertTrue( c1.compareTo(c2)== 0);
+        assertEquals( c1.compareTo(c2),0);
         c1 = new XsdUDateTime(2,1,1,0,0,0);
         c2 = new XsdUDateTime(2,1,1,0,0,0);
-        assertTrue( c1.compareTo(c2)== 0);
-        assertTrue(c1.compareTo(c1)==0);
+        assertEquals( c1.compareTo(c2), 0);
         c1 = new XsdUDateTime(-1,-1,-1,-1,-1,-1);
         c2 = new XsdUDateTime(-1,-1,-1,-1,-1,-1);
-        assertTrue( c1.compareTo(c2)== 0);
+        assertEquals( c1.compareTo(c2), 0);
     }
 
     @Test

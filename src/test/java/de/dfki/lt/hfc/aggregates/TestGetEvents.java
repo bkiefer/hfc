@@ -244,13 +244,6 @@ public class TestGetEvents {
     }
 
 
-    private void printValidTuples(Set<String[]> validTuples) {
-
-        for (String[] tuple : validTuples) {
-
-        }
-    }
-
     private void populateTestSetup(Set<String[]> validTuples, long currentTime, long start, long end, int offset) {
         for (int i = 0; i < 20; i++) {
             long randomNum = ThreadLocalRandom.current().nextLong(start - (offset * DAY), currentTime + 1L);

@@ -519,7 +519,7 @@ public final class ForwardChainer {
                   input[j] = function.args[j] > 0 ? function.args[j] : binding[mediator[-function.args[j]]];
                 }
                 bnmediator[-clause[i]] =
-                        _tupleStore.operatorRegistry.evaluate(function.name, OperatorRegistry.OPERATOR_PATH, input);
+                        _tupleStore.evaluateOperator(function.name, OperatorRegistry.OPERATOR_PATH, input);
               } else {
                 bnmediator[-clause[i]] = nextBlankNode();
               }
@@ -763,12 +763,14 @@ public final class ForwardChainer {
   /**
    * only shutdowns the thread pool, but no System.exit() is called;
    * used by the XMLRPC server
+   * @return
    */
-  public void shutdownNoExit() {
+  public boolean shutdownNoExit() {
     this.threadPool.shutdown();
     if (_config.isVerbose()) {
       logger.debug("  shutting down thread pool ...");
     }
+    return this.threadPool.isShutdown();
   }
 
   

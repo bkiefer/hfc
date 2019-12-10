@@ -50,9 +50,7 @@ public final class OperatorRegistry {
     this.nameToFo = new Hashtable<String, Operator>();
   }
 
-  /**
-   * @see de.dfki.lt.hfc.TupleStore.copyTupleStore()
-   */
+
   protected OperatorRegistry(TupleStore tupleStore, OperatorRegistry operatorRegistry) {
     this.tupleStore = tupleStore;
     this.nameToFo = new Hashtable<String, Operator>(operatorRegistry.nameToFo);
@@ -65,10 +63,6 @@ public final class OperatorRegistry {
    *
    * @return an int representing the return value
    * special values of interest:
-   * @see de.dfki.lt.hfc.evaluate(String className, BindingTable[] args)
-   * @see FunctionalOperator.TRUE
-   * @see FunctionalOperator.FALSE
-   * @see FunctionalOperator.UNBOUND
    */
   public int evaluate(String className, int[] args) {
     Operator op = this.nameToFo.get(className);

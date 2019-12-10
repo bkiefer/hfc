@@ -115,14 +115,14 @@ public class QRelationAllenUtilities {
 
   static XsdAnySimpleType increment(int id) {
     XsdAnySimpleType type = (XsdAnySimpleType) tupleStore.getObject(id);
-    FunctionalOperator op = (FunctionalOperator) tupleStore.getOperator(OperatorRegistry.OPERATOR_PATH + typeToIncrement.get(type.getClass()));
+    FunctionalOperator op = (FunctionalOperator) tupleStore.checkAndRegisterOperator(OperatorRegistry.OPERATOR_PATH + typeToIncrement.get(type.getClass()));
     int incrementedObject_ID = op.apply(new int[]{id});
     return (XsdAnySimpleType) tupleStore.getObject(incrementedObject_ID);
   }
 
   static XsdAnySimpleType decrement(int id) {
     XsdAnySimpleType type = (XsdAnySimpleType) tupleStore.getObject(id);
-    FunctionalOperator op = (FunctionalOperator) tupleStore.getOperator(OperatorRegistry.OPERATOR_PATH + typeToDecrement.get(type.getClass()));
+    FunctionalOperator op = (FunctionalOperator) tupleStore.checkAndRegisterOperator(OperatorRegistry.OPERATOR_PATH + typeToDecrement.get(type.getClass()));
     int decrementedObject_ID = op.apply(new int[]{id});
     return (XsdAnySimpleType) tupleStore.getObject(decrementedObject_ID);
   }

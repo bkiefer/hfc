@@ -63,7 +63,7 @@ public class XsdSimpleTypesTest {
   }
 
   @Test
-  public void testBoolean() throws WrongFormatException {
+  public void testBoolean(){
     assertEquals("\"true\"^^<xsd:boolean>", new XsdBoolean(true).toString());
     assertEquals("true", new XsdBoolean("\"true\"^^<xsd:boolean>").toName());
   }
@@ -75,12 +75,10 @@ public class XsdSimpleTypesTest {
     assertEquals(3, xt.month);
     assertEquals(4, xt.day);
     assertEquals("\"-12000-03-04\"^^<xsd:date>", xt.toString());
-//    assertEquals("\"-12000-03-04\"^^<http://www.w3.org/2001/XMLSchema#date>", xt.toString());
 
     xt = new XsdDate(2009, 1, 12);
     assertEquals("\"2009-01-12\"^^<xsd:date>", xt.toString());
     assertEquals("2009-01-12", xt.toName());
-//    assertEquals("\"2009-01-12\"^^<http://www.w3.org/2001/XMLSchema#date>", xt.toString());
   }
 
   @Test
@@ -90,14 +88,10 @@ public class XsdSimpleTypesTest {
     assertEquals(23, xt.hour);
     assertEquals(1.123, xt.second, 0.001);
     assertEquals("\"-12000-03-04T23:00:01.123\"^^<xsd:dateTime>", xt.toString());
-//    assertEquals(
-//        "\"-12000-03-04T23:00:01.123\"^^<http://www.w3.org/2001/XMLSchema#dateTime>",
-//        xt.toString(false));
 
     xt = new XsdDateTime(false, 2009, 1, 12, 1, 0, 3.456F);
     assertEquals("\"-2009-01-12T01:00:03.456\"^^<xsd:dateTime>", xt.toString());
     assertEquals("-2009-01-12T01:00:03.456", xt.toName());
-//    assertEquals("\"-2009-01-12T01:00:03.456\"^^<http://www.w3.org/2001/XMLSchema#dateTime>", xt.toString());
 
     // Month starts at zero, day at one!
     Date d = new Date(2001-1900, 8, 11, 11, 30, 00);
@@ -125,15 +119,10 @@ public class XsdSimpleTypesTest {
     assertEquals(0, xt.hour);
     assertEquals(0.0, xt.second, 0.0001);
     assertEquals("\"-P12000Y4D\"^^<xsd:duration>", xt.toString());
-//    assertEquals("\"-P12000Y4D\"^^<http://www.w3.org/2001/XMLSchema#duration>",
-//        xt.toString());
 
     xt = new XsdDuration(false, 2009, 1, 12, 1, 0, 3.456F);
     assertEquals("\"-P2009Y1M12D1H3.456S\"^^<xsd:duration>", xt.toString());
     assertEquals("-P2009Y1M12D1H3.456S", xt.toName());
-//    assertEquals(
-//        "\"-P2009Y1M12D1H3.456S\"^^<http://www.w3.org/2001/XMLSchema#duration>",
-//        xt.toString());
   }
 
   @Test
@@ -141,27 +130,21 @@ public class XsdSimpleTypesTest {
     XsdFloat xf = new XsdFloat("\"3.1415\"^^<xsd:float>");
     assertEquals(3.1415, xf.value, 0.001);
     assertEquals("\"3.1415\"^^<xsd:float>", xf.toString());
-//    assertEquals("\"3.1415\"^^<http://www.w3.org/2001/XMLSchema#float>", xf.toString());
 
     xf = new XsdFloat(2.71828f);
     assertEquals(2.71828, xf.value, 0.001);
     assertEquals("\"2.71828\"^^<xsd:float>", xf.toString());
-//    assertEquals("\"2.71828\"^^<http://www.w3.org/2001/XMLSchema#float>", xf.toString());
   }
 
   @Test
   public void testGDay() {
     XsdGDay xt = new XsdGDay("\"---13\"^^<xsd:gDay>");
     assertEquals(13, xt.day);
-//    assertEquals("\"---13\"^^<http://www.w3.org/2001/XMLSchema#gDay>",
-//        xt.toString());
     assertEquals("\"---13\"^^<xsd:gDay>", xt.toString());
 
     xt = new XsdGDay(1);
     assertEquals("---01", xt.toName());
     assertEquals("\"---01\"^^<xsd:gDay>", xt.toString());
-//    assertEquals("\"---01\"^^<http://www.w3.org/2001/XMLSchema#gDay>",
-//        xt.toString());
   }
 
   @Test
@@ -169,14 +152,10 @@ public class XsdSimpleTypesTest {
     XsdGMonth xt = new XsdGMonth("\"--03\"^^<xsd:gMonth>");
     assertEquals(3, xt.month);
     assertEquals("\"--03\"^^<xsd:gMonth>", xt.toString());
-//    assertEquals("\"--03\"^^<http://www.w3.org/2001/XMLSchema#gMonth>",
-//        xt.toString());
 
     xt = new XsdGMonth(1);
     assertEquals("\"--01\"^^<xsd:gMonth>", xt.toString());
     assertEquals("--01", xt.toName());
-//    assertEquals("\"--01\"^^<http://www.w3.org/2001/XMLSchema#gMonth>",
-//        xt.toString());
   }
 
   @Test
@@ -185,14 +164,9 @@ public class XsdSimpleTypesTest {
     assertEquals(3, xt.month);
     assertEquals(4, xt.day);
     assertEquals("\"--03-04\"^^<xsd:gMonthDay>", xt.toString());
-//    assertEquals("\"--03-04\"^^<http://www.w3.org/2001/XMLSchema#gMonthDay>",
-//        xt.toString());
-
     xt = new XsdGMonthDay(1, 12);
     assertEquals("--01-12", xt.toName());
     assertEquals("\"--01-12\"^^<xsd:gMonthDay>", xt.toString());
-//    assertEquals("\"--01-12\"^^<http://www.w3.org/2001/XMLSchema#gMonthDay>",
-//        xt.toString());
   }
 
   @Test
@@ -200,20 +174,15 @@ public class XsdSimpleTypesTest {
     XsdGYear xt = new XsdGYear("\"2000\"^^<xsd:gYear>");
     assertEquals(2000, xt.year);
     assertEquals("\"2000\"^^<xsd:gYear>", xt.toString());
-//    assertEquals("\"2000\"^^<http://www.w3.org/2001/XMLSchema#gYear>",
-//        xt.toString());
 
     xt = new XsdGYear("\"-19999\"^^<xsd:gYear>");
     assertEquals(19999, xt.year);
     assertEquals("\"-19999\"^^<xsd:gYear>", xt.toString());
-//    assertEquals("\"-19999\"^^<http://www.w3.org/2001/XMLSchema#gYear>",
-//        xt.toString());
 
     xt = new XsdGYear(2009);
     assertEquals("2009", xt.toName());
     assertEquals("\"2009\"^^<xsd:gYear>", xt.toString());
-//    assertEquals("\"2009\"^^<http://www.w3.org/2001/XMLSchema#gYear>",
-//        xt.toString());
+
   }
 
   @Test
@@ -222,14 +191,12 @@ public class XsdSimpleTypesTest {
     assertEquals(12000, xt.year);
     assertEquals(3, xt.month);
     assertEquals("\"-12000-03\"^^<xsd:gYearMonth>", xt.toString());
-//    assertEquals("\"-12000-03\"^^<http://www.w3.org/2001/XMLSchema#gYearMonth>",
-//        xt.toString());
+
 
     xt = new XsdGYearMonth(2009, 1);
     assertEquals("2009-01", xt.toName());
     assertEquals("\"2009-01\"^^<xsd:gYearMonth>", xt.toString());
-//    assertEquals("\"2009-01\"^^<http://www.w3.org/2001/XMLSchema#gYearMonth>",
-//        xt.toString());
+
   }
 
   @Test
@@ -237,20 +204,14 @@ public class XsdSimpleTypesTest {
     XsdInt xi = new XsdInt("\"42\"^^<xsd:int>");
     assertEquals(42, xi.value);
     assertEquals("\"42\"^^<xsd:int>", xi.toString());
-//    assertEquals("\"42\"^^<http://www.w3.org/2001/XMLSchema#int>",
-//        xi.toString());
 
     xi = new XsdInt("\"-42\"^^<xsd:int>");
     assertEquals(-42, xi.value);
     assertEquals("\"-42\"^^<xsd:int>", xi.toString());
-//    assertEquals("\"-42\"^^<http://www.w3.org/2001/XMLSchema#int>",
-//        xi.toString());
 
     xi = new XsdInt(2);
     assertEquals(2, xi.value);
     assertEquals("\"2\"^^<xsd:int>", xi.toString());
-//    assertEquals("\"2\"^^<http://www.w3.org/2001/XMLSchema#int>",
-//        xi.toString());
   }
 
   @Test
@@ -258,20 +219,15 @@ public class XsdSimpleTypesTest {
     XsdLong xi = new XsdLong("\"42\"^^<xsd:long>");
     assertEquals(42, xi.value);
     assertEquals("\"42\"^^<xsd:long>", xi.toString());
-//    assertEquals("\"42\"^^<http://www.w3.org/2001/XMLSchema#long>",
-//        xi.toString());
 
     xi = new XsdLong("\"-42\"^^<xsd:long>");
     assertEquals(-42, xi.value);
     assertEquals("\"-42\"^^<xsd:long>", xi.toString());
-//    assertEquals("\"-42\"^^<http://www.w3.org/2001/XMLSchema#long>",
-//        xi.toString());
 
     xi = new XsdLong(2);
     assertEquals(2, xi.value);
     assertEquals("\"2\"^^<xsd:long>", xi.toString());
-//    assertEquals("\"2\"^^<http://www.w3.org/2001/XMLSchema#long>",
-//        xi.toString());
+
   }
 
   @Test
@@ -280,14 +236,10 @@ public class XsdSimpleTypesTest {
     assertEquals(42.0, mon.amount, 0.001);
     assertEquals("USD", mon.currency);
     assertEquals("\"42.0USD\"^^<xsd:monetary>", mon.toString());
-//    assertEquals("\"42.0USD\"^^<http://www.w3.org/2001/XMLSchema#monetary>",
-//        mon.toString());
 
     mon = new XsdMonetary(4.31, "EUR");
     assertEquals("4.31EUR", mon.toName());
     assertEquals("\"4.31EUR\"^^<xsd:monetary>", mon.toString());
-//    assertEquals("\"4.31EUR\"^^<http://www.w3.org/2001/XMLSchema#monetary>",
-//        mon.toString());
 
   }
 
@@ -297,14 +249,10 @@ public class XsdSimpleTypesTest {
     assertEquals(-1, xt.hour);
     assertEquals(-1.0, xt.second, 0.001);
     assertEquals("\"2000-??-04T??:??:??.???\"^^<xsd:uDateTime>", xt.toString());
-//    assertEquals("\"2000-??-04T??:??:??.???\"^^<http://www.w3.org/2001/XMLSchema#uDateTime>",
-//        xt.toString());
 
     // an instance within the 12th Jan 2009
     xt = new XsdUDateTime(2009, 1, 12, -1, -1, -1F);
     assertEquals("\"2009-01-12T??:??:??.???\"^^<xsd:uDateTime>", xt.toString());
-//    assertEquals("\"2009-01-12T??:??:??.???\"^^<http://www.w3.org/2001/XMLSchema#uDateTime>",
-//        xt.toString());
   }
 
   @Test
@@ -319,15 +267,11 @@ public class XsdSimpleTypesTest {
     assertEquals("hello", xs.value);
     assertNull(xs.languageTag);
     assertEquals("\"hello\"^^<xsd:string>", xs.toString());
-//    assertEquals("\"hello\"^^<http://www.w3.org/2001/XMLSchema#string>",
-//        xs.toString());
 
     xs = new XsdString("\"hello\"");
     assertEquals("hello", xs.value);
     assertNull(xs.languageTag);
     assertEquals("\"hello\"^^<xsd:string>", xs.toString());
-//    assertEquals("\"hello\"^^<http://www.w3.org/2001/XMLSchema#string>",
-//        xs.toString());
 
     xs = new XsdString("\"hello\"@en");
     assertEquals("hello", xs.value);
@@ -339,8 +283,6 @@ public class XsdSimpleTypesTest {
     assertEquals("hello", xs.value);
     assertNull(xs.languageTag);
     assertEquals("\"hello\"^^<xsd:string>", xs.toString());
-//    assertEquals("\"hello\"^^<http://www.w3.org/2001/XMLSchema#string>",
-//        xs.toString());
 
     xs = new XsdString("hello", "en");
     assertEquals("hello", xs.value);
@@ -367,15 +309,11 @@ public class XsdSimpleTypesTest {
     assertEquals("he\\llo", xs.value);
     assertEquals(null, xs.languageTag);
     assertEquals("\"he\\\\llo\"^^<xsd:string>", xs.toString());
-//    assertEquals("\"he\\\\llo\"^^<http://www.w3.org/2001/XMLSchema#string>",
-//        xs.toString());
 
     xs = new XsdString("\"he\\llo\\");
     assertEquals("\"he\\llo\\", xs.value);
     assertEquals(null, xs.languageTag);
     assertEquals("\"\\\"he\\\\llo\\\\\"^^<xsd:string>", xs.toString());
-//    assertEquals("\"\\\"he\\\\llo\\\\\"^^<http://www.w3.org/2001/XMLSchema#string>",
-//        xs.toString());
   }
 
   @Test

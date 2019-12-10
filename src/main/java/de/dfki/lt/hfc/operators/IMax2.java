@@ -28,15 +28,5 @@ public final class IMax2 extends FunctionalOperator {
     else
       return args[1];
   }
-	
-	/* this version registers the maximum which is not needed, since the max is contained in the arguments
-	public int apply(int[] args) {
-		final int first = ((XsdInt)getObject(args[0])).value;
-		final int second = ((XsdInt)getObject(args[1])).value;
-		final int max = Math.max(first, second);
-		XsdInt I = new XsdInt(max);
-		return registerObject(I.toString(de.dfki.lt.hfc.NamespaceManager.shortIsDefault), I);
-	}
-	*/
 
 }

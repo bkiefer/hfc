@@ -107,21 +107,6 @@ public class Config {
     return getInstance(configPath);
   }
 
-
-  /**
-   * @Deprecated for Tests only
-   * @param noOfCores the number of cores used for parallelling the closure computation
-   * @param verbose
-   * @param rdfCheck
-   * @param eqReduction
-   * @param minNoOfArgs
-   * @param maxNoOfArgs
-   * @param noOfAtoms
-   * @param noOfTuples
-   * @param tupleFile
-   * @param ruleFile
-   * @return
-   */
   public static Config getInstance(int noOfCores, boolean verbose, boolean rdfCheck, boolean eqReduction,
                                    int minNoOfArgs, int maxNoOfArgs, int noOfAtoms, int noOfTuples,
                                    String tupleFile, String ruleFile) throws FileNotFoundException {
