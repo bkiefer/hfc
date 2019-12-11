@@ -217,12 +217,12 @@ if(c==2)closeRelation("");}
 
 \^\^<xsd:{NONWHITESPACE}+> {
                             c++;
-                           clause.add("\""+handleUnicode(string.toString())+"\"" + ts.namespace.normalizeNamespace(yytext()));
+                           clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
                            string.setLength(0);if(c==2)if(isRelation)closeRelation("");}
 
 \^\^<{NONWHITESPACE}+#{NONWHITESPACE}+> {
                             c++;
-                            clause.add("\""+handleUnicode(string.toString())+"\"" + ts.namespace.normalizeNamespace(yytext()));
+                            clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
                             string.setLength(0);if(c==2)if(isRelation)closeRelation("");}
 
 \" {  interval = true; yybegin(STRING);}
@@ -266,10 +266,10 @@ clause = new ArrayList<>();}
 
 \^\^<xsd:{NONWHITESPACE}+> {
 
-                           clause.add("\""+handleUnicode(string.toString())+"\"" + ts.namespace.normalizeNamespace(yytext()));
+                           clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
                            string.setLength(0);}
 
-\^\^<{NONWHITESPACE}+#{NONWHITESPACE}+> {clause.add("\""+handleUnicode(string.toString())+"\"" + ts.namespace.normalizeNamespace(yytext()));
+\^\^<{NONWHITESPACE}+#{NONWHITESPACE}+> {clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
 
                             string.setLength(0);}
 
@@ -314,10 +314,10 @@ clause = new ArrayList<>();}
 
 \^\^<xsd:{NONWHITESPACE}+> {
 
-                           clause.add("\""+handleUnicode(string.toString())+"\"" + ts.namespace.normalizeNamespace(yytext()));
+                           clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
                            string.setLength(0);}
 
-\^\^<{NONWHITESPACE}+#{NONWHITESPACE}+> {clause.add("\""+handleUnicode(string.toString())+"\"" + ts.namespace.normalizeNamespace(yytext()));
+\^\^<{NONWHITESPACE}+#{NONWHITESPACE}+> {clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
 
                             string.setLength(0);}
 
@@ -349,10 +349,10 @@ clause = new ArrayList<>();}
 
 \^\^<xsd:{NONWHITESPACE}+> {
 
-                           clause.add("\""+handleUnicode(string.toString())+"\"" + ts.namespace.normalizeNamespace(yytext()));
+                           clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
                            string.setLength(0);}
 
-\^\^<{NONWHITESPACE}+#{NONWHITESPACE}+> {clause.add("\""+handleUnicode(string.toString())+"\"" + ts.namespace.normalizeNamespace(yytext()));
+\^\^<{NONWHITESPACE}+#{NONWHITESPACE}+> {clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
 
                             string.setLength(0);}
 
