@@ -172,7 +172,7 @@ public class TupleStoreTest {
  @Test
  public void testParseAtom() throws IOException, WrongFormatException, QueryParseException {
   TupleStore objectToTest = new TupleStore(Config.getInstance(getTestResource("Empty.yml")));
-  objectToTest.readTuples(getTestResource("ReadTest", "testAtoms.nt"));
+  objectToTest.readTuples(getTestResource("ReadTest", "testAtoms.nt"),false);
 
   assertEquals("Expected 12 tuples but was " + objectToTest.getAllTuples().size(),
           12, objectToTest.getAllTuples().size());
@@ -199,7 +199,7 @@ public class TupleStoreTest {
  @Test
  public void testUnicodeHandling() throws IOException, WrongFormatException, QueryParseException {
   TupleStore objectToTest = new TupleStore(Config.getInstance(getTestResource("Empty.yml")));
-  objectToTest.readTuples(getTestResource("ReadTest", "testUnicodes.nt"));
+  objectToTest.readTuples(getTestResource("ReadTest", "testUnicodes.nt"),false);
 
   String[][] expected = {
           {"\"Hello foo\"^^<xsd:string>"},
@@ -329,7 +329,7 @@ public class TupleStoreTest {
   objectfortest.writeTuples(file);
   int out = objectfortest.getAllTuples().size();
   TupleStore in = new TupleStore(Config.getDefaultConfig());
-  in.readTuples(file);
+  in.readTuples(file,false);
   assertEquals(out, in.getAllTuples().size());
  }
 
@@ -343,7 +343,7 @@ public class TupleStoreTest {
   int out = objectfortest.getAllTuples().size();
 
   TupleStore in = new TupleStore(Config.getDefaultConfig());
-  in.readTuples(file);
+  in.readTuples(file,false);
   assertEquals(out, in.getAllTuples().size());
   // TODO test for case with exception
  }
@@ -360,7 +360,7 @@ public class TupleStoreTest {
   int out = objectfortest.getAllTuples().size();
 
   TupleStore in = new TupleStore(Config.getDefaultConfig());
-  in.readTuples(file);
+  in.readTuples(file, false);
   assertEquals(out, in.getAllTuples().size());
   // TODO check for case with exception
   // verbose = false

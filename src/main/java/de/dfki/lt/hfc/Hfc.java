@@ -189,7 +189,7 @@ public class Hfc {
    * @throws WrongFormatException
    */
   public void readTuples(String filename) throws FileNotFoundException, IOException, WrongFormatException {
-    _tupleStore.readTuples(filename);
+    _tupleStore.readTuples(filename, false);
   }
 
 
@@ -298,10 +298,13 @@ public class Hfc {
 
   public void uploadTuples(String filename) throws IOException, WrongFormatException {
 
-      _tupleStore.readTuples(filename);
+      _tupleStore.readTuples(filename, false);
 
   }
 
+  public void uploadTuples(String filename, boolean addTS) throws IOException, WrongFormatException{
+    _tupleStore.readTuples(filename, addTS);
+  }
 
 
   /**

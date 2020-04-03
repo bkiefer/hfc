@@ -24,7 +24,7 @@ public class LIsValidTest {
     config.namespace = ns;
     config.setVerbose(false);
     TupleStore ts = new TupleStore(config);
-    ts.readTuples(getResource("tuples.nt"));
+    ts.readTuples(getResource("tuples.nt"),false);
     Query q = new Query(ts);
     BindingTable bt
         = q.query("SELECT ?o WHERE <logic:true> <dom:prof> <dom:treats> "

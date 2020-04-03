@@ -49,7 +49,6 @@ public class ConcatenateTest {
     ids[0] = args[1];
     ids[1] = args[2];
     int concat = fop.apply(ids);
-    System.out.println(store.getObject(concat));
     assertEquals("BarFoo",store.getObject(concat).toName());
   }
 

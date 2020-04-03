@@ -31,7 +31,7 @@ public class BindingTableIteratorTest {
     config.updateConfig(update);
     ts = new TupleStore(config);
     ts.verbose = false;
-    ts.readTuples(getTestResource("default.nt"));
+    ts.readTuples(getTestResource("default.nt"),false);
     q = new Query(ts);
   }
 

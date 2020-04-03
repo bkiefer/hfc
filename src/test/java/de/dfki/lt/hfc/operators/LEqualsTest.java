@@ -27,7 +27,7 @@ public class LEqualsTest {
     config.namespace = ns;
     config.setVerbose(false) ;
     ts = new TupleStore(config);
-    ts.readTuples(getResource("tuples.nt"));
+    ts.readTuples(getResource("tuples.nt"),false);
     q = new Query(ts);
   }
 

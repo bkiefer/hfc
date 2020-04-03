@@ -280,7 +280,7 @@ public final class TupleStore {
   this.outputCharacterEncoding = config.getCharacterEncoding();
   if (!config.getTupleFiles().isEmpty())
    for (String tuplefile : config.getTupleFiles()) {
-    readTuples(tuplefile);
+    readTuples(tuplefile, false);
    }
  }
 
@@ -302,7 +302,7 @@ public final class TupleStore {
   init(verbose, rdfCheck, eqReduction, minNoOfArgs, maxNoOfArgs,
           subjectPosition, predicatePosition, objectPosition,
           noOfAtoms, noOfTuples);
-  readTuples(tupleFile);
+  readTuples(tupleFile, false);
  }
 
  /**
@@ -328,7 +328,7 @@ public final class TupleStore {
  public TupleStore(NamespaceManager namespace, String tupleFile)
          throws FileNotFoundException, IOException, WrongFormatException {
   this(namespace);
-  readTuples(tupleFile);
+  readTuples(tupleFile, false);
  }
 
  /**
@@ -1169,11 +1169,15 @@ public final class TupleStore {
   * @throws IOException
   * @throws WrongFormatException
   */
- public void readTuples(String filename) throws FileNotFoundException, IOException, WrongFormatException {
+ public void readTuples(String filename, boolean addTS) throws FileNotFoundException, IOException, WrongFormatException {
   if (this.verbose)
    logger.debug("\n  reading tuples from " + filename + " ...");
-  readTuples(Files.newBufferedReader(new File(filename).toPath(),
-          Charset.forName(this.inputCharacterEncoding)));
+  if(addTS)
+   readTuples(Files.newBufferedReader(new File(filename).toPath(),
+          Charset.forName(this.inputCharacterEncoding)), System.currentTimeMillis());
+  else
+   readTuples(Files.newBufferedReader(new File(filename).toPath(),
+           Charset.forName(this.inputCharacterEncoding)));
  }
 
 

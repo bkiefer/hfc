@@ -37,7 +37,8 @@ public class Config {
    */
   private static final Logger logger = LoggerFactory.getLogger(Config.class);
 
-  private static String path = "./src/main/resources/";
+  private static String path = "extra-resources/";
+  //private static String path = "./src/main/resources/";
 
   private final Map<String, Object> configs;
 
@@ -103,7 +104,9 @@ public class Config {
    * @return an instance of Config containing the default settings
    */
   public static Config getDefaultConfig() throws IOException {
+    System.err.println(System.getProperty("user.dir"));
       String configPath = path + "DefaultConfig.yml";
+
     return getInstance(configPath);
   }
 
@@ -121,7 +124,7 @@ public class Config {
     config.configs.put(MAXARGS, maxNoOfArgs);
     config.configs.put(NOOFATOMS, noOfAtoms);
     config.configs.put(NOOFTUPLES, noOfTuples);
-    List tupleFiles = new ArrayList();
+    ArrayList tupleFiles = new ArrayList();
     tupleFiles.add(tupleFile);
     config.configs.put(TUPLEFILES, tupleFiles);
     List ruleFiles = new ArrayList();
