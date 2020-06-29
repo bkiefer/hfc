@@ -24,6 +24,9 @@
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
     <encoding>UTF-8</encoding>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <antlr.version>4.7.1</antlr.version>
+    <antlr4test-maven-plugin.version>1.10</antlr4test-maven-plugin.version>
   </properties>
 
   <repositories>
@@ -111,13 +114,10 @@
 
   <dependencies>
 
-
-
     <dependency>
       <groupId>com.antlr.grammarsv4</groupId>
       <artifactId>sparql</artifactId>
       <version>1.0-SNAPSHOT</version>
-      <type>jar</type>
     </dependency>
 
     <dependency>
@@ -125,7 +125,6 @@
       <artifactId>snakeyaml</artifactId>
       <version>1.17</version>
     </dependency>
-
 
     <dependency>
       <groupId>jline</groupId>
