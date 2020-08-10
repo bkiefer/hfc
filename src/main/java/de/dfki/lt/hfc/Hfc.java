@@ -195,6 +195,7 @@ public class Hfc {
 
   public void readTuples(File tuples, long timestamp)
           throws WrongFormatException, IOException {
+    logger.info("Read tuples from " + tuples.toPath());
     _tupleStore.readTuples(Files.newBufferedReader(tuples.toPath(),
             Charset.forName(_tupleStore.inputCharacterEncoding)),
             null, new XsdLong(timestamp).toString());

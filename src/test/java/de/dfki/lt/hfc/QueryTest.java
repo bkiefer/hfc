@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import static de.dfki.lt.hfc.TestingUtils.checkResult;
+import static de.dfki.lt.hfc.TestingUtils.printExpected;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -215,6 +216,7 @@ public class QueryTest {
   query = fc.getQuery();
   bt = query.query("SELECT ?s WHERE ?s <dom:bsl> ?o ?t FILTER ?s != <pal:labval33> AGGREGATE ?number = CountDistinct ?s & ?number2 = CountDistinct <pal:labval33>");
   checkResult(fc, bt, expected, "?number", "?number2");
+  printExpected(bt, fc._tupleStore);
  }
 
  @Test

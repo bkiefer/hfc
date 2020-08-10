@@ -321,7 +321,7 @@ class TupleParser {
   private void handleEOF() throws WrongFormatException {
           handleNewLine();
           if (ts.verbose) {
-            logger.info("\n  read " + ts.noOfTuples + " proper tuples");
+            //logger.info("\n  read " + ts.noOfTuples + " proper tuples");
             logger.info("  overall " + ts.allTuples.size() + " unique tuples");
                  // some further statistics
             int noOfURIs = 0, noOfBlanks = 0, noOfAtoms = 0;

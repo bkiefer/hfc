@@ -1171,7 +1171,7 @@ public final class TupleStore {
   */
  public void readTuples(String filename, boolean addTS) throws FileNotFoundException, IOException, WrongFormatException {
   if (this.verbose)
-   logger.debug("\n  reading tuples from " + filename + " ...");
+   logger.info("\n  reading tuples from " + filename + " ...");
   if(addTS)
    readTuples(Files.newBufferedReader(new File(filename).toPath(),
           Charset.forName(this.inputCharacterEncoding)), System.currentTimeMillis());
@@ -1186,7 +1186,7 @@ public final class TupleStore {
   */
  public void readTuples(String filename, String front, String... backs)
          throws FileNotFoundException, IOException, WrongFormatException {
-  logger.debug("\n  reading tuples from " + filename + " ...");
+  logger.info("\n  reading tuples from " + filename + " ...");
   readTuples(Files.newBufferedReader(new File(filename).toPath(),
           Charset.forName(this.inputCharacterEncoding)), front, backs);
  }
