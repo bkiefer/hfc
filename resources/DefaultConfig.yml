@@ -6,6 +6,7 @@ noOfAtoms: 100000
 eqReduction: false
 garbageCollection: false
 cleanUpRepository: true
+persistenceFile: resources/persistence.nt
 
 shortIsDefault: true
 namespaces:
@@ -29,6 +30,6 @@ rdfCheck: true
 exitOnError: true
 
 ruleFiles:
-- extra-resources/default.rdl
+- resources/default.rdl
 
 iterations: 2147483647

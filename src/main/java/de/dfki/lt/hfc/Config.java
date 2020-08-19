@@ -20,7 +20,7 @@ public class Config {
   public static final String EQREDUCTION = "eqReduction";
   public static final String TUPLEFILES = "tupleFiles";
   public static final String RULEFILES = "ruleFiles";
-  public static final String PERSIST = "persistencyFile";
+  public static final String PERSIST = "persistenceFile";
   public static final String ITERATIONS = "iterations";
   public static final String SHORTISDEFAULT = "shortIsDefault";
   public static final String CLEANUP = "cleanUpRepository";
@@ -37,7 +37,7 @@ public class Config {
    */
   private static final Logger logger = LoggerFactory.getLogger(Config.class);
 
-  private static String path = "extra-resources/";
+  private static String path = "resources/";
   //private static String path = "./src/main/resources/";
 
   private final Map<String, Object> configs;
@@ -295,5 +295,9 @@ public class Config {
 
   public void updateConfig(String key, Object value) {
       configs.put(key, value);
+  }
+
+  public String getPersist(){
+    return (String) configs.get(PERSIST);
   }
 }
