@@ -171,7 +171,14 @@ public class TestingUtils {
     check(bt.iterator(), expected,
         new NextAsIntCall(hfc._tupleStore));
   }
-
+  
+  public static void checkDoubleResult(Hfc hfc, BindingTable bt, Double expected) {
+    assertTrue(bt.iterator().hasNext());
+    int[] row = bt.iterator().next();
+    Double actual = (Double)hfc._tupleStore.getObject(row[0]).toJava();
+    assertEquals(expected, actual, 1E-5);
+  }
+  
   public static void checkResult(Hfc hfc, BindingTable bt, String[][] expected, String ... vars) {
     try {
       check(bt.iterator(vars), expected,

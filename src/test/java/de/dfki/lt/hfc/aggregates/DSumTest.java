@@ -5,8 +5,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static de.dfki.lt.hfc.TestingUtils.checkResult;
-import static org.junit.Assert.*;
+import static de.dfki.lt.hfc.TestingUtils.checkDoubleResult;
 
 public class DSumTest {
  static Hfc fc;
@@ -34,17 +33,12 @@ public class DSumTest {
  public void testDSum() throws QueryParseException, BindingTableIteratorException {
   Query q = new Query(fc._tupleStore);
 
-
-  String[][] expected = {
-          {"\"499.94999999999993\"^^<xsd:double>"}
-  };
-
   BindingTable bt = q.query("SELECT ?child ?prop ?val ?t "
           + "WHERE ?child <rdf:type> <dom:Child> ?t1 "
           + "& ?child <dom:hasLabValue> ?lv ?t2 "
           + "& ?lv ?prop ?val ?t "
           + "AGGREGATE ?time = DSum ?t ");
   // check whether all expected entries were found
-  checkResult(fc, bt, expected, "?time");
+  checkDoubleResult(fc, bt, 499.95);
  }
 }

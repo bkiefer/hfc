@@ -104,7 +104,7 @@ public final class LSumTest {
     ids[0] = args[0];
     ids[1] = args[1];
     int sum = fop.apply(ids);
-    System.out.println(store.getObject(sum));
+    //System.out.println(store.getObject(sum));
     assertEquals(180,((XsdInt)store.getObject(sum)).value);
   }
 
@@ -137,7 +137,7 @@ public final class LSumTest {
 
     // do operation
     int sum = fop.apply(args);
-    System.out.println(store.getObject(sum));
+    //System.out.println(store.getObject(sum));
     assertEquals(360,((XsdInt)store.getObject(sum)).value);
   }
 
@@ -173,7 +173,7 @@ public final class LSumTest {
     int[] ids = new int[1];
     ids[0] = args[0];
     int sum = fop.apply(ids);
-    System.out.println(store.getObject(sum));
+    //System.out.println(store.getObject(sum));
     assertEquals(100,((XsdInt)store.getObject(sum)).value);
   }
 }
