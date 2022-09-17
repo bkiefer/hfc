@@ -167,10 +167,12 @@ public class TestingUtils {
     printNext(bt.iterator(), new NextAsIntCall(store));
   }
 
+  /*
   private static void checkResult(Hfc hfc, BindingTable bt, String[][] expected){
     check(bt.iterator(), expected,
         new NextAsIntCall(hfc._tupleStore));
   }
+  */
   
   public static void checkDoubleResult(Hfc hfc, BindingTable bt, Double expected) {
     assertTrue(bt.iterator().hasNext());

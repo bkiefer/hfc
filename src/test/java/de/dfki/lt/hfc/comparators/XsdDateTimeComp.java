@@ -14,7 +14,7 @@ public class XsdDateTimeComp {
     @Test
     public void testLess(){
         XsdDateTime c1 = new XsdDateTime(2,0,0,0,0,0);
-        System.out.println(c1);
+        //System.out.println(c1);
         XsdDateTime c2 = new XsdDateTime(4,0,0,0,0,0);
         assertTrue( c1.compareTo(c2) < 0);
         c1 = new XsdDateTime(2,1,0,0,0,0);

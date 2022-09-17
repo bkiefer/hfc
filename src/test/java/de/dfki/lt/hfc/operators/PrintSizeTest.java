@@ -16,15 +16,17 @@ import org.junit.Before;
 public class PrintSizeTest {
   static Hfc hfc;
   private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-
+  private PrintStream safeOut;
+  
   @Before
   public void setUpStreams() {
+    safeOut = System.out;
     System.setOut(new PrintStream(outContent));
   }
 
   @After
   public void cleanUpStreams() {
-    System.setOut(null);
+    System.setOut(safeOut);
   }
 
   private static String getResource(String name) {

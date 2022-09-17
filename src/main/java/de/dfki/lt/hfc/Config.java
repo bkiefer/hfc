@@ -104,8 +104,8 @@ public class Config {
    * @return an instance of Config containing the default settings
    */
   public static Config getDefaultConfig() throws IOException {
-    System.err.println(System.getProperty("user.dir"));
-      String configPath = path + "DefaultConfig.yml";
+    logger.debug("user dir: {}", System.getProperty("user.dir"));
+    String configPath = path + "DefaultConfig.yml";
 
     return getInstance(configPath);
   }
