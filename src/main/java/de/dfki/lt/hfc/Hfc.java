@@ -55,7 +55,7 @@ public class Hfc {
    */
   protected Config config;
 
-  protected   RuleStore _ruleStore = null;
+  protected RuleStore _ruleStore = null;
 
   protected ForwardChainer _forwardChainer = null;
 
@@ -64,7 +64,7 @@ public class Hfc {
    * the nullary constructor allocates the minimal object configuration:
    * a namespace and a tuple store are guaranteed to exist
    */
-  public Hfc() {
+  Hfc() {
     try {
       this.config = Config.getDefaultConfig();
       _tupleStore = new TupleStore(config);
@@ -111,13 +111,15 @@ public class Hfc {
     init();
   }
 
+  /*
   private Hfc(Config config, TupleStore tupleStoreCopy, RuleStore ruleStoreCopy, ForwardChainer fcCopy) {
     this.config = config;
     this._tupleStore = tupleStoreCopy;
     this._ruleStore = ruleStoreCopy;
     this._forwardChainer = fcCopy;
   }
-
+*/
+  
   /**
    * initialization code of nullary and binary constructors that is outsourced to avoid
    * code reduplication
@@ -131,8 +133,6 @@ public class Hfc {
     }
   }
 
-
-
   public void shutdown() {
     _forwardChainer.shutdown();
   }
@@ -143,7 +143,7 @@ public class Hfc {
    * the first time rules are uploaded to HFC
    * This method cannot be used to change namespaces, tuplefiles or rulefiles.
    * Please use the dedicated methods to do so.
-   */
+   *
   private void customizeHfc(Map<String, Object> settings) {
     logger.info("HFC settings: " + settings);
     // make the settings available via protected fields in this class;
@@ -151,10 +151,10 @@ public class Hfc {
     this.config.updateConfig(settings);
   }
 
+  
   public void updateConfig(String path){
    try {
-    customizeHfc(Config
-            .getMapping(path));
+    customizeHfc(Config.getMapping(path));
    } catch (FileNotFoundException e) {
     e.printStackTrace();
     System.err.println("Config File " + path + " not found. Will be ignored");
@@ -166,17 +166,19 @@ public class Hfc {
     config.addNamespace(shortForm, longForm);
   }
 
-  public void readTuples(BufferedReader tupleReader)
+  private void readTuples(BufferedReader tupleReader)
           throws WrongFormatException, IOException {
     _tupleStore.readTuples(tupleReader);
   }
+  */
 
-
+  /*
   public void readTuples(File tuples)
           throws WrongFormatException, IOException {
     readTuples(Files.newBufferedReader(tuples.toPath(),
             Charset.forName(_tupleStore.inputCharacterEncoding)));
   }
+  */
 
   /**
    * uploads further tuples stored in a file to an already established forward chainer;
@@ -189,6 +191,10 @@ public class Hfc {
    * @throws WrongFormatException
    */
   public void readTuples(String filename) throws FileNotFoundException, IOException, WrongFormatException {
+    if (filename.startsWith("<resources>/")) {
+      String justName = filename.substring("<resources>/".length());
+      _tupleStore.readTuples(ClassLoader.getSystemResourceAsStream(justName));
+    }
     _tupleStore.readTuples(filename, false);
   }
 
@@ -395,7 +401,7 @@ public class Hfc {
     logger.info("Compute closure starting with "+ _tupleStore.allTuples.size()+" tuples");
     if (null != _forwardChainer) {
       boolean result =  _forwardChainer.computeClosure(config.getIterations(), config.isCleanupRepository());
-      logger.info("Finished  closure ending with " + _tupleStore.allTuples.size()+ " tuples");
+      logger.info("Finished closure ending with " + _tupleStore.allTuples.size()+ " tuples");
       return result;
     } else {
       _tupleStore.cleanUpTupleStore();
@@ -409,7 +415,7 @@ public class Hfc {
       return _forwardChainer.computeClosure(iterations, cleanupRepository);
     } else {
       _tupleStore.cleanUpTupleStore();
-      return  false;
+      return false;
     }
   }
 
@@ -441,14 +447,14 @@ public class Hfc {
    *
    * @param noOfCores an integer, specifying how many parallel threads are used during
    *                  the computation of the deductive closure for the copy of this forward chainer
-   */
+   *
   public Hfc copyHFC(int noOfCores, boolean verbose) {
     Config configCopy = this.config.getCopy(noOfCores, verbose);
     TupleStore tupleStoreCopy = _tupleStore.copyTupleStore();
     RuleStore ruleStoreCopy = _ruleStore.copyRuleStore(tupleStoreCopy);
     ForwardChainer fcCopy = _forwardChainer.copyForwardChainer(tupleStoreCopy, ruleStoreCopy, noOfCores);
     return new Hfc(configCopy, tupleStoreCopy, ruleStoreCopy, fcCopy);
-  }
+  }*/
 
 
   public boolean isEquivalenceClassReduction() {

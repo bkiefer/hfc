@@ -32,11 +32,12 @@ public class ConfigTest {
   assertEquals(false, config.isGarbageCollection());
   assertEquals(true, config.isCleanupRepository());
   assertEquals(true, config.isShortIsDefault());
-  assertEquals("./src/resources/default.nt", config.getTupleFiles().get(0));
+  assertEquals("<resources>/default.nt", config.getTupleFiles().get(0));
  }
 
  @Test(expected = java.lang.NullPointerException.class)
  public void test_InvalidConfig() throws FileNotFoundException {
+  @SuppressWarnings("unused")
   Config config = Config.getInstance(TestingUtils.getTestResource("invalid.yml"));
  }
 
@@ -48,6 +49,7 @@ public class ConfigTest {
 
  @Test
  public void test_getMapping() throws FileNotFoundException {
+  @SuppressWarnings("rawtypes")
   Map mapping = Config.getMapping(getResource("index_Parsing1.yml"));
   // we only test some parts of the mapping here
   assertEquals(false, mapping.get(Config.VERBOSE));
@@ -66,7 +68,7 @@ public class ConfigTest {
  @Test
  public void test_addRuleFiles() throws IOException {
   Config config = Config.getDefaultConfig();
-  List rulefiles = new ArrayList();
+  List<String> rulefiles = new ArrayList<>();
   rulefiles.add("test1.rdl");
   rulefiles.add("test2.rdl");
   config.addRuleFiles(rulefiles);
@@ -85,7 +87,7 @@ public class ConfigTest {
  @Test
  public void test_addTupleFiles() throws IOException {
   Config config = Config.getDefaultConfig();
-  List tupleFiles = new ArrayList();
+  List<String> tupleFiles = new ArrayList<>();
   tupleFiles.add("test1.nt");
   tupleFiles.add("test2.nt");
   config.addTupleFiles(tupleFiles);

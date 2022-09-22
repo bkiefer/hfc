@@ -27,8 +27,8 @@ tupleFiles:
   - ./src/test/data/TestTransactionTime/default.polarity.transtime.long.quintuple.eqred.nt
   - ./src/test/data/TestTransactionTime/pal.polarity.transtime.long.quintuple.eqred.nt
 
-MinArgs: 5
-MaxArgs: 5
+minArgs: 5
+maxArgs: 5
 subjectPosition: 1
 
 predicatePosition: 2

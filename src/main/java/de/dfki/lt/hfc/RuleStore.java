@@ -1,13 +1,26 @@
 package de.dfki.lt.hfc;
 
-import gnu.trove.map.hash.TCustomHashMap;
-import gnu.trove.set.hash.THashSet;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.TreeMap;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.util.*;
+import gnu.trove.map.hash.TCustomHashMap;
+import gnu.trove.set.hash.THashSet;
 
 /**
  * a rule consists of an antecedent and a consequent;
@@ -89,13 +102,15 @@ public final class RuleStore {
    */
   private static final int RELVAR_OFFSET = -1000000000;
   private static final Logger logger = LoggerFactory.getLogger(RuleStore.class);
+  
+  private Config config;
   /**
    * it seems reasonable to have tuples of at least length 1;
    * a similar variable exists in class TupleStore
    *
    * @see #maxNoOfArgs
    */
-  public int minNoOfArgs = 3;
+  int minNoOfArgs = 3;
   /**
    * this constant is used to create the right number of index tables;
    * note that the value of this constant has an effect on the index data
@@ -105,7 +120,7 @@ public final class RuleStore {
    *
    * @see #minNoOfArgs
    */
-  public int maxNoOfArgs = 5;
+  int maxNoOfArgs = 5;
   /**
    * a constant that controls whether a warning is printed in case an invalid
    * tuple is read in;
@@ -113,13 +128,13 @@ public final class RuleStore {
    *
    * @see #exitOnError
    */
-  public boolean verbose = false;
+  boolean verbose = false;
   /**
    * when tuples are read in, this variable decides whether tuples are compliant with
    * what RDF requests, viz., that the first argument is either an URI or a blank node,
    * and that the second arg is a URI
    */
-  public boolean rdfCheck = true;
+  boolean rdfCheck = true;
   /**
    * a constant that controls whether the system is terminated in case an invalid
    * tuple, test, or action is read in (exit code = 1);
@@ -127,7 +142,7 @@ public final class RuleStore {
    *
    * @see #verbose
    */
-  public boolean exitOnError = true;
+  boolean exitOnError = true;
 
   /**
    */
@@ -196,6 +211,7 @@ public final class RuleStore {
 
   public RuleStore(Config config, TupleStore tupleStore) throws IOException {
     this(tupleStore);
+    this.config = config;
     this.verbose = config.isVerbose();
     this.rdfCheck = config.isRdfCheck();
     this.minNoOfArgs = config.getMinArgs();
@@ -208,7 +224,7 @@ public final class RuleStore {
    * more options to parameterize the rule store
    *
    * @throws IOException
-   */
+   *
 
   public RuleStore(boolean verbose, boolean rdfCheck, int minNoOfArgs, int maxNoOfArgs,
                    TupleStore tupleStore, String ruleFile)
@@ -219,7 +235,7 @@ public final class RuleStore {
     this.minNoOfArgs = minNoOfArgs;
     this.maxNoOfArgs = maxNoOfArgs;
     readRules(ruleFile);
-  }
+  }*/
 
   /**
    * external representation: variables start with the '?' character
@@ -1212,9 +1228,8 @@ public final class RuleStore {
   }
 
   protected ArrayList<Rule> readRules(String filename) throws IOException {
-    if (this.verbose)
-      logger.debug("\n  reading rules from " + filename + " ...");
-    return readRules(Files.newBufferedReader(new File(filename).toPath()));
+    logger.debug("reading rules from {} ...",filename);
+    return readRules(config.readerFromString(filename));
   }
 
   /**

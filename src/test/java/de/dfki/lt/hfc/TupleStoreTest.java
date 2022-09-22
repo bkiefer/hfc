@@ -18,6 +18,7 @@ import org.junit.Test;
 
 public class TupleStoreTest {
 
+  /*
  @Test
  public void testConstructors() throws FileNotFoundException, WrongFormatException, IOException {
   // constructor TupleStore(int noOfAtoms, int noOfTuples) is tested
@@ -38,7 +39,7 @@ public class TupleStoreTest {
   TupleStore tupleconstructor7 = new TupleStore(namespace, getTestResource("default.nt"));
   assertNotNull(tupleconstructor7);
  }
-
+*/
 
  @Test
  public void testprintTuple() {
@@ -58,9 +59,7 @@ public class TupleStoreTest {
 
  @Test
  public void testcleanUpTuple() throws FileNotFoundException, WrongFormatException, IOException {
-  NamespaceManager namespace = NamespaceManager.getInstance();
-  TupleStore objfortest = new TupleStore(false, true, true, 2, 5, 0, 1, 2, 4, 2, namespace,
-          getTestResource("default.nt"));
+  TupleStore objfortest = TestingUtils.getOperatorTestStore();
   int[] tuple = new int[3];
   tuple[0] = 2;
   tuple[1] = 2;
@@ -119,13 +118,15 @@ public class TupleStoreTest {
   stringTuple2.add("sfsd");// test for case stringTuple.size > maxNoOfArgs
   assertFalse(objectfortest.isValidTuple(stringTuple2, 1));
   NamespaceManager namespace = NamespaceManager.getInstance();
-  TupleStore objecToTestRdfTrue = new TupleStore(false, true, true, 2, 5, 0, 1, 2, 4, 2, namespace,
-          getTestResource("default.nt"));
+  TupleStore objecToTestRdfTrue = 
+      //new TupleStore(false, true, true, 2, 5, 0, 1, 2, 4, 2, namespace, getTestResource("default.nt"));
+      TestingUtils.getOperatorTestStore();
   // the second boolean argument is rdfCheck
   // test for case where rdfCheck is manipulated
   assertFalse(objecToTestRdfTrue.isValidTuple(stringTuple, 1));
-  TupleStore objecToTestRdfFalse = new TupleStore(false, false, true, 2, 5, 0, 1, 2, 4, 2, namespace,
-          getTestResource("default.nt"));
+  TupleStore objecToTestRdfFalse = 
+      //new TupleStore(false, false, true, 2, 5, 0, 1, 2, 4, 2, namespace, getTestResource("default.nt"));
+      TestingUtils.getNoRdfCheckTestStore();
   assertTrue(objecToTestRdfFalse.isValidTuple(stringTuple, 3));
   assertTrue(objectfortest.isAtom(stringTuple.get(0)));
   assertTrue(objectfortest.isAtom(stringTuple.get(1)));
@@ -303,7 +304,8 @@ public class TupleStoreTest {
   assertTrue(objectfortest.getAllTuples().isEmpty());
   // test for case when there are tuples
   NamespaceManager namespace = NamespaceManager.getInstance();
-  TupleStore objectfull = new TupleStore(namespace, getTestResource("default.nt"));
+  TupleStore objectfull = //new TupleStore(namespace, getTestResource("default.nt"));
+      TestingUtils.getOperatorTestStore();
   assertFalse(objectfull.getAllTuples().isEmpty());
  }
 
@@ -428,6 +430,7 @@ public class TupleStoreTest {
   // TODO test for other cases
  }
 
+ /*
  @Test
  public void testcopyTupleStore() throws FileNotFoundException, WrongFormatException, IOException {
   NamespaceManager namespace = NamespaceManager.getInstance();
@@ -437,9 +440,8 @@ public class TupleStoreTest {
   assertTrue(objectfortest.allTuples.size() == copy.allTuples.size());
   assertTrue(objectfortest.indexStore == copy.indexStore);
   assertFalse(objectfortest == objectfortest.copyTupleStore());
-
-
  }
+ */
 
  @Test
  public void parseAtom() throws IOException, WrongFormatException {

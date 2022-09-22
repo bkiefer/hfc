@@ -1,9 +1,15 @@
 package de.dfki.lt.hfc;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.util.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 import de.dfki.lt.hfc.BindingTable.BindingTableIterator;
 import de.dfki.lt.hfc.types.AnyType;
@@ -211,4 +217,67 @@ public class TestingUtils {
   public static String expstring(int[]exp, int[]in) {
     return "Expected " + Arrays.toString(exp) + " but was " + Arrays.toString(in);
   }
+
+  private static String conf = "verbose: false\n"
+        + "characterEncoding: UTF-8\n"
+        + "noOfCores: 1\n"
+        + "noOfTuples: 500000\n"
+        + "noOfAtoms: 100000\n"
+        + "eqReduction: false\n"
+        + "garbageCollection: false\n"
+        + "cleanUpRepository: true\n"
+        + "shortIsDefault: true\n"
+        + "namespaces:\n"
+        + "  xsd:  http://www.w3.org/2001/XMLSchema#\n"
+        + "  rdf:  http://www.w3.org/1999/02/22-rdf-syntax-ns#\n"
+        + "  rdfs:  http://www.w3.org/2000/01/rdf-schema#\n"
+        + "  owl:  http://www.w3.org/2002/07/owl#\n"
+        + "  test: http://www.dfki.de/lt/onto/test.owl#\n"
+        + "  hfc: http://www.dfki.de/lt/hfc.owl#\n"
+        + "tupleFiles:\n"
+        + "- <resources>/default.nt\n"
+        + "minArgs: 2\n"
+        + "maxArgs: 5\n"
+        + "subjectPosition: 0\n"
+        + "predicatePosition: 1\n"
+        + "objectPosition: 2\n"
+        + "rdfCheck: true\n"
+        + "exitOnError: true\n"
+        + "ruleFiles:\n"
+        + "- <resources>/default.rdl\n"
+        + "iterations: 2147483647";
+  
+  public static Config getOperatorConfig() {
+
+    return Config.getInstance(new ByteArrayInputStream(conf.getBytes()));
+  }
+  
+  public static TupleStore getOperatorTestStore() throws IOException, WrongFormatException {
+    return new TupleStore(getOperatorConfig());
+  }
+  
+  private static String changeKeyVal(String in, String key, String val) {
+    return conf.replaceFirst(key + ": ([^\n]*)\n", key + ": " + val + "\n");
+  }
+  
+  public static Config getNoRdfCheckConfig() {
+    String c = changeKeyVal(conf, "rdfCheck", "false");
+    return Config.getInstance(new ByteArrayInputStream(c.getBytes()));
+  }
+  
+  public static TupleStore getNoRdfCheckTestStore() throws IOException, WrongFormatException {
+    return new TupleStore(getNoRdfCheckConfig());
+  }
+  
+  public static RuleStore getRuleStoreConfig(boolean rdfCheck, int min, int max,
+      TupleStore ts, String ruleFile) throws IOException {
+    String c = 
+        changeKeyVal("maxArgs", Integer.toString(max),
+            changeKeyVal("minArgs", Integer.toString(min), 
+                changeKeyVal("rdfCheck", rdfCheck ? "true" : "false", conf)));
+    c = c.replace("<resources>/default.rdl", ruleFile);
+    return new RuleStore(
+        Config.getInstance(new ByteArrayInputStream(c.getBytes())), ts);
+  }
+  
 }

@@ -42,7 +42,7 @@ public class TestLGetLatestValues {
   public static void init() throws Exception {
 
     // forward chainer actually not needed -- tuple store and query object would suffice !
-    fc =	new Hfc(Config.getDefaultConfig());
+    fc = new Hfc(Config.getDefaultConfig());
     fc._tupleStore.namespace.putForm("pal", "http://www.lt-world.org/pal.owl#", true);
     fc._tupleStore.namespace.putForm("dom", "http://www.lt-world.org/dom.owl#", true);
 

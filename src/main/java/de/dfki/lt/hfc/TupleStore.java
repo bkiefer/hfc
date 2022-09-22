@@ -68,6 +68,8 @@ public final class TupleStore {
   */
  protected static TIntArrayHashingStrategy DEFAULT_HASHING_STRATEGY = new TIntArrayHashingStrategy();
  public final IndexStore indexStore;
+ 
+ public final Config config;
  /**
   * an optimization, currently applicable only to
   * + owl:sameAs
@@ -265,12 +267,13 @@ public final class TupleStore {
 
  /**
   * (should) only (be) used by copyTupleStore()
-  */
- private TupleStore() {
-  this.indexStore = null;
- }
+  *
+ private TupleStore(config) {
+   this.indexStore = null;
+ }*/
 
  public TupleStore(Config config) throws IOException, WrongFormatException {
+   this.config = config;
   this.namespace = config.namespace;
   this.indexStore = config.indexStore;
   init(config.isVerbose(), config.isRdfCheck(), config.isEqReduction(), config.getMinArgs(), config.getMaxArgs(),
@@ -290,8 +293,8 @@ public final class TupleStore {
   * @throws IOException
   * @throws FileNotFoundException
   * @throws WrongFormatException
-  */
- public TupleStore(boolean verbose, boolean rdfCheck, boolean eqReduction,
+  *
+ private TupleStore(boolean verbose, boolean rdfCheck, boolean eqReduction,
                    int minNoOfArgs, int maxNoOfArgs,
                    int subjectPosition, int predicatePosition, int objectPosition,
                    int noOfAtoms, int noOfTuples,
@@ -307,8 +310,8 @@ public final class TupleStore {
 
  /**
   * assumes a default of 100,000 atoms and 500,000 tuples
-  */
- public TupleStore(NamespaceManager namespace) {
+  *
+ private TupleStore(NamespaceManager namespace) {
   this.namespace = namespace;
   this.indexStore = null;
   init(this.verbose, this.rdfCheck, this.equivalenceClassReduction,
@@ -316,7 +319,7 @@ public final class TupleStore {
           this.subjectPosition, this.predicatePosition, this.objectPosition,
           100000, 500000);
  }
-
+*/
 
  /**
   * assumes a default of 100,000 atoms and 500,000 tuples
@@ -324,12 +327,12 @@ public final class TupleStore {
   * @throws IOException
   * @throws FileNotFoundException
   * @throws WrongFormatException
-  */
- public TupleStore(NamespaceManager namespace, String tupleFile)
+  *
+ private TupleStore(NamespaceManager namespace, String tupleFile)
          throws FileNotFoundException, IOException, WrongFormatException {
   this(namespace);
   readTuples(tupleFile, false);
- }
+ }*/
 
  /**
   * a simple STATIC method, translating an int array into something readable (N-tuple syntax)
@@ -1146,8 +1149,14 @@ public final class TupleStore {
   * @throws IOException
   * @throws WrongFormatException
   */
- public void readTuples(BufferedReader br, long timeStamp) throws IOException, WrongFormatException {
+ private void readTuples(BufferedReader br, long timeStamp) throws IOException, WrongFormatException {
   readTuples(br, null, XsdLong.toString(timeStamp));
+ }
+
+ void readTuples(InputStream in) throws IOException, WrongFormatException {
+   readTuples(new BufferedReader(
+       new InputStreamReader(in, 
+           Charset.forName(this.inputCharacterEncoding))));
  }
 
  /**
@@ -1157,9 +1166,10 @@ public final class TupleStore {
   * @throws IOException
   * @throws WrongFormatException
   */
- public void readTuples(BufferedReader br) throws IOException, WrongFormatException {
+ private void readTuples(BufferedReader br) throws IOException, WrongFormatException {
   readTuples(br, null);
  }
+
 
  /**
   * read in the tuple file as it is
@@ -1173,11 +1183,9 @@ public final class TupleStore {
   if (this.verbose)
    logger.info("\n  reading tuples from " + filename + " ...");
   if(addTS)
-   readTuples(Files.newBufferedReader(new File(filename).toPath(),
-          Charset.forName(this.inputCharacterEncoding)), System.currentTimeMillis());
+   readTuples(config.readerFromString(filename), System.currentTimeMillis());
   else
-   readTuples(Files.newBufferedReader(new File(filename).toPath(),
-           Charset.forName(this.inputCharacterEncoding)));
+   readTuples(config.readerFromString(filename));
  }
 
 
@@ -1667,9 +1675,11 @@ public final class TupleStore {
   * e.g., during reasoning, as is done by the forward chainer
   * <p>
   * The copy uses the same namespace object as this object
-  */
- public TupleStore copyTupleStore() {
-  TupleStore copy = new TupleStore();
+ * @throws WrongFormatException 
+ * @throws IOException 
+  *
+ public TupleStore copyTupleStore() throws IOException, WrongFormatException {
+  TupleStore copy = new TupleStore(this.config, );
   copy.currentId = this.currentId;  // means different things in different tuple stores
   copy.minNoOfArgs = this.minNoOfArgs;
   copy.maxNoOfArgs = this.maxNoOfArgs;
@@ -1683,7 +1693,7 @@ public final class TupleStore {
 		copy.uriToProxy = (TIntIntHashMap)this.uriToProxy.clone();
 		copy.proxyToUris = this.proxyToUris.clone();
 		copy.uriToEquivalenceRelation = (TIntIntHashMap)this.uriToEquivalenceRelation.clone();
-		*/
+		*
   copy.uriToProxy = new TIntIntHashMap(this.uriToProxy);
   copy.proxyToUris = new TIntObjectHashMap<TIntArrayList>(this.proxyToUris);
   copy.uriToEquivalenceRelation = new TIntIntHashMap(this.uriToEquivalenceRelation);
@@ -1700,6 +1710,7 @@ public final class TupleStore {
   // finished!
   return copy;
  }
+*/
 
  /**
   * returns a nearly-deep copy of the index: everything is copied with the notable

@@ -28,8 +28,8 @@ namespaces:
 tupleFiles:
   - ./src/test/data/LGetLatest/default.nt
 
-MinArgs: 3
-MaxArgs: 3
+minArgs: 3
+maxArgs: 3
 subjectPosition: 0
 
 predicatePosition: 1

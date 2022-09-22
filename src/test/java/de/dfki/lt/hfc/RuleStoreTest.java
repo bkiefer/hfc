@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class RuleStoreTest {
@@ -27,7 +28,7 @@ public class RuleStoreTest {
     //test constructor that takes NamespaceManager namespace, TupleStore tupleStore, String ruleFile
     TupleStore tupleStore = new TupleStore(Config.getDefaultConfig());
     String ruleFile = new String(getTestResource("default.test.rdl"));
-    RuleStore rs2 = new RuleStore(false, false, 2, 6, tupleStore, ruleFile);
+    RuleStore rs2 = getRuleStoreConfig(false, 2, 6, tupleStore, ruleFile);
     assertNotNull(rs2);
   }
 
@@ -37,13 +38,13 @@ public class RuleStoreTest {
     NamespaceManager namespace, TupleStore tupleStore, String ruleFile)*/
     TupleStore tupleStore = new TupleStore(Config.getDefaultConfig());
     String ruleFile = new String(getTestResource("default.test.rdl"));
-    RuleStore rs3 = new RuleStore(false, true, 2, 3, tupleStore, ruleFile);
+    RuleStore rs3 = getRuleStoreConfig(true, 2, 3, tupleStore, ruleFile);
     assertNotNull(rs3);
-    RuleStore rs4 = new RuleStore(false, true, 2, 5, tupleStore, ruleFile);
+    RuleStore rs4 = getRuleStoreConfig(true, 2, 5, tupleStore, ruleFile);
     assertNotNull(rs4);
-    RuleStore rs5 = new RuleStore(false, false, 2, 6, tupleStore, ruleFile);
+    RuleStore rs5 = getRuleStoreConfig(false, 2, 6, tupleStore, ruleFile);
     assertNotNull(rs5);
-    RuleStore rs6 = new RuleStore(false, false, 1, 4, tupleStore, ruleFile);
+    RuleStore rs6 = getRuleStoreConfig(false, 1, 4, tupleStore, ruleFile);
     assertNotNull(rs6);
   }
 
@@ -74,17 +75,16 @@ public class RuleStoreTest {
   public void testwriteRules() throws FileNotFoundException, WrongFormatException, IOException {
     TupleStore tupleStore = new TupleStore(Config.getDefaultConfig());
     String ruleFile = getTestResource("default.test.rdl");
-    File file0 = new File(getTestResource("default.test.rdl"));
-    RuleStore rstest = new RuleStore(false, true, 2, 3, tupleStore, ruleFile);
+    RuleStore rstest = getRuleStoreConfig(true, 2, 3, tupleStore, ruleFile);
     rstest.writeRules(getTempFile("fileRules"));
     //test for case verbose != true
-    RuleStore rsverbosefalse = new RuleStore(false, true, 2, 3, tupleStore, ruleFile);
+    RuleStore rsverbosefalse = getRuleStoreConfig(true, 2, 3, tupleStore, ruleFile);
     rsverbosefalse.writeRules(getTempFile("fileRules1"));
 
     File file1 = new File(getTempFile("fileRules"));
     File file2 = new File(getTempFile("fileRules1"));
     assertTrue(FileUtils.contentEquals(file1, file2));
-    RuleStore reload =  new RuleStore(false, true, 2, 3, tupleStore, getTempFile("fileRules1"));
+    RuleStore reload =  getRuleStoreConfig(true, 2, 3, tupleStore, getTempFile("fileRules1"));
     Set<String> ruleNames = new HashSet<String>();
     for (Rule rule : rstest.allRules){
       ruleNames.add(rule.name);
@@ -96,11 +96,10 @@ public class RuleStoreTest {
     assertEquals(reloadedRuleNames, ruleNames);
   }
 
+  @Ignore
   @Test
   public void testcopyRuleStore() throws FileNotFoundException, WrongFormatException, IOException {
-    NamespaceManager namespace = NamespaceManager.getInstance();
-    //TupleStore tupleStore = new TupleStore(2, 4);
-    TupleStore ts = new TupleStore(false, true, false, 2, 5,0,1,2, 4, 2, namespace, getTestResource("default.nt"));
+    TupleStore ts = TestingUtils.getOperatorTestStore();
     RuleStore rs = new RuleStore(Config.getDefaultConfig(),ts);
     RuleStore copy = rs.copyRuleStore(ts);
     assertFalse(rs == copy);

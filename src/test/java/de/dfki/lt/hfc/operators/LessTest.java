@@ -1,32 +1,33 @@
 package de.dfki.lt.hfc.operators;
 
-import static de.dfki.lt.hfc.TestingUtils.*;
+import static de.dfki.lt.hfc.TestingUtils.getOperatorTestStore;
 import static org.junit.Assert.assertEquals;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import de.dfki.lt.hfc.FunctionalOperator;
-import de.dfki.lt.hfc.NamespaceManager;
-import de.dfki.lt.hfc.TupleStore;
-import de.dfki.lt.hfc.WrongFormatException;
-import de.dfki.lt.hfc.types.*;
-
+import org.junit.Before;
 import org.junit.Test;
 
+import de.dfki.lt.hfc.FunctionalOperator;
+import de.dfki.lt.hfc.TupleStore;
+import de.dfki.lt.hfc.WrongFormatException;
+import de.dfki.lt.hfc.types.XsdDecimal;
+import de.dfki.lt.hfc.types.XsdDouble;
+import de.dfki.lt.hfc.types.XsdFloat;
+import de.dfki.lt.hfc.types.XsdInt;
+import de.dfki.lt.hfc.types.XsdLong;
+
 public class LessTest {
+  TupleStore store;
 
-  @Test
-  public void testLess()
-      throws FileNotFoundException, IOException, WrongFormatException {
-
-    // load NamespaceManager
-    NamespaceManager namespace = NamespaceManager.getInstance();
-
+  @Before
+  public void init() throws IOException, WrongFormatException {
     // create TupleStore
-    TupleStore store =
-        new TupleStore(false, true, true, 2, 5,0,1,2, 4, 2, namespace,
-            getTestResource("default.nt"));
+    store = getOperatorTestStore();
+  }
+  
+  @Test
+  public void testLess() {
     int[] args = new int[5];
 
     // create FunctionalOperator
@@ -51,16 +52,7 @@ public class LessTest {
   }
 
   @Test
-  public void testLessEq()
-      throws FileNotFoundException, IOException, WrongFormatException {
-
-    // load NamespaceManager
-    NamespaceManager namespace = NamespaceManager.getInstance();
-
-    // create TupleStore
-    TupleStore store =
-        new TupleStore(false, true, true, 2, 5,0,1,2, 4, 2, namespace,
-            getTestResource("default.nt"));
+  public void testLessEq() {
     int[] args = new int[5];
 
     // create FunctionalOperator
@@ -86,16 +78,7 @@ public class LessTest {
   }
 
   @Test
-  public void testGreater()
-      throws FileNotFoundException, IOException, WrongFormatException {
-
-    // load NamespaceManager
-    NamespaceManager namespace = NamespaceManager.getInstance();
-
-    // create TupleStore
-    TupleStore store =
-        new TupleStore(false, true, true, 2, 5,0,1,2, 4, 2, namespace,
-            getTestResource("default.nt"));
+  public void testGreater() {
     int[] args = new int[5];
 
     // create FunctionalOperator
@@ -120,16 +103,7 @@ public class LessTest {
   }
 
   @Test
-  public void testGreaterEq()
-      throws FileNotFoundException, IOException, WrongFormatException {
-
-    // load NamespaceManager
-    NamespaceManager namespace = NamespaceManager.getInstance();
-
-    // create TupleStore
-    TupleStore store =
-        new TupleStore(false, true, true, 2, 5,0,1,2, 4, 2, namespace,
-            getTestResource("default.nt"));
+  public void testGreaterEq() {
     int[] args = new int[5];
 
     // create FunctionalOperator
@@ -154,16 +128,7 @@ public class LessTest {
   }
 
   @Test
-  public void testEqual()
-      throws FileNotFoundException, IOException, WrongFormatException {
-
-    // load NamespaceManager
-    NamespaceManager namespace = NamespaceManager.getInstance();
-
-    // create TupleStore
-    TupleStore store =
-        new TupleStore(false, true, true, 2, 5,0,1,2, 4, 2, namespace,
-            getTestResource("default.nt"));
+  public void testEqual() {
     int[] args = new int[5];
 
     // create FunctionalOperator

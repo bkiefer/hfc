@@ -24,7 +24,7 @@ public class Namespace {
     return Objects.hash(SHORT_NAMESPACE, LONG_NAMESPACE, isShort);
   }
 
-  public Namespace(String shortNamespace, String longNamespace, boolean isShort) {
+  Namespace(String shortNamespace, String longNamespace, boolean isShort) {
     this.SHORT_NAMESPACE = shortNamespace;
     this.LONG_NAMESPACE = longNamespace;
     this.isShort = isShort;

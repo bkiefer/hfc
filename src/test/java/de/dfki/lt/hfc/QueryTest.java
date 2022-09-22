@@ -29,9 +29,9 @@ public class QueryTest {
  @Before
  public void setUp() throws IOException, WrongFormatException {
   Config config = Config.getDefaultConfig();
+  config.addNamespace("pal", "http://www.dfki.de/lt/onto/pal.owl#");
+  config.addNamespace("dom", "http://www.dfki.de/lt/onto/dom.owl#");
   fc = new Hfc(config);
-  fc.config.namespace.putForm("pal", "http://www.dfki.de/lt/onto/pal.owl#", true);
-  fc.config.namespace.putForm("dom", "http://www.dfki.de/lt/onto/dom.owl#", true);
   fc.uploadTuples(getResource("test.child.labvalues.nt"));
  }
 

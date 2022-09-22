@@ -35,25 +35,21 @@ public class PrintSizeTest {
 
   @BeforeClass
   public static void init() throws Exception {
-
     hfc =  new Hfc(getResource("PrintSize.yml"));
-
     // compute deductive closure
-
     hfc.computeClosure();
+  }
 
+  @AfterClass
+  public static void finish() {
+    hfc.shutdownNoExit();
   }
 
   @Test
   public void test() throws QueryParseException, WrongFormatException, IOException  {
-     // load NamespaceManager
-    NamespaceManager namespace = NamespaceManager.getInstance();
-
     // create TupleStore
-    TupleStore store =
-        new TupleStore(false, true, true, 2, 5,0,1,2, 4, 2, namespace,
-            getTestResource("default.nt"));
-
+    TupleStore store = getOperatorTestStore();
+    
     // create FunctionalOperator
     RelationalOperator rop =
         (RelationalOperator)store.checkAndRegisterOperator("de.dfki.lt.hfc.operators.PrintSize");
@@ -89,12 +85,6 @@ public class PrintSizeTest {
     // of hfc
     assertEquals("19 \n", temp.substring(temp.length() -4));
   }
-
-  @AfterClass
-  public static void finish() {
-    hfc.shutdownNoExit();
-  }
-
 }
 
 

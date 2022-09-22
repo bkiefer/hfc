@@ -19,8 +19,8 @@ namespaces:
 tupleFiles:
   - ./src/test/data/Index_Parsing/transaction_date0_valid_date45.nt
 
-MinArgs: 6
-MaxArgs: 6
+minArgs: 6
+maxArgs: 6
 subjectPosition: 0
 
 predicatePosition: 1

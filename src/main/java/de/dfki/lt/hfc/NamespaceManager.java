@@ -103,7 +103,7 @@ public final class NamespaceManager {
   private boolean shortIsDefault = false;
   private HashSet<Namespace> allNamespaces = new HashSet<>();
 
-  public NamespaceManager() {
+  NamespaceManager() {
     if(instance != null)
       throw new IllegalStateException("Already instatiated");
     shortIsDefault = false;
@@ -115,7 +115,7 @@ public final class NamespaceManager {
     addNamespace(TEST);
   }
 
-  public NamespaceManager(HashSet<Namespace> allNamespaces, HashMap<String, Namespace> shortToNs, HashMap<String, Namespace> longToNs, boolean shortIsDefault) {
+  private NamespaceManager(HashSet<Namespace> allNamespaces, HashMap<String, Namespace> shortToNs, HashMap<String, Namespace> longToNs, boolean shortIsDefault) {
     this.allNamespaces = allNamespaces;
     this.shortToNs = shortToNs;
     this.longToNs = longToNs;

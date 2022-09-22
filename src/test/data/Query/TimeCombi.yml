@@ -19,8 +19,8 @@ namespaces:
 tupleFiles:
 - ./src/test/data/Query/lookupAtomIntervalTest.nt
 
-MinArgs: 6
-MaxArgs: 6
+minArgs: 6
+maxArgs: 6
 subjectPosition: 0
 
 predicatePosition: 1

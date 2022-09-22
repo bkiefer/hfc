@@ -19,8 +19,8 @@ namespaces:
 tupleFiles:
   - ./src/test/data/Index_Parsing/basic_transaction_long3.nt
 
-MinArgs: 4
-MaxArgs: 4
+minArgs: 4
+maxArgs: 4
 subjectPosition: 0
 
 predicatePosition: 1
