@@ -303,7 +303,7 @@ public class Config {
     return configs.containsKey(key);
   }
 
-  public String get(String key) {
-    return (String) configs.get(key);
+  public Object get(String key) {
+    return configs.get(key);
   }
 }
