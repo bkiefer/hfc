@@ -1,18 +1,17 @@
 package de.dfki.lt.hfc.indexParsing;
 
-import de.dfki.lt.hfc.Config;
-import de.dfki.lt.hfc.Hfc;
+import static org.junit.Assert.assertEquals;
 
-import de.dfki.lt.hfc.TestingUtils;
-import de.dfki.lt.hfc.types.Xsd3DPoint;
+import java.util.Set;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-
-import java.util.Set;
-
-import static org.junit.Assert.assertEquals;
+import de.dfki.lt.hfc.Config;
+import de.dfki.lt.hfc.TestHfc;
+import de.dfki.lt.hfc.TestingUtils;
+import de.dfki.lt.hfc.types.Xsd3DPoint;
 
 
 /**
@@ -20,7 +19,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class PointValuesOne {
 
-    static Hfc fc;
+    static TestHfc fc;
 
 
     private static String getResource(String name) {
@@ -30,27 +29,27 @@ public class PointValuesOne {
     @BeforeClass
     public static void init() throws Exception {
 
-        fc =  new Hfc(Config.getInstance(getResource("IndexParsing.yml")));
+        fc =  new TestHfc(Config.getInstance(getResource("IndexParsing.yml")));
     }
 
     @Test
     public void testIndexNoClosure(){
-        assertEquals(11, fc._tupleStore.indexStore.size());
+        assertEquals(11, fc.getIndex().size());
         Xsd3DPoint key = new Xsd3DPoint(0,0,1);
-        Set<int[]> values = fc._tupleStore.indexStore.lookup(key);
+        Set<int[]> values = fc.getIndex().lookup(key);
         assertEquals(1,values.size());
 
         key = new Xsd3DPoint(0,0,2);
-        values = fc._tupleStore.indexStore.lookup(key);
+        values = fc.getIndex().lookup(key);
         assertEquals(1,values.size());
         fc.computeClosure();
-        assertEquals(11,fc._tupleStore.indexStore.size());
+        assertEquals(11,fc.getIndex().size());
         key = new Xsd3DPoint(0,0,1);
-        values = fc._tupleStore.indexStore.lookup(key);
+        values = fc.getIndex().lookup(key);
         assertEquals(7,values.size());
 
         key = new Xsd3DPoint(0,0,2);
-        values = fc._tupleStore.indexStore.lookup(key);
+        values = fc.getIndex().lookup(key);
         assertEquals(7,values.size());
 
     }

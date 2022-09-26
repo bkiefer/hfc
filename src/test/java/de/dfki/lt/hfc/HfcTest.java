@@ -1,16 +1,23 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.TestingUtils.*;
-import static org.junit.Assert.*;
+import static de.dfki.lt.hfc.TestingUtils.getOperatorConfig;
+import static de.dfki.lt.hfc.TestingUtils.getTestResource;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
 
 import de.dfki.lt.hfc.types.Uri;
+import de.dfki.lt.hfc.types.XsdLong;
 import gnu.trove.set.hash.TCustomHashSet;
 import gnu.trove.set.hash.THashSet;
 
@@ -34,21 +41,37 @@ public class HfcTest {
   assertNotNull(fc);
  }
 
- @Test
- public void testExecuteQuery() throws QueryParseException {
-  Hfc fc = new Hfc();
+ @SuppressWarnings("unchecked")
+@Test
+ public void testHfcWithAddTS() throws IOException, WrongFormatException {
+   // should die if something other than quadruples would be added
+  long now = System.currentTimeMillis();
+  TestConfig config = TestConfig.getInstance(getTestResource("testWithTs.yml"));
+  Hfc fc = new Hfc(config);
   assertNotNull(fc);
-  BindingTable bt = fc.executeQuery("Select ?x ?y Where ?x <owl:subClassOf> ?y");
-  assertNotNull(bt);
-  bt.expandBindingTable();
+  config = TestConfig.getInstance(getTestResource("testWithTsVTime.yml"));
+  fc = new Hfc(config);
+  assertNotNull(fc);
+  int[] tuple = fc._tupleStore.getAllTuples().iterator().next();
+  assertTrue(fc._tupleStore.isAtom(tuple[3]));
+  assertTrue(fc._tupleStore.getObject(tuple[3]) instanceof XsdLong);
+  assertEquals(0, ((XsdLong)fc._tupleStore.getObject(tuple[3])).value);
+  assertEquals(-1, ((XsdLong)fc._tupleStore.getObject(tuple[4])).value);
+  // check if the current time will be entered instead
+  ((List<Number>)config.get("addTimestamps")).set(1, -2);
+  fc = new Hfc(config);
+  assertNotNull(fc);
+  tuple = fc._tupleStore.getAllTuples().iterator().next();
+  assertTrue(((XsdLong)fc._tupleStore.getObject(tuple[4])).value >= now);
  }
 
  @Test
- public void testsetNoOfCores() throws FileNotFoundException, IOException, WrongFormatException {
-  //test method setNoOfCores(int noOfCores)
-  Hfc fc = new Hfc(Config.getInstance(getTestResource("test_eq.yml")));
-  fc.setNoOfCores(104);
-  assertEquals(fc.config.getNoOfCores(), 104);
+ public void testExecuteQuery() throws QueryParseException, IOException, WrongFormatException {
+  Hfc fc = new Hfc(Config.getDefaultConfig());
+  assertNotNull(fc);
+  BindingTable bt = fc.executeQuery("Select ?x ?y Where ?x <rdfs:subClassOf> ?y");
+  assertNotNull(bt);
+  bt.expandBindingTable();
  }
 
  @Test
@@ -78,14 +101,18 @@ public class HfcTest {
   assertEquals(fc1.computeClosure(1, true), true);
   assertEquals(fc1.computeClosure(2, false), true);
   //
-  TupleStore tupleStore = getOperatorTestStore();
-  RuleStore ruleStore = new RuleStore(Config.getDefaultConfig(), tupleStore);
-  Hfc fc2 = new Hfc(Config.getDefaultConfig(), tupleStore, ruleStore);
+  Hfc fc2 = new Hfc(getOperatorConfig());
   assertEquals(fc2.computeClosure(1, true), true);
   assertEquals(fc2.computeClosure(1, false), true);
   //
-  TupleStore tupleStore1 = getOperatorTestStore();
-  Hfc fc3 = new Hfc(Config.getDefaultConfig(), tupleStore1, ruleStore);
+  TestConfig c = TestingUtils.getOperatorConfig();
+  c.put(Config.EQREDUCTION, false);
+  c.put(Config.MINARGS, 2);
+  c.put(Config.MAXARGS, 1);
+  c.put(Config.NOOFATOMS, 2);
+  c.put(Config.NOOFTUPLES, 3);
+  c.put(Config.EXITONERROR, false);
+  Hfc fc3 = new Hfc(c);
   assertEquals(fc3.computeClosure(2, true), false);
  }
 
@@ -102,9 +129,9 @@ public class HfcTest {
   Set<int[]> newTuples = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
   int noOfIterations = 2;
   boolean cleanUpRepository = true;
-  TupleStore tupleStore = getOperatorTestStore();
-  RuleStore ruleStore = new RuleStore(Config.getDefaultConfig(), tupleStore);
-  Hfc fc = new Hfc(Config.getDefaultConfig(), tupleStore, ruleStore);
+  TestConfig c = TestConfig.getDefaultConfig();
+  c.put(Config.CLEANUP, true);
+  Hfc fc = new Hfc(c);
   //no tuples were generated, so returns false
   assertEquals(fc.computeClosure(newTuples, noOfIterations, cleanUpRepository), false);
   //set verbose to false
@@ -137,7 +164,7 @@ public class HfcTest {
   e[0] = 1;
   e[1] = 2;
   tuples.add(e);
-  Hfc fc = new Hfc(Config.getInstance(getTestResource("test_eq.yml")));
+  TestHfc fc = new TestHfc(Config.getInstance(getTestResource("test_eq.yml")));
   boolean b = fc.addTuples(tuples);
   assertEquals(true, b);
  }
@@ -147,16 +174,26 @@ public class HfcTest {
   //test method removeTuplesFromRepository(Collection<int[]> tuples)
   Collection<int[]> tuples = new THashSet<int[]>();
   int[] tuple = new int[3];
-  Hfc fc = new Hfc(Config.getInstance(getTestResource("test_eq.yml")));
+  TestHfc fc = new TestHfc(Config.getInstance(getTestResource("test_eq.yml")));
   tuple[0] = fc._tupleStore.putObject(new Uri("<rdf:Foo>", NamespaceManager.RDF).toString());
   tuple[1] = fc._tupleStore.putObject(new Uri("<rdf:Bar>", NamespaceManager.RDF).toString());
   tuple[2] = fc._tupleStore.putObject(new Uri("<rdf:FooBar>", NamespaceManager.RDF).toString());
   tuples.add(tuple);
   fc.addTuples(tuples);
   assertEquals(45, fc._tupleStore.allTuples.size());
-  assertTrue(fc.removeTuples(tuples));
+  assertTrue(fc.removeIntTuples(tuples));
   assertEquals(44, fc._tupleStore.allTuples.size());
 
+  List<String> stuple = new ArrayList<>();
+  stuple.add(new Uri("<rdf:Foo>", NamespaceManager.RDF).toString());
+  stuple.add(new Uri("<rdf:Bar>", NamespaceManager.RDF).toString());
+  stuple.add(new Uri("<rdf:FooBar>", NamespaceManager.RDF).toString());
+  List<List<String>> stuples = new ArrayList<>();
+  stuples.add(stuple);
+  fc.addTuples(stuples);
+  assertEquals(45, fc._tupleStore.allTuples.size());
+  assertTrue(fc.removeTuples(stuples));
+  assertEquals(44, fc._tupleStore.allTuples.size());
  }
 
  @Test
@@ -168,7 +205,7 @@ public class HfcTest {
   e[1] = 2;
   tuples.add(e);
   Hfc fc = new Hfc(Config.getInstance(getTestResource("test_eq.yml")));
-  assertEquals(false, fc.removeTuples(tuples));
+  assertEquals(false, fc.removeIntTuples(tuples));
  }
 
  @Test
@@ -180,7 +217,7 @@ public class HfcTest {
   e[1] = 2;
   tuples.add(e);
   Hfc fc = new Hfc(Config.getInstance(getTestResource("test_eq.yml")));
-  assertEquals(false, fc.removeTuples(tuples));
+  assertEquals(false, fc.removeIntTuples(tuples));
  }
 
  @Test
@@ -190,7 +227,7 @@ public class HfcTest {
   assertEquals(false, fc.computeClosure());
  }
 
-
+ /** TODO: REACTIVATE UPLOADRULES OR DELETE
  @Test
  public void testUploadRules() throws FileNotFoundException, WrongFormatException, IOException {
   //test method uploadRules(String filename)
@@ -202,8 +239,10 @@ public class HfcTest {
   // the default.test.rdl file contains 2 rules -> 24 + 2 = 26 ;-)
   assertEquals(26,fc._ruleStore.allRules.size() );
  }
+ */
 
- @Test
+ @SuppressWarnings("unused")
+@Test
  public void testShutdown() throws FileNotFoundException, WrongFormatException, IOException {
   //How to check? It just exits the system, so other tests are not executed
   //test method shutdown()
@@ -255,28 +294,18 @@ public class HfcTest {
  }
 
   @Test
-  public void status() {
-   Hfc hfc = new Hfc();
+  public void status() throws IOException, WrongFormatException {
+   Hfc hfc = new Hfc(Config.getDefaultConfig());
    assertNotNull(hfc.status());
   }
 
   @Test
   public void readTuplesString() throws IOException, WrongFormatException {
-   Hfc hfc = new Hfc();
-   hfc.readTuples(getTestResource("test.nt"));
+   Hfc hfc = new Hfc(Config.getDefaultConfig());
+   hfc.uploadTuples(getTestResource("test.nt"));
    int tuples = hfc._tupleStore.allTuples.size();
    assertEquals(47, tuples);
  }
-
-  /*
-  @Test
-  public void readTuplesFile() throws IOException, WrongFormatException {
-    Hfc hfc = new Hfc();
-    hfc.readTuples(new File(getTestResource("test.nt")));
-    int tuples = hfc._tupleStore.allTuples.size();
-    assertEquals(47, tuples);
-  }
-  */
 
   @Test
   public void testUploadTuples() throws IOException, WrongFormatException {
@@ -290,14 +319,14 @@ public class HfcTest {
   }
 
   @Test
-  public void isEquivalenceClassReduction() {
-   Hfc hfc = new Hfc();
+  public void isEquivalenceClassReduction() throws IOException, WrongFormatException {
+   Hfc hfc = new Hfc(Config.getDefaultConfig());
    assertFalse(hfc.isEquivalenceClassReduction());
   }
 
   @Test
-  public void isCleanUpRepository() {
-   Hfc hfc = new Hfc();
+  public void isCleanUpRepository() throws IOException, WrongFormatException {
+   Hfc hfc = new Hfc(Config.getDefaultConfig());
    assertTrue(hfc.isCleanUpRepository());
   }
 }

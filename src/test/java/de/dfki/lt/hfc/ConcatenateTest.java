@@ -17,9 +17,9 @@ public class ConcatenateTest {
     // store values in TupleStore, save integer-key in database
     int[] args = new int[5];
 
-    args[0] = store.putObject((new XsdString("FooBar")).toString());
-    args[1] = store.putObject((new XsdString("Bar")).toString());
-    args[2] = store.putObject((new XsdString("Foo")).toString());
+    args[0] = store.putObject((new XsdString("FooBar")));
+    args[1] = store.putObject((new XsdString("Bar")));
+    args[2] = store.putObject((new XsdString("Foo")));
 
     // create FunctionalOperator
     FunctionalOperator fop =

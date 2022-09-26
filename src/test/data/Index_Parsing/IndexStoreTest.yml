@@ -17,7 +17,7 @@ namespaces:
   nary: http://www.dfki.de/lt/onto.nary.owl#
 
 tupleFiles:
-  - ./src/test/data/Index_Parsing/transaction_date0_valid_date45.nt
+  - transaction_date0_valid_date45.nt
 
 minArgs: 6
 maxArgs: 6
@@ -29,7 +29,7 @@ rdfCheck: false
 exitOnError: true
 
 ruleFiles:
-  - ./src/test/data/Index_Parsing/transaction0_valid45.rdl
+  - transaction0_valid45.rdl
 
 Index:
   - Key1: XsdDate

@@ -1,7 +1,7 @@
 package de.dfki.lt.hfc.types;
 
 import de.dfki.lt.hfc.NamespaceManager;
-import de.dfki.lt.hfc.Namespace;
+import de.dfki.lt.hfc.NamespaceManager.Namespace;
 
 /**
  * this (abstract) class is the superclass for the _internal_

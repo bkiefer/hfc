@@ -1,9 +1,10 @@
 package de.dfki.lt.hfc;
 
-import static de.dfki.lt.hfc.TestingUtils.getTestResource;
-import static org.junit.Assert.*;
+import static de.dfki.lt.hfc.TestingUtils.getStore;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashSet;
 
@@ -19,7 +20,7 @@ public class ClauseComparatorTest {
     dontCareVariables.add(1);
     dontCareVariables.add(100);
     dontCareVariables.add(100000);
-    TupleStore tupleStore = new TupleStore(Config.getDefaultConfig());
+    TupleStore tupleStore = getStore(Config.getDefaultConfig());
     ClauseComparator cc = new ClauseComparator(dontCareVariables, tupleStore);
     assertNotNull(cc);
   }
@@ -36,7 +37,7 @@ public class ClauseComparatorTest {
     dontCareVariables.add(1);
     dontCareVariables.add(2);
     dontCareVariables.add(3);
-    TupleStore ts = new TupleStore(Config.getDefaultConfig());
+    TupleStore ts = getStore(Config.getDefaultConfig());
     ClauseComparator cc = new ClauseComparator(dontCareVariables, ts);
     assertTrue(cc.compare(clause1, clause2) > 0);
     assertEquals(990, cc.compare(clause1, clause2));//in this particular case

@@ -80,7 +80,7 @@ public class PrintSizeTest {
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
     rop.apply(new BindingTable[]{bt});
     String temp = outContent.toString();
-    checkResult(expected, bt, bt.getVars());
+    checkResult(hfc, bt, expected, bt.getVars());
     // could be problematic if the SystemOutput will change in future versions
     // of hfc
     assertEquals("19 \n", temp.substring(temp.length() -4));

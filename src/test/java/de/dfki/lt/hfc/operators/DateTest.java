@@ -36,8 +36,8 @@ public class DateTest {
 
     // store values in TupleStore, save integer-key in database
     int[] args = new int[5];
-    args[0] = store.putObject((new XsdDate(2, 0, 0)).toString());
-    args[1] = store.putObject((new XsdDate(4, 0, 0)).toString());
+    args[0] = store.putObject((new XsdDate(2, 0, 0)));
+    args[1] = store.putObject((new XsdDate(4, 0, 0)));
 
     // do operation
     assertEquals("0002-00-01",
@@ -54,8 +54,8 @@ public class DateTest {
 
     // store values in TupleStore, save integer-key in database
     int[] args = new int[5];
-    args[0] = store.putObject((new XsdDate(2, 0, 0)).toString());
-    args[1] = store.putObject((new XsdDate(4, 0, 0)).toString());
+    args[0] = store.putObject((new XsdDate(2, 0, 0)));
+    args[1] = store.putObject((new XsdDate(4, 0, 0)));
 
     // do operation
     assertEquals("0001-12-30",

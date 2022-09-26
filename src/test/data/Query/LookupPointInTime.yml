@@ -17,7 +17,7 @@ namespaces:
   nary: http://www.lt-world.org/dom.owl#
 
 tupleFiles:
-  - ./src/test/data/Query/lookupAtomTest.nt
+  - lookupAtomTest.nt
 
 minArgs: 3
 maxArgs: 5
@@ -29,7 +29,7 @@ rdfCheck: false
 exitOnError: true
 
 ruleFiles:
-  - ./src/test/data/Query/intervalTest.rdl
+  - intervalTest.rdl
 
 Index:
   - Key1: XsdLong

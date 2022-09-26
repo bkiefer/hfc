@@ -32,8 +32,8 @@ public class DoubleTest {
     // store values in TupleStore, save integer-key in database
     int[] args = new int[5];
 
-    args[0] = store.putObject((new XsdDouble(0.09999999999999999)).toString());
-    args[1] = store.putObject((new XsdDouble(0.99999999999999999)).toString());
+    args[0] = store.putObject((new XsdDouble(0.09999999999999999)));
+    args[1] = store.putObject((new XsdDouble(0.99999999999999999)));
 
     // do operation
     assertEquals("0.1",
@@ -52,8 +52,8 @@ public class DoubleTest {
     // store values in TupleStore, save integer-key in database
     int[] args = new int[5];
 
-    args[0] = store.putObject((new XsdDouble(0.1)).toString());
-    args[1] = store.putObject((new XsdDouble(1.0)).toString());
+    args[0] = store.putObject((new XsdDouble(0.1)));
+    args[1] = store.putObject((new XsdDouble(1.0)));
 
     // do operation
     assertEquals("0.09999999999999999",

@@ -30,14 +30,14 @@
 "0000-00-00"^^<xsd:date> <owl:Nothing> <rdfs:subClassOf> <owl:Thing> .
 "0000-00-00"^^<xsd:date> <owl:Thing> <owl:disjointWith> <owl:Nothing> .
 # I have added the below triples
-"0000-00-00"^^<xsd:date> <nary:Thing+> <rdf:type> <nary:Class> .
-"0000-00-00"^^<xsd:date> <nary:Nothing+> <rdf:type> <nary:Class> .
+"0000-00-00"^^<xsd:date> <nary:Thing+> <rdf:type> <owl:Class> .
+"0000-00-00"^^<xsd:date> <nary:Nothing+> <rdf:type> <owl:Class> .
 "0000-00-00"^^<xsd:date> <nary:Thing+> <owl:disjointWith> <nary:Nothing+> .
 "0000-00-00"^^<xsd:date> <nary:Nothing+> <rdfs:subClassOf> <nary:Thing+> .
 "0000-00-00"^^<xsd:date> <owl:Thing> <rdfs:subClassOf> <nary:Thing+> .
 "0000-00-00"^^<xsd:date> <xsd:AnyType> <rdfs:subClassOf> <nary:Thing+> .
 "0000-00-00"^^<xsd:date> <xsd:AnyType> <rdf:type> <rdfs:Datatype> .
-"0000-00-00"^^<xsd:date> <nary:MixedProperty> <rdfs:subClassOf> <rdf:Property> 
+"0000-00-00"^^<xsd:date> <nary:MixedProperty> <rdfs:subClassOf> <rdf:Property>
 "0000-00-00"^^<xsd:date> <owl:DatatypeProperty> <rdfs:subClassOf> <nary:MixedProperty> .
 "0000-00-00"^^<xsd:date> <owl:ObjectProperty> <rdfs:subClassOf> <nary:MixedProperty> .
 # XSD Datatypes

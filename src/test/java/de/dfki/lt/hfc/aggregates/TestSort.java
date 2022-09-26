@@ -5,8 +5,7 @@ import de.dfki.lt.hfc.*;
 import de.dfki.lt.hfc.types.XsdLong;
 import org.junit.*;
 
-import static de.dfki.lt.hfc.TestingUtils.checkResult;
-import static de.dfki.lt.hfc.TestingUtils.printExpected;
+import static de.dfki.lt.hfc.TestingUtils.*;
 import static org.junit.Assert.assertTrue;
 
 
@@ -28,11 +27,7 @@ public class TestSort {
 
     @Before
     public void init() throws Exception {
-
-        fc = new Hfc(Config.getDefaultConfig());
-        fc._tupleStore.namespace.putForm("pal", "http://www.lt-world.org/pal.owl#", true);
-        fc._tupleStore.namespace.putForm("dom", "http://www.lt-world.org/dom.owl#", true);
-        fc.uploadTuples(getResource("test.child.labvalues.nt"));
+        fc = TestHfc.getPalDomHfc(getResource("test.child.labvalues.nt"));
     }
 
 
@@ -44,7 +39,7 @@ public class TestSort {
 
     @Test
     public void testSort() throws QueryParseException, BindingTableIteratorException {
-        Query q = new Query(fc._tupleStore);
+        Query q = fc.getQuery();
 
 
         String[][] expected = {
@@ -73,7 +68,7 @@ public class TestSort {
 
     @Test
     public void testSortR() throws QueryParseException, BindingTableIteratorException {
-        Query q = new Query(fc._tupleStore);
+        Query q = fc.getQuery();
 
 
         String[][] expected = {

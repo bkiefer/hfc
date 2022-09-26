@@ -31,7 +31,42 @@ import java.util.concurrent.Executors;
  */
 public final class ForwardChainer {
 
+  private static class UnorderedPair {
 
+    final protected BindingTable first;
+
+    final protected BindingTable second;
+
+    public UnorderedPair(BindingTable first, BindingTable second) {
+      this.first = first;
+      this.second = second;
+    }
+
+    /**
+     * make sure that this equals obj by NOT distinguishing between first and
+     * second
+     */
+    @Override
+    public boolean equals(Object obj) {
+      UnorderedPair pair = (UnorderedPair) obj;
+      if (this.first.equals(pair.first) && this.second.equals(pair.second))
+        return true;
+      else if (this.first.equals(pair.second) && this.second.equals(pair.first))
+        return true;
+      else
+        return false;
+    }
+
+    /**
+     * hash code does not distinguish between first and second arg of a pair, thus
+     * adds the hashes of first and second: IF p.first == x && p.second == y &&
+     * q.first == y && q.second == x THEN p.hashCode() == q.hashCode()
+     */
+    @Override
+    public int hashCode() {
+      return first.hashCode() + second.hashCode();
+    }
+  }
 
   /**
    * A basic LOGGER.
@@ -42,12 +77,20 @@ public final class ForwardChainer {
    * iteration: take ALL positions of a tuple into account
    */
   protected static TIntArrayHashingStrategy DEFAULT_HASHING_STRATEGY = new TIntArrayHashingStrategy();
-  private final TupleStore _tupleStore;
-  
-  
-  private final RuleStore _ruleStore;
-    private final Config _config;
 
+  private final TupleStore _tupleStore;
+
+  private final RuleStore _ruleStore;
+
+  private Boolean traceMode = false;
+
+  private boolean equivalenceClassReduction = true;
+
+  private boolean garbageCollection = false;
+
+  private boolean cleanupRepository = false;
+
+  private int maxIterations;
 
   /**
    * generation counter is incremented during each iteration, independent of how
@@ -57,54 +100,42 @@ public final class ForwardChainer {
    * is used during local clause querying
    */
   protected int generationCounter = 0;
+
   /**
    * specifies the number of tasks (= #rules) that are executed within a single
    * iteration; will be assigned a value when constructor is executed
    */
   protected int noOfTasks;
+
   /**
    * container to gather the rule threads
    */
   private ExecutorService threadPool;
+
   /**
    * needed to to start a new iteration
    */
   private CountDownLatch doneSignal;
 
-
-
-  /**
-   * used to generate unique blank node names for _this_ forward chainer
-   */
-  private final String _blankNodePrefix = "_:" + this.toString();
-
-  /**
-   * used to generate unique blank node names
-   */
-  private int _blankCounter = 0;
-
-
-
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  
-  public ForwardChainer(TupleStore ts, RuleStore rs, Config config) {
-    _tupleStore = ts;
+
+  private ForwardChainer(TupleStore store, RuleStore rs,
+      int maxIter, boolean cleanup, boolean gc, boolean eqRed, int noCores) {
+    _tupleStore = store;
     _ruleStore = rs;
     noOfTasks = rs.allRules.size();
-    _config = config;
-    /**
-    _noOfCores = config.getNoOfCores();
-    _cleanUpRepository = config.isCleanupRepository();
-    _eqReduction = (Boolean) config.isEqReduction();
-    _gc = (Boolean) config.isGarbageCollection();
-    _noOfIterations = (int) config.get(Config.ITERATIONS);
-    verbose = (boolean) config.get(Config.VERBOSE);
-    **/
-     this.threadPool = Executors.newFixedThreadPool(config.getNoOfCores());
-
+    cleanupRepository = cleanup;
+    equivalenceClassReduction = eqRed;
+    garbageCollection = gc;
+    maxIterations = maxIter;
+    this.threadPool = Executors.newFixedThreadPool(noCores);
   }
 
+  public ForwardChainer(TupleStore io, RuleStore rs, Config conf) {
+    this(io, rs, conf.getIterations(), conf.isCleanupRepository(),
+        conf.isGarbageCollection(), conf.isEqReduction(), conf.getNoOfCores());
+  }
 
   /**
   private ForwardChainer(TupleStore ts, RuleStore rs){
@@ -254,18 +285,18 @@ public final class ForwardChainer {
                                    int index,
                                    boolean newInfo,
                                    ArrayList<BindingTable> joinit,
-                                   HashMap<Pair, BindingTable> memo) {
+                                   HashMap<UnorderedPair, BindingTable> memo) {
     if (index == cluster.size()) {
       if (!newInfo)
         // no new info -- no need to do some potential expensive joins
         return new BindingTable(new THashSet<>(), null);
       // joinit is at least of length 1
-      Pair pair;
+      UnorderedPair pair;
       BindingTable memoResult;
       BindingTable result = joinit.get(0);
       // memoization will work here because join() does NOT modify the input tables
       for (int i = 1; i < joinit.size(); i++) {
-        pair = new Pair(result, joinit.get(i));
+        pair = new UnorderedPair(result, joinit.get(i));
         memoResult = memo.get(pair);
         if (memoResult == null) {
           result = Calc.join(result, joinit.get(i));
@@ -459,10 +490,10 @@ public final class ForwardChainer {
     SortedMap<Integer, Integer> nameToPos = rule.megaCluster.bindingTable.nameToPos;
     Set<Integer> rhsvars = rule.rhsVariables;  // proper RHS vars w/o BN vars
     Set<Integer> bnvars = rule.blankNodeVariables;
-    if (_config.isVerbose()) {
-      synchronized (logger) {
-        logger.debug("  " + rule.name + ": " + rule.megaCluster.old.size() +
-                " " + rule.megaCluster.delta.size());
+    if (traceMode) {
+      synchronized (traceMode) {
+        logger.debug(">> {}: {} {}", rule.name, rule.megaCluster.old.size(),
+            rule.megaCluster.delta.size());
       }
     }
     // use a mediator (array) instead of using the slower map; take care of _blank_node_ vars;
@@ -543,7 +574,7 @@ public final class ForwardChainer {
    */
   public int nextBlankNode() {
     synchronized (_tupleStore) {
-      return _tupleStore.putObject(_blankNodePrefix + _blankCounter++);
+      return _tupleStore.newBlankNode();
     }
   }
 
@@ -553,18 +584,18 @@ public final class ForwardChainer {
    * writes generated tuples to local output field of the rule
    */
   protected void execute(Rule rule) {
-    if(_config.isVerbose())
-      synchronized (logger) {
-        logger.debug(" execute rule " + rule.name);
+    if(traceMode)
+      synchronized (traceMode) {
+        logger.debug(">> execute rule {}", rule.name);
       }
     try {
       // reuse rule's output field; make it empty, even for rules that are switched off
       rule.output.clear();
       // do not execute rules which have a priority less or equal 0
       if (rule.priority <= 0) {
-        if (_config.isVerbose())
-          synchronized (logger) {
-            logger.debug("  " + rule.name + ": off");
+        if (traceMode)
+          synchronized (traceMode) {
+            logger.debug(">> {} :off", rule.name);
           }
         return;
       }
@@ -572,36 +603,36 @@ public final class ForwardChainer {
       executeLocalMatch(rule);
       // and check whether rule is applicable on local grounds
       if (!rule.isApplicable) {
-        if (_config.isVerbose())
-          synchronized (logger) {
-            logger.debug("  " + rule.name + ": local");
+        if (traceMode)
+          synchronized (traceMode) {
+            logger.debug(">> {} :local", rule.name);
           }
         return;
       }
       // same for the whole antecedent
       executeGlobalMatch(rule);
       if (!rule.isApplicable) {
-        if (_config.isVerbose())
-          synchronized (logger) {
-            logger.debug("  " + rule.name + ": global");
+        if (traceMode)
+          synchronized (traceMode) {
+            logger.debug(">> {} :global", rule.name);
           }
         return;
       }
       // apply in-eqs if in-eq vars belong to the same cluster
       applyTests(rule);
       if (!rule.isApplicable) {
-        if (_config.isVerbose())
-          synchronized (logger) {
-            logger.debug("  " + rule.name + ": tests");
+        if (traceMode)
+          synchronized (traceMode) {
+            logger.debug(">> {} :tests", rule.name);
           }
         return;
       }
       // compute "deltas" over LHS clusters
       prepareInstantiation(rule);
       if (!rule.isApplicable) {
-        if (_config.isVerbose())
-          synchronized (logger) {
-            logger.debug("  " + rule.name + ": cluster");
+        if (traceMode)
+          synchronized (traceMode) {
+            logger.debug(" >> {} :cluster", rule.name);
           }
         return;
       }
@@ -631,21 +662,19 @@ public final class ForwardChainer {
    * iterates until a fixpoint is computed or a predefined iteration depth
    * has been reached as given by the argument
    *
-   * @return false, otherwise
+   * @return true if new tuples have been added, false otherwise
    */
   public boolean computeClosure(int noOfIterations, boolean cleanUpRepository) {
-    logger.debug("Number of Iterations = " + noOfIterations);
-    logger.debug("CleanUp Repository = " + noOfIterations);
-    int noOfAllTuples = _tupleStore.allTuples.size();
-    if (_config.isVerbose())
-      logger.debug("\n  number of all tuples: " + noOfAllTuples + "\n");
+    logger.debug("Number of Iterations = {}", noOfIterations);
+    logger.debug("CleanUp Repository = {}", cleanUpRepository);
+    int noOfAllTuples = _tupleStore.size();
+    logger.debug("number of all tuples: {}", noOfAllTuples);
     int currentIteration = 0;
     long time = System.currentTimeMillis();
     long fullTime = time;
     boolean newInfo = false;
     int noOfNewTuples = 0;
-    if (_config.isVerbose())
-      logger.debug("  rule name: old new OR failure stage");
+    logger.debug("rule name: old new OR failure stage");
     // increment generation counter for deletion here AND also at the very end
     boolean notContained;
     ++_tupleStore.generation;
@@ -654,12 +683,11 @@ public final class ForwardChainer {
       ++this.generationCounter;
       // increment number of local iterations wrt. computeClosure()
       ++currentIteration;
-      if (_config.isVerbose())
-        logger.debug("  " + currentIteration);
+      logger.debug("Iteration {}", currentIteration);
       // execute all rules (quasi) in parallel, taking advantage of multi-core CPUs
       this.doneSignal = new CountDownLatch(this.noOfTasks);  // = #rules
       try {
-        logger.debug("Execute all ("+ _ruleStore.allRules.size() + ") rules ...");
+        logger.debug("Execute all ({}) rules ...", _ruleStore.allRules.size());
         executeAllRules();
         this.doneSignal.await();  // wait for all tasks to finish
       } catch (InterruptedException ie) {
@@ -676,44 +704,33 @@ public final class ForwardChainer {
           ++noOfNewTuples;
         }
       }
-      if (_config.isVerbose()) {
-        logger.debug("  " + noOfNewTuples + "/" + _tupleStore.allTuples.size() +
-                " (" + (System.currentTimeMillis() - time) + "msec)");
-        time = System.currentTimeMillis();
-      }
+      logger.debug("{}/{} ({} msec)", noOfNewTuples, _tupleStore.allTuples.size(),
+          (System.currentTimeMillis() - time));
+      time = System.currentTimeMillis();
       // perhaps trigger a GC after each iteration step
-      if (_config.isGarbageCollection())
+      if (garbageCollection)
         System.gc();
     } while (newInfo && (currentIteration != noOfIterations));
     // increment the generation  counter for deltion again for further upload
     ++_tupleStore.generation;
     // some statistics
-    if (_config.isVerbose()) {
-      logger.debug("\n  number of all tuples: " + _tupleStore.allTuples.size());
-      logger.debug("  " + (_tupleStore.allTuples.size() - noOfAllTuples) +
-              " tuples generated");
-      logger.debug("  closure computation took " + (System.currentTimeMillis() - fullTime) + "msec");
-    }
+    logger.debug("number of all tuples: {}", _tupleStore.allTuples.size());
+    logger.debug("{} tuples generated",
+        (_tupleStore.allTuples.size() - noOfAllTuples));
+    logger.debug("closure computation took {} msec",
+        (System.currentTimeMillis() - fullTime));
     // possibly cleanup
-    if (_config.isEqReduction() && _config.isCleanupRepository()) {
-      if (_config.isVerbose()) {
-        logger.debug("\n  cleaning up repository ... ");
-      }
+    if (equivalenceClassReduction && cleanUpRepository) {
+      logger.debug("cleaning up repository ... ");
       _tupleStore.cleanUpTupleStore();
-      if (_config.isVerbose()) {
-        logger.debug("done");
-        logger.debug("  number of all tuples: " + _tupleStore.allTuples.size());
-      }
+      logger.debug("done! number of all tuples: {}", _tupleStore.allTuples.size());
     }
-    logger.debug("Generation Counter: " + generationCounter);
+    logger.debug("Generation Counter: {}", generationCounter);
     // and finally the `answer'
-    if ((noOfAllTuples - _tupleStore.allTuples.size()) == 0)
-      return false;
-    else
-      return true;
+    return ((noOfAllTuples - _tupleStore.size()) != 0);
   }
 
-  
+
   /**
    * calls computeClosure(int noOfIterations) again, assuming that a set of
    * new tuples has been added to the tuple store;
@@ -726,8 +743,7 @@ public final class ForwardChainer {
     newTuples.removeAll(_tupleStore.allTuples);  // is a destructive operation
     // is newTuples a subset of allTuples
     if (newTuples.isEmpty()) {
-      if (_config.isVerbose())
-        logger.debug("\n  no tuples generated");
+      logger.debug("no tuples generated");
       return false;
     }
     for (int[] tuple : newTuples) {
@@ -736,25 +752,15 @@ public final class ForwardChainer {
     // and finally call nullary computeClosure()
     return computeClosure(noOfIterations, cleanUpRepository);
   }
-  
-
-
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
- 
-
-
 
   /**
    * shutdowns the thread pool and exits with value 0
    */
   public void shutdown() {
     this.threadPool.shutdown();
-    if (_config.isVerbose()) {
-      logger.debug("\n  shutting down thread pool ...");
-      logger.debug("  exiting ...\n");
-    }
+    logger.debug("shutting down thread pool ... exiting ...");
     System.exit(0);
   }
 
@@ -767,15 +773,9 @@ public final class ForwardChainer {
    */
   public boolean shutdownNoExit() {
     this.threadPool.shutdown();
-    if (_config.isVerbose()) {
-      logger.debug("  shutting down thread pool ...");
-    }
+    logger.debug("shutting down thread pool ...");
     return this.threadPool.isShutdown();
   }
-
-  
-
- 
 
   /**
    * @return false otherwise
@@ -888,12 +888,10 @@ public final class ForwardChainer {
         _tupleStore.tupleToGeneration = new TCustomHashMap<>(ForwardChainer.DEFAULT_HASHING_STRATEGY);
       for (int[] tuple : _tupleStore.allTuples)
         _tupleStore.tupleToGeneration.put(tuple, 0);
-      if (_config.isVerbose())
-        logger.debug("  tuple deletion enabled");
+      logger.debug("tuple deletion enabled");
       return true;
     } else {
-      if (_config.isVerbose())
-        logger.debug("  tuple deletion can no longer be enabled, since closure computation was already called");
+      logger.debug("tuple deletion can no longer be enabled, since closure computation was already called");
       return false;
     }
   }
@@ -933,8 +931,7 @@ public final class ForwardChainer {
       // closure computation, thus no need to go further here
       if ((tgen % 2) != 0)
         return false;
-      if (_config.isVerbose())
-        logger.debug("\n  falling back to generation " + tgen + " ... ");
+      logger.debug("falling back to generation {} ...", tgen);
       // remove tuple from the tuple store, also removes tuple-to-generation mapping, if enabled
       _tupleStore.removeTuple(tuple);
       // remove potentially dependent materialized tuples: first, determine the relevant tuples
@@ -956,11 +953,8 @@ public final class ForwardChainer {
       // separately (too complex and expensive): reduces to compress level = 1
       compress(1);
       // and finally call closure computation again, even for only this single tuple
-      if (_config.isVerbose()) {
-        logger.debug("done");
-        logger.debug("  calling closure computation again ...");
-      }
-      computeClosure(_config.getIterations(),_config.isCleanupRepository());
+      logger.debug("done! calling closure computation again ...");
+      computeClosure(maxIterations, cleanupRepository);
       // check whether tuple is still in the set of all tuples, i.e., someone tried to delete an
       // entailed tuple which will NOT work (since it is reintroduced through closure computation!
       return _tupleStore.allTuples.contains(tuple);
@@ -1011,8 +1005,7 @@ public final class ForwardChainer {
       // none of the tuples are contained in the set of all tuples
       if (lowest == Integer.MAX_VALUE)
         return false;
-      if (_config.isVerbose())
-        logger.debug("\n  falling back to generation " + lowest + " ... ");
+      logger.debug("falling back to generation {} ...", lowest);
       // return value = true iff card(tuples) == card(toBeDeleted)
       boolean result = (tuples.size() == toBeDeleted.size());
       // delete the uploaded tuples from tuples
@@ -1031,11 +1024,8 @@ public final class ForwardChainer {
         _tupleStore.removeTuple(element);
       }
       compress(1);
-      if (_config.isVerbose()) {
-        logger.debug("done");
-        logger.debug("  calling closure computation again ...");
-      }
-      computeClosure(_config.getIterations(), _config.isCleanupRepository());
+      logger.debug("done! calling closure computation again ...");
+      computeClosure(maxIterations, cleanupRepository);
       return result;
     }
   }
@@ -1169,8 +1159,7 @@ public final class ForwardChainer {
     // none of the tuples are contained in the set of all tuples
     if (lowest == Integer.MAX_VALUE)
       return false;
-    if (_config.isVerbose())
-      logger.debug("\n  falling back to generation " + lowest + " ... ");
+    logger.debug("falling back to generation {} ...", lowest);
     // return value = true iff card(tuples) == card(toBeDeleted)
     boolean result = (tuples.size() == toBeDeleted.size());
     // delete the uploaded tuples from tuples and record their generation
@@ -1195,12 +1184,9 @@ public final class ForwardChainer {
     }
     // throw away auxiliary data structures and do NOT individually remove tuples
     compress(1);
-    if (_config.isVerbose()) {
-      logger.debug("done");
-      logger.debug("  calling closure computation again ...");
-    }
+    logger.debug("done! calling closure computation again ...");
     // call closure computation again to reestablish the entailed tuples and auxiliary structures
-    computeClosure(_config.getIterations(), _config.isCleanupRepository());
+    computeClosure(maxIterations, cleanupRepository);
     return result;
   }
 
@@ -1255,7 +1241,7 @@ public final class ForwardChainer {
       synchronized (_tupleStore) {
         final int deleteThatGeneration = _tupleStore.generation + 1;
         try {
-          computeClosure(_config.getIterations(),_config.isCleanupRepository());
+          computeClosure(maxIterations, cleanupRepository);
           return true;
         } catch (Exception e) {
           logger.error(e.toString());
@@ -1277,7 +1263,9 @@ public final class ForwardChainer {
 
   public ForwardChainer copyForwardChainer(TupleStore tupleStoreCopy, RuleStore ruleStoreCopy, int noOfCores) {
 
-    ForwardChainer copy = new ForwardChainer(tupleStoreCopy, ruleStoreCopy, _config);
+    ForwardChainer copy = new ForwardChainer(tupleStoreCopy, ruleStoreCopy,
+        maxIterations, cleanupRepository, garbageCollection,
+        equivalenceClassReduction, noOfCores);
     copy.generationCounter = generationCounter;
     // copy tuple store and rule store
     // ***WARNING***: do not let work this and copy in PARALLEL !!!!!

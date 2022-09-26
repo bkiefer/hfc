@@ -35,11 +35,11 @@ public final class PrintTest {
     // store values in TupleStore, save integer-key in database
     int[] args = new int[5];
 
-    args[0] = store.putObject((new XsdString("0")).toString());
-    args[1] = store.putObject((new XsdInt(1)).toString());
-    args[2] = store.putObject((new XsdBoolean(true)).toString());
-    args[3] = store.putObject((new Uri("<rdf:type>", NamespaceManager.RDF)).toString());
-    args[4] = store.putObject((new BlankNode("_blank")).toString());
+    args[0] = store.putObject((new XsdString("0")));
+    args[1] = store.putObject((new XsdInt(1)));
+    args[2] = store.putObject((new XsdBoolean(true)));
+    args[3] = store.putObject((new Uri("<rdf:type>", NamespaceManager.RDF)));
+    args[4] = store.putObject((new BlankNode("_blank")));
 
     // do operation
     assertEquals("PrintFalse", FunctionalOperator.FALSE, fop.apply(args));
@@ -54,11 +54,11 @@ public final class PrintTest {
     // store values in TupleStore, save integer-key in database
     int[] args = new int[5];
 
-    args[0] = store.putObject((new XsdString("0")).toString());
-    args[1] = store.putObject((new XsdInt(1)).toString());
-    args[2] = store.putObject((new XsdBoolean(true)).toString());
-    args[3] = store.putObject((new Uri("<rdf:type>", NamespaceManager.RDF)).toString());
-    args[4] = store.putObject((new BlankNode("_blank")).toString());
+    args[0] = store.putObject((new XsdString("0")));
+    args[1] = store.putObject((new XsdInt(1)));
+    args[2] = store.putObject((new XsdBoolean(true)));
+    args[3] = store.putObject((new Uri("<rdf:type>", NamespaceManager.RDF)));
+    args[4] = store.putObject((new BlankNode("_blank")));
 
     // do operation
     assertEquals("PrintTrue", FunctionalOperator.TRUE, fop.apply(args));

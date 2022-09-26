@@ -5,9 +5,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertEquals;
 
 /**
  * a first test of our approach towards mimicing transaction time in
@@ -42,7 +39,7 @@ public class TransactionTimeTest {
 
   @BeforeClass
   public static void init() throws Exception {
-    fc =	new Hfc(Config.getInstance(getResource("TestTransaction.yml")));
+    fc = new Hfc(Config.getInstance(getResource("TestTransaction.yml")));
     // further PAL-specific namespaces (short-to-long mappings, XSD DTs-to-Java class mappings)
     // further PAL-specific tuples (special XSD DT)
     // further PAL-specific triples from the inidividual sub-ontologies: make them 5-tuples
@@ -66,15 +63,17 @@ public class TransactionTimeTest {
   @Test
   public void test() throws QueryParseException {
     fc.computeClosure();
-    Query q = new Query(fc._tupleStore);
+    Query q = fc.getQuery();
     BindingTable bt = q.query("SELECT * WHERE ?s ?p ?o");  // 0 triples
     assertEquals(0, bt.size());
     bt = q.query("SELECT * WHERE ?s ?p ?o ?ts");  // 0 quadruples
     assertEquals(0, bt.size());
-    bt = q.query("SELECT * WHERE ?pol ?s ?p ?o ?ts");  // 4218 quintuples
-    assertEquals(4218, bt.size());
     bt = q.query("SELECT * WHERE ?pol ?s <owl:equivalentClass> ?o ?ts");  // 2 result quadruples
     assertEquals(2, bt.size());
+    bt = q.query("SELECTALL * WHERE ?pol ?s <owl:equivalentClass> ?o ?ts");  // 2 result quadruples
+    assertEquals(25, bt.size());
+    bt = q.query("SELECT * WHERE ?pol ?s ?p ?o ?ts");  // 4057 quintuples
+    assertEquals(4057, bt.size());
   }
 
 }

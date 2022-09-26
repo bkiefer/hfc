@@ -1,17 +1,19 @@
 package de.dfki.lt.hfc;
 
-import de.dfki.lt.hfc.types.XsdLong;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.util.*;
-
+import de.dfki.lt.hfc.indices.IndexingException;
 
 public class Hfc {
 
@@ -33,9 +35,9 @@ public class Hfc {
 
 
   /**
-   * I'm making _all_ the potentially relevant object directly accessable
+   * I'm making _all_ the potentially relevant object directly accessible
    */
-  public TupleStore _tupleStore = null;
+  protected TupleStore _tupleStore = null;
 
   /**
    * transaction time time stamp used by Hfc.readTuples(BufferedReader tupleReader)
@@ -59,229 +61,94 @@ public class Hfc {
 
   protected ForwardChainer _forwardChainer = null;
 
+  /* visibility is package to do tests */
+  protected NamespaceManager _namespace;
 
-  /**
-   * the nullary constructor allocates the minimal object configuration:
-   * a namespace and a tuple store are guaranteed to exist
-   */
-  Hfc() {
-    try {
-      this.config = Config.getDefaultConfig();
-      _tupleStore = new TupleStore(config);
-      _ruleStore = new RuleStore(config,_tupleStore);
-      _forwardChainer = new ForwardChainer(_tupleStore, _ruleStore, config);
-      init();
-    } catch (FileNotFoundException e) {
-      logger.error("Was not able to load default configuration");
-      e.printStackTrace();
-    } catch (IOException | WrongFormatException e) {
-      e.printStackTrace();
-    }
-  }
+  /* visibility is package to do tests */
+  IndexStore _indexStore;
 
+  private Writer persistencyWriter;
 
   public Hfc(String configPath) throws IOException, WrongFormatException {
-    this.config = Config.getInstance(configPath);
-    _tupleStore = new TupleStore(config);
-    _ruleStore = new RuleStore(config,_tupleStore);
-    _forwardChainer = new ForwardChainer(_tupleStore, _ruleStore, config);
-    init();
+    this(Config.getInstance(configPath));
   }
 
   public Hfc(Config config) throws IOException, WrongFormatException {
     this.config = config;
-    _tupleStore = new TupleStore(config);
-    _ruleStore = new RuleStore(config,_tupleStore);
+    _indexStore = createIndexStore(config);
+    _namespace = config.createNamespaceManager();
+    _tupleStore = config.createTupleStore(_namespace, _indexStore);
+    _ruleStore = config.createRuleStore(_tupleStore);
     _forwardChainer = new ForwardChainer(_tupleStore, _ruleStore, config);
-    init();
-  }
-
-  /**
-   * @deprecated  for testing only
-   * @param config
-   * @param ts
-   * @param rs
-   */
-  @Deprecated
-  public Hfc(Config config, TupleStore ts, RuleStore rs){
-    this.config = config;
-    _tupleStore = ts;
-    _ruleStore = rs;
-    _forwardChainer = new ForwardChainer(_tupleStore, _ruleStore, config);
-    init();
-  }
-
-  /*
-  private Hfc(Config config, TupleStore tupleStoreCopy, RuleStore ruleStoreCopy, ForwardChainer fcCopy) {
-    this.config = config;
-    this._tupleStore = tupleStoreCopy;
-    this._ruleStore = ruleStoreCopy;
-    this._forwardChainer = fcCopy;
-  }
-*/
-  
-  /**
-   * initialization code of nullary and binary constructors that is outsourced to avoid
-   * code reduplication
-   */
-  private void init() {
-    if (this.config.isVerbose()) {
-      logger.info("  Welcome to HFC, HUK's Forward Chainer");
-      logger.info("  " + Hfc.INFO);
-      logger.info("  # CPU cores: " + config.getNoOfCores());
-      logger.info("  " + this.toString());
-    }
+    persistencyWriter = config.treatPersistencyFile(_tupleStore);
+    logger.info("  Welcome to HFC, HUK's Forward Chainer");
+    logger.info("  " + Hfc.INFO);
+    logger.info("  # CPU cores: " + config.getNoOfCores());
+    logger.info("  " + this.toString());
   }
 
   public void shutdown() {
     _forwardChainer.shutdown();
   }
 
-  /** customize HFC, i.e., namespace and tuple store via key-value pairs
-   * from parameter settings which affect fields in these objects;
-   * the fields for the rule store and forward chainer are assigned values
-   * the first time rules are uploaded to HFC
-   * This method cannot be used to change namespaces, tuplefiles or rulefiles.
-   * Please use the dedicated methods to do so.
+  /** This is for adding namespace mappings from a remote client.
    *
-  private void customizeHfc(Map<String, Object> settings) {
-    logger.info("HFC settings: " + settings);
-    // make the settings available via protected fields in this class;
-    // alphabetical order:
-    this.config.updateConfig(settings);
-  }
-
-  
-  public void updateConfig(String path){
-   try {
-    customizeHfc(Config.getMapping(path));
-   } catch (FileNotFoundException e) {
-    e.printStackTrace();
-    System.err.println("Config File " + path + " not found. Will be ignored");
-   }
-  }
-
-
-  public void addNamespace(String shortForm, String longForm) {
-    config.addNamespace(shortForm, longForm);
-  }
-
-  private void readTuples(BufferedReader tupleReader)
-          throws WrongFormatException, IOException {
-    _tupleStore.readTuples(tupleReader);
-  }
-  */
-
-  /*
-  public void readTuples(File tuples)
-          throws WrongFormatException, IOException {
-    readTuples(Files.newBufferedReader(tuples.toPath(),
-            Charset.forName(_tupleStore.inputCharacterEncoding)));
-  }
-  */
-
-  /**
-   * uploads further tuples stored in a file to an already established forward chainer;
-   * this method directly calls readTuples() from class TupleStore;
-   * if tuple deletion is enabled in the forward chainer, the tuples from the file are
-   * assigned the actual generation TupleStore.generation
+   *  @return false if another namespace exists that contradicts the given
+   *  arguments, in this case this mapping is ignored.
    *
-   * @throws IOException
-   * @throws FileNotFoundException
-   * @throws WrongFormatException
+   *  TODO: does the client need the namespace mappings, too? Should they be
+   *  synchronized?
    */
-  public void readTuples(String filename) throws FileNotFoundException, IOException, WrongFormatException {
-    if (filename.startsWith("<resources>/")) {
-      String justName = filename.substring("<resources>/".length());
-      _tupleStore.readTuples(ClassLoader.getSystemResourceAsStream(justName));
-    }
-    _tupleStore.readTuples(filename, false);
+  public boolean addNamespace(String shortForm, String longForm) {
+    return _namespace.putForm(shortForm, longForm,
+        config.isShortIsDefault());
   }
 
-
-  public void readTuples(File tuples, long timestamp)
-          throws WrongFormatException, IOException {
-    logger.info("Read tuples from " + tuples.toPath());
-    _tupleStore.readTuples(Files.newBufferedReader(tuples.toPath(),
-            Charset.forName(_tupleStore.inputCharacterEncoding)),
-            null, new XsdLong(timestamp).toString());
+  public void setShortIsDefault(boolean shortIsDefault) {
+    config.setShortIsDefault(shortIsDefault);
+    _namespace.setShortIsDefault(shortIsDefault);
   }
 
-
-
-  private int getSymbolId(String symbol) {
-    int id = _tupleStore.putObject(symbol);
-    if (_tupleStore.equivalenceClassReduction) {
-      id = _tupleStore.getProxy(id);
-    }
-    return id;
+  private IndexStore createIndexStore(HashMap<String, Object> indexSettings)
+      throws IndexingException {
+    return new IndexStore(indexSettings);
   }
 
-
-
-  /**
-   * TODO keep this?
-   * Normalize namespaces, and get ids directly to put in the tuples without
-   * using the hfc internal functions. Also, honor the equivalence reduction
-   * by always entering the representative.
-   *
-   * @param rows  the table that contains the tuples to add to the storage
-   * @param front the potentially-empty (== null) front element
-   * @param backs arbitrary-many back elements (or an empty array)
-   *              <p>
-   *              This is done so i can add the <it>now<it/> time stamp transparently
-   *              TODO: refactor, and make this part of HFC core
-   */
-   public int addTuples(List<List<String>> rows, String front, String... backs) {
-    // normalize namespaces for front and backs
-    int frontId = -1;    // Java wants an initial value
-    if (front != null)
-      frontId = getSymbolId(front);
-    int[] backIds = new int[backs.length];
-    if (backs.length != 0) {
-      for (int i = 0; i < backs.length; ++i)
-        backIds[i] = getSymbolId(backs[i]);
-    }
-    // (front == null) means _no_ front element
-    final int frontLength = (front == null) ? 0 : 1;
-    final int backLength = backs.length;
-    int[] tuple;
-    int noOfTuples = 0;
-    // extend and add tuples, given by parameters rows, and front and backs
-    for (List<String> row : rows) {
-      tuple = new int[row.size() + frontLength + backLength];
-      int i = 0;
-      // front element
-      if (front != null) {
-        tuple[0] = frontId;
-        i = 1;
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  private IndexStore createIndexStore(Config config) {
+    IndexStore indexStore;
+    try {
+      HashMap<String, Object> settings = new HashMap<>();
+      if (config.has("Index")) {
+        for (Object e : (ArrayList) config.get("Index")) {
+          settings.putAll((Map<? extends String, ?>) e);
+        }
+        indexStore = createIndexStore(settings);
+      } else {
+        indexStore = null;
       }
-      // table row
-      for (String s : row) {
-        tuple[i++] = getSymbolId(s);
-      }
-      // back elements
-      if (backs.length != 0) {
-        for (int j = 0; j < backs.length; ++j)
-          tuple[i++] = backIds[j];
-      }
-      if (_tupleStore.addTuple(tuple)) {
-        ++noOfTuples;
-      }
+    } catch (IndexingException e) {
+      logger.error(e.getMessage());
+      if (config.isExitOnError())
+        System.exit(-1);
+      indexStore = null;
     }
-    return noOfTuples;
+    return indexStore;
   }
 
-  public int addTuples(List<List<String>> tuples){
-    int noOfTuples = 0;
-    for(List<String> tuple : tuples){
-      _tupleStore.addTuple(tuple.toArray(new String[tuple.size()]));
-      ++noOfTuples;
-    }
-    return noOfTuples;
-
+  /* TODO: ***copy***
+  public Config getCopy(int noOfCores, boolean verbose) {
+    Config copy = new Config(this.configs);
+    copy.configs.put(NOOFCORES, noOfCores);
+    copy.configs.put(VERBOSE, verbose);
+    copy.namespace = this.namespace.copy();
+    if (indexStore != null)
+      copy.indexStore = this.indexStore.copy();
+    else
+      copy.indexStore = null;
+    return copy;
   }
-
+  *
 
   /**
    * read in tuples stored in a file with name filename;
@@ -299,94 +166,12 @@ public class Hfc {
    */
   public void uploadTuples(String filename, String front, String... backs)
           throws FileNotFoundException, IOException, WrongFormatException {
-    _tupleStore.readTuples(filename, front, backs);
+    _tupleStore.readTuples(config.readerFromFilename(filename), front, backs);
   }
-
 
   public void uploadTuples(String filename) throws IOException, WrongFormatException {
-
-      _tupleStore.readTuples(filename, false);
-
+    _tupleStore.readTuples(config.readerFromFilename(filename), null);
   }
-
-  public void uploadTuples(String filename, boolean addTS) throws IOException, WrongFormatException{
-    _tupleStore.readTuples(filename, addTS);
-  }
-
-
-  /**
-   * add tuples, represented as int[], to the set of all tuples;
-   * if tuple deletion is enabled in the forward chainer, the tuples from the set are
-   * assigned the actual generation TupleStore.generation
-   */
-  public boolean addTuples(Collection<int[]> tuples) {
-    boolean success = true;
-    for (int[] tuple : tuples)
-      if (!_tupleStore.addTuple(tuple))
-        success = false;
-    return success;
-  }
-
-
-  /**
-   * remove tuples, represented as int[], from the set of all tuples;
-   * if tuple deletion is enabled in the forward chainer, the tuples from the set are
-   * removed from TupleStore.generation
-   */
-  public boolean removeTuples(Collection<int[]> tuples) {
-    boolean success = true;
-    for (int[] tuple : tuples)
-      if (!_tupleStore.removeTuple(tuple))
-        success = false;
-    return success;
-  }
-
-
-
-  /**
-   * @param rules
-   * @throws IOException
-   */
-  public void readRules(File rules) throws IOException {
-    // in case no rule store has been defined so far, create one, but also
-    // create a forward chainer, as rules alone are useless
-    if (_ruleStore == null) {
-      // sexternary constructor would suffice here
-      _ruleStore = new RuleStore(Config.getDefaultConfig(), _tupleStore);
-      // customize rule store settings
-      _ruleStore.minNoOfArgs = config.getMinArgs();
-      _ruleStore.maxNoOfArgs = config.getMaxArgs();
-      _ruleStore.verbose = config.isVerbose();
-      _ruleStore.rdfCheck = config.isRdfCheck();
-      // after defining the approapriate settings, load the _first_ rule file
-      _ruleStore.readRules(rules.getAbsolutePath());
-      // create forward chainer
-      _forwardChainer = new ForwardChainer(_tupleStore, _ruleStore, config);
-    } else {
-      // value of noOfTask in the forward chainer needs to be adapted every time
-      // new rules are read in !!
-      _ruleStore.readRules(rules.getAbsolutePath());
-      _forwardChainer.noOfTasks = _ruleStore.allRules.size();
-    }
-  }
-
-
-  /**
-   * uploads further rules stored in a file to an already established forward chainer;
-   * the set of all rules is returned;
-   * NOTE: a similar method readRules() is defined in class RuleStore;
-   * however, uploadRules set the field noOfTasks in ForwardChainer to the proper value
-   *
-   * @throws IOException
-   */
-  public void uploadRules(String filename) throws IOException {
-    _ruleStore.lineNo = 0;
-    _ruleStore.readRules(filename);
-    // update noOfTask in order to guarantee proper rule execution in a multi-threaded environment
-    if(_forwardChainer != null)
-      _forwardChainer.noOfTasks = _ruleStore.allRules.size();
-  }
-
 
   public BindingTable executeQuery(String query) throws QueryParseException {
     Query q = new Query(_tupleStore);
@@ -396,19 +181,22 @@ public class Hfc {
     return q.query(query);
   }
 
-
   public boolean computeClosure() {
-    logger.info("Compute closure starting with "+ _tupleStore.allTuples.size()+" tuples");
+    logger.info("Compute closure starting with {} tuples",
+        _tupleStore.allTuples.size());
     if (null != _forwardChainer) {
-      boolean result =  _forwardChainer.computeClosure(config.getIterations(), config.isCleanupRepository());
-      logger.info("Finished closure ending with " + _tupleStore.allTuples.size()+ " tuples");
+      long startClosure = System.currentTimeMillis();
+      boolean result =  _forwardChainer.computeClosure(
+          config.getIterations(), config.isCleanupRepository());
+      long endClosure = System.currentTimeMillis();
+      logger.info("Finished closure in {} msec with {} tuples",
+          endClosure - startClosure, _tupleStore.allTuples.size());
       return result;
     } else {
       _tupleStore.cleanUpTupleStore();
       return false;
     }
   }
-
 
   public boolean computeClosure(int iterations, boolean cleanupRepository) {
     if (null != _forwardChainer){
@@ -450,7 +238,7 @@ public class Hfc {
    *
   public Hfc copyHFC(int noOfCores, boolean verbose) {
     Config configCopy = this.config.getCopy(noOfCores, verbose);
-    TupleStore tupleStoreCopy = _tupleStore.copyTupleStore();
+    TupleStore tupleStoreCopy = _tupleIo.copyTupleStore();
     RuleStore ruleStoreCopy = _ruleStore.copyRuleStore(tupleStoreCopy);
     ForwardChainer fcCopy = _forwardChainer.copyForwardChainer(tupleStoreCopy, ruleStoreCopy, noOfCores);
     return new Hfc(configCopy, tupleStoreCopy, ruleStoreCopy, fcCopy);
@@ -465,24 +253,8 @@ public class Hfc {
     return config.isCleanupRepository();
   }
 
-  public Query getQuery() {
-    return new Query(this._tupleStore);
-  }
-
-  public Boolean ask(ArrayList<String> tuple) {
-    return _tupleStore.ask(tuple);
-  }
-
   public boolean shutdownNoExit() {
     return _forwardChainer.shutdownNoExit();
-  }
-
-  public int nextBlankNode() {
-    return _forwardChainer.nextBlankNode();
-  }
-
-  public void addTuple(String[] tuple) {
-    _tupleStore.addTuple(tuple);
   }
 
   public boolean enableTupleDeletion() {
@@ -493,16 +265,8 @@ public class Hfc {
     return _forwardChainer.tupleDeletionEnabled();
   }
 
-
-  public void setNoOfCores(int i) {
-    config.updateConfig(Config.NOOFCORES, i);
-  }
-
-
   public void setVerbose(boolean b) {
     config.setVerbose(b);
-    _tupleStore.verbose = b;
-    _ruleStore.verbose = b;
   }
 
   public Config getConfig(){
@@ -513,6 +277,90 @@ public class Hfc {
     return new HfcStatus();
   }
 
+  ////////////////////////////////////////////////////////////////////////
+  // query and store modification functionality
+  ////////////////////////////////////////////////////////////////////////
+
+  public Query getQuery() {
+    return new Query(this._tupleStore);
+  }
+
+  public int size() {
+    return _tupleStore.size();
+  }
+
+  public Boolean ask(ArrayList<String> tuple) {
+    return _tupleStore.ask(tuple);
+  }
+
+  public int nextBlankNode() {
+    return _forwardChainer.nextBlankNode();
+  }
+
+  public void addTuple(String[] tuple) {
+    _tupleStore.addTuple(tuple);
+  }
+
+  /**
+   * TODO keep this?
+   * Normalize namespaces, and get ids directly to put in the tuples without
+   * using the hfc internal functions. Also, honor the equivalence reduction
+   * by always entering the representative.
+   *
+   * @param rows  the table that contains the tuples to add to the storage
+   * @param front the potentially-empty (== null) front element
+   * @param backs arbitrary-many back elements (or an empty array)
+   *              <p>
+   *              This is done so i can add the <it>now<it/> time stamp transparently
+   *              TODO: refactor, and make this part of HFC core
+   */
+  public int addTuples(List<List<String>> rows, String front, String... backs) {
+    return _tupleStore.addTuples(rows, front, backs);
+  }
+
+  public int addTuples(List<List<String>> tuples){
+    return addTuples(tuples, null);
+  }
+
+  public boolean removeIntTuples(Collection<int[]> tuples) {
+    boolean success = true;
+    for (int[] tuple : tuples) {
+      success &= _tupleStore.removeTuple(tuple);
+    }
+    return success;
+  }
+
+  /** For MissionKnowledgeManager */
+  public boolean removeTuples(Collection<List<String>> tuples) {
+    boolean success = true;
+    for (List<String> tuple : tuples) {
+      success &= _tupleStore.removeTuple(_tupleStore.internalizeTuple(tuple));
+    }
+    return success;
+  }
+
+  /** For MissionKnowledgeManager */
+  public void writeExpandedTuples(String filename) {
+    _tupleStore.writeExpandedTuples(filename);
+  }
+
+  /** For PAL */
+  public void writeTuples(String filename) {
+    _tupleStore.writeTuples(filename);
+  }
+
+  /**
+   * remove tuples, represented as int[], from the set of all tuples;
+   * if tuple deletion is enabled in the forward chainer, the tuples from the set are
+   * removed from TupleStore.generation
+   *
+  private boolean removeTuples(Collection<int[]> tuples) {
+    boolean success = true;
+    for (int[] tuple : tuples)
+      if (!_tupleStore.removeTuple(tuple))
+        success = false;
+    return success;
+  }*/
 
   protected class HfcStatus {
 
@@ -529,4 +377,28 @@ public class Hfc {
     private int namespaces = _tupleStore.namespace.longToNs.size();
 
   }
+
+  /**
+   * at several places, messages were output depending on this.exitOnError
+   * and this.verbose -- unify this in this special private method;
+   * perhaps will be replaced by Apache's log4j
+   */
+  public boolean sayItLoud(int lineNo, String message) {
+    if (this.config.isExitOnError()) {
+      logger.error(" FATAL: " + lineNo + message);
+      throw new RuntimeException("FATAL ERROR " + lineNo + " " + message);
+    }
+    logger.warn(" ERROR(ignored): " + lineNo + message);
+    return false;
+  }
+
+  public boolean sayItLoud(String rulename, String message) {
+    if (this.config.isExitOnError()) {
+      logger.error(" FATAL: " + rulename + message);
+      throw new RuntimeException("FATAL ERROR " + rulename + " " + message);
+    }
+    logger.warn(" ERROR(ignored): " + rulename + message);
+    return false;
+  }
+
 }

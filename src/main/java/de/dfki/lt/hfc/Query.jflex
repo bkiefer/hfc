@@ -264,6 +264,8 @@ clause = new ArrayList<>();}
 
 {URI}            {this.clause.add(yytext());}
 
+{BLANK}            {this.clause.add(yytext());}
+
 \^\^<xsd:{NONWHITESPACE}+> {
 
                            clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());

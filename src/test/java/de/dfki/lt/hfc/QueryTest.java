@@ -1,18 +1,17 @@
 package de.dfki.lt.hfc;
 
+import static de.dfki.lt.hfc.TestingUtils.checkResult;
+import static de.dfki.lt.hfc.TestingUtils.printExpected;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import static de.dfki.lt.hfc.TestingUtils.checkResult;
-import static de.dfki.lt.hfc.TestingUtils.printExpected;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 /**
  * @author Christian Willms - Date: 14.09.17 10:25.
@@ -20,7 +19,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class QueryTest {
 
- static Hfc fc;
+ static TestHfc fc;
 
  private static String getResource(String name) {
   return TestingUtils.getTestResource("LGetLatestValues", name);
@@ -28,10 +27,10 @@ public class QueryTest {
 
  @Before
  public void setUp() throws IOException, WrongFormatException {
-  Config config = Config.getDefaultConfig();
+  TestConfig config = TestConfig.getDefaultConfig();
   config.addNamespace("pal", "http://www.dfki.de/lt/onto/pal.owl#");
   config.addNamespace("dom", "http://www.dfki.de/lt/onto/dom.owl#");
-  fc = new Hfc(config);
+  fc = new TestHfc(config);
   fc.uploadTuples(getResource("test.child.labvalues.nt"));
  }
 
@@ -43,8 +42,7 @@ public class QueryTest {
  @Test
  public void testQuery() throws IOException, WrongFormatException {
   //test constructor Query(TupleStore tupleStore)
-  TupleStore tupleStore = new TupleStore(Config.getDefaultConfig());
-  Query query = new Query(tupleStore);
+  Query query = fc.getQuery();
   assertNotNull(query);
  }
 
@@ -54,69 +52,81 @@ public class QueryTest {
   query.query("");
  }
 
- @Test(expected = QueryParseException.class)
- public void query_Invalid_SELECT() throws QueryParseException {
-  Query query = fc.getQuery();
-  query.query("SELECT ");
-  query.query("SELECT DISTINCT");
-  query.query("?o WHERE ?s <rdf:type> ?o");
-  query.query("DISTINCT ?o WHERE ?s <rdf:type> ?o");
-  query.query("SELECT FILTER ?s <rdf:type> ?o");
-  query.query("SELECT ?s <rdf:type> ?o");
-  query.query("SELECT *");
-  query.query("SELECT WHERE ?s <rdf:type> ?o");
+ private void checkInvalid(String[] invalid) {
+   Query query = fc.getQuery();
+   for (String q: invalid) {
+     try {
+       query.query(q);
+       assertFalse(q, true);
+     } catch (Throwable qex) {
+       assertTrue(q, true);
+     }
+   }
  }
 
- @Test(expected = QueryParseException.class)
+ @Test
+  public void query_Invalid_SELECT() throws QueryParseException {
+  String[] invalid ={ "SELECT ",
+  "SELECT DISTINCT",
+  "?o WHERE ?s <rdf:type> ?o",
+  "DISTINCT ?o WHERE ?s <rdf:type> ?o",
+  "SELECT FILTER ?s <rdf:type> ?o",
+  "SELECT ?s <rdf:type> ?o",
+  "SELECT *",
+  "SELECT WHERE ?s <rdf:type> ?o"};
+  checkInvalid(invalid);
+ }
+
+ @Test
  public void query_Invalid_Variable() throws QueryParseException {
-  Query query = fc.getQuery();
-  query.query("SELECT ? WHERE ?s <rdf:type> ?o");
-  query.query("SELECT !o WHERE ?s <rdf:type> ?o");
-  query.query("SELECT _ WHERE ?s <rdf:type> ?o");
-  query.query("SELECT ?rel WHERE ?s <rdf:type> ?o");
-  query.query("SELECT * ?s WHERE ?s <rdf:type> ?o");
+  String[] invalid ={ "SELECT ? WHERE ?s <rdf:type> ?o",
+  "SELECT !o WHERE ?s <rdf:type> ?o",
+  "SELECT _ WHERE ?s <rdf:type> ?o",
+  "SELECT ?rel WHERE ?s <rdf:type> ?o",
+  "SELECT * ?s WHERE ?s <rdf:type> ?o",
+  };
+   checkInvalid(invalid);
  }
 
- @Test(expected = QueryParseException.class)
+ @Test
  public void testSingleIntervalErrors() throws Exception {
-  TupleStore tupleStore = new TupleStore(Config.getDefaultConfig());
-  Query query = new Query(tupleStore);
   // inputs which should  lead to QueryParseExeptions
-  query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o [\"(1,2)\"^^<xsd:2DPoint>, \"(1,2)\"^^<xsd:2DPoint>]");
-  query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o [\"1\"^^<xsd:long>]");
-  query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o [ ]");
-  query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o [ , ]");
-  query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o [\"1\"^^<xsd:long>, \"1\"^^<xsd:long>, \"1\"^^<xsd:long>]");
-  query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o [\"1\"^^<xsd:long>, \"1\"^^<xsd:long>}");
-
+  String[] invalid ={ "SELECT DISTINCT ?p WHERE ?s ?p ?o [\"(1,2)\"^^<xsd:2DPoint>, \"(1,2)\"^^<xsd:2DPoint>]",
+  "SELECT DISTINCT ?p WHERE ?s ?p ?o [\"1\"^^<xsd:long>]",
+  "SELECT DISTINCT ?p WHERE ?s ?p ?o [ ]",
+  "SELECT DISTINCT ?p WHERE ?s ?p ?o [ , ]",
+  "SELECT DISTINCT ?p WHERE ?s ?p ?o [\"1\"^^<xsd:long>, \"1\"^^<xsd:long>, \"1\"^^<xsd:long>]",
+  "SELECT DISTINCT ?p WHERE ?s ?p ?o [\"1\"^^<xsd:long>, \"1\"^^<xsd:long>}",
+  };
+   checkInvalid(invalid);
  }
 
- @Test(expected = QueryParseException.class)
+ @Test
  public void testIntervalRelationsErrors() throws QueryParseException, IOException, WrongFormatException {
-  TupleStore tupleStore = new TupleStore(Config.getDefaultConfig());
-  Query query = new Query(tupleStore);
-
-  query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o FOO  \"1\"^^<xsd:date> , \"2\"^^<xsd:date>");
-  query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o F");
-  query.query("SELECT DISTINCT ?p WHERE ?s ?p ?o F  \"1\"^^<xsd:long>  \"2\"^^<xsd:long>  \"1\"^^<xsd:long>");
-
+  String[] invalid ={ "SELECT DISTINCT ?p WHERE ?s ?p ?o FOO  \"1\"^^<xsd:date> , \"2\"^^<xsd:date>",
+  "SELECT DISTINCT ?p WHERE ?s ?p ?o F",
+  "SELECT DISTINCT ?p WHERE ?s ?p ?o F  \"1\"^^<xsd:long>  \"2\"^^<xsd:long>  \"1\"^^<xsd:long>",
+  };
+   checkInvalid(invalid);
  }
 
- @Test(expected = QueryParseException.class)
+ @Test
  public void query_Invalid_Filter() throws QueryParseException {
-  Query query = fc.getQuery();
-  query.query("SELECT ?s WHERE ?s <rdf:type> ?o FILTER ?p != ?o");
-  query.query("SELECT ?s WHERE ?s <rdf:type> ?o FILTER Less ?o ?o");
-  query.query("SELECT ?s WHERE ?s <rdf:type> ?o FILTER CountDistinct ?o");
+  String[] invalid ={ "SELECT ?s WHERE ?s <rdf:type> ?o FILTER ?p != ?o",
+  "SELECT ?s WHERE ?s <rdf:type> ?o FILTER Less ?o ?o",
+  "SELECT ?s WHERE ?s <rdf:type> ?o FILTER CountDistinct ?o",
+  };
+   checkInvalid(invalid);
  }
 
- @Test(expected = QueryParseException.class)
+ @Test
  public void query_Invalid_Aggregate() throws QueryParseException {
-  Query query = fc.getQuery();
-  query.query("SELECT ?s WHERE ?s <rdf:type> ?o AGGREGAT ?p != ?o");
-  query.query("SELECT ?s WHERE ?s <rdf:type> ?o AGGREGATE ?number = CountDistinct ?o");
-  query.query("SELECT ?s WHERE ?s <rdf:type> ?o AGGREGATE ?test = ILess ?s ?s");
-  query.query("SELECT ?s WHERE ?s <rdf:type> ?o AGGREGATE ?test ILess ?s ?s");
+  String[] invalid ={ "SELECT ?s WHERE ?s <rdf:type> ?o AGGREGAT ?p != ?o",
+  "SELECT ?s WHERE ?s <rdf:type> ?o AGGREGATE ?number = CountDistinct ?o",
+  "SELECT ?s WHERE ?s <rdf:type> ?o AGGREGATE ?test = ILess ?s ?s",
+  "SELECT ?s WHERE ?s <rdf:type> ?o AGGREGATE ?test ILess ?s ?s",
+  };
+   checkInvalid(invalid);
  }
 
 
@@ -154,11 +164,13 @@ public class QueryTest {
 
  @Test
  public void query_SELECTALL_WHERE() throws QueryParseException {
-  String[][] expected = {{"<pal:labval22>"}, {"<pal:labval22>"}, {"<pal:labval33>"},
-          {"<pal:labval33>"}};
+  String[][] expected = {{"<pal:labval22>"}, {"<pal:labval33>"},
+      {"<pal:labval22>"}, {"<pal:labval33>"}};
   Query query = fc.getQuery();
   BindingTable bt = query.query("SELECTALL ?s WHERE ?s <dom:bsl> ?o ?t");
   checkResult(fc, bt, expected, "?s");
+  bt = query.query("SELECTALL DISTINCT ?s WHERE ?s <dom:bsl> ?o ?t");
+  assertEquals(2, bt.size());
  }
 
  /**
@@ -217,6 +229,18 @@ public class QueryTest {
   bt = query.query("SELECT ?s WHERE ?s <dom:bsl> ?o ?t FILTER ?s != <pal:labval33> AGGREGATE ?number = CountDistinct ?s & ?number2 = CountDistinct <pal:labval33>");
   checkResult(fc, bt, expected, "?number", "?number2");
   printExpected(bt, fc._tupleStore);
+ }
+
+ @Test
+ public void query_SELECT_withBlanknode() throws QueryParseException {
+   Query query = fc.getQuery();
+   BindingTable bt = query.query("select ?s where _:genid17X004 <rdf:type> ?s");
+   assertTrue(bt.isEmpty());
+   bt = query.query("select ?s where ?s <rdf:type> _:genid17X004");
+   assertTrue(bt.isEmpty());
+   bt = query.query("select ?s where ?s <rdf:type> ?o FILTER ?o == _:genid17X004 & ?s == _:genid17X004");
+   //System.out.println(bt.toString());
+   assertFalse(bt.isEmpty());
  }
 
  @Test

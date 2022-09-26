@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -49,7 +51,7 @@ public class TestingUtils {
    *  CAVEAT: all blank nodes are reduced to "_:", so if you do structural
    *  tests involving blank nodes, you can NOT use this function.
    */
-  public static void checkResult(String[][] expected,
+  private static void checkResult(String[][] expected,
       BindingTable bt, String ... vars) {
     if (vars.length == 0)
       throw new IllegalArgumentException("Variables list to test may not be empty!");
@@ -89,12 +91,14 @@ public class TestingUtils {
   }
 
   public static class NextAsStringCall implements NextCall<String> {
+    @Override
     public String[] next(BindingTableIterator it) {
       return it.nextAsString();
     }
   }
 
   public static class NextAsHfcCall implements NextCall<String> {
+    @Override
     public String[] next(BindingTableIterator it) {
       AnyType[] in = it.nextAsHfcType();
       String[] res = new String[in.length];
@@ -105,6 +109,7 @@ public class TestingUtils {
   }
 
   public static class NextAsObjectCall implements NextCall<Object> {
+    @Override
     public Object[] next(BindingTableIterator it) {
       Object[] in = it.nextAsJavaObject();
       Object[] res = new Object[in.length];
@@ -122,6 +127,7 @@ public class TestingUtils {
       _ts = ts;
     }
 
+    @Override
     public String[] next(BindingTableIterator it) {
       int[] in = it.next();
       String[] res = new String[in.length];
@@ -148,6 +154,67 @@ public class TestingUtils {
     }
   }
 
+  static Comparator<int[]> lexSortComp = new Comparator<int[]>() {
+    @Override
+    public int compare(int[] o1, int[] o2) {
+      for (int i = 0; i < o1.length; ++i) {
+        int res = o2[i] - o1[i];
+        if (res != 0)
+          return res;
+      }
+      return 0;
+    }
+  };
+
+  /** Neutralize all blank node ids to -1.
+   *  TODO: We might want to be more clever to do structural tests with blank
+   *  nodes.
+   * @param hfc
+   * @param tuple
+   */
+  public static int[] neutralizeBlanks(Hfc hfc, int[] tuple) {
+    for (int i = 0 ; i < tuple.length; ++i) {
+      if (hfc._tupleStore.isBlankNode(tuple[i])) {
+        tuple[i] = -1;
+      }
+    }
+    return tuple;
+  }
+
+  public static int[][] internalize(Hfc hfc, String[][] expected,
+      boolean neutralizeBlanks) {
+    int[][] expInternal = new int[expected.length][];
+    int i = 0;
+    for (String[] row : expected) {
+      int[] irow = expInternal[i] = new int[row.length];
+      for (int j = 0; j < row.length; ++j) {
+        irow[j] = hfc._tupleStore.putObject(row[j]);
+        if (neutralizeBlanks && hfc._tupleStore.isBlankNode(irow[j])) {
+          irow[j] = -1;
+        }
+      }
+      ++i;
+    }
+    return expInternal;
+  }
+
+  public static <T> void checkInt(Hfc hfc, BindingTableIterator it, int[][] expected) {
+    List<int[]> elist = new ArrayList<int[]>(expected.length);
+    elist.addAll(Arrays.asList(expected));
+    elist.sort(lexSortComp);
+    while (it.hasNext()) {
+      int[] next = neutralizeBlanks(hfc, it.next());
+      boolean found = false;
+      int candidate = Collections.binarySearch(elist, next, lexSortComp);
+      if (candidate >= 0) {
+        elist.remove(candidate);
+        found = true;
+      }
+      assertTrue(Arrays.toString(next) + " " + elist.size(), found);
+    }
+
+    assertTrue("Remaining: " + elist.size(), elist.isEmpty());
+  }
 
   public static <T> void check(BindingTableIterator it, T[][] expected,
       NextCall<T> nc) {
@@ -173,27 +240,26 @@ public class TestingUtils {
     printNext(bt.iterator(), new NextAsIntCall(store));
   }
 
-  /*
-  private static void checkResult(Hfc hfc, BindingTable bt, String[][] expected){
-    check(bt.iterator(), expected,
-        new NextAsIntCall(hfc._tupleStore));
-  }
-  */
-  
   public static void checkDoubleResult(Hfc hfc, BindingTable bt, Double expected) {
     assertTrue(bt.iterator().hasNext());
     int[] row = bt.iterator().next();
     Double actual = (Double)hfc._tupleStore.getObject(row[0]).toJava();
     assertEquals(expected, actual, 1E-5);
   }
-  
-  public static void checkResult(Hfc hfc, BindingTable bt, String[][] expected, String ... vars) {
+
+  public static void checkResult(Hfc hfc, BindingTable bt, String[][] expected,
+      String ... vars) {
+    BindingTableIterator bindIt = null;
     try {
-      check(bt.iterator(vars), expected,
-          new NextAsIntCall(hfc._tupleStore));
+      bindIt = bt.iterator(vars);
     } catch (BindingTableIteratorException e) {
       e.printStackTrace();
+      assertTrue("Vars do not match table", false);
     }
+    // Turn the expected array into an array of int arrays
+    assertEquals(expected.length, bindIt.hasSize());
+    int[][] expInternal = internalize(hfc, expected, true);
+    checkInt(hfc, bindIt, expInternal);
   }
 
   public static<T> T[] reverse(T[] in) {
@@ -235,7 +301,7 @@ public class TestingUtils {
         + "  test: http://www.dfki.de/lt/onto/test.owl#\n"
         + "  hfc: http://www.dfki.de/lt/hfc.owl#\n"
         + "tupleFiles:\n"
-        + "- <resources>/default.nt\n"
+        + "- default.nt\n"
         + "minArgs: 2\n"
         + "maxArgs: 5\n"
         + "subjectPosition: 0\n"
@@ -244,40 +310,68 @@ public class TestingUtils {
         + "rdfCheck: true\n"
         + "exitOnError: true\n"
         + "ruleFiles:\n"
-        + "- <resources>/default.rdl\n"
+        + "- default.rdl\n"
         + "iterations: 2147483647";
-  
-  public static Config getOperatorConfig() {
 
-    return Config.getInstance(new ByteArrayInputStream(conf.getBytes()));
+  public static TestConfig getOperatorConfig() {
+    return TestConfig.getInstance(new ByteArrayInputStream(conf.getBytes()));
   }
-  
+
   public static TupleStore getOperatorTestStore() throws IOException, WrongFormatException {
-    return new TupleStore(getOperatorConfig());
+    return getStore(getOperatorConfig());
   }
-  
+
   private static String changeKeyVal(String in, String key, String val) {
     return conf.replaceFirst(key + ": ([^\n]*)\n", key + ": " + val + "\n");
   }
-  
+
   public static Config getNoRdfCheckConfig() {
     String c = changeKeyVal(conf, "rdfCheck", "false");
-    return Config.getInstance(new ByteArrayInputStream(c.getBytes()));
+    return Config.getInstance(new ByteArrayInputStream(c.getBytes()), null);
   }
-  
+
   public static TupleStore getNoRdfCheckTestStore() throws IOException, WrongFormatException {
-    return new TupleStore(getNoRdfCheckConfig());
+    return getStore(getNoRdfCheckConfig());
   }
-  
+
+  public static TupleStore getDefaultStore() throws IOException, WrongFormatException {
+    return getStore(Config.getDefaultConfig());
+  }
+
+  public static TupleStore getEmptyStore() throws IOException, WrongFormatException {
+    TestConfig c = TestConfig.getDefaultConfig();
+    c.put(Config.TUPLEFILES, new ArrayList<>());
+    c.put(Config.RULEFILES, new ArrayList<>());
+    return getStore(c);
+  }
+
+  public static TestHfc getEmptyHfc() throws IOException, WrongFormatException {
+    TestConfig c = TestConfig.getDefaultConfig();
+    c.put(Config.TUPLEFILES, new ArrayList<>());
+    c.put(Config.RULEFILES, new ArrayList<>());
+    return new TestHfc(c);
+  }
+
+  public static TupleStore getStore(Config cnf) throws IOException, WrongFormatException {
+    TestHfc hfc = new TestHfc(cnf);
+    return hfc._tupleStore;
+  }
+
+  public static RuleStore getRuleStore(Config cnf)
+      throws IOException, WrongFormatException {
+    TupleStore ts = getStore(cnf);
+    return new RuleStore(ts);
+  }
+
   public static RuleStore getRuleStoreConfig(boolean rdfCheck, int min, int max,
-      TupleStore ts, String ruleFile) throws IOException {
-    String c = 
+      String ruleFile) throws IOException, WrongFormatException {
+    String c =
         changeKeyVal("maxArgs", Integer.toString(max),
-            changeKeyVal("minArgs", Integer.toString(min), 
+            changeKeyVal("minArgs", Integer.toString(min),
                 changeKeyVal("rdfCheck", rdfCheck ? "true" : "false", conf)));
     c = c.replace("<resources>/default.rdl", ruleFile);
-    return new RuleStore(
-        Config.getInstance(new ByteArrayInputStream(c.getBytes())), ts);
+    Config cnf = Config.getInstance(new ByteArrayInputStream(c.getBytes()), null);
+    return getRuleStore(cnf);
   }
-  
+
 }

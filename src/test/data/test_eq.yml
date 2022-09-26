@@ -22,10 +22,9 @@ namespaces:
   dafn: http://www.dfki.de/lt/onto/hysociatea/dialframe.owl#
   dom:  http://www.dfki.de/lt/onto/hysociatea/domain.owl#
   hst:  http://www.dfki.de/lt/onto/hysociatea/hysociatea.owl#
-  h_time: http://www.dfki.de/lt/onto/hysociatea/time.owl#
 
 tupleFiles:
-  - ./src/test/data/default.eqred.nt
+  - default.eqred.nt
 
 minArgs: 3
 maxArgs: 5
@@ -37,6 +36,6 @@ rdfCheck: true
 exitOnError: true
 
 ruleFiles:
-  - ./src/test/data/default.eqred.rdl
+  - default.eqred.rdl
 
 iterations: 2147483647

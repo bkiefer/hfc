@@ -2,6 +2,7 @@ package de.dfki.lt.hfc;
 
 
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -12,6 +13,8 @@ public class QueryTest_AllenRelations {
 
  static Hfc fcInterval, fcNoIndex;
 
+ Query queryInterval = fcInterval.getQuery();
+ Query queryNoIndex = fcNoIndex.getQuery();
 
  private static String getResource(String name) {
   return TestingUtils.getTestResource("Query", name);
@@ -19,13 +22,15 @@ public class QueryTest_AllenRelations {
 
  @BeforeClass
  public static void init() throws Exception {
-
   fcInterval = new Hfc(Config.getInstance(getResource("lookupIntervalTestIndex.yml")));
   fcNoIndex = new Hfc(Config.getInstance(getResource("lookupIntervalTestNoIndex.yml")));
-
-
  }
 
+ @Before
+ public void before() {
+   queryInterval = fcInterval.getQuery();
+   queryNoIndex = fcNoIndex.getQuery();
+ }
 
  @Test
  public void testTemp() {
@@ -44,18 +49,15 @@ public class QueryTest_AllenRelations {
           {"<test:Sensor1>", "\"10\"^^<xsd:int>"},
           {"<test:Sensor2>", "\"7\"^^<xsd:int>"}
   };
-  TupleStore tupleStoreInterval = fcInterval._tupleStore;
-  TupleStore tupleStoreNoIdex = fcNoIndex._tupleStore;
-  Query queryInterval = new Query(tupleStoreInterval);
-  Query queryNoIndex = new Query(tupleStoreNoIdex);
+
   try { // F
    String input = "SELECT ?s ?o WHERE ?s <rdf:type> <test:sensor> \"0\"^^<xsd:long> \"999\"^^<xsd:long> & ?s <test:hasValue> ?o ?t1 ?t2 ";
    BindingTable btInterval = queryInterval.query(input);
    BindingTable btNoIndex = queryNoIndex.query(input);
-   System.out.println("BtInterval: " + btInterval.toString(true));
-   System.out.println("BtNoIndex: " + btNoIndex.toString(true));
-   checkResult(expected, btInterval, "?s", "?o");
-   checkResult(expected, btNoIndex, "?s", "?o");
+   //System.out.println("BtInterval: " + btInterval.toString(true));
+   //System.out.println("BtNoIndex: " + btNoIndex.toString(true));
+   checkResult(fcInterval, btInterval, expected, "?s", "?o");
+   checkResult(fcNoIndex, btNoIndex, expected, "?s", "?o");
   } catch (QueryParseException e) {
    e.printStackTrace();
    fail();
@@ -81,10 +83,7 @@ public class QueryTest_AllenRelations {
           {"<test:Sensor2>", "\"2\"^^<xsd:int>"},
           {"<test:Sensor1>", "\"3\"^^<xsd:int>"}
   };
-  TupleStore tupleStoreInterval = fcInterval._tupleStore;
-  TupleStore tupleStoreNoIdex = fcNoIndex._tupleStore;
-  Query queryInterval = new Query(tupleStoreInterval);
-  Query queryNoIndex = new Query(tupleStoreNoIdex);
+
   try { // F
    String input = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o Bf \"1400\"^^<xsd:long>  \"1600\"^^<xsd:long> ";
    BindingTable btInterval = queryInterval.query(input);
@@ -115,10 +114,7 @@ public class QueryTest_AllenRelations {
           {"<test:Sensor2>", "\"7\"^^<xsd:int>"},
           {"<test:Sensor1>", "\"9\"^^<xsd:int>"},
           {"<test:Sensor2>", "\"10\"^^<xsd:int>"}};
-  TupleStore tupleStoreInterval = fcInterval._tupleStore;
-  TupleStore tupleStoreNoIdex = fcNoIndex._tupleStore;
-  Query queryInterval = new Query(tupleStoreInterval);
-  Query queryNoIndex = new Query(tupleStoreNoIdex);
+
   try { // F
    String input = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o Af \"0\"^^<xsd:long>  \"600\"^^<xsd:long> ";
    BindingTable btInterval = queryInterval.query(input);
@@ -144,10 +140,6 @@ public class QueryTest_AllenRelations {
   String[][] expected = {
           {"<test:Sensor2>", "\"2\"^^<xsd:int>"}
   };
-  TupleStore tupleStoreInterval = fcInterval._tupleStore;
-  TupleStore tupleStoreNoIdex = fcNoIndex._tupleStore;
-  Query queryInterval = new Query(tupleStoreInterval);
-  Query queryNoIndex = new Query(tupleStoreNoIdex);
 
   try { // F
    String input = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o EA \"200\"^^<xsd:long>  \"1200\"^^<xsd:long> ";
@@ -172,11 +164,6 @@ public class QueryTest_AllenRelations {
   String[][] expected = {
           {"<test:Sensor2>", "\"2\"^^<xsd:int>"}
   };
-  TupleStore tupleStoreInterval = fcInterval._tupleStore;
-  TupleStore tupleStoreNoIdex = fcNoIndex._tupleStore;
-
-  Query queryInterval = new Query(tupleStoreInterval);
-  Query queryNoIndex = new Query(tupleStoreNoIdex);
 
   try { // F
    String input = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o S \"200\"^^<xsd:long>  \"1300\"^^<xsd:long> ";
@@ -203,11 +190,6 @@ public class QueryTest_AllenRelations {
   String[][] expected = {
           {"<test:Sensor2>", "\"2\"^^<xsd:int>"}
   };
-  TupleStore tupleStoreInterval = fcInterval._tupleStore;
-  TupleStore tupleStoreNoIdex = fcNoIndex._tupleStore;
-
-  Query queryInterval = new Query(tupleStoreInterval);
-  Query queryNoIndex = new Query(tupleStoreNoIdex);
 
   try { // F
    String input = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o Si \"200\"^^<xsd:long>  \"1100\"^^<xsd:long> ";
@@ -234,11 +216,6 @@ public class QueryTest_AllenRelations {
   String[][] expected = {
           {"<test:Sensor2>", "\"2\"^^<xsd:int>"}
   };
-  TupleStore tupleStoreInterval = fcInterval._tupleStore;
-  TupleStore tupleStoreNoIdex = fcNoIndex._tupleStore;
-
-  Query queryInterval = new Query(tupleStoreInterval);
-  Query queryNoIndex = new Query(tupleStoreNoIdex);
 
   try { // F
    String input = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o F \"100\"^^<xsd:long>  \"1200\"^^<xsd:long> ";
@@ -265,11 +242,6 @@ public class QueryTest_AllenRelations {
   String[][] expected = {
           {"<test:Sensor2>", "\"2\"^^<xsd:int>"}
   };
-  TupleStore tupleStoreInterval = fcInterval._tupleStore;
-  TupleStore tupleStoreNoIdex = fcNoIndex._tupleStore;
-
-  Query queryInterval = new Query(tupleStoreInterval);
-  Query queryNoIndex = new Query(tupleStoreNoIdex);
 
   try { // F
    String input = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o Fi \"800\"^^<xsd:long>  \"1200\"^^<xsd:long> ";
@@ -313,12 +285,6 @@ public class QueryTest_AllenRelations {
           {"<test:Sensor2>", "\"7\"^^<xsd:int>"},
           {"<test:Sensor1>", "\"6\"^^<xsd:int>"}
   };
-  TupleStore tupleStoreInterval = fcInterval._tupleStore;
-  TupleStore tupleStoreNoIdex = fcNoIndex._tupleStore;
-
-  Query queryInterval = new Query(tupleStoreInterval);
-  Query queryNoIndex = new Query(tupleStoreNoIdex);
-
 
   try { // F
    String input = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o D \"100\"^^<xsd:long>  \"2000\"^^<xsd:long> ";
@@ -345,12 +311,7 @@ public class QueryTest_AllenRelations {
   String[][] expected = {
           {"<test:Sensor1>", "\"10\"^^<xsd:int>"}
   };
-  TupleStore tupleStoreInterval = fcInterval._tupleStore;
-  TupleStore tupleStoreNoIdex = fcNoIndex._tupleStore;
 
-
-  Query queryInterval = new Query(tupleStoreInterval);
-  Query queryNoIndex = new Query(tupleStoreNoIdex);
   try { // F
    String input = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o Di \"100\"^^<xsd:long>  \"2000\"^^<xsd:long> ";
    BindingTable btInterval = queryInterval.query(input);
@@ -376,8 +337,7 @@ public class QueryTest_AllenRelations {
   String[][] expected = {
           {"<test:Sensor1>", "\"2\"^^<xsd:int>"}
   };
-  TupleStore tupleStoreNoIndex = fcNoIndex._tupleStore;
-  Query queryNoIndex = new Query(tupleStoreNoIndex);
+
   try { // F
    String input = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o M \"800\"^^<xsd:long>  \"820\"^^<xsd:long> ";
    BindingTable btNoIndex = queryNoIndex.query(input);
@@ -401,11 +361,6 @@ public class QueryTest_AllenRelations {
   String[][] expected = {
           {"<test:Sensor2>", "\"2\"^^<xsd:int>"}
   };
-  TupleStore tupleStoreInterval = fcInterval._tupleStore;
-  TupleStore tupleStoreNoIdex = fcNoIndex._tupleStore;
-
-  Query queryInterval = new Query(tupleStoreInterval);
-  Query queryNoIndex = new Query(tupleStoreNoIdex);
 
   try { // F
    String input = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o Mi \"100\"^^<xsd:long>  \"200\"^^<xsd:long> ";
@@ -434,11 +389,6 @@ public class QueryTest_AllenRelations {
   String[][] expected = {
           {"<test:Sensor1>", "\"2\"^^<xsd:int>"}
   };
-  TupleStore tupleStoreInterval = fcInterval._tupleStore;
-  TupleStore tupleStoreNoIdex = fcNoIndex._tupleStore;
-  Query queryInterval = new Query(tupleStoreInterval);
-  Query queryNoIndex = new Query(tupleStoreNoIdex);
-
 
   try { // F
    String input = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o O \"400\"^^<xsd:long>  \"900\"^^<xsd:long> ";
@@ -470,13 +420,6 @@ public class QueryTest_AllenRelations {
           {"<test:Sensor2>", "\"10\"^^<xsd:int>"},
           {"<test:Sensor1>", "\"9\"^^<xsd:int>"}
   };
-  TupleStore tupleStoreInterval = fcInterval._tupleStore;
-  TupleStore tupleStoreNoIdex = fcNoIndex._tupleStore;
-
-
-  Query queryInterval = new Query(tupleStoreInterval);
-  Query queryNoIndex = new Query(tupleStoreNoIdex);
-
 
   try { // F
    String input = "SELECT ?s ?o WHERE ?s <test:hasValue> ?o Oi \"800\"^^<xsd:long>  \"1300\"^^<xsd:long> ";

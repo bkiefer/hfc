@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 %line
 %column
 %unicode
-%ctorarg TupleStore tuplestore
+%ctorarg TupleStore store
 %int
 
 %yylexthrow{
@@ -22,107 +22,88 @@ import java.util.regex.Pattern;
 %yylexthrow}
 
 %eofthrow{
-    WrongFormatException
+  WrongFormatException
 %eofthrow}
 
 %init{
-  ts = tuplestore;
+  ts = store;
 %init}
 
 %{
-    private TupleStore ts;
-    private StringBuffer string = new StringBuffer();
-    private List<List<String>> tuples = new ArrayList();
-	private List<String> t = new ArrayList();
-	private String match = "";
-    private static final Logger logger = LoggerFactory.getLogger(TupleParser.class);
-    private String front;
-    private String[] backs;
+  private TupleStore ts;
+  private StringBuffer string = new StringBuffer();
+  private List<List<String>> tuples = new ArrayList();
+  private List<String> t = new ArrayList();
+  private String match = "";
+  private static final Logger logger = LoggerFactory.getLogger(TupleParser.class);
+  private String front;
+  private String[] backs;
 
-	public void setTupleStore(TupleStore tuplestore){
-		ts = tuplestore;
-	}
-
-  public void parse(String front, String... backs) throws IOException, WrongFormatException{
-      this.front = front;
-      this.backs = backs;
-      while ( !zzAtEOF ){
-        yylex();
-      }
+  public void parse(String front, String... backs)
+    throws IOException, WrongFormatException{
+    this.front = front;
+    this.backs = backs;
+    while ( !zzAtEOF ){
+      yylex();
     }
+  }
 
   private void massageXSD(){
-     if (string.length() != 0){
-        // complete type in order to recognize duplicates (perhaps output a message?)
-        match = "\"" + string.toString() + "\"";
-        if (ts.namespace.isShortIsDefault())
-            match += "^^" + XsdString.SHORT_NAME;
-        else
-            match += "^^" + XsdString.LONG_NAME;
-        t.add(handleUnicode(match));
-        string.setLength(0);
-     }
+    if (string.length() != 0){
+      // complete type in order to recognize duplicates (perhaps output a
+      // message?)
+      match = "\"" + string.toString() + "\"";
+      //if (ts.namespace.isShortIsDefault())
+      match += "^^" + XsdString.SHORT_NAME;
+      //else
+      //    match += "^^" + XsdString.LONG_NAME;
+      t.add(handleUnicode(match));
+      string.setLength(0);
+    }
   }
 
   private String handleUnicode(String match){
-         Pattern p = Pattern.compile("\\\\u(\\p{XDigit}{4})");
-         Matcher m = p.matcher(match);
-         StringBuffer buf = new StringBuffer(match.length());
-         while (m.find()) {
-         String ch = String.valueOf((char) Integer.parseInt(m.group(1), 16));
-            m.appendReplacement(buf, Matcher.quoteReplacement(ch));
-         }
-         m.appendTail(buf);
-         return buf.toString();
+    Pattern p = Pattern.compile("\\\\u(\\p{XDigit}{4})");
+    Matcher m = p.matcher(match);
+    StringBuffer buf = new StringBuffer(match.length());
+    while (m.find()) {
+      String ch = String.valueOf((char) Integer.parseInt(m.group(1), 16));
+      m.appendReplacement(buf, Matcher.quoteReplacement(ch));
+    }
+    m.appendTail(buf);
+    return buf.toString();
 
   }
 
   private void handleNewLine() throws WrongFormatException {
-        if(!t.isEmpty()){
-    	    massageXSD();
-            // now add one potential front element and further potential back elements;
-            // but check whether (front == null) & (backs.length == 0) in order to avoid a
-            // useless copy of 'tuple'
-            if ((front != null) || (backs.length != 0))
-                t = ts.extendTupleExternally(t, front, backs);
-                // external tuple representation might be misspelled or the tuple is already contained
-            }
-            ts.addTuple(t, yyline);
-    		t = new ArrayList();
+    if(!t.isEmpty()){
+      massageXSD();
+      // now add one potential front element and further potential back
+      // elements; but check whether (front == null) & (backs.length == 0)
+      // in order to avoid a useless copy of 'tuple'
+      if ((front != null) || (backs.length != 0)) {
+        t = ts.extendTupleExternally(t, front, backs);
+        // external tuple representation might be misspelled or the tuple is
+        // already contained
+      }
+      ts.addTuple(t, yyline);
+      t = new ArrayList();
+    }
   }
 
 
   private void handleEOF() throws WrongFormatException {
-          handleNewLine();
-          if (ts.verbose) {
-            logger.info("\n  read " + ts.noOfTuples + " proper tuples");
-            logger.info("  overall " + ts.allTuples.size() + " unique tuples");
-                 // some further statistics
-            int noOfURIs = 0, noOfBlanks = 0, noOfAtoms = 0;
-            for (int i = 0; i < ts.idToJavaObject.size(); i++) {
-                if (ts.idToJavaObject.get(i) instanceof Uri) //.startsWith("<"))
-                         ++noOfURIs;
-                else if (ts.idToJavaObject.get(i) instanceof Uri) //.startsWith("_"))
-                         ++noOfBlanks;
-                else
-                         ++noOfAtoms;
-                }
-                logger.info("  found " + noOfURIs + " URIs");
-                logger.info("  found " + noOfBlanks + " blank nodes");
-                logger.info("  found " + noOfAtoms + " XSD atoms");
-             }
-             // finally cleanup
-            if (ts.equivalenceClassReduction) {
-                 if (ts.verbose)
-                     logger.info("\n  applying equivalence class reduction ... ");
-                 final int all = ts.allTuples.size();
-                 final int no = ts.cleanUpTupleStore();
-                 if (ts.verbose) {
-                     logger.info("  removing " + no + " equivalence relation instances");
-                     logger.info("  removing " + (all - ts.allTuples.size()) + " resulting duplicates");
-                     logger.info("  number of all tuples: " + ts.allTuples.size() + "\n");
-            }
-          }
+    handleNewLine();
+    ts.logStoreStatus();
+    // finally cleanup
+    if (ts.equivalenceClassReduction) {
+      logger.info("\n  applying equivalence class reduction ... ");
+      final int all = ts.allTuples.size();
+      final int no = ts.cleanUpTupleStore();
+      logger.info("  removing " + no + " equivalence relation instances");
+      logger.info("  removing " + (all - ts.allTuples.size()) + " resulting duplicates");
+      logger.info("  number of all tuples: " + ts.allTuples.size() + "\n");
+    }
   }
 %}
 
@@ -204,6 +185,3 @@ OctDigit          = [0-7]
   \\.                            { throw new RuntimeException("Illegal escape sequence \""+yytext()+"\""); }
   {NEWLINE}               { throw new RuntimeException("Unterminated string at end of line"); }
 }
-
-
-

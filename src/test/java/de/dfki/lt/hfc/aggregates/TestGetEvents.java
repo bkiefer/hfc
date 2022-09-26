@@ -35,7 +35,7 @@ import static org.junit.Assert.assertTrue;
 public class TestGetEvents {
 
     static final long DAY = 86400000;
-    Hfc fc;
+    TestHfc fc;
 
 
     public static String getResource(String name) {
@@ -44,11 +44,7 @@ public class TestGetEvents {
 
     @Before
     public void init() throws Exception {
-
-        fc = new Hfc(Config.getDefaultConfig() );
-        fc._tupleStore.namespace.putForm("pal", "http://www.dfki.de/lt/onto/pal.owl#", true );
-        fc._tupleStore.namespace.putForm("dom", "http://www.dfki.de/lt/onto/dom.owl#", true);
-        fc.uploadTuples(getResource("test.child.labvalues.nt"));
+        fc = new TestHfc().init(getResource("test.child.labvalues.nt"));
     }
 
 
@@ -88,7 +84,7 @@ public class TestGetEvents {
      */
     @Test
     public void testLast3Days() throws QueryParseException {
-        Query q = new Query(fc._tupleStore);
+        Query q = fc.getQuery();
 
         long currentTime = System.currentTimeMillis();
         long midnight = currentTime - (currentTime % DAY);
@@ -116,7 +112,7 @@ public class TestGetEvents {
      */
     @Test
     public void testGetToday() throws QueryParseException {
-        Query q = new Query(fc._tupleStore);
+        Query q = fc.getQuery();
 
         long currentTime = System.currentTimeMillis();
         long start = currentTime - (currentTime % DAY);
@@ -144,7 +140,7 @@ public class TestGetEvents {
      */
     @Test
     public void testGetYesterday() throws QueryParseException {
-        Query q = new Query(fc._tupleStore);
+        Query q = fc.getQuery();
 
         long currentTime = System.currentTimeMillis();
         long midnight = currentTime - (currentTime % DAY);
@@ -171,7 +167,7 @@ public class TestGetEvents {
      */
     @Test
     public void testGetLastTwoWeeksEvents() throws QueryParseException {
-        Query q = new Query(fc._tupleStore);
+        Query q = fc.getQuery();
 
         long currentTime = System.currentTimeMillis();
         long sunday = currentTime - (currentTime % (DAY * 7)) - (3 * DAY);
@@ -198,7 +194,7 @@ public class TestGetEvents {
      */
     @Test
     public void testGetLastWeeksEvents() throws QueryParseException {
-        Query q = new Query(fc._tupleStore);
+        Query q = fc.getQuery();
 
         long currentTime = System.currentTimeMillis();
         long sunday = currentTime - (currentTime % (DAY * 7)) - (3 * DAY);

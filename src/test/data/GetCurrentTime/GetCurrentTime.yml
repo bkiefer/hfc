@@ -1,3 +1,4 @@
+
 verbose: false
 characterEncoding: UTF-8
 noOfCores: 4
@@ -26,8 +27,8 @@ rdfCheck: true
 exitOnError: true
 
 tupleFiles:
-  - ./src/test/data/GetCurrentTime/getcurrenttime.nt
+  - getcurrenttime.nt
 ruleFiles:
-  - ./src/test/data/GetCurrentTime/getcurrenttime.rdl
+  - getcurrenttime.rdl
 
 iterations: 2147483647

@@ -42,18 +42,18 @@ public final class IntStringToBooleanTest {
     int[] args = new int[9];
     int[] bools = new int[2];
 
-    args[0] = store.putObject((new XsdString("0")).toString());
-    args[1] = store.putObject((new XsdString("1")).toString());
-    args[2] = store.putObject((new XsdString("true")).toString());
-    args[3] = store.putObject((new XsdString("false")).toString());
-    args[4] = store.putObject((new XsdString("True")).toString());
-    args[5] = store.putObject((new XsdString("False")).toString());
-    args[6] = store.putObject((new XsdString("TRUE")).toString());
-    args[7] = store.putObject((new XsdString("FALSE")).toString());
-    args[8] = store.putObject((new XsdString("2")).toString());
+    args[0] = store.putObject((new XsdString("0")));
+    args[1] = store.putObject((new XsdString("1")));
+    args[2] = store.putObject((new XsdString("true")));
+    args[3] = store.putObject((new XsdString("false")));
+    args[4] = store.putObject((new XsdString("True")));
+    args[5] = store.putObject((new XsdString("False")));
+    args[6] = store.putObject((new XsdString("TRUE")));
+    args[7] = store.putObject((new XsdString("FALSE")));
+    args[8] = store.putObject((new XsdString("2")));
 
-    bools[0] = store.putObject((new XsdBoolean(false)).toString());
-    bools[1] = store.putObject((new XsdBoolean(true)).toString());
+    bools[0] = store.putObject((new XsdBoolean(false)));
+    bools[1] = store.putObject((new XsdBoolean(true)));
 
     // do operation
     assertEquals("0", store.getObject(bools[0]),
@@ -79,12 +79,11 @@ public final class IntStringToBooleanTest {
     // store values in TupleStore, save integer-key in database
     int[] args = new int[5];
 
-    args[0] = store.putObject((new XsdString("0")).toString());
-    args[1] = store.putObject((new XsdInt(1)).toString());
-    args[2] = store.putObject((new XsdBoolean(true)).toString());
-    args[3] = store
-        .putObject((new Uri("<rdf:type>", NamespaceManager.RDF)).toString());
-    args[4] = store.putObject((new BlankNode("_:blank")).toString());
+    args[0] = store.putObject((new XsdString("0")));
+    args[1] = store.putObject((new XsdInt(1)));
+    args[2] = store.putObject((new XsdBoolean(true)));
+    args[3] = store.putObject((new Uri("<rdf:type>", NamespaceManager.RDF)));
+    args[4] = store.putObject((new BlankNode("_:blank")));
 
     assertEquals("MakeBlankNode", "_:|0|",
         store.getObject(fop.apply(new int[] { args[0] })).toString());
@@ -105,11 +104,11 @@ public final class IntStringToBooleanTest {
 
     // <rdf:type> <rdf:type> <rdf:Property> .
     validArgs[0] = store
-        .putObject((new Uri("<rdf:type>", NamespaceManager.RDF)).toString());
+        .putObject((new Uri("<rdf:type>", NamespaceManager.RDF)));
     validArgs[1] = store
-        .putObject((new Uri("<rdf:type>", NamespaceManager.RDF)).toString());
-    validArgs[2] = store.putObject(
-        (new Uri("<rdf:Property>", NamespaceManager.RDF)).toString());
+        .putObject((new Uri("<rdf:type>", NamespaceManager.RDF)));
+    validArgs[2] = store
+        .putObject((new Uri("<rdf:Property>", NamespaceManager.RDF)));
 
     // TODO test also invalid args
 
@@ -132,11 +131,11 @@ public final class IntStringToBooleanTest {
 
     // <rdf:type> <rdf:type> <rdf:Property> .
     validArgs[0] = store
-        .putObject((new Uri("<rdf:type>", NamespaceManager.RDF)).toString());
+        .putObject((new Uri("<rdf:type>", NamespaceManager.RDF)));
     validArgs[1] = store
-        .putObject((new Uri("<rdf:type>", NamespaceManager.RDF)).toString());
-    validArgs[2] = store.putObject(
-        (new Uri("<rdf:Property>", NamespaceManager.RDF)).toString());
+        .putObject((new Uri("<rdf:type>", NamespaceManager.RDF)));
+    validArgs[2] = store
+        .putObject((new Uri("<rdf:Property>", NamespaceManager.RDF)));
 
     // TODO test also invalid args
 

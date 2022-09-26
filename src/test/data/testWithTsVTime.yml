@@ -1,4 +1,4 @@
-verbose: true
+verbose: false
 characterEncoding: UTF-8
 noOfCores: 4
 noOfTuples: 500000
@@ -6,28 +6,38 @@ noOfAtoms: 100000
 eqReduction: false
 garbageCollection: false
 cleanUpRepository: true
+addTimestamps: [ 0, -1 ]
 
-shortIsDefault: true
+shortIsDefault:  true
 namespaces:
   xsd:  http://www.w3.org/2001/XMLSchema#
   rdf:  http://www.w3.org/1999/02/22-rdf-syntax-ns#
   rdfs:  http://www.w3.org/2000/01/rdf-schema#
   owl:  http://www.w3.org/2002/07/owl#
   test: http://www.dfki.de/lt/onto/test.owl#
-  hfc: http://www.dfki.de/lt/hfc.owl#
+  lt: http://www.lt-world.org/ltw.owl#
+  reg: http://registry.dfki.de#
+  d_time: http://www.dfki.de/lt/onto/time.owl#
+  time: http://www.dfki.de/lt/onto/hysociatea/time.owl#
+  upp:  http://www.dfki.de/lt/onto/hysociatea/upper.owl#
+  dafn: http://www.dfki.de/lt/onto/hysociatea/dialframe.owl#
+  dom:  http://www.dfki.de/lt/onto/hysociatea/domain.owl#
+  hst:  http://www.dfki.de/lt/onto/hysociatea/hysociatea.owl#
+
 
 tupleFiles:
-- <resources>/default.nt
+  - default.nt
 
-minArgs: 3
+minArgs: 5
 maxArgs: 5
 subjectPosition: 0
 predicatePosition: 1
 objectPosition: 2
+
 rdfCheck: true
 exitOnError: true
 
 ruleFiles:
-- <resources>/default.rdl
+#  - default.rdl
 
 iterations: 2147483647

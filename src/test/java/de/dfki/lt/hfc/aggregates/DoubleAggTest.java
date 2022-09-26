@@ -7,9 +7,9 @@ import org.junit.Test;
 
 import static de.dfki.lt.hfc.TestingUtils.checkDoubleResult;
 
-public class DMeanTest {
+public class DoubleAggTest {
 
- static Hfc fc;
+ static TestHfc fc;
 
  public static String getResource(String name) {
   return TestingUtils.getTestResource("LGetLatestValues", name);
@@ -17,22 +17,17 @@ public class DMeanTest {
 
  @Before
  public void init() throws Exception {
-
-  fc = new Hfc(Config.getDefaultConfig());
-  fc._tupleStore.namespace.putForm("pal", "http://www.lt-world.org/pal.owl#", true);
-  fc._tupleStore.namespace.putForm("dom", "http://www.lt-world.org/dom.owl#", true);
-  fc.uploadTuples(getResource("test.child.labvalues_double.nt"));
+  fc = new TestHfc().init(getResource("test.child.labvalues_double.nt"));
  }
-
 
  @After
  public void cleanup() {
-  fc.shutdownNoExit();
+   if (fc != null) fc.shutdownNoExit();
  }
 
  @Test
  public void testDMean() throws QueryParseException, BindingTableIteratorException {
-  Query q = new Query(fc._tupleStore);
+  Query q = fc.getQuery();
 
   BindingTable bt = q.query("SELECT ?child ?prop ?val ?t "
           + "WHERE ?child <rdf:type> <dom:Child> ?t1 "
@@ -41,5 +36,18 @@ public class DMeanTest {
           + "AGGREGATE ?time = DMean ?t ");
   // check whether all expected entries were found
   checkDoubleResult(fc, bt, 55.55);
+ }
+ 
+ @Test
+ public void testDSum() throws QueryParseException, BindingTableIteratorException {
+  Query q = fc.getQuery();
+
+  BindingTable bt = q.query("SELECT ?child ?prop ?val ?t "
+          + "WHERE ?child <rdf:type> <dom:Child> ?t1 "
+          + "& ?child <dom:hasLabValue> ?lv ?t2 "
+          + "& ?lv ?prop ?val ?t "
+          + "AGGREGATE ?time = DSum ?t ");
+  // check whether all expected entries were found
+  checkDoubleResult(fc, bt, 499.95);
  }
 }

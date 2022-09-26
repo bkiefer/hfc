@@ -1,5 +1,6 @@
 package de.dfki.lt.hfc;
 
+import de.dfki.lt.hfc.NamespaceManager.Namespace;
 import de.dfki.lt.hfc.types.Uri;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +22,7 @@ public class NamespaceManagerTest {
   public void setShortIsDefault() {
 
     NamespaceManager nsm = NamespaceManager.getInstance();
+    nsm.setShortIsDefault(false);
     assertFalse(nsm.isShortIsDefault());
     assertFalse(nsm.shortToNs.get("test").isShort());
     Uri testObject = new Uri("testObject", NamespaceManager.TEST);
@@ -35,16 +37,7 @@ public class NamespaceManagerTest {
     NamespaceManager nsm = NamespaceManager.getInstance();
     assertNotNull(nsm);
     NamespaceManager nsm2 = NamespaceManager.getInstance();
-    assertEquals(nsm, nsm2);
-  }
-
-  @Test
-  public void addNamespace() {
-    Namespace ns = new Namespace("testNs", "http://www.dfki.de/lt/onto/testNS.owl#", false);
-    NamespaceManager nsm = NamespaceManager.getInstance();
-    nsm.addNamespace(ns);
-    assertEquals(ns, nsm.shortToNs.get("testNs"));
-    assertEquals(ns, nsm.longToNs.get("http://www.dfki.de/lt/onto/testNS.owl#"));
+    assertNotEquals(nsm, nsm2);
   }
 
   @Test
@@ -52,8 +45,8 @@ public class NamespaceManagerTest {
     NamespaceManager nsm = NamespaceManager.getInstance();
     nsm.putForm("testNs", "http://www.dfki.de/lt/onto/testNS.owl#", false);
     Namespace ns = nsm.shortToNs.get("testNs");
-    assertEquals(ns.SHORT_NAMESPACE, "testNs");
-    assertEquals(ns.LONG_NAMESPACE, "http://www.dfki.de/lt/onto/testNS.owl#");
+    assertEquals(ns.getShort(), "testNs");
+    assertEquals(ns.getLong(), "http://www.dfki.de/lt/onto/testNS.owl#");
   }
 
 
@@ -76,14 +69,19 @@ public class NamespaceManagerTest {
   }
 
   @Test
-  public void seperateNSfromURI() {
+  public void separateNSfromURI() {
     String uri1 = "<test:testObject1>";
     String uri2 = "<http://www.dfki.de/lt/onto/test.owl#testObject2>";
-    String uri3 = "<testObject3>";
     NamespaceManager nsm = NamespaceManager.getInstance();
-    assertEquals("test", nsm.separateNSfromURI(uri1)[0]);
-    assertEquals("http://www.dfki.de/lt/onto/test.owl#", nsm.separateNSfromURI(uri2)[0]);
-    assertEquals("", nsm.separateNSfromURI(uri3)[0]);
+    assertEquals(nsm.getNamespaceObject("test"), nsm.separateNSfromURI(uri1).first);
+    assertEquals(nsm.getNamespaceObject("http://www.dfki.de/lt/onto/test.owl#"), nsm.separateNSfromURI(uri2).first);
+  }
+
+  @Test(expected = WrongFormatException.class)
+  public void emptyNSIllegal() {
+    NamespaceManager nsm = NamespaceManager.getInstance();
+    String uri3 = "<testObject3>";
+    assertEquals(nsm.getNamespaceObject(""), nsm.separateNSfromURI(uri3).first);
   }
 
   @Test
@@ -93,6 +91,43 @@ public class NamespaceManagerTest {
     NamespaceManager nsm = NamespaceManager.getInstance();
     assertEquals(NamespaceManager.TEST, nsm.getNamespaceObject(ns_short));
     assertEquals(NamespaceManager.TEST, nsm.getNamespaceObject(ns_long));
-
   }
+
+  @Test
+  public void uriWithUnknownNStest() {
+    NamespaceManager nsm = NamespaceManager.getInstance();
+    String uriString = "<http://what.de/a/silly/domain.owl#StupidObject>";
+    Pair<Namespace, String> sep = nsm.separateNSfromURI(uriString);
+    Uri uri = new Uri(sep.second, sep.first);
+    // check that i can introduce a short form afterwards
+    assertTrue(nsm.putForm("silly", "http://what.de/a/silly/domain.owl#", true));
+    assertFalse(nsm.putForm("tooSilly", "http://what.de/a/silly/domain.owl#", true));
+    assertEquals("<silly:StupidObject>", uri.toString());
+    Uri uri2 = new Uri("StupidObject", nsm.getNamespaceObject("owl"));
+    assertNotEquals(uri, uri2);
+  }
+
+  @Test
+  public void uriWithUnknownShortFormtest() {
+    NamespaceManager nsm = NamespaceManager.getInstance();
+    String uriString = "<unknown:StupidObject>";
+    Pair<Namespace, String> sep = nsm.separateNSfromURI(uriString);
+    Uri uri = new Uri(sep.second, sep.first);
+    // check that i can introduce a short form afterwards
+    nsm.putForm("unknown", "http://what.de/an/unknown/domain.owl#", false);
+    assertEquals("<http://what.de/an/unknown/domain.owl#StupidObject>", uri.toString());
+  }
+
+  @Test
+  public void uriWithNamespaceOnlyTest() {
+    // unfortunately, there are URIs that have only a namespace, no name.
+    // Protege spits them out to specify the ontology itself, and i'm not sure
+    // in which other places that might occur.
+    NamespaceManager nsm = NamespaceManager.getInstance();
+    String uriString = "<http://www.dfki.de/lt/onto/common/dialogue.owl>";
+    Pair<Namespace, String> sep = nsm.separateNSfromURI(uriString);
+    assertNotNull(sep.first);
+    assertTrue(sep.second.isEmpty());
+  }
+
 }

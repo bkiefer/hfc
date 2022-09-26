@@ -24,7 +24,7 @@ public abstract class Operator {
    * methods, calling (potentially synchronized) methods from the tuple store
    */
   protected TupleStore tupleStore;
-
+  
   /**
    * calls getJavaObject() from class TupleStore;
    * calling this.tupleStore.getJavaObject(...) inside a FO can thus be reduced to

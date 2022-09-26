@@ -56,7 +56,7 @@ public final class AggregateRegistry {
   }
 
   /**
-   * @see de.dfki.lt.hfc.TupleStore.copyTupleStore()
+   * @see de.dfki.lt.hfc.TupleIntStore.copyTupleIntStore()
    */
   protected AggregateRegistry(TupleStore tupleStore, AggregateRegistry aggregateRegistry) {
     this.tupleStore = tupleStore;
@@ -96,6 +96,7 @@ public final class AggregateRegistry {
    * field tupleStore with this tupleStore, and generates an association between
    * the class name and the specific instance of that class
    */
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   private AggregationalOperator register(String className) {
     try {
       Class clazz = Class.forName(className);

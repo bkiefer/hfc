@@ -46,7 +46,7 @@ public class RelationalVariableTest {
     };
     Query q = new Query(fc._tupleStore);
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    checkResult(expected, bt, bt.getVars());
+    checkResult(fc, bt, expected, bt.getVars());
   }
 
   @AfterClass

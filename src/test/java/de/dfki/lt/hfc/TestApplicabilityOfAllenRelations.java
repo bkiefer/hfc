@@ -44,7 +44,7 @@ public class TestApplicabilityOfAllenRelations {
       assertFalse(bt.isEmpty());
       assertEquals(3, bt.size());
       assertEquals(2, bt.getVars().length);
-      checkResult(expected, bt, bt.getVars());
+      checkResult(fcWithIntervalTree_Index, bt, expected, bt.getVars());
       //End
 
     } catch (QueryParseException e) {
@@ -70,7 +70,7 @@ public class TestApplicabilityOfAllenRelations {
       assertFalse(bt.isEmpty());
       assertEquals(3, bt.size());
       assertEquals(2, bt.getVars().length);
-      checkResult(expected, bt, bt.getVars());
+      checkResult(fcWithoutIntervalTree_Index, bt, expected, bt.getVars());
       //End
       // Print Result
     } catch (QueryParseException e) {

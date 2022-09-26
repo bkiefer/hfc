@@ -116,6 +116,7 @@ public final class OperatorRegistry {
    * with this tupleStore, and generates an association between the class name and the specific
    * instance of that class
    */
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   private Operator register(String className) {
     try {
       Class clazz = Class.forName(className);

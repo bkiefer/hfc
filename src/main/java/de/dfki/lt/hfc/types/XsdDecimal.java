@@ -11,8 +11,8 @@ public class XsdDecimal extends XsdNumber {
 
   public final static String NAME = "decimal";
 
-  public final static String SHORT_NAME = '<' + NS.SHORT_NAMESPACE + ":" + NAME + '>';
-  public final static String LONG_NAME = '<' + NS.LONG_NAMESPACE + NAME + '>';
+  public final static String SHORT_NAME = '<' + NS.getShort() + ":" + NAME + '>';
+  public final static String LONG_NAME = '<' + NS.getLong() + NAME + '>';
 
   static {
     registerConstructor(XsdDecimal.class, SHORT_NAME, LONG_NAME);

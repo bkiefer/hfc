@@ -1,17 +1,17 @@
 package de.dfki.lt.hfc.aggregates;
 
-import static de.dfki.lt.hfc.TestingUtils.*;
-import static org.junit.Assert.assertEquals;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import static de.dfki.lt.hfc.TestingUtils.checkResult;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.dfki.lt.hfc.*;
-import static org.junit.Assert.assertEquals;
+import de.dfki.lt.hfc.BindingTable;
+import de.dfki.lt.hfc.Hfc;
+import de.dfki.lt.hfc.Query;
+import de.dfki.lt.hfc.QueryParseException;
+import de.dfki.lt.hfc.TestHfc;
+import de.dfki.lt.hfc.TestingUtils;
 
 /**
  * this aggregational operator LGetLatestValues only works for the time-stamped
@@ -37,15 +37,10 @@ public class TestLGetLatestValues {
     return TestingUtils.getTestResource("LGetLatestValues", name);
   }
 
-
   @BeforeClass
   public static void init() throws Exception {
-
     // forward chainer actually not needed -- tuple store and query object would suffice !
-    fc = new Hfc(Config.getDefaultConfig());
-    fc._tupleStore.namespace.putForm("pal", "http://www.lt-world.org/pal.owl#", true);
-    fc._tupleStore.namespace.putForm("dom", "http://www.lt-world.org/dom.owl#", true);
-
+    fc = new TestHfc().init(getResource("test.child.labvalues.nt"));
     // manually-constructed child test data from PAL
     //   <pal:lisa> <rdf:type> <dom:Child> "5544"^^<xsd:long> .
     //   <pal:lisa> <dom:hasLabValue> <pal:labval22> "5544"^^<xsd:long> .
@@ -59,7 +54,7 @@ public class TestLGetLatestValues {
     //   <pal:labval33> <dom:weight> "28.6"^^<xsd:kg> "5577"^^<xsd:long> .
     //   <pal:labval33> <dom:bsl> "9.2"^^<xsd:mmol_L> "5577"^^<xsd:long> .
     //   <pal:labval33> <dom:bsl> "165.6"^^<xsd:mg_dL> "5577"^^<xsd:long> .
-    fc.uploadTuples(getResource("test.child.labvalues.nt"));
+
     }
 
   @AfterClass
@@ -70,7 +65,7 @@ public class TestLGetLatestValues {
   @Test
   public void test() throws QueryParseException {
 
-    Query q = new Query(fc._tupleStore);
+    Query q = fc.getQuery();
 
     String[][] expected = {
         { "<dom:bmi>", "\"15.9\"^^<xsd:kg_m2>", "<pal:lisa>", "\"5544\"^^<xsd:long>" },

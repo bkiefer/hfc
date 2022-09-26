@@ -41,12 +41,11 @@ public final class BoolFuncTest {
     // store values in TupleStore, save integer-key in database
     int[] args = new int[5];
 
-    args[0] = store.putObject((new XsdString("0")).toString());
-    args[1] = store.putObject((new XsdInt(1)).toString());
-    args[2] = store.putObject((new XsdBoolean(false)).toString());
-    args[3] = store
-        .putObject((new Uri("<rdf:type>", NamespaceManager.RDF)).toString());
-    args[4] = store.putObject((new BlankNode("_blank")).toString());
+    args[0] = store.putObject((new XsdString("0")));
+    args[1] = store.putObject((new XsdInt(1)));
+    args[2] = store.putObject((new XsdBoolean(false)));
+    args[3] = store.putObject((new Uri("<rdf:type>", NamespaceManager.RDF)));
+    args[4] = store.putObject((new BlankNode("_blank")));
 
     // do operation
     assertEquals("XsdString 0", FunctionalOperator.TRUE,
@@ -71,12 +70,11 @@ public final class BoolFuncTest {
     // store values in TupleStore, save integer-key in database
     int[] args = new int[5];
 
-    args[0] = store.putObject((new XsdString("0")).toString());
-    args[1] = store.putObject((new XsdInt(1)).toString());
-    args[2] = store.putObject((new XsdBoolean(false)).toString());
-    args[3] = store
-        .putObject((new Uri("<rdf:type>", NamespaceManager.RDF)).toString());
-    args[4] = store.putObject((new BlankNode("_blank")).toString());
+    args[0] = store.putObject((new XsdString("0")));
+    args[1] = store.putObject((new XsdInt(1)));
+    args[2] = store.putObject((new XsdBoolean(false)));
+    args[3] = store.putObject((new Uri("<rdf:type>", NamespaceManager.RDF)));
+    args[4] = store.putObject((new BlankNode("_blank")));
 
     // do operation
     assertEquals("XsdString 0", FunctionalOperator.FALSE,
@@ -99,11 +97,11 @@ public final class BoolFuncTest {
 
     // <rdf:type> <rdf:type> <rdf:Property> .
     validArgs[0] = store
-        .putObject((new Uri("<rdf:type>", NamespaceManager.RDF)).toString());
+        .putObject((new Uri("<rdf:type>", NamespaceManager.RDF)));
     validArgs[1] = store
-        .putObject((new Uri("<rdf:type>", NamespaceManager.RDF)).toString());
-    validArgs[2] = store.putObject(
-        (new Uri("<rdf:Property>", NamespaceManager.RDF)).toString());
+        .putObject((new Uri("<rdf:type>", NamespaceManager.RDF)));
+    validArgs[2] = store
+        .putObject((new Uri("<rdf:Property>", NamespaceManager.RDF)));
 
     // TODO test also invalid args
 
@@ -128,12 +126,11 @@ public final class BoolFuncTest {
     // store values in TupleStore, save integer-key in database
     int[] args = new int[5];
 
-    args[0] = store.putObject((new XsdString("0")).toString());
-    args[1] = store.putObject((new XsdInt(1)).toString());
-    args[2] = store.putObject((new XsdBoolean(true)).toString());
-    args[3] = store
-        .putObject((new Uri("<rdf:type>", NamespaceManager.RDF)).toString());
-    args[4] = store.putObject((new BlankNode("_blank")).toString());
+    args[0] = store.putObject((new XsdString("0")));
+    args[1] = store.putObject((new XsdInt(1)));
+    args[2] = store.putObject((new XsdBoolean(true)));
+    args[3] = store.putObject((new Uri("<rdf:type>", NamespaceManager.RDF)));
+    args[4] = store.putObject((new BlankNode("_blank")));
 
     // do operation
     assertEquals("XsdString 0", FunctionalOperator.FALSE,
@@ -158,12 +155,11 @@ public final class BoolFuncTest {
     // store values in TupleStore, save integer-key in database
     int[] args = new int[5];
 
-    args[0] = store.putObject((new XsdString("0")).toString());
-    args[1] = store.putObject((new XsdInt(1)).toString());
-    args[2] = store.putObject((new XsdBoolean(false)).toString());
-    args[3] = store
-        .putObject((new Uri("<rdf:type>", NamespaceManager.RDF)).toString());
-    args[4] = store.putObject((new BlankNode("_blank")).toString());
+    args[0] = store.putObject((new XsdString("0")));
+    args[1] = store.putObject((new XsdInt(1)));
+    args[2] = store.putObject((new XsdBoolean(false)));
+    args[3] = store.putObject((new Uri("<rdf:type>", NamespaceManager.RDF)));
+    args[4] = store.putObject((new BlankNode("_blank")));
 
     // do operation
     assertEquals("XsdString 0", FunctionalOperator.FALSE,
@@ -187,11 +183,10 @@ public final class BoolFuncTest {
     // store values in TupleStore, save integer-key in database
     int[] args = new int[4];
 
-    args[0] = store.putObject((new XsdString("as string")).toString());
-    args[1] = store
-        .putObject((new XsdString("\"a string\"^^xsd:string")).toString());
-    args[2] = store.putObject((new XsdString("\"a string\"@en")).toString());
-    args[3] = store.putObject((new XsdString("en")).toString());
+    args[0] = store.putObject((new XsdString("as string")));
+    args[1] = store.putObject((new XsdString("\"a string\"^^xsd:string")));
+    args[2] = store.putObject((new XsdString("\"a string\"@en")));
+    args[3] = store.putObject((new XsdString("en")));
 
     // do operation
     assertEquals(FunctionalOperator.FALSE,
@@ -212,15 +207,15 @@ public final class BoolFuncTest {
     // store values in TupleStore, save integer-key in database
     int[] args = new int[8];
 
-    args[0] = store.putObject((new XsdString("foo")).toString());
-    args[1] = store.putObject((new XsdString("bar")).toString());
-    args[2] = store.putObject((new XsdString("föö")).toString());
-    args[3] = store.putObject((new XsdString("bär")).toString());
+    args[0] = store.putObject((new XsdString("foo")));
+    args[1] = store.putObject((new XsdString("bar")));
+    args[2] = store.putObject((new XsdString("föö")));
+    args[3] = store.putObject((new XsdString("bär")));
 
-    args[4] = store.putObject((new XsdString("foobar")).toString());
-    args[5] = store.putObject((new XsdString("foobarföö")).toString());
-    args[6] = store.putObject((new XsdString("foobarfööbär")).toString());
-    args[7] = store.putObject((new XsdString("xsd")).toString());
+    args[4] = store.putObject((new XsdString("foobar")));
+    args[5] = store.putObject((new XsdString("foobarföö")));
+    args[6] = store.putObject((new XsdString("foobarfööbär")));
+    args[7] = store.putObject((new XsdString("xsd")));
 
     // do operation
     assertEquals(FunctionalOperator.FALSE,
@@ -243,26 +238,21 @@ public final class BoolFuncTest {
 
     // diffs in ms
     dates[0] = store
-        .putObject((new XsdUDateTime(2016, 8, 19, 22, 19, 33.123f)).toString());
+        .putObject((new XsdUDateTime(2016, 8, 19, 22, 19, 33.123f)));
     dates[1] = store
-        .putObject((new XsdUDateTime(2016, 8, 19, 22, 19, 33.122f)).toString());
+        .putObject((new XsdUDateTime(2016, 8, 19, 22, 19, 33.122f)));
     // identical
     dates[2] = store
-        .putObject((new XsdUDateTime(2048, 8, 19, 22, 19, 33.123f)).toString());
+        .putObject((new XsdUDateTime(2048, 8, 19, 22, 19, 33.123f)));
     dates[3] = store
-        .putObject((new XsdUDateTime(2048, 8, 19, 22, 19, 33.123f)).toString());
+        .putObject((new XsdUDateTime(2048, 8, 19, 22, 19, 33.123f)));
     // underspecified (= -1 / -1.0f)
-    dates[4] = store
-        .putObject((new XsdUDateTime(-1, 8, 19, 22, 19, 33.123f)).toString());
-    dates[5] = store
-        .putObject((new XsdUDateTime(-1, 8, 19, 23, 19, 33.123f)).toString());
-    dates[6] = store
-        .putObject((new XsdUDateTime(2048, 8, -1, -1, -1, -1.0f)).toString());
-    dates[7] = store
-        .putObject((new XsdUDateTime(2048, 9, -1, -1, -1, -1.0f)).toString());
+    dates[4] = store.putObject((new XsdUDateTime(-1, 8, 19, 22, 19, 33.123f)));
+    dates[5] = store.putObject((new XsdUDateTime(-1, 8, 19, 23, 19, 33.123f)));
+    dates[6] = store.putObject((new XsdUDateTime(2048, 8, -1, -1, -1, -1.0f)));
+    dates[7] = store.putObject((new XsdUDateTime(2048, 9, -1, -1, -1, -1.0f)));
     // extremely underspecified
-    dates[8] = store
-        .putObject((new XsdUDateTime(-1, -1, -1, -1, -1, -1.0f)).toString());
+    dates[8] = store.putObject((new XsdUDateTime(-1, -1, -1, -1, -1, -1.0f)));
 
     // do operation
     assertEquals(FunctionalOperator.FALSE,

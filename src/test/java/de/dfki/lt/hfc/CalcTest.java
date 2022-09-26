@@ -1,5 +1,6 @@
 package de.dfki.lt.hfc;
 
+import static de.dfki.lt.hfc.TestingUtils.*;
 import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
@@ -189,7 +190,7 @@ public class CalcTest {
  @Test
  public void testmap() throws IOException, WrongFormatException {
   //test method map(BindingTable oldTable, int[] toMap)
-  TupleStore ts = new TupleStore(Config.getDefaultConfig());
+  TupleStore ts = getStore(Config.getDefaultConfig());
   BindingTable oldTable = new BindingTable(ts);
   int[] toMap = new int[1];
   toMap[0] = 1;
@@ -199,7 +200,7 @@ public class CalcTest {
  @Test
  public void testproject1() throws IOException, WrongFormatException {
   //test method project(BindingTable tt, int[] pos)
-  TupleStore ts = new TupleStore(Config.getDefaultConfig());
+  TupleStore ts = getStore(Config.getDefaultConfig());
   BindingTable tt = new BindingTable(ts);
   int[] pos = new int[1];
   pos[0] = 1;
@@ -209,35 +210,36 @@ public class CalcTest {
  @Test
  public void testrestrict() throws FileNotFoundException, WrongFormatException, IOException {
   //test method restrict(BindingTable bt, ArrayList<Integer> varvarIneqs, ArrayList<Integer> varconstIneqs)
-  TupleStore ts = new TupleStore(Config.getDefaultConfig());
+  TupleStore ts = getStore(Config.getDefaultConfig());
   BindingTable bt = new BindingTable(ts);
-  ArrayList<Integer> varvarIneqs = new ArrayList();
-  ArrayList<Integer> varconstIneqs = new ArrayList();
+  ArrayList<Integer> varvarIneqs = new ArrayList<>();
+  ArrayList<Integer> varconstIneqs = new ArrayList<>();
   assertEquals(true, Calc.restrict(bt, varvarIneqs, varconstIneqs) instanceof BindingTable);
   //if arrays are not empty
-  ArrayList<Integer> varvarIneqs1 = new ArrayList();
-  ArrayList<Integer> varconstIneqs1 = new ArrayList();
+  ArrayList<Integer> varvarIneqs1 = new ArrayList<>();
+  ArrayList<Integer> varconstIneqs1 = new ArrayList<>();
   varvarIneqs1.add(1);
   varvarIneqs1.add(2);
   varconstIneqs1.add(1);
   varconstIneqs1.add(2);
-  assertFalse(varvarIneqs1.isEmpty());//the arrays are not empty
-  assertFalse(varconstIneqs1.isEmpty());//the arrays are not empty
-  NamespaceManager namespace = NamespaceManager.getInstance();
-  TupleStore tuple = new TupleStore(Config.getDefaultConfig());
+  assertFalse(varvarIneqs1.isEmpty()); //the arrays are not empty
+  assertFalse(varconstIneqs1.isEmpty()); //the arrays are not empty
+  /*
+  TupleStore tuple = getStore(Config.getDefaultConfig());
   BindingTable bt1 = new BindingTable(tuple);
-  //Calc.restrict(bt1, varvarIneqs1, varconstIneqs1);// Null pointer exception
+  Calc.restrict(bt1, varvarIneqs1, varconstIneqs1);// Null pointer exception
+  */
  }
 
  @Test
  public void testrestrict1() throws IOException, WrongFormatException {
   //test method restrict(BindingTable bt, ArrayList<Predicate> predicates)
-  TupleStore ts = new TupleStore(Config.getDefaultConfig());
+  TupleStore ts = getStore(Config.getDefaultConfig());
   BindingTable bt = new BindingTable(ts);
-  ArrayList<Predicate> predicates = new ArrayList();
+  ArrayList<Predicate> predicates = new ArrayList<>();
   assertEquals(true, Calc.restrict(bt, predicates) instanceof BindingTable);
   //create predicate object and add it to ArrayList<Predicate> predicates
-  ArrayList<Integer> args = new ArrayList();
+  ArrayList<Integer> args = new ArrayList<>();
   args.add(1);
   Predicate predic = new Predicate("name", args);
   predicates.add(predic);
@@ -252,7 +254,7 @@ public class CalcTest {
   Set<int[]> table3 = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
   SortedMap<Integer, Integer> nameToPos3 = new TreeMap<Integer, Integer>();
   Map<Integer, String> nameToExternalName3 = new TreeMap<Integer, String>();
-  TupleStore ts3 = new TupleStore(Config.getDefaultConfig());
+  TupleStore ts3 = getStore(Config.getDefaultConfig());
   int[] arguments = new int[2];
   HashMap<Integer, ArrayList<Integer>> relIdToFunIds = new HashMap<Integer, ArrayList<Integer>>();
   HashMap<String, Integer> varToId = new HashMap<String, Integer>();
@@ -262,7 +264,7 @@ public class CalcTest {
   Set<int[]> table4 = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
   SortedMap<Integer, Integer> nameToPos4 = new TreeMap<Integer, Integer>();
   Map<Integer, String> nameToExternalName4 = new TreeMap<Integer, String>();
-  TupleStore ts4 = new TupleStore(Config.getDefaultConfig());
+  TupleStore ts4 = getStore(Config.getDefaultConfig());
   int[] arguments1 = new int[3];
   HashMap<Integer, ArrayList<Integer>> relIdToFunIds1 = new HashMap<Integer, ArrayList<Integer>>();
   HashMap<String, Integer> varToId1 = new HashMap<String, Integer>();
@@ -279,7 +281,7 @@ public class CalcTest {
   Set<int[]> table3 = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
   SortedMap<Integer, Integer> nameToPos3 = new TreeMap<Integer, Integer>();
   Map<Integer, String> nameToExternalName3 = new TreeMap<Integer, String>();
-  TupleStore ts3 = new TupleStore(Config.getDefaultConfig());
+  TupleStore ts3 = getStore(Config.getDefaultConfig());
   int[] arguments = new int[2];
   HashMap<Integer, ArrayList<Integer>> relIdToFunIds = new HashMap<Integer, ArrayList<Integer>>();
   HashMap<String, Integer> varToId = new HashMap<String, Integer>();
@@ -289,7 +291,7 @@ public class CalcTest {
   Set<int[]> table4 = new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY);
   SortedMap<Integer, Integer> nameToPos4 = new TreeMap<Integer, Integer>();
   Map<Integer, String> nameToExternalName4 = new TreeMap<Integer, String>();
-  TupleStore ts4 = new TupleStore(Config.getDefaultConfig());
+  TupleStore ts4 = getStore(Config.getDefaultConfig());
   int[] arguments1 = new int[3];
   HashMap<Integer, ArrayList<Integer>> relIdToFunIds1 = new HashMap<Integer, ArrayList<Integer>>();
   HashMap<String, Integer> varToId1 = new HashMap<String, Integer>();

@@ -1,7 +1,7 @@
 package de.dfki.lt.hfc.types;
 
 import de.dfki.lt.hfc.NamespaceManager;
-import de.dfki.lt.hfc.Namespace;
+import de.dfki.lt.hfc.NamespaceManager.Namespace;
 import de.dfki.lt.hfc.WrongFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -125,7 +125,7 @@ public abstract class XsdAnySimpleType extends AnyType {
    * @param clazz The class object of some XsdAnySimpleType type
    * @param forms The short and long form of the type tag
    */
-  @SuppressWarnings({"unchecked", "rawtypes"})
+  @SuppressWarnings({"unchecked"})
   protected static void registerConstructor(Class clazz, String... forms) {
     try {
       Constructor<XsdAnySimpleType> constructor =
@@ -172,6 +172,7 @@ public abstract class XsdAnySimpleType extends AnyType {
   /**
    * Register a converter from a java class to a Xsd simple type class
    */
+  @SuppressWarnings("unchecked")
   public static void registerConverter(Class clazz, Class xsdClass) {
     try {
       Constructor<XsdAnySimpleType> constr = xsdClass.getConstructor(clazz);
@@ -207,6 +208,7 @@ public abstract class XsdAnySimpleType extends AnyType {
    * generates a string representation from the internal fields, but omits
    * the XSD type specification, default implementation
    */
+  @Override
   public String toName() {
     return extractValue(toString());
   }

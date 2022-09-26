@@ -13,8 +13,8 @@ public final class XsdKg extends XsdAnySimpleType {
 
   public final static String NAME = "kg";
 
-  public final static String SHORT_NAME = '<' + NS.SHORT_NAMESPACE + ":" + NAME + '>';
-  public final static String LONG_NAME = '<' + NS.LONG_NAMESPACE + NAME + '>';
+  public final static String SHORT_NAME = '<' + NS.getShort() + ":" + NAME + '>';
+  public final static String LONG_NAME = '<' + NS.getLong() + NAME + '>';
 
   static {
     registerConstructor(XsdKg.class, SHORT_NAME, LONG_NAME);

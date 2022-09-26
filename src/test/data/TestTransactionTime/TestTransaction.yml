@@ -14,7 +14,6 @@ namespaces:
   rdfs:  http://www.w3.org/2000/01/rdf-schema#
   owl:  http://www.w3.org/2002/07/owl#
   test: http://www.dfki.de/lt/onto/test.owl#
-  dial: http://www.dfki.de/lt/onto/common/dialogue.owl#
   dom: http://www.dfki.de/lt/onto/pal/domain.owl#
   goal: http://www.dfki.de/lt/onto/pal/dmgoals.owl#
   logic: http://www.dfki.de/lt/onto/common/logic.owl#
@@ -22,10 +21,11 @@ namespaces:
   sem: http://www.dfki.de/lt/onto/pal/semantics.owl#
   time: http://www.dfki.de/lt/onto/common/time.owl#
   upp: http://www.dfki.de/lt/onto/common/upper.owl#
+  dial: http://www.dfki.de/lt/onto/common/dialogue.owl#
 
 tupleFiles:
-  - ./src/test/data/TestTransactionTime/default.polarity.transtime.long.quintuple.eqred.nt
-  - ./src/test/data/TestTransactionTime/pal.polarity.transtime.long.quintuple.eqred.nt
+  - default.polarity.transtime.long.quintuple.eqred.nt
+  - pal.polarity.transtime.long.quintuple.eqred.nt
 
 minArgs: 5
 maxArgs: 5
@@ -37,7 +37,7 @@ rdfCheck: true
 exitOnError: true
 
 ruleFiles:
-  - ./src/test/data/TestTransactionTime/default.polarity.transtime.long.quintuple.eqred.rdl
-  - ./src/test/data/TestTransactionTime/pal.polarity.transtime.long.quintuple.eqred.rdl
+  - default.polarity.transtime.long.quintuple.eqred.rdl
+  - pal.polarity.transtime.long.quintuple.eqred.rdl
 
 iterations: 2147483647

@@ -40,15 +40,15 @@
 "0"^^<xsd:long> <owl:Thing> <owl:disjointWith> <owl:Nothing> .
 
 # I have added the below triples
-"0"^^<xsd:long> <nary:Thing+> <rdf:type> <nary:Class> .
-"0"^^<xsd:long> <nary:Nothing+> <rdf:type> <nary:Class> .
+"0"^^<xsd:long> <nary:Thing+> <rdf:type> <owl:Class> .
+"0"^^<xsd:long> <nary:Nothing+> <rdf:type> <owl:Class> .
 "0"^^<xsd:long> <nary:Thing+> <owl:disjointWith> <nary:Nothing+> .
 "0"^^<xsd:long> <nary:Nothing+> <rdfs:subClassOf> <nary:Thing+> .
 "0"^^<xsd:long> <owl:Thing> <rdfs:subClassOf> <nary:Thing+> .
 "0"^^<xsd:long> <xsd:AnyType> <rdfs:subClassOf> <nary:Thing+> .
 "0"^^<xsd:long> <xsd:AnyType> <rdf:type> <rdfs:Datatype> .
 
-"0"^^<xsd:long> <nary:MixedProperty> <rdfs:subClassOf> <rdf:Property> 
+"0"^^<xsd:long> <nary:MixedProperty> <rdfs:subClassOf> <rdf:Property>
 "0"^^<xsd:long> <owl:DatatypeProperty> <rdfs:subClassOf> <nary:MixedProperty> .
 "0"^^<xsd:long> <owl:ObjectProperty> <rdfs:subClassOf> <nary:MixedProperty> .
 # XSD Datatypes

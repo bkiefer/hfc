@@ -1,39 +1,34 @@
 package de.dfki.lt.hfc;
 
-public class Pair {
+import java.util.Objects;
 
-    final protected Object first;
+public class Pair<F, S> {
 
-    final protected Object second;
+  final public F first;
+  final public S second;
 
-    public Pair(Object first, Object second) {
-      this.first = first;
-      this.second = second;
-    }
+  public Pair(F first, S second) {
+    this.first = first;
+    this.second = second;
+  }
 
-    /**
-     * make sure that this equals obj by NOT distinguishing between first and second
-     */
-    public boolean equals(Object obj) {
-      Pair pair = (Pair) obj;
-      if (this.first.equals(pair.first) && this.second.equals(pair.second))
-        return true;
-      else if (this.first.equals(pair.second) && this.second.equals(pair.first))
-        return true;
-      else
-        return false;
-    }
+  @Override
+  @SuppressWarnings("rawtypes")
+  public boolean equals(Object obj) {
+    if (! (obj instanceof Pair))
+      return false;
+    Pair pair = (Pair) obj;
+    return Objects.equals(first, pair.first)
+        && Objects.equals(second, pair.second);
+  }
 
-    /**
-     * hash code does not distinguish between first and second arg of a pair, thus
-     * adds the hashes of first and second:
-     * IF p.first == x && p.second == y &&
-     * q.first == y && q.second == x
-     * THEN p.hashCode() == q.hashCode()
-     */
-    public int hashCode() {
-      return first.hashCode() + second.hashCode();
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(first, second);
+  }
 
-
+  @Override
+  public String toString() {
+    return '<' + Objects.toString(first) + "|" + Objects.toString(second) + '>';
+  }
 }

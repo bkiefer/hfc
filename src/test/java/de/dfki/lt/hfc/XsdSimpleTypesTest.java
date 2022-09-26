@@ -13,7 +13,7 @@ import org.junit.Test;
 import de.dfki.lt.hfc.types.*;
 
 public class XsdSimpleTypesTest {
-
+  
   @Test
   public void testDouble() throws WrongFormatException {
     String ds = "\"100.1\"^^<xsd:double>";

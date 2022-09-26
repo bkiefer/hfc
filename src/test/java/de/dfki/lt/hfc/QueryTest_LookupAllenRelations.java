@@ -39,7 +39,7 @@ public class QueryTest_LookupAllenRelations {
    String[][] expected = {{"<test:Sensor2>", "\"4\"^^<xsd:int>"},
            {"<test:Sensor1>", "\"3\"^^<xsd:int>"},
            {"<test:Sensor2>", "\"5\"^^<xsd:int>"}};
-   checkResult(expected, bt, bt.getVars());
+   checkResult(fc, bt, expected, bt.getVars());
   } catch (QueryParseException e) {
    e.printStackTrace();
    fail();
@@ -57,7 +57,7 @@ public class QueryTest_LookupAllenRelations {
            {"<test:Sensor2>", "\"2\"^^<xsd:int>"},
            {"<test:Sensor1>", "\"2\"^^<xsd:int>"},
            {"<test:Sensor2>", "\"5\"^^<xsd:int>"}};
-   checkResult(expected, bt, bt.getVars());
+   checkResult(fc, bt, expected, bt.getVars());
   } catch (QueryParseException e) {
    e.printStackTrace();
    fail();
@@ -72,7 +72,7 @@ public class QueryTest_LookupAllenRelations {
    BindingTable bt = query.query("SELECT DISTINCT ?s ?o WHERE ?s <test:hasValue> ?o D \"200\"^^<xsd:long>  \"1600\"^^<xsd:long> FILTER ?s != <test:Sensor1>");
    String[][] expected = {{"<test:Sensor2>", "\"4\"^^<xsd:int>"},
            {"<test:Sensor2>", "\"5\"^^<xsd:int>"}};
-   checkResult(expected, bt, bt.getVars());
+   checkResult(fc, bt, expected, bt.getVars());
   } catch (QueryParseException e) {
    e.printStackTrace();
    fail();
@@ -89,7 +89,7 @@ public class QueryTest_LookupAllenRelations {
    String[][] expected = {{"<test:Sensor2>", "\"4\"^^<xsd:int>"},
            {"<test:Sensor1>", "\"3\"^^<xsd:int>"},
            {"<test:Sensor2>", "\"5\"^^<xsd:int>"}};
-   checkResult(expected, bt, bt.getVars());
+   checkResult(fc, bt, expected, bt.getVars());
   } catch (QueryParseException e) {
    e.printStackTrace();
    fail();
@@ -104,7 +104,7 @@ public class QueryTest_LookupAllenRelations {
   try { // F
    BindingTable bt = query.query("SELECT DISTINCT ?s ?o WHERE ?s <test:hasValue> ?o D \"200\"^^<xsd:long>  \"1600\"^^<xsd:long> AGGREGATE  ?number = Count ?o");
    String[][] expected = {{"\"3\"^^<xsd:int>"}};
-   checkResult(expected, bt, bt.getVars());
+   checkResult(fc, bt, expected, bt.getVars());
   } catch (QueryParseException e) {
    e.printStackTrace();
    fail();

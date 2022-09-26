@@ -43,10 +43,12 @@ public class Query {
    * (expandProxy = false) or SELECTALL (expandProxy = true) is used
    */
   //private boolean expandProxy = false;
+  
   /**
    * in order to query, we need a tuple store
    */
   protected TupleStore tupleStore;
+  
   /**
    * a constant that controls whether a warning is printed in case "unexpected" things
    * happen; similar variables exists in class TupleStore, RuleStore, and ForwardChainer
@@ -61,9 +63,9 @@ public class Query {
   /**
    * the unary constructor internalizes the tuple store
    */
-  public Query(TupleStore tupleStore) {
-    this.tupleStore = tupleStore;
-    QRelationFactory.initFactory(tupleStore);
+  public Query(TupleStore store) {
+    this.tupleStore = store;
+    QRelationFactory.initFactory(store);
   }
 
 
@@ -270,9 +272,8 @@ public class Query {
           if (this.tupleStore.isConstant(elem)) {
             clause.add(this.tupleStore.putObject(elem));
             if (this.tupleStore.equivalenceClassReduction) {
-              clause
-                      .set(clause.size() - 1,
-                              this.tupleStore.getProxy(clause.get(clause.size() - 1)));
+              clause.set(clause.size() - 1,
+                  this.tupleStore.getProxy(clause.get(clause.size() - 1)));
             }
           } else if (QRelationFactory.isRelation(elem)) {
             //collapse relation
@@ -282,7 +283,7 @@ public class Query {
             id2 = clause.get(clause.size() - 1);
             QRelation r;
             if (null == (r = QRelationFactory.getRelation(elem, id1, id2, clause.size()))) {
-              return Collections.EMPTY_LIST;
+              return Collections.emptyList();
             } else {
               varcount = r.prepareMappings(nameToId, idToRelation, idToName, varcount, clause, foundVars);
               //numberOfFoundRelations++;
@@ -291,11 +292,11 @@ public class Query {
             // not known: return null to indicate this special empty table;
             // other options: (i) throw a special exception  or (ii) an empty binding table
             // we _now_ opt for the empty binding table in method query()
-            if (tupleStore.isAtom(wc.get(i))) {
+            if (TupleStore.isAtom(wc.get(i))) {
               //tupleStore.putObject(elem);
               clause.add(this.tupleStore.putObject(elem));
             } else {
-              return Collections.EMPTY_LIST;
+              return Collections.emptyList();
             }
           }
         }
@@ -622,7 +623,7 @@ public class Query {
         bt.table = Calc.project(bt.table, pos);
       } else
         // seems that we only need to have a HashSet instead of a THashSet object
-        bt.table = new HashSet(bt.table);
+        bt.table = new HashSet<>(bt.table);
     }
   }
 

@@ -17,7 +17,7 @@ namespaces:
   hfc: http://www.dfki.de/lt/hfc.owl#
 
 tupleFiles:
-- <resources>/default.nt
+- default.nt
 
 minArgs: 3
 maxArgs: 5
@@ -28,6 +28,6 @@ rdfCheck: true
 exitOnError: true
 
 ruleFiles:
-- <resources>/default.rdl
+- default.rdl
 
 iterations: 2147483647

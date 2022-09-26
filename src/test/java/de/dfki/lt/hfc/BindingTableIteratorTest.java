@@ -1,44 +1,43 @@
 package de.dfki.lt.hfc;
 
 import static de.dfki.lt.hfc.TestingUtils.*;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
-import org.junit.Before;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import de.dfki.lt.hfc.BindingTable.BindingTableIterator;
+import de.dfki.lt.hfc.TestingUtils.NextAsHfcCall;
+import de.dfki.lt.hfc.TestingUtils.NextAsIntCall;
+import de.dfki.lt.hfc.TestingUtils.NextAsObjectCall;
+import de.dfki.lt.hfc.TestingUtils.NextAsStringCall;
 import de.dfki.lt.hfc.types.AnyType;
 import de.dfki.lt.hfc.types.XsdString;
 
 public class BindingTableIteratorTest {
   Query q;
-  TupleStore ts;
-  Config config;
+  TestHfc hfc;
+  TestConfig config;
 
   @Before
   public void setup() throws FileNotFoundException, IOException, WrongFormatException {
-    config = Config.getDefaultConfig();
-    Map update = new HashMap<>();
-    update.put(Config.NOOFATOMS, 100000);
-    update.put(Config.NOOFTUPLES, 250000);
-    config.updateConfig(update);
-    ts = new TupleStore(config);
-    ts.verbose = false;
-    ts.readTuples(getTestResource("default.nt"),false);
-    q = new Query(ts);
+    config = TestConfig.getDefaultConfig();
+    config.put(Config.NOOFATOMS, 100000);
+    config.put(Config.NOOFTUPLES, 250000);
+    hfc = new TestHfc(config);
+    hfc.uploadTuples(getTestResource("default.nt"));
+    q = hfc.getQuery();
   }
 
   @After
   public void tearDown() {
     config = null;
-    ts = null;
+    hfc = null;
     q = null;
   }
 
@@ -70,8 +69,7 @@ public class BindingTableIteratorTest {
     // we're using Trove sets and strategy objects for table projection, the
     // underlying int arrays are still of length 3
     BindingTable bt = q.query("SELECT * WHERE ?s <rdf:type> ?o FILTER ?o != <rdfs:Datatype>");
-    BindingTableIterator it = bt.iterator();
-    check(it, expected, new NextAsIntCall(ts));
+    check(bt.iterator(), expected, new NextAsIntCall(hfc._tupleStore));
   }
 
   @Test
@@ -519,7 +517,7 @@ public class BindingTableIteratorTest {
   @Test
   public void testAsHfcObject() throws QueryParseException, BindingTableIteratorException {
     String[] stringTuple = { "<owl:disjointWith>", "<rdfs:comment>", "\"A comment\"^^<xsd:string>"};
-    ts.addTuple(stringTuple);
+    hfc.addTuple(stringTuple);
     BindingTable bt = q.query("SELECT ?s ?o WHERE ?s <rdfs:comment> ?o ");
     BindingTableIterator it = bt.iterator("?s", "?o");
     assertTrue(it.hasNext());
@@ -545,7 +543,7 @@ public class BindingTableIteratorTest {
   @Test
   public void testAsHfcObject1() throws QueryParseException, BindingTableIteratorException {
     String[] stringTuple = { "<owl:disjointWith>", "<rdfs:comment>", "\"A comment\""};
-    ts.addTuple(stringTuple);
+    hfc.addTuple(stringTuple);
     BindingTable bt = q.query("SELECT ?s ?o WHERE ?s <rdfs:comment> ?o ");
     BindingTableIterator it = bt.iterator("?s", "?o");
     assertTrue(it.hasNext());

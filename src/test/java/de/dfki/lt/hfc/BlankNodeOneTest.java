@@ -1,7 +1,5 @@
 package de.dfki.lt.hfc;
 
-import static org.junit.Assert.*;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -76,7 +74,7 @@ public class BlankNodeOneTest {
     Query q = fc.getQuery();
 
     BindingTable bt = q.query("SELECT ?s ?p ?o WHERE ?s ?p ?o");
-    checkResult(expected, bt, bt.getVars());
+    checkResult(fc, bt, expected, bt.getVars());
   }
 
   @AfterClass

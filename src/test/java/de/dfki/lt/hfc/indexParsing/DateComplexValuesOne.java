@@ -1,18 +1,17 @@
 package de.dfki.lt.hfc.indexParsing;
 
-import de.dfki.lt.hfc.Config;
-import de.dfki.lt.hfc.Hfc;
+import static org.junit.Assert.assertEquals;
 
-import de.dfki.lt.hfc.TestingUtils;
-import de.dfki.lt.hfc.types.XsdDate;
+import java.util.Set;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-
-import java.util.Set;
-
-import static org.junit.Assert.assertEquals;
+import de.dfki.lt.hfc.Config;
+import de.dfki.lt.hfc.TestHfc;
+import de.dfki.lt.hfc.TestingUtils;
+import de.dfki.lt.hfc.types.XsdDate;
 
 
 /**
@@ -22,7 +21,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class DateComplexValuesOne {
 
-    static Hfc fc;
+    static TestHfc fc;
     static String[] testSub1 = new String[]{"<test:Sensor1>", "<test:hasValue>", "\"142\"^^<xsd:long>"};
     static String[] testSub2 = new String[]{"<test:Sensor2>", "<test:hasValue>", "\"242\"^^<xsd:long>"};
 
@@ -33,7 +32,7 @@ public class DateComplexValuesOne {
     @BeforeClass
     public static void init() throws Exception {
 
-        fc =  new Hfc(Config.getInstance(getResource("test_transaction_date0_complex.yml")));
+        fc =  new TestHfc(Config.getInstance(getResource("test_transaction_date0_complex.yml")));
 
     }
 
@@ -41,21 +40,21 @@ public class DateComplexValuesOne {
 
     @Test
     public void testIndexClosure(){
-        assertEquals(10,fc._tupleStore.indexStore.size());
+        assertEquals(10,fc.getIndex().size());
         XsdDate key = new XsdDate(42,1,4);
-        Set<int[]> values = fc._tupleStore.indexStore.lookup(key);
+        Set<int[]> values = fc.getIndex().lookup(key);
         assertEquals(1,values.size());
         key = new XsdDate(42,1,5);
-        values = fc._tupleStore.indexStore.lookup(key);
+        values = fc.getIndex().lookup(key);
         assertEquals(1,values.size());
         fc.computeClosure();
-        assertEquals(10,fc._tupleStore.indexStore.size());
+        assertEquals(10,fc.getIndex().size());
          key = new XsdDate(42,1,4);
-         values = fc._tupleStore.indexStore.lookup(key);
+         values = fc.getIndex().lookup(key);
         assertEquals(7,values.size());
 
         key = new XsdDate(42,1,5);
-        values = fc._tupleStore.indexStore.lookup(key);
+        values = fc.getIndex().lookup(key);
         assertEquals(7,values.size());
 
     }

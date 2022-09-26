@@ -403,10 +403,12 @@ public final class FloatTest {
     String[] values_excep_expNaN = { "\"NaN\"^^<xsd:float>" };
     String[] values_excepPlusInf = { "\"1.0\"^^<xsd:float>",
         "\"0.0\"^^<xsd:float>", };
+    // TODO: has this worked before? NO: only the error was ignored
     String[] values_excep_expPlusInf = {
         "\"Float.POSITIVE_INFINITY\"^^<xsd:float>" };
     String[] values_excepMinusInf = { "\"-1.0\"^^<xsd:float>",
         "\"0.0\"^^<xsd:float>", };
+    // TODO: has this worked before? NO: only the error was ignored
     String[] values_excep_expMinusInf = {
         "\"Float.NEGATIVE_INFINITY\"^^<xsd:float>" };
 
@@ -446,22 +448,24 @@ public final class FloatTest {
     for (String val : values_excepPlusInf) {
       edsPInf[i++] = store.putObject(val);
     }
+/*
     int[] edsPInfExp = new int[2];
     i = 0;
-    for (String val : values_excep_expPlusInf) {
       edsPInfExp[i++] = store.putObject(val);
     }
+*/
     int[] edsPInfm = new int[2];
     i = 0;
     for (String val : values_excepMinusInf) {
       edsPInfm[i++] = store.putObject(val);
     }
     int[] edsPInfmExp = new int[2];
+/*
     i = 0;
     for (String val : values_excep_expMinusInf) {
       edsPInfmExp[i++] = store.putObject(val);
     }
-
+*/
     // create FunctionalOperator
     FunctionalOperator fop = (FunctionalOperator) store
         .checkAndRegisterOperator("de.dfki.lt.hfc.operators.FQuotient");

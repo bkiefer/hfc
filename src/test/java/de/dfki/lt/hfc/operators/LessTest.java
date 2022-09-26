@@ -34,12 +34,12 @@ public class LessTest {
     FunctionalOperator fop =
         (FunctionalOperator)store.checkAndRegisterOperator("de.dfki.lt.hfc.operators.Less");
 
-    args[0] = store.putObject((new XsdDouble(3.1).toString()));
-    args[1] = store.putObject((new XsdLong(7l)).toString());
-    args[2] = store.putObject((new XsdInt(6)).toString());
-    args[3] = store.putObject((new XsdFloat(5.0f)).toString());
+    args[0] = store.putObject((new XsdDouble(3.1)));
+    args[1] = store.putObject((new XsdLong(7l)));
+    args[2] = store.putObject((new XsdInt(6)));
+    args[3] = store.putObject((new XsdFloat(5.0f)));
 
-    args[4] = store.putObject((new XsdDecimal(4.0)).toString());
+    args[4] = store.putObject((new XsdDecimal(4.0)));
 
     // do operation
     assertEquals(FunctionalOperator.TRUE, fop.apply(new int[]{args[4], args[2]}));
@@ -59,12 +59,12 @@ public class LessTest {
     FunctionalOperator fop =
         (FunctionalOperator)store.checkAndRegisterOperator("de.dfki.lt.hfc.operators.LessEqual");
 
-    args[0] = store.putObject((new XsdDouble(3.1).toString()));
-    args[1] = store.putObject((new XsdLong(7l)).toString());
-    args[2] = store.putObject((new XsdInt(6)).toString());
-    args[3] = store.putObject((new XsdFloat(5.0f)).toString());
+    args[0] = store.putObject((new XsdDouble(3.1)));
+    args[1] = store.putObject((new XsdLong(7l)));
+    args[2] = store.putObject((new XsdInt(6)));
+    args[3] = store.putObject((new XsdFloat(5.0f)));
 
-    args[4] = store.putObject((new XsdDecimal(4.0)).toString());
+    args[4] = store.putObject((new XsdDecimal(4.0)));
 
     // do operation
     assertEquals(FunctionalOperator.TRUE, fop.apply(new int[]{args[4], args[2]}));
@@ -85,12 +85,12 @@ public class LessTest {
     FunctionalOperator fop =
         (FunctionalOperator)store.checkAndRegisterOperator("de.dfki.lt.hfc.operators.Greater");
 
-    args[0] = store.putObject((new XsdDouble(3.1).toString()));
-    args[1] = store.putObject((new XsdLong(7l)).toString());
-    args[2] = store.putObject((new XsdInt(6)).toString());
-    args[3] = store.putObject((new XsdFloat(5.0f)).toString());
+    args[0] = store.putObject((new XsdDouble(3.1)));
+    args[1] = store.putObject((new XsdLong(7l)));
+    args[2] = store.putObject((new XsdInt(6)));
+    args[3] = store.putObject((new XsdFloat(5.0f)));
 
-    args[4] = store.putObject((new XsdDecimal(4.0)).toString());
+    args[4] = store.putObject((new XsdDecimal(4.0)));
 
     // do operation
     assertEquals(FunctionalOperator.FALSE, fop.apply(new int[]{args[4], args[2]}));
@@ -110,12 +110,12 @@ public class LessTest {
     FunctionalOperator fop =
         (FunctionalOperator)store.checkAndRegisterOperator("de.dfki.lt.hfc.operators.GreaterEqual");
 
-    args[0] = store.putObject((new XsdDouble(3.1).toString()));
-    args[1] = store.putObject((new XsdLong(7l)).toString());
-    args[2] = store.putObject((new XsdInt(6)).toString());
-    args[3] = store.putObject((new XsdFloat(5.0f)).toString());
+    args[0] = store.putObject((new XsdDouble(3.1)));
+    args[1] = store.putObject((new XsdLong(7l)));
+    args[2] = store.putObject((new XsdInt(6)));
+    args[3] = store.putObject((new XsdFloat(5.0f)));
 
-    args[4] = store.putObject((new XsdDecimal(4.0)).toString());
+    args[4] = store.putObject((new XsdDecimal(4.0)));
 
     // do operation
     assertEquals(FunctionalOperator.FALSE, fop.apply(new int[]{args[4], args[2]}));
@@ -135,12 +135,12 @@ public class LessTest {
     FunctionalOperator fop =
         (FunctionalOperator)store.checkAndRegisterOperator("de.dfki.lt.hfc.operators.GreaterEqual");
 
-    args[0] = store.putObject((new XsdDouble(3.1).toString()));
-    args[1] = store.putObject((new XsdLong(7l)).toString());
-    args[2] = store.putObject((new XsdInt(6)).toString());
-    args[3] = store.putObject((new XsdFloat(5.0f)).toString());
+    args[0] = store.putObject((new XsdDouble(3.1)));
+    args[1] = store.putObject((new XsdLong(7l)));
+    args[2] = store.putObject((new XsdInt(6)));
+    args[3] = store.putObject((new XsdFloat(5.0f)));
 
-    args[4] = store.putObject((new XsdDecimal(4.0)).toString());
+    args[4] = store.putObject((new XsdDecimal(4.0)));
 
     // do operation
     assertEquals(FunctionalOperator.FALSE, fop.apply(new int[]{args[4], args[2]}));

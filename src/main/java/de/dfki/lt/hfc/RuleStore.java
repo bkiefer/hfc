@@ -102,55 +102,16 @@ public final class RuleStore {
    */
   private static final int RELVAR_OFFSET = -1000000000;
   private static final Logger logger = LoggerFactory.getLogger(RuleStore.class);
-  
-  private Config config;
-  /**
-   * it seems reasonable to have tuples of at least length 1;
-   * a similar variable exists in class TupleStore
-   *
-   * @see #maxNoOfArgs
-   */
-  int minNoOfArgs = 3;
-  /**
-   * this constant is used to create the right number of index tables;
-   * note that the value of this constant has an effect on the index data
-   * structure; the larger the number, the more tables are created;
-   * reasonable values seem to be 3 (RDF triple), 4, or 5;
-   * a similar variable exists in class TupleStore
-   *
-   * @see #minNoOfArgs
-   */
-  int maxNoOfArgs = 5;
-  /**
-   * a constant that controls whether a warning is printed in case an invalid
-   * tuple is read in;
-   * a similar variable exists in class TupleStore
-   *
-   * @see #exitOnError
-   */
-  boolean verbose = false;
-  /**
-   * when tuples are read in, this variable decides whether tuples are compliant with
-   * what RDF requests, viz., that the first argument is either an URI or a blank node,
-   * and that the second arg is a URI
-   */
-  boolean rdfCheck = true;
-  /**
-   * a constant that controls whether the system is terminated in case an invalid
-   * tuple, test, or action is read in (exit code = 1);
-   * a similar variable exists in class TupleStore
-   *
-   * @see #verbose
-   */
-  boolean exitOnError = true;
 
   /**
    */
   public boolean reorderAntecedent = true;
+  
   /**
    * a TupleStore object used to interface rule tuples with the initial base tuples
    */
   protected TupleStore tupleStore;
+  
   /**
    * a list of all rules known to RuleStore
    */
@@ -160,7 +121,7 @@ public final class RuleStore {
    * tables (plus additional info), coming from the index
    */
   protected Map<int[], Proxy> equivalentClauses =
-          new TCustomHashMap<int[], Proxy>(TupleStore.DEFAULT_HASHING_STRATEGY);
+          new TCustomHashMap<int[], Proxy>(TupleIntStore.DEFAULT_HASHING_STRATEGY);
   /**
    * current line number;
    * make it a global field, since otherwise too many methods need to be extended by a further argument
@@ -203,39 +164,9 @@ public final class RuleStore {
   /**
    * creates an empty rule store
    */
-  private RuleStore(TupleStore tupleStore) {
-    //this.namespace = namespace;
-    this.tupleStore = tupleStore;
+  public RuleStore(TupleStore store) {
+    this.tupleStore = store;
   }
-
-
-  public RuleStore(Config config, TupleStore tupleStore) throws IOException {
-    this(tupleStore);
-    this.config = config;
-    this.verbose = config.isVerbose();
-    this.rdfCheck = config.isRdfCheck();
-    this.minNoOfArgs = config.getMinArgs();
-    this.maxNoOfArgs = config.getMaxArgs();
-    for (String ruleFile : config.getRuleFiles())
-      readRules(ruleFile);
-  }
-
-  /**
-   * more options to parameterize the rule store
-   *
-   * @throws IOException
-   *
-
-  public RuleStore(boolean verbose, boolean rdfCheck, int minNoOfArgs, int maxNoOfArgs,
-                   TupleStore tupleStore, String ruleFile)
-          throws IOException {
-    this(tupleStore);
-    this.verbose = verbose;
-    this.rdfCheck = rdfCheck;
-    this.minNoOfArgs = minNoOfArgs;
-    this.maxNoOfArgs = maxNoOfArgs;
-    readRules(ruleFile);
-  }*/
 
   /**
    * external representation: variables start with the '?' character
@@ -318,35 +249,11 @@ public final class RuleStore {
    * obtains the id of the corresponding functional variable, given the relational
    * variable id;
    * note: I do NOT check whether there is such a functional var key in this.varToId
-   */
+   *
   private Integer getFunId(Integer relvar) {
     return (relvar - RuleStore.RELVAR_OFFSET);
   }
-
-  /**
-   * at several places, messages were output depending on this.exitOnError
-   * and this.verbose -- unify this in this special private method;
-   * perhaps will be replaced by Apache's log4j
-   */
-  private boolean sayItLoud(int lineNo, String message) {
-    if (this.exitOnError) {
-      logger.error(" FATAL: " + lineNo + message);
-      throw new RuntimeException("FATAL ERROR");
-    }
-    if (this.verbose)
-      logger.debug(" ERROR(ignored): " + lineNo + message);
-    return false;
-  }
-
-  private boolean sayItLoud(String rulename, String message) {
-    if (this.exitOnError) {
-      logger.error(" FATAL: " + rulename + message);
-      throw new RuntimeException("FATAL ERROR" + rulename + message);
-    }
-    if (this.verbose)
-      logger.debug(" ERROR(ignored): " + rulename + message);
-    return false;
-  }
+  */
 
   /**
    * extends a rule object by its internal representation of the antecedent;
@@ -354,17 +261,17 @@ public final class RuleStore {
    */
   private boolean makeAntecedent(ArrayList<int[]> ante, Rule rule) {
     if (rule == null)
-      return sayItLoud(this.lineNo, ": missing rule name");
+      return tupleStore.sayItLoud(this.lineNo, ": missing rule name");
     else if (rule.getAntecedent() != null)
-      return sayItLoud(this.lineNo, ": antecedent specified twice");
+      return tupleStore.sayItLoud(this.lineNo, ": antecedent specified twice");
     else if (ante.size() == 0)
-      return sayItLoud(this.lineNo, ": empty antecedent");
+      return tupleStore.sayItLoud(this.lineNo, ": empty antecedent");
     else {
       // further check whether ante elements at position i are equal null,
       // indicating that the i-th ante tuple is invalid
       for (int i = 0; i < ante.size(); i++) {
         if (ante.get(i) == null)
-          return sayItLoud(this.lineNo, ": antecedent contains invalid tuple(s)");
+          return tupleStore.sayItLoud(this.lineNo, ": antecedent contains invalid tuple(s)");
       }
       rule.setAntecedent(ante);
       return true;
@@ -381,12 +288,12 @@ public final class RuleStore {
    */
   private boolean makeConsequent(ArrayList<int[]> cons, Rule rule) {
     if (cons.size() == 0)
-      return sayItLoud(this.lineNo, ": empty consequent");
+      return tupleStore.sayItLoud(this.lineNo, ": empty consequent");
     // further check whether cons elements at position i are equal null,
     // indicating that the i-th cons tuple is invalid
     for (int i = 0; i < cons.size(); i++)
       if (cons.get(i) == null)
-        return sayItLoud(this.lineNo, ": consequent contains invalid tuple(s)");
+        return tupleStore.sayItLoud(this.lineNo, ": consequent contains invalid tuple(s)");
     rule.setConsequent(cons);
     // rule name, ante, and cons proper, so check for special LHS/RHS variables
     return handleSpecialVariables(rule);
@@ -464,8 +371,8 @@ public final class RuleStore {
         }
       }
     }
-    if ((positions.size() > 1) && this.verbose)
-      logger.debug("  " + rule.name + ": more than 1 LHS cluster found");
+    if ((positions.size() > 1))
+      logger.debug("{}: more than 1 LHS cluster found", rule.name);
     // record the position info so that it can be used at run time
     computeClusters(positions, variables, rule);
   }
@@ -484,8 +391,8 @@ public final class RuleStore {
                                Rule rule) {
     Cluster[] result = new Cluster[positions.size()];
     Cluster cluster;
-    ArrayList<Integer> varvarIneqs;
-    ArrayList<Integer> varconstIneqs;
+    //ArrayList<Integer> varvarIneqs;
+    //ArrayList<Integer> varconstIneqs;
     Integer left, right;
     Iterator<Integer> it;
     ArrayList<Integer> remainingIneqs = new ArrayList<Integer>(rule.inEqConstraints);
@@ -616,7 +523,7 @@ public final class RuleStore {
       val = rule.inEqConstraints.get(i);
       if (RuleStore.isVariable(val)) {
         if (!lhsVars.contains(val))
-          return sayItLoud(rule.name, ": in-eq variable does not refer to LHS");
+          return tupleStore.sayItLoud(rule.name + ": in-eq variable does not refer to LHS");
         noOfOcc.put(val, noOfOcc.get(val) + 1);
       }
     }
@@ -647,13 +554,13 @@ public final class RuleStore {
       // binder var must be a RHS var
       val = function.result;
       if (!rhsVars.contains(val) || lhsVars.contains(val))
-        return sayItLoud(rule.name, ": binder variable in action does not refer to RHS");
+        return tupleStore.sayItLoud(rule.name + ": binder variable in action does not refer to RHS");
       noOfOcc.put(val, noOfOcc.get(val) + 1);
       for (int i = 0; i < function.args.length; i++) {
         val = function.args[i];
         if (RuleStore.isVariable(val)) {
           if (!lhsVars.contains(val))
-            return sayItLoud(rule.name, ": argument variable in action does not refer to LHS");
+            return tupleStore.sayItLoud(rule.name + ": argument variable in action does not refer to LHS");
           noOfOcc.put(val, noOfOcc.get(val) + 1);
           // furthermore, do add function argument variables to RHS vars, since they are
           // needed to compute the function result; otherwise, they will be projected
@@ -674,12 +581,12 @@ public final class RuleStore {
         // only single occurences count
         rule.dontCareVariables.add(i);
     }
-    if ((rule.dontCareVariables.size() > 0) && this.verbose)
-      logger.debug("  " + rule.name + ": " +
-              rule.dontCareVariables.size() + " don't care variables");
+    if ((rule.dontCareVariables.size() > 0))
+      logger.debug("{}: {}  don't care variables",
+          rule.name, rule.dontCareVariables.size());
     rhsVars.removeAll(lhsVars2);
-    if ((rhsVars.size() > 0) && this.verbose)
-      logger.debug("  " + rule.name + ": " + rhsVars.size() + " blank node vars");
+    if ((rhsVars.size() > 0))
+      logger.debug("{}: {}  blank node vars", rule.name, rhsVars.size());
     rule.blankNodeVariables = rhsVars;
     // make sure that rule.rhsVariables does NOT contain any (RHS) blank node variables
     rule.rhsVariables.removeAll(rule.blankNodeVariables);
@@ -690,52 +597,13 @@ public final class RuleStore {
   }
 
   /**
-   * checks whether a tuple of proper length as specified by this.minNoOfArgs
-   * and this.maxNoOfArgs;
-   * <p>
-   * also checks whether the arguments of a _rule_ tuple are of the right "kind":
-   * arg 1: URI or variable
-   * arg 2: URI or variable
-   * arg 3, 4, ... : URI, variable, or XSD atom
-   * NOTE: no blank nodes are allowed in rule tuples (contrary to ground tuples)
-   * <p>
-   * finally check whether in case of a XSD atom, the atom is compatible
-   * with the specified XSD type
-   * ***** NOT IMPLEMENTED YET *****
-   * <p>
-   * depending on this.verbose and this.exitOnError, the method is silent,
-   * outputs a warning, or exit the process
-   *
-   * @see de.dfki.lt.hfc.TupleStore#isValidTuple
-   */
-  public boolean isValidTuple(ArrayList<String> stringTuple) {
-    // check against min length
-    if (stringTuple.size() < this.minNoOfArgs)
-      return sayItLoud(this.lineNo, ": tuple too short");
-    // check against max length
-    if (stringTuple.size() > this.maxNoOfArgs)
-      return sayItLoud(this.lineNo, ": tuple too long");
-    // note: blank nodes (if any) will NOT show up here and are filtered out beforehand
-    // is tuple RDF compliant
-    if (rdfCheck) {
-      // check for valid first arg: either URI or variable, but not an atom
-      if ((stringTuple.size() > 0) && TupleStore.isAtom(stringTuple.get(0)))
-        return sayItLoud(this.lineNo, ": first arg must be an URI or variable");
-      // check for valid second arg: either URI or variable, but not an atom
-      if ((stringTuple.size() > 1) && TupleStore.isAtom(stringTuple.get(0)))
-        return sayItLoud(this.lineNo, ": second arg must be an URI or variable");
-    }
-    return true;
-  }
-
-  /**
    * generates a tuple from a textual tokenized representation;
    * checks for various potential errors and translates the external
    * into an internal representation
    */
   protected int[] makeTuple(ArrayList<String> tuple) {
     // check whether external representation is valid for a rule tuple
-    if (!isValidTuple(tuple))
+    if (! tupleStore.isValidRuleTuple(tuple, lineNo))
       // if not, return null to indicate this
       return null;
     else
@@ -764,11 +632,10 @@ public final class RuleStore {
         }
       } else {
         // URIs and XSD atoms must be treated globally
-        if (this.verbose) {
-          // check whether URI or atom occurs in initial fact base
-          if (!this.tupleStore.isConstant(arg))
-            logger.debug("  " + this.lineNo + ": " + arg + " not in initial fact base");
-        }
+        // check whether URI or atom occurs in initial fact base
+        if (!this.tupleStore.isConstant(arg))
+          logger.debug("  " + this.lineNo + ": " + arg + " not in initial fact base");
+        
         id = this.tupleStore.putObject(arg);
         intTuple[i] = id;
       }
@@ -828,27 +695,26 @@ public final class RuleStore {
     StringTokenizer st = new StringTokenizer(line);
     // ineq constraint should consist of three tokens
     if (st.countTokens() != 3)
-      return sayItLoud(rule.name, ": incorrect ineq constraint (less/more than 3 tokens)");
+      return tupleStore.sayItLoud(rule.name + ": incorrect ineq constraint (less/more than 3 tokens)");
     // check whether ineq vars have all been mentioned in the ante/cons of the rule
     String token = st.nextToken();
     if (this.varToId.containsKey(token))
       rule.inEqConstraints.add(this.varToId.get(token));
     else
-      return sayItLoud(rule.name, ": incorrect ineq constraint (left-side variable does not appear on the LHS of the rule)");
+      return tupleStore.sayItLoud(rule.name + ": incorrect ineq constraint (left-side variable does not appear on the LHS of the rule)");
     st.nextToken();  // skip "!="
     token = st.nextToken();
     if (RuleStore.isVariable(token)) {
       if (this.varToId.containsKey(token))
         rule.inEqConstraints.add(this.varToId.get(token));
       else
-        return sayItLoud(rule.name, ": incorrect ineq constraint (right-side variable does not appear on the LHS of the rule)");
+        return tupleStore.sayItLoud(rule.name + ": incorrect ineq constraint (right-side variable does not appear on the LHS of the rule)");
     } else {
       token = parseUriOrAtom(token);
       if (token == null)
-        return sayItLoud(rule.name, ": incorrect ineq constraint (right-side value is neither a variable, a URI, nor an XSD atom");
+        return tupleStore.sayItLoud(rule.name +": incorrect ineq constraint (right-side value is neither a variable, a URI, nor an XSD atom");
       if (!this.tupleStore.isConstant(token))
-        if (this.verbose)
-          logger.debug("  " + this.lineNo + ": " + token + " not in initial fact base");
+        logger.debug("{}: {} not in initial fact base ", this.lineNo, token);
         int id = this.tupleStore.putObject(token);
         rule.inEqConstraints.add(id);
     }
@@ -893,7 +759,7 @@ public final class RuleStore {
         varids.add(this.varToId.get(prefix));
         moreThanZero = true;
       } else
-        return sayItLoud(rulename, ": incorrect predicate call (unknown LHS variable name in complex relational variable)");
+        return tupleStore.sayItLoud(rulename+ ": incorrect predicate call (unknown LHS variable name in complex relational variable)");
     }
     // now move over the rest of the complex var pattern
     while (st.hasMoreTokens()) {
@@ -910,14 +776,14 @@ public final class RuleStore {
         varids.add(this.varToId.get(token));
         moreThanZero = true;
       } else
-        return sayItLoud(rulename, ": incorrect predicate call (unknown LHS variable name in complex relational variable)");
+        return tupleStore.sayItLoud(rulename + ": incorrect predicate call (unknown LHS variable name in complex relational variable)");
     }
     if (!isClosed)
-      return sayItLoud(rulename, ": incorrect predicate call (complex relational variable is not a closed expression)");
+      return tupleStore.sayItLoud(rulename + ": incorrect predicate call (complex relational variable is not a closed expression)");
     if (!moreThanZero)
-      return sayItLoud(rulename, ": incorrect predicate call (complex relational variable is empty)");
+      return tupleStore.sayItLoud(rulename + ": incorrect predicate call (complex relational variable is empty)");
     if (varids.size() > 9)
-      return sayItLoud(rulename, ": incorrect predicate call (complex relational variable consists of too many names)");
+      return tupleStore.sayItLoud(rulename + ": incorrect predicate call (complex relational variable consists of too many names)");
     // syntactically and semantically well-formed complex relational variable; now construct new proxy name & proxy ID
     String proxy = "??proxy";
     int proxyid = RuleStore.RELVAR_OFFSET;  // note: offset and var ids are _negative_ numbers
@@ -982,13 +848,13 @@ public final class RuleStore {
               this.proxyIdToFunctionalIds.put(this.relationalVarToId.get(token), singleton);
               args.add(this.relationalVarToId.get(token));
             } else
-              return sayItLoud(rule.name, ": incorrect predicate call (relational variable has no corresponding LHS functional variable)");
+              return tupleStore.sayItLoud(rule.name + ": incorrect predicate call (relational variable has no corresponding LHS functional variable)");
           }
         } else {
           if (this.varToId.containsKey(token))
             args.add(this.varToId.get(token));
           else
-            return sayItLoud(rule.name, ": incorrect predicate call (unknown LHS variable)");
+            return tupleStore.sayItLoud(rule.name + ": incorrect predicate call (unknown LHS variable)");
         }
       } else {
         if (token.equals("*")) {
@@ -996,11 +862,9 @@ public final class RuleStore {
         } else {
           token = parseUriOrAtom(token);
           if (token == null)
-            return sayItLoud(rule.name, ": incorrect predicate call (argument is neither a LHS variable, nor a URI or XSD atom)");
+            return tupleStore.sayItLoud(rule.name + ": incorrect predicate call (argument is neither a LHS variable, nor a URI or XSD atom)");
           if (!this.tupleStore.isConstant(token))
-
-            if (this.verbose)
-              logger.debug("  " + this.lineNo + ": " + token + " not in initial fact base");
+            logger.debug("{}: {} not in initial fact base", this.lineNo, token);
             int id = this.tupleStore.putObject(token);
             args.add(id);
 
@@ -1014,7 +878,7 @@ public final class RuleStore {
         ++relOnlyCount;
     if (relOnlyCount > 0)
       if (relOnlyCount != args.size())
-        return sayItLoud(rule.name, ": incorrect predicate call (mixture of relational variables and other arguments)");
+        return tupleStore.sayItLoud(rule.name + ": incorrect predicate call (mixture of relational variables and other arguments)");
     // at last add representation of predicate to the rule's tests & add the predicate prefix path here;
     // note that we need to keep the relation var ID to functional var ID in each predicate object;
     // this mapping can be allocated in the rule object -- no need to store it individually for each predicate
@@ -1050,7 +914,7 @@ public final class RuleStore {
     int result;
     String name, token;
     ArrayList<Integer> args;
-    Function function;
+    //Function function;
     for (String action : actions) {
       st = new StringTokenizer(action);
       token = st.nextToken();
@@ -1060,13 +924,13 @@ public final class RuleStore {
         if (this.varToId.containsKey(token))
           result = this.varToId.get(token);
         else
-          return sayItLoud(rule.name, ": incorrect action (unknown RHS binder variable "+ token +")");
+          return tupleStore.sayItLoud(rule.name + ": incorrect action (unknown RHS binder variable "+ token +")");
       } else {
-        return sayItLoud(rule.name, ": incorrect action (no RHS binder variable)");
+        return tupleStore.sayItLoud(rule.name + ": incorrect action (no RHS binder variable)");
       }
       // next token must be '='
       if (!st.nextToken().equals("="))
-        return sayItLoud(rule.name, ": incorrect action (missing '=' sign)");
+        return tupleStore.sayItLoud(rule.name + ": incorrect action (missing '=' sign)");
       // next token is assumed to be the function name (= name of a Java class; no syntax checking)
       name = st.nextToken();
       // finally zero or more args, either variables, URIs, or XSD atoms
@@ -1076,17 +940,15 @@ public final class RuleStore {
           if (this.varToId.containsKey(token))
             args.add(this.varToId.get(token));
           else
-            return sayItLoud(rule.name, ": incorrect action (unknown argument variable)");
+            return tupleStore.sayItLoud(rule.name + ": incorrect action (unknown argument variable)");
         } else {
           token = parseUriOrAtom(token);
           if (token == null)
-            return sayItLoud(rule.name, ": incorrect action (argument is neither a variable, nor a URI or XSD atom)");
+            return tupleStore.sayItLoud(rule.name +": incorrect action (argument is neither a variable, nor a URI or XSD atom)");
           if (!this.tupleStore.isConstant(token))
-            if (this.verbose)
-              logger.debug("  " + this.lineNo + ": " + token + " not in initial fact base");
+            logger.debug("{}: {} not in initial fact base", this.lineNo, token);
             int id = this.tupleStore.putObject(token);
             args.add(id);
-
         }
       }
       // store function representation inside the rule object
@@ -1102,7 +964,7 @@ public final class RuleStore {
   private boolean checkRuleSeparator(Rule rule, boolean anteOK) {
     if (rule != null)
       if (!anteOK) {
-        sayItLoud(rule.name, ": LHS/RHS rule separator is missing");
+        tupleStore.sayItLoud(rule.name + ": LHS/RHS rule separator is missing");
       }
     return anteOK;
   }
@@ -1227,11 +1089,6 @@ public final class RuleStore {
     }
   }
 
-  protected ArrayList<Rule> readRules(String filename) throws IOException {
-    logger.debug("reading rules from {} ...",filename);
-    return readRules(config.readerFromString(filename));
-  }
-
   /**
    * some of the checks that are performed during a rule file is read in:
    * + check that antecedent and consequent consist of at least one tuple
@@ -1270,8 +1127,7 @@ public final class RuleStore {
         isNew = true;
         // check whether a rule of this _name_ already exists
         if (this.allRuleNames.contains(line)) {
-          if (this.verbose)
-            logger.debug("  rule with name " + line + " already exists; skipping definition ...");
+          logger.debug("rule with same name on line {} already exists; skipping definition ...", line);
           isNew = false;
         } else
           this.allRuleNames.add(line);
@@ -1295,7 +1151,7 @@ public final class RuleStore {
           rule.priority = Integer.parseInt(st.nextToken());
           continue;
         } else {
-          sayItLoud(this.lineNo, ": incorrect priority description");
+          tupleStore.sayItLoud(this.lineNo, ": incorrect priority description");
           break;
         }
       }
@@ -1356,12 +1212,12 @@ public final class RuleStore {
         else if (token.equals("<"))
           this.tupleStore.parseURI(st, tuple);
         else if (token.equals("\""))
-          this.tupleStore.parseAtom(st, tuple);
+          this.tupleStore.parseAtom(st, tuple); 
         else if (token.equals(" "))  // keep on parsing ...
           continue;
           // something has gone wrong during reading of ante/cons tuple
         else {
-          eol = sayItLoud(this.lineNo, ": tuple misspelled " + line);
+          eol = tupleStore.sayItLoud(this.lineNo, ": tuple misspelled " + line);
           break;
         }
       }
@@ -1375,15 +1231,13 @@ public final class RuleStore {
             if (parseLhs) {
               // generate a test and add it to list of tests
               generateTest(tuple, ituple[this.tupleStore.predicatePosition], tests, rule.name);
-              if (this.verbose)
-                logger.debug("  " + rule.name + ": equivalence reduction enforces new LHS test");
+              logger.debug("  " + rule.name + ": equivalence reduction enforces new LHS test");
             } else {
               // generate a binder var and an action;
               // then add reflexive triple (?var eqrel ?var) to the consequent of the rule
               String varname = generateNewVariableName();
               generateAction(varname, tuple, ituple[this.tupleStore.predicatePosition], actions, rule.name);
-              if (this.verbose)
-                logger.debug("  " + rule.name + ": equivalence reduction enforces new RHS action");
+              logger.debug("  " + rule.name + ": equivalence reduction enforces new RHS action");
               final ArrayList<String> eqTuple = new ArrayList<String>();
               // I assume the following tuple representation: EITHER [front] s p o [back+] OR [front] p s o [back+]
               if (this.tupleStore.objectPosition != 2)
@@ -1430,11 +1284,11 @@ public final class RuleStore {
       }
     }
 
-    if (this.verbose) {
-      logger.debug("\n  read " + noOfRules + " proper rules");
-      logger.debug("  found " + this.allRules.size() + " unique rules");
-    }
-    sortRules();  // sort rule list according to priority value
+    logger.debug("read {} proper rules", noOfRules);
+    logger.debug("found {} unique rules", this.allRules.size());
+    
+    // sort rule list according to priority value
+    Collections.sort(this.allRules, this.ruleComparator);
     return this.allRules;
   }
 
@@ -1507,21 +1361,11 @@ public final class RuleStore {
   }
 
   /**
-   * applies Collections.sort() to the set of all rules, destructively sorting
-   * this.allRules, using the instance this.ruleComparator from this rule store
-   * sortRules() is a public method, so that it can be applied even at runtime
-   */
-  public void sortRules() {
-    Collections.sort(this.allRules, this.ruleComparator);
-  }
-
-  /**
    * a simple version that writes all rules from the rule store to a file using
    * the external representation
    */
   public void writeRules(String filename) {
-    if (this.verbose)
-      logger.debug("  writing rules to " + filename + " ...");
+    logger.debug("writing rules to {} ...", filename);
     try {
       PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(filename)));
       for (Rule rule : this.allRules) {
@@ -1530,7 +1374,7 @@ public final class RuleStore {
       pw.flush();
       pw.close();
     } catch (IOException e) {
-      logger.error("Error while writing rules to " + filename);
+      logger.error("Error while writing rules to {}", filename);
       throw new RuntimeException("FATAL ERROR");
     }
   }
@@ -1541,13 +1385,8 @@ public final class RuleStore {
    *
    * @see de.dfki.lt.hfc.ForwardChainer.copyForwardChainer()
    */
-  public RuleStore copyRuleStore(TupleStore tupleStore) {
-    RuleStore copy = new RuleStore(tupleStore);
-    copy.minNoOfArgs = this.minNoOfArgs;
-    copy.maxNoOfArgs = this.maxNoOfArgs;
-    copy.verbose = this.verbose;
-    copy.rdfCheck = this.rdfCheck;
-    copy.exitOnError = this.exitOnError;
+  public RuleStore copyRuleStore(TupleStore store) {
+    RuleStore copy = new RuleStore(store);
     // copy this.equivalentClauses: keys can be taken over, but the values needed to be nearly deep copied
     copy.equivalentClauses = new TCustomHashMap<int[], Proxy>(TupleStore.DEFAULT_HASHING_STRATEGY, this.equivalentClauses);
     for (int[] key : copy.equivalentClauses.keySet()) {
@@ -1558,7 +1397,7 @@ public final class RuleStore {
     copy.allRules = new ArrayList<Rule>(this.allRules);
     for (int i = 0; i < copy.allRules.size(); i++) {
       // use special Rule copy constructor
-      copy.allRules.set(i, new Rule(this.allRules.get(i), tupleStore, copy));
+      copy.allRules.set(i, new Rule(this.allRules.get(i), store, copy));
     }
     // finished!
     return copy;

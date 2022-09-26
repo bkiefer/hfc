@@ -17,7 +17,7 @@ namespaces:
   hfc: http://www.dfki.de/lt/hfc.owl#
 
 tupleFiles:
-  - ./src/test/data/IsNotSubtypeOf/isnotsubtypeof.nt
+  - isnotsubtypeof.nt
 
 minArgs: 3
 maxArgs: 5
@@ -29,7 +29,7 @@ rdfCheck: true
 exitOnError: true
 
 ruleFiles:
-  - ./src/test/data/IsNotSubtypeOf/isnotsubtypeof.rdl
+  - isnotsubtypeof.rdl
 
 
 iterations: 2147483647

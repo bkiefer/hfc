@@ -57,9 +57,9 @@ class Table {
     this.nameToPos = new HashMap<Integer, ArrayList<Integer>>();
     this.nameToPosProper = new TreeMap<Integer, Integer>();
     this.posToName = new HashMap<Integer, Integer>();
-    this.proxy = new Proxy(new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY),
-            new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY),
-            new TCustomHashSet<int[]>(TupleStore.DEFAULT_HASHING_STRATEGY),
+    this.proxy = new Proxy(new TCustomHashSet<int[]>(TupleIntStore.DEFAULT_HASHING_STRATEGY),
+            new TCustomHashSet<int[]>(TupleIntStore.DEFAULT_HASHING_STRATEGY),
+            new TCustomHashSet<int[]>(TupleIntStore.DEFAULT_HASHING_STRATEGY),
             null, null, null, null);
   }
 

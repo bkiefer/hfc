@@ -1,7 +1,6 @@
 package de.dfki.lt.hfc.operators;
 
-import static de.dfki.lt.hfc.TestingUtils.getOperatorTestStore;
-import static de.dfki.lt.hfc.TestingUtils.reverse;
+import static de.dfki.lt.hfc.TestingUtils.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -11,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.dfki.lt.hfc.FunctionalOperator;
+import de.dfki.lt.hfc.TupleStore;
 import de.dfki.lt.hfc.TupleStore;
 import de.dfki.lt.hfc.WrongFormatException;
 import de.dfki.lt.hfc.types.XsdLong;
@@ -219,10 +219,10 @@ public final class LongTest {
     // store values in TupleStore, save integer-key in database
     int[] longs = new int[4];
 
-    longs[0] = store.putObject((new XsdLong(2)).toString());
-    longs[1] = store.putObject((new XsdLong(3)).toString());
-    longs[2] = store.putObject((new XsdLong(4)).toString());
-    longs[3] = store.putObject((new XsdLong(5)).toString());
+    longs[0] = store.putObject((new XsdLong(2)));
+    longs[1] = store.putObject((new XsdLong(3)));
+    longs[2] = store.putObject((new XsdLong(4)));
+    longs[3] = store.putObject((new XsdLong(5)));
 
     // do operation
     assertEquals(FunctionalOperator.FALSE,

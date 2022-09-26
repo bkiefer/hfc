@@ -10,3 +10,5 @@
 <pal:labval33> <dom:weight> "28.6"^^<xsd:kg> "5577"^^<xsd:long> .
 <pal:labval33> <dom:bsl> "9.2"^^<xsd:mmol_L> "5577"^^<xsd:long> .
 <pal:labval33> <dom:bsl> "165.6"^^<xsd:mg_dL> "5577"^^<xsd:long> .
+<dom:labval22> <owl:sameAs> <pal:labval22> .
+<dom:labval33> <owl:sameAs> <pal:labval33> .

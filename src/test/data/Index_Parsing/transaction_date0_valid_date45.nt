@@ -30,8 +30,8 @@
 "0000-00-00"^^<xsd:date> <owl:Nothing> <rdfs:subClassOf> <owl:Thing> "0000-00-01"^^<xsd:date> "0000-00-02"^^<xsd:date> .
 "0000-00-00"^^<xsd:date> <owl:Thing> <owl:disjointWith> <owl:Nothing> "0000-00-01"^^<xsd:date> "0000-00-02"^^<xsd:date> .
 # I have added the below triples
-"0000-00-00"^^<xsd:date> <nary:Thing+> <rdf:type> <nary:Class> "0000-00-01"^^<xsd:date> "0000-00-02"^^<xsd:date> .
-"0000-00-00"^^<xsd:date> <nary:Nothing+> <rdf:type> <nary:Class> "0000-00-01"^^<xsd:date> "0000-00-02"^^<xsd:date> .
+"0000-00-00"^^<xsd:date> <nary:Thing+> <rdf:type> <owl:Class> "0000-00-01"^^<xsd:date> "0000-00-02"^^<xsd:date> .
+"0000-00-00"^^<xsd:date> <nary:Nothing+> <rdf:type> <owl:Class> "0000-00-01"^^<xsd:date> "0000-00-02"^^<xsd:date> .
 "0000-00-00"^^<xsd:date> <nary:Thing+> <owl:disjointWith> <nary:Nothing+> "0000-00-01"^^<xsd:date> "0000-00-02"^^<xsd:date> .
 "0000-00-00"^^<xsd:date> <nary:Nothing+> <rdfs:subClassOf> <nary:Thing+> "0000-00-01"^^<xsd:date> "0000-00-02"^^<xsd:date> .
 "0000-00-00"^^<xsd:date> <owl:Thing> <rdfs:subClassOf> <nary:Thing+> "0000-00-01"^^<xsd:date> "0000-00-02"^^<xsd:date> .

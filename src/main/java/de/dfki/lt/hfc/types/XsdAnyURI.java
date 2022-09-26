@@ -20,8 +20,8 @@ import java.util.Objects;
 public final class XsdAnyURI extends XsdAnySimpleType {
 
   public final static String NAME = "anyURI";
-  public final static String SHORT_NAME = '<' + NS.SHORT_NAMESPACE + ":" + NAME + '>';
-  public final static String LONG_NAME = '<' + NS.LONG_NAMESPACE + NAME + '>';
+  public final static String SHORT_NAME = '<' + NS.getShort() + ":" + NAME + '>';
+  public final static String LONG_NAME = '<' + NS.getLong() + NAME + '>';
   /**
    * A basic LOGGER.
    */

@@ -54,7 +54,7 @@ public class TestRemoveSupers {
 
   @Test
   public void test1() throws QueryParseException {
-    Query q = new Query(fc._tupleStore);
+    Query q = fc.getQuery();
     String[][] expected = {
         { "<dafn:AcceptOffer>" },
         { "<dafn:DeclineOffer>" }
@@ -67,7 +67,7 @@ public class TestRemoveSupers {
 
   @Test
   public void test2() throws QueryParseException {
-    Query q = new Query(fc._tupleStore);
+    Query q = fc.getQuery();
     String[][] expected = {
         { "<dafn:Agreement>" },
         { "<dafn:Confirm>" },
@@ -82,7 +82,7 @@ public class TestRemoveSupers {
 
   @Test
   public void test3() throws QueryParseException {
-    Query q = new Query(fc._tupleStore);
+    Query q = fc.getQuery();
     String[][] expected = {
         { "<dafn:Agreement>" },
     };

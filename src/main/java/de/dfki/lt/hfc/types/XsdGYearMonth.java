@@ -15,8 +15,8 @@ import java.util.Objects;
 public final class XsdGYearMonth extends XsdAnySimpleType {
   public final static String NAME = "gYearMonth";
 
-  public final static String SHORT_NAME = '<' + NS.SHORT_NAMESPACE + ":" + NAME + '>';
-  public final static String LONG_NAME = '<' + NS.LONG_NAMESPACE + NAME + '>';
+  public final static String SHORT_NAME = '<' + NS.getShort() + ":" + NAME + '>';
+  public final static String LONG_NAME = '<' + NS.getLong() + NAME + '>';
 
   static {
     registerConstructor(XsdGYearMonth.class,

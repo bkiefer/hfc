@@ -13,8 +13,8 @@ public final class Xsd1_min extends XsdAnySimpleType {
 
   public final static String NAME = "min-1";
 
-  public final static String SHORT_NAME = '<' + NS.SHORT_NAMESPACE + ":" + NAME + '>';
-  public final static String LONG_NAME = '<' + NS.LONG_NAMESPACE + NAME + '>';
+  public final static String SHORT_NAME = '<' + NS.getShort() + ":" + NAME + '>';
+  public final static String LONG_NAME = '<' + NS.getLong() + NAME + '>';
 
   static {
     registerConstructor(Xsd1_min.class, SHORT_NAME, LONG_NAME);

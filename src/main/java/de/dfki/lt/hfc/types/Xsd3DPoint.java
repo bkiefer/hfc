@@ -17,8 +17,8 @@ public class Xsd3DPoint extends XsdPoint {
 
   public final static String NAME = "3DPoint";
 
-  public final static String SHORT_NAME = '<' + NS.SHORT_NAMESPACE + ":" + NAME + '>';
-  public final static String LONG_NAME = '<' + NS.LONG_NAMESPACE + NAME + '>';
+  public final static String SHORT_NAME = '<' + NS.getShort() + ":" + NAME + '>';
+  public final static String LONG_NAME = '<' + NS.getLong() + NAME + '>';
 
   static {
     registerConstructor(Xsd3DPoint.class, SHORT_NAME, LONG_NAME);

@@ -32,8 +32,8 @@ public class DateTimeTest {
 
     // store values in TupleStore, save integer-key in database
     int[] args = new int[5];
-    args[0] = store.putObject((new XsdDateTime(2, 0, 0, 0, 0, 0)).toString());
-    args[1] = store.putObject((new XsdDateTime(4, 0, 0, 0, 0, 0)).toString());
+    args[0] = store.putObject((new XsdDateTime(2, 0, 0, 0, 0, 0)));
+    args[1] = store.putObject((new XsdDateTime(4, 0, 0, 0, 0, 0)));
 
     // do operation
     assertEquals("0001-12-30T23:59:59.0",
@@ -51,8 +51,8 @@ public class DateTimeTest {
 
     // store values in TupleStore, save integer-key in database
     int[] args = new int[5];
-    args[0] = store.putObject((new XsdDateTime(2, 0, 0, 0, 0, 0)).toString());
-    args[1] = store.putObject((new XsdDateTime(4, 0, 0, 0, 0, 0)).toString());
+    args[0] = store.putObject((new XsdDateTime(2, 0, 0, 0, 0, 0)));
+    args[1] = store.putObject((new XsdDateTime(4, 0, 0, 0, 0, 0)));
 
     // do operation
     assertEquals("0002-00-00T00:00:01.0", FunctionalOperator.FALSE,
@@ -74,8 +74,8 @@ public class DateTimeTest {
 
     // store values in TupleStore, save integer-key in database
     int[] args = new int[5];
-    args[0] = store.putObject((new XsdDateTime(2, 0, 0, 0, 0, 0)).toString());
-    args[1] = store.putObject((new XsdDateTime(4, 0, 0, 0, 0, 0)).toString());
+    args[0] = store.putObject((new XsdDateTime(2, 0, 0, 0, 0, 0)));
+    args[1] = store.putObject((new XsdDateTime(4, 0, 0, 0, 0, 0)));
 
     // do operation
     assertEquals("0002-00-00T00:00:01.0", FunctionalOperator.FALSE,
@@ -97,8 +97,8 @@ public class DateTimeTest {
 
     // store values in TupleStore, save integer-key in database
     int[] args = new int[5];
-    args[0] = store.putObject((new XsdDateTime(2, 0, 0, 0, 0, 0)).toString());
-    args[1] = store.putObject((new XsdDateTime(4, 0, 0, 0, 0, 0)).toString());
+    args[0] = store.putObject((new XsdDateTime(2, 0, 0, 0, 0, 0)));
+    args[1] = store.putObject((new XsdDateTime(4, 0, 0, 0, 0, 0)));
 
     // do operation
     assertEquals("0002-00-00T00:00:01.0",
@@ -117,14 +117,10 @@ public class DateTimeTest {
     // store values in TupleStore, save integer-key in database
     int[] dates = new int[4];
 
-    dates[0] = store
-        .putObject((new XsdDateTime(2000, 8, 19, 22, 19, 33.123f)).toString());
-    dates[1] = store
-        .putObject((new XsdDateTime(2001, 8, 19, 22, 19, 33.123f)).toString());
-    dates[2] = store
-        .putObject((new XsdDateTime(2002, 8, 19, 22, 19, 33.123f)).toString());
-    dates[3] = store
-        .putObject((new XsdDateTime(2003, 8, 19, 22, 19, 33.123f)).toString());
+    dates[0] = store.putObject((new XsdDateTime(2000, 8, 19, 22, 19, 33.123f)));
+    dates[1] = store.putObject((new XsdDateTime(2001, 8, 19, 22, 19, 33.123f)));
+    dates[2] = store.putObject((new XsdDateTime(2002, 8, 19, 22, 19, 33.123f)));
+    dates[3] = store.putObject((new XsdDateTime(2003, 8, 19, 22, 19, 33.123f)));
 
     // do operation
     assertEquals(FunctionalOperator.FALSE,
@@ -151,15 +147,11 @@ public class DateTimeTest {
 
     dates[0] = gdt.apply(temp);
     // diffs in ms
-    dates[1] = store
-        .putObject((new XsdDateTime(2016, 8, 19, 22, 19, 33.123f)).toString());
-    dates[2] = store
-        .putObject((new XsdDateTime(2016, 8, 19, 22, 19, 33.122f)).toString());
+    dates[1] = store.putObject((new XsdDateTime(2016, 8, 19, 22, 19, 33.123f)));
+    dates[2] = store.putObject((new XsdDateTime(2016, 8, 19, 22, 19, 33.122f)));
     // identical
-    dates[3] = store
-        .putObject((new XsdDateTime(2048, 8, 19, 22, 19, 33.123f)).toString());
-    dates[4] = store
-        .putObject((new XsdDateTime(2048, 8, 19, 22, 19, 33.123f)).toString());
+    dates[3] = store.putObject((new XsdDateTime(2048, 8, 19, 22, 19, 33.123f)));
+    dates[4] = store.putObject((new XsdDateTime(2048, 8, 19, 22, 19, 33.123f)));
 
     // do operation
     assertEquals(FunctionalOperator.FALSE,
@@ -199,15 +191,11 @@ public class DateTimeTest {
 
     dates[0] = gdt.apply(temp);
     // diffs in ms
-    dates[1] = store
-        .putObject((new XsdDateTime(2016, 8, 19, 22, 19, 33.123f)).toString());
-    dates[2] = store
-        .putObject((new XsdDateTime(2016, 8, 19, 22, 19, 33.122f)).toString());
+    dates[1] = store.putObject((new XsdDateTime(2016, 8, 19, 22, 19, 33.123f)));
+    dates[2] = store.putObject((new XsdDateTime(2016, 8, 19, 22, 19, 33.122f)));
     // identical
-    dates[3] = store
-        .putObject((new XsdDateTime(2048, 8, 19, 22, 19, 33.123f)).toString());
-    dates[4] = store
-        .putObject((new XsdDateTime(2048, 8, 19, 22, 19, 33.123f)).toString());
+    dates[3] = store.putObject((new XsdDateTime(2048, 8, 19, 22, 19, 33.123f)));
+    dates[4] = store.putObject((new XsdDateTime(2048, 8, 19, 22, 19, 33.123f)));
 
     // do operation
     assertEquals(FunctionalOperator.FALSE,
@@ -247,15 +235,11 @@ public class DateTimeTest {
 
     dates[0] = gdt.apply(temp);
     // diffs in ms
-    dates[1] = store
-        .putObject((new XsdDateTime(2016, 8, 19, 22, 19, 33.123f)).toString());
-    dates[2] = store
-        .putObject((new XsdDateTime(2016, 8, 19, 22, 19, 33.122f)).toString());
+    dates[1] = store.putObject((new XsdDateTime(2016, 8, 19, 22, 19, 33.123f)));
+    dates[2] = store.putObject((new XsdDateTime(2016, 8, 19, 22, 19, 33.122f)));
     // identical
-    dates[3] = store
-        .putObject((new XsdDateTime(2048, 8, 19, 22, 19, 33.123f)).toString());
-    dates[4] = store
-        .putObject((new XsdDateTime(2048, 8, 19, 22, 19, 33.123f)).toString());
+    dates[3] = store.putObject((new XsdDateTime(2048, 8, 19, 22, 19, 33.123f)));
+    dates[4] = store.putObject((new XsdDateTime(2048, 8, 19, 22, 19, 33.123f)));
 
     // do operation
     assertEquals(dates[0], fop.apply(new int[] { dates[0], dates[1] }));
@@ -283,15 +267,11 @@ public class DateTimeTest {
 
     dates[0] = gdt.apply(temp);
     // diffs in ms
-    dates[1] = store
-        .putObject((new XsdDateTime(2016, 8, 19, 22, 19, 33.123f)).toString());
-    dates[2] = store
-        .putObject((new XsdDateTime(2016, 8, 19, 22, 19, 33.122f)).toString());
+    dates[1] = store.putObject((new XsdDateTime(2016, 8, 19, 22, 19, 33.123f)));
+    dates[2] = store.putObject((new XsdDateTime(2016, 8, 19, 22, 19, 33.122f)));
     // identical
-    dates[3] = store
-        .putObject((new XsdDateTime(2048, 8, 19, 22, 19, 33.123f)).toString());
-    dates[4] = store
-        .putObject((new XsdDateTime(2048, 8, 19, 22, 19, 33.123f)).toString());
+    dates[3] = store.putObject((new XsdDateTime(2048, 8, 19, 22, 19, 33.123f)));
+    dates[4] = store.putObject((new XsdDateTime(2048, 8, 19, 22, 19, 33.123f)));
 
     // do operation
     assertEquals(dates[1], fop.apply(new int[] { dates[0], dates[1] }));

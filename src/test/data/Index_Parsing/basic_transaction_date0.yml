@@ -17,7 +17,7 @@ namespaces:
   nary: http://www.lt-world.org/nary.owl#
 
 tupleFiles:
-  - ./src/test/data/Index_Parsing/basic_transaction_date0.nt
+  - basic_transaction_date0.nt
 
 minArgs: 4
 maxArgs: 4
@@ -29,7 +29,7 @@ rdfCheck: false
 exitOnError: true
 
 ruleFiles:
-  - ./src/test/data/Index_Parsing/transaction0.rdl
+  - transaction0.rdl
 
 Index:
   - Key1: XsdDate

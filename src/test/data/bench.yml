@@ -25,8 +25,8 @@ namespaces:
 
 
 tupleFiles:
-  - ./src/test/data/default.nt
-  - ./src/test/data/ltworld.jena.nt
+  - default.nt
+  - ltworld.jena.nt
 
 minArgs: 3
 maxArgs: 5
@@ -38,6 +38,6 @@ rdfCheck: true
 exitOnError: true
 
 ruleFiles:
-  - ./src/test/data/default.eqred.rdl
+  - default.eqred.rdl
 
 iterations: 2147483647

@@ -1,6 +1,6 @@
 package de.dfki.lt.hfc.types;
 
-import de.dfki.lt.hfc.Namespace;
+import de.dfki.lt.hfc.NamespaceManager.Namespace;
 
 import java.util.Objects;
 
@@ -35,6 +35,7 @@ public class Uri extends AnyType {
   /**
    * NOTE: shortIsDefault can be ignored at the moment
    */
+  @Override
   public String toString() {
     StringBuilder strb = new StringBuilder("<");
     strb.append(ns.toString());
@@ -46,6 +47,7 @@ public class Uri extends AnyType {
   /**
    * omit the surrounding angle brackets
    */
+  @Override
   public String toName() {
     return ns.toString() + this.value;
   }
@@ -53,6 +55,7 @@ public class Uri extends AnyType {
   /**
    * as there is no direct Java counterpart, we return this object
    */
+  @Override
   public Object toJava() {
     return this;
   }
@@ -75,11 +78,13 @@ public class Uri extends AnyType {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     Uri uri = (Uri) o;
-    return Objects.equals(value, uri.value);
+    return ns.equals(uri.ns) && Objects.equals(value, uri.value);
+    //return Objects.equals(value, uri.value);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(value);
+    return Objects.hash(ns, value);
+    //return Objects.hash(value);
   }
 }

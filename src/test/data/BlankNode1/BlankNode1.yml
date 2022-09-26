@@ -16,7 +16,7 @@ namespaces:
   test: http://www.dfki.de/lt/onto/test.owl#
 
 tupleFiles:
-  - ./src/test/data/BlankNode1/blanknode.nt
+  - blanknode.nt
 
 minArgs: 3
 maxArgs: 5
@@ -28,6 +28,6 @@ rdfCheck: true
 exitOnError: true
 
 ruleFiles:
-  - ./src/test/data/BlankNode1/blanknode.rdl
+  - blanknode.rdl
 
 iterations: 2147483647

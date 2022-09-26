@@ -17,7 +17,7 @@ namespaces:
   nary: http://www.lt-world.org/nary.owl#
 
 tupleFiles:
-  - ./src/test/data/Index_Parsing/test_transaction_3Dpoint.nt
+  - test_transaction_3Dpoint.nt
 
 minArgs: 3
 maxArgs: 5
@@ -29,7 +29,7 @@ rdfCheck: false
 exitOnError: true
 
 ruleFiles:
-  - ./src/test/data/Index_Parsing/transaction0.rdl
+  - transaction0.rdl
 
 Index:
   - Key1: Xsd3DPoint

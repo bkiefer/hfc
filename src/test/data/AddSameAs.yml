@@ -19,7 +19,7 @@ namespaces:
 
 
 tupleFiles:
-  - ./src/test/data/default.nt
+  - default.nt
 
 minArgs: 3
 maxArgs: 5
@@ -31,7 +31,7 @@ rdfCheck: false
 exitOnError: true
 
 ruleFiles:
-  - ./src/test/data/default.rdl
+  - default.rdl
 
 
 iterations: 2147483647

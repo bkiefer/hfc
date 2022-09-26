@@ -1,18 +1,27 @@
 package de.dfki.lt.hfc.qrelations;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.StringTokenizer;
+
+import org.slf4j.LoggerFactory;
+
 import de.dfki.lt.hfc.QueryParseException;
 import de.dfki.lt.hfc.TupleStore;
 import de.dfki.lt.hfc.WrongFormatException;
 import de.dfki.lt.hfc.types.XsdAnySimpleType;
-import org.slf4j.LoggerFactory;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
 
 /**
  * @author Christian Willms - Date: 08.09.17 16:40.
  * @version 08.09.17
+ * 
+ * TODO: THIS SHOULD NOT BE A SINGLETON, BUT A FACTORY INSTANCE INSIDE THE
+ * HFC INSTANCE, WHICH BELONGS EXCLUSIVELY TO THAT INSTANCE.
  */
 public class QRelationFactory {
 
@@ -45,11 +54,11 @@ public class QRelationFactory {
    * The String representation of all possible geo spatial relations ( RCC8 relations are implemented)
    */
   private static final Set<String> RCC8_RELATIONS = new HashSet<>(Arrays.asList("DC", "EC", "EQ", "PO", "TPP", "TPPi", "NTPP", "NTPPi"));
-  private static boolean verbose;
   /**
    * The {@link TupleStore} which is active at runtime
    */
   private static TupleStore tupleStore;
+
   /**
    * This counter is used to create new variables, used as a internalized representation of the relation.
    */
@@ -60,11 +69,10 @@ public class QRelationFactory {
     loadRelations();
   }
 
-  public static void initFactory(TupleStore tupleStore) {
-    QRelationAllenUtilities.setTupleStore(tupleStore);
+  public static void initFactory(TupleStore store) {
+    QRelationAllenUtilities.setTupleStore(store);
     counter = 1;
-    QRelationFactory.tupleStore = tupleStore;
-    verbose = tupleStore.verbose;
+    QRelationFactory.tupleStore = store;
   }
 
   private static void loadRelations() {
@@ -81,10 +89,10 @@ public class QRelationFactory {
             "RCC8Equal", // Eq
     };
     for (String relation : relations) {
-      if (verbose)
-        logger.info("Class for name {0}{1}");
       try {
-        Class.forName(RELATION_PATH + relation);
+        @SuppressWarnings("rawtypes")
+        Class c = Class.forName(RELATION_PATH + relation);
+        logger.info("Class for name {}: {}", relation, c);
       } catch (ClassNotFoundException e) {
         // Should never happen
         throw new RuntimeException(e);

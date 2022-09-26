@@ -16,7 +16,7 @@ namespaces:
   test: http://www.dfki.de/lt/onto/test.owl#
 
 tupleFiles:
-  - ./src/test/data/RelationalVariable/relvar.nt
+  - relvar.nt
 
 minArgs: 3
 maxArgs: 3
@@ -29,6 +29,6 @@ rdfCheck: true
 exitOnError: true
 
 ruleFiles:
-  - ./src/test/data/RelationalVariable/relvar.rdl
+  - relvar.rdl
 
 iterations: 2147483647

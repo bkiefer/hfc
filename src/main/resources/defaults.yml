@@ -17,18 +17,15 @@ namespaces:
   hfc: http://www.dfki.de/lt/hfc.owl#
 
 tupleFiles:
-- ./src/resources/default.nt
 
-MinArgs: 3
-MaxArgs: 5
+minArgs: 3
+maxArgs: 5
 subjectPosition: 0
-
 predicatePosition: 1
 objectPosition: 2
 rdfCheck: true
 exitOnError: true
 
 ruleFiles:
-- ./src/resources/default.rdl
 
 iterations: 2147483647
