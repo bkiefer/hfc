@@ -16,7 +16,7 @@ public class ClauseComparatorTest {
   @Test
   public void testconstructor() throws IOException, WrongFormatException {
     //test ClauseComparator(HashSet<Integer> dontCareVariables, TupleStore tupleStore)
-    HashSet<Integer> dontCareVariables = new HashSet();
+    HashSet<Integer> dontCareVariables = new HashSet<>();
     dontCareVariables.add(1);
     dontCareVariables.add(100);
     dontCareVariables.add(100000);
@@ -33,7 +33,7 @@ public class ClauseComparatorTest {
     clause1[0] = -2;
     int[] clause2 = new int[1];
     clause2[0] = 5;
-    HashSet<Integer> dontCareVariables = new HashSet();
+    HashSet<Integer> dontCareVariables = new HashSet<>();;
     dontCareVariables.add(1);
     dontCareVariables.add(2);
     dontCareVariables.add(3);
@@ -43,7 +43,7 @@ public class ClauseComparatorTest {
     assertEquals(990, cc.compare(clause1, clause2));//in this particular case
     assertTrue(cc.compare(clause2, clause1) < 0);
     //to satisfy this.dontCareVariables.contains(id)
-    HashSet<Integer> dontCareVariables1 = new HashSet();
+    HashSet<Integer> dontCareVariables1 = new HashSet<>();
     dontCareVariables1.add(1);
     dontCareVariables1.add(-2);//now it contains the id
     dontCareVariables1.add(3);

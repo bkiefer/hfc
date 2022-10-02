@@ -21,6 +21,7 @@
 
   <build>
     <plugins>
+      <!--
       <plugin>
         <groupId>de.jflex</groupId>
         <artifactId>maven-jflex-plugin</artifactId>
@@ -57,6 +58,23 @@
             <goals>
               <goal>single</goal>
             </goals>
+          </execution>
+        </executions>
+      </plugin>-->
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.1</version>
+        <executions>
+          <execution>
+            <id>makebisonflex</id>
+            <phase>generate-sources</phase>
+            <goals><goal>exec</goal></goals>
+            <configuration>
+              <workingDirectory>${project.build.sourceDirectory}/de/dfki/lt/hfc/io</workingDirectory>
+              <executable>make</executable>
+            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -116,14 +134,14 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-reload4j</artifactId>
       <version>1.7.36</version>
-      <scope>test, runtime</scope>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>
       <groupId>ch.qos.reload4j</groupId>
       <artifactId>reload4j</artifactId>
       <version>1.2.19</version>
-      <scope>test, runtime</scope>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>

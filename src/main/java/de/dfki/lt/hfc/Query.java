@@ -1,13 +1,25 @@
 package de.dfki.lt.hfc;
 
-import de.dfki.lt.hfc.qrelations.QRelation;
-import de.dfki.lt.hfc.qrelations.QRelationFactory;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.*;
+import de.dfki.lt.hfc.io.QueryFlexParser;
+import de.dfki.lt.hfc.io.QueryParseException;
+import de.dfki.lt.hfc.io.QueryParser;
+import de.dfki.lt.hfc.qrelations.QRelation;
+import de.dfki.lt.hfc.qrelations.QRelationFactory;
 
 
 // TO DO --- IMPLEMENTATION NOTE
@@ -43,18 +55,18 @@ public class Query {
    * (expandProxy = false) or SELECTALL (expandProxy = true) is used
    */
   //private boolean expandProxy = false;
-  
+
   /**
    * in order to query, we need a tuple store
    */
   protected TupleStore tupleStore;
-  
+
   /**
    * a constant that controls whether a warning is printed in case "unexpected" things
    * happen; similar variables exists in class TupleStore, RuleStore, and ForwardChainer
    */
   private boolean verbose = false;
-  private QueryParser queryParser;
+
   /**
    * simple flag indicating whether an indexstore is used.
    */
@@ -137,12 +149,21 @@ public class Query {
       throw new QueryParseException("The variable name ?rel is reserved!");
     }
     StringReader stringReader = new StringReader(query);
-    queryParser = new QueryParser(stringReader, tupleStore);
+    QueryParser queryParser = new QueryParser(stringReader);
+    // TODO: ONLY LEFT TO EVENTUALLY DEBUG THE NEW PARSER, REMOVE IF NOT NEEDED
+    // ANYMORE
+    //QueryFlexParser qfp = new QueryFlexParser(new StringReader(query));
 
     try {
+      queryParser.setErrorVerbose(true);
+      //queryParser.setDebugLevel(99);
       queryParser.parse();
+      queryParser.sanityChecks();
+      //Qfp.parse(); // TODO: SEE ABOVE
     } catch (IOException e) {
       e.printStackTrace();
+    } catch (RuntimeException rex) {
+      throw (QueryParseException)rex.getCause();
     }
     // so far, query syntactically correct; namespaces are also correctly treated, using the
     // cannonical form (either short or long), as specified in the namespace object;
@@ -163,15 +184,14 @@ public class Query {
     if (internalizeWhere(queryParser.whereClauses, patterns, lkps, nameToId, idToName,
             queryParser.filterClauses, queryParser.foundVars).isEmpty() && lkps.isEmpty())
       return new BindingTable();
-    if (!queryParser.filterClauses.isEmpty()) {
-      queryParser.hasFilter = true;
-    }
+    boolean hasFilter = !queryParser.filterClauses.isEmpty();
+    boolean hasAggregate = !queryParser.aggregateClauses.isEmpty();
     // now that mappings have been established, internalize FILTER conditions;
     // note: all filter vars are definitely contained in found vars at this point
     ArrayList<Integer> varvarIneqs = null;
     ArrayList<Integer> varconstIneqs = null;
     ArrayList<Predicate> predicates = null;
-    if (queryParser.hasFilter) {
+    if (hasFilter) {
       varvarIneqs = new ArrayList<Integer>();
       varconstIneqs = new ArrayList<Integer>();
       predicates = new ArrayList<Predicate>();
@@ -180,7 +200,7 @@ public class Query {
     // lastly, internalize AGGREGATE information; note: aggregate variables will only refer
     // to selected variables
     ArrayList<Aggregate> aggregates = null;
-    if (queryParser.hasAggregate) {
+    if (hasAggregate) {
       aggregates = new ArrayList<Aggregate>();
       internalizeAggregate(queryParser.aggregateClauses, aggregates, nameToId, idToName, queryParser.projectedVars, queryParser.foundVars);
     }
@@ -191,8 +211,8 @@ public class Query {
     // and perform successive joins on the return values
     BindingTable bt = queryAndJoin(patterns, tables, lkps);
     // bt now refers to the joined tables, so potential filter conditions can be applied
-    if (queryParser.hasFilter) {
-      logger.debug("Has Filter " + queryParser.hasFilter + "\n varvarIneqs: " + varvarIneqs + "\n varconstIneqs " + varconstIneqs + " \n predicates " + predicates);
+    if (hasFilter) {
+      logger.debug("Has Filter \n varvarIneqs: " + varvarIneqs + "\n varconstIneqs " + varconstIneqs + " \n predicates " + predicates);
       //TODO for testing only
       bt.tupleStore = tupleStore;
       //TODO end
@@ -205,16 +225,16 @@ public class Query {
     bt.selectVars = new String[queryParser.projectedVars.size()];
     queryParser.projectedVars.toArray(bt.selectVars);
     // finally consider projected vars and DISTINCT keyword
-    makeDistinctAndProject(bt, queryParser.projectedVars, queryParser.foundVars, nameToId, queryParser.isDistinct());
+    makeDistinctAndProject(bt, queryParser.projectedVars, queryParser.foundVars, nameToId, queryParser.distinct);
     // bt is now destructively changed; finally consider potential aggregation;
     // note that there might be several aggregate clauses, working on the same/overlapping
     // projection window; if so, do not change the table any longer and combine the result
     // using table join
-    if (queryParser.hasAggregate)
+    if (hasAggregate)
       bt = aggregateAndJoin(bt, aggregates);
     bt.tupleStore = this.tupleStore;
     // in case a SELECTALL query has been posted, expand the binding table
-    if (queryParser.isExpandProxy()) {
+    if (queryParser.expandProxy) {
       bt.expandBindingTable();
     }
     return bt;
@@ -241,19 +261,18 @@ public class Query {
    * @param foundVars
    * @return null iff constants in the WHERE clause are NOT known to the tuple store
    */
-  private List<int[]> internalizeWhere(ArrayList<ArrayList<String>> whereClauses,
+  private List<int[]> internalizeWhere(List<List<String>> whereClauses,
                                        ArrayList<int[]> patterns, HashSet<IndexLookup> lkps,
                                        HashMap<String, Integer> nameToId, HashMap<Integer, String> idToName,
-                                       ArrayList<ArrayList<String>> filterClauses, HashSet<String> foundVars)
+                                       List<List<String>> filterClauses, HashSet<String> foundVars)
           throws QueryParseException {
     List<Integer> clause;
     HashMap<Integer, QRelation> idToRelation = new HashMap<>();
     int varcount = 0;
     int id1, id2;
-    ArrayList<String> wc;
+    //List<String> wc;
     String elem;
-    for (int j = 0; j < whereClauses.size(); j++) {
-      wc = whereClauses.get(j);
+    for (List<String>wc: whereClauses) {
       clause = new ArrayList<>();
       for (int i = 0; i < wc.size(); i++) {
         elem = wc.get(i);
@@ -333,7 +352,7 @@ public class Query {
    *
    * @see RuleStore.evaluatePredicates()
    */
-  private void internalizeFilter(ArrayList<ArrayList<String>> filterClauses,
+  private void internalizeFilter(List<List<String>> filterClauses,
                                  ArrayList<Integer> varvarIneqs,
                                  ArrayList<Integer> varconstIneqs,
                                  ArrayList<Predicate> predicates,
@@ -342,7 +361,7 @@ public class Query {
     Predicate predicate;
     ArrayList<Integer> args;
     int id;
-    for (ArrayList<String> filter : filterClauses) {
+    for (List<String> filter : filterClauses) {
       first = filter.get(0);
       // a predicate
       if (Query.isPredicate(first)) {
@@ -415,7 +434,7 @@ public class Query {
    * where
    * N >= 1 (at least _one_ var) and M >= 0 (potentially _no_ args)
    */
-  private void internalizeAggregate(ArrayList<ArrayList<String>> aggregateClauses,
+  private void internalizeAggregate(List<List<String>> aggregateClauses,
                                     ArrayList<Aggregate> aggregates,
                                     HashMap<String, Integer> nameToId,
                                     HashMap<Integer, String> idToName,
@@ -426,7 +445,7 @@ public class Query {
     int[] args;
     int eqpos;
     int id;
-    for (ArrayList<String> clause : aggregateClauses) {
+    for (List<String> clause : aggregateClauses) {
       eqpos = -1;
       // look for the "=" sign
       for (int i = 0; i < clause.size(); i++) {
@@ -603,7 +622,7 @@ public class Query {
       else
         // even though bt does not contain duplicates, we make its table a hash set, since
         // structurally-equivalent int arrays are counted as different objects
-        bt.table = new HashSet(bt.table);
+        bt.table = new HashSet<>(bt.table);
     } else {
       // note: non-projected vars need to be removed from bt's nameToPos and nameToExternalName fields
       foundVars.removeAll(projectedVars);

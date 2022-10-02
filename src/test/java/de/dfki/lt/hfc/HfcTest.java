@@ -16,6 +16,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import de.dfki.lt.hfc.io.QueryParseException;
 import de.dfki.lt.hfc.types.Uri;
 import de.dfki.lt.hfc.types.XsdLong;
 import gnu.trove.set.hash.TCustomHashSet;

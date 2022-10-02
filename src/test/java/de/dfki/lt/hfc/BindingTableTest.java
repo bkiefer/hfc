@@ -13,6 +13,7 @@ import java.util.TreeMap;
 
 import org.junit.Test;
 
+import de.dfki.lt.hfc.io.QueryParseException;
 import gnu.trove.set.hash.TCustomHashSet;
 
 public class BindingTableTest {

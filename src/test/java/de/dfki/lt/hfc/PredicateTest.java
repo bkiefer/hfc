@@ -12,7 +12,7 @@ public class PredicateTest {
   public void testconstructor1(){
     //test constructor Predicate(String name,ArrayList<Integer> args)
     String name = "name";
-    ArrayList<Integer> args = new ArrayList();
+    ArrayList<Integer> args = new ArrayList<>();
     Predicate predicate = new Predicate(name, args);
     assertNotNull(predicate);
   }
@@ -21,7 +21,7 @@ public class PredicateTest {
   //test constructor Predicate(String name, Operator op, ArrayList<Integer> args)
     String name = "name";
     Operator op = null;
-    ArrayList<Integer> args = new ArrayList();
+    ArrayList<Integer> args = new ArrayList<>();
     Predicate predicate = new Predicate(name, op, args);
     assertNotNull(predicate);
   }
@@ -31,8 +31,8 @@ public class PredicateTest {
   //HashMap<Integer, ArrayList<Integer>> relIdToFunIds)
     String name = "name";
     Operator op = null;
-    ArrayList<Integer> args = new ArrayList();
-    HashMap<Integer, ArrayList<Integer>> relIdToFunIds = new HashMap();
+    ArrayList<Integer> args = new ArrayList<>();
+    HashMap<Integer, ArrayList<Integer>> relIdToFunIds = new HashMap<>();
     Predicate predicate = new Predicate(name, op, args, relIdToFunIds);
     assertNotNull(predicate);
   }
@@ -42,10 +42,10 @@ public class PredicateTest {
     //ArrayList<Integer>> relIdToFunIds, HashMap<String, Integer> varToId)
     String name = "name";
     Operator op = null;
-    ArrayList<Integer> args = new ArrayList();
+    ArrayList<Integer> args = new ArrayList<>();
     args.add(1);
-    HashMap<Integer, ArrayList<Integer>> relIdToFunIds = new HashMap();
-    HashMap<String, Integer> varToId = new HashMap();
+    HashMap<Integer, ArrayList<Integer>> relIdToFunIds = new HashMap<>();
+    HashMap<String, Integer> varToId = new HashMap<>();
     Predicate predicate = new Predicate(name, op, args, relIdToFunIds, varToId);
     assertNotNull(predicate);
   }

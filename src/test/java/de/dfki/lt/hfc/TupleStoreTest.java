@@ -1,19 +1,21 @@
 package de.dfki.lt.hfc;
 
 import static de.dfki.lt.hfc.TestingUtils.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.logging.Logger;
 
+import org.junit.Test;
+
+import de.dfki.lt.hfc.io.QueryParseException;
 import de.dfki.lt.hfc.types.Uri;
 import de.dfki.lt.hfc.types.Variable;
-import org.junit.Test;
 
 public class TupleStoreTest {
 

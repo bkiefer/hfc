@@ -11,6 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.dfki.lt.hfc.*;
+import de.dfki.lt.hfc.io.QueryParseException;
 
 public class TestLGetLatest {
   static Hfc fc;
@@ -224,8 +225,6 @@ public class TestLGetLatest {
 
   @Test
   public void test11() throws QueryParseException {
-    String[][] expected = {
-    };
     // "1000" = sinceWhen
     Query q = fc.getQuery();
     BindingTable bt = q.query("SELECT ?t WHERE ?d <rdf:type> <dafn:DialogueAct> & ?d <dafn:happens> ?t FILTER LGreaterEqual ?t \"1000\"^^<xsd:long>  AGGREGATE ?latest = LMax ?t");

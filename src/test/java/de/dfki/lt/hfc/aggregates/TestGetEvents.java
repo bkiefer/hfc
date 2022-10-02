@@ -1,6 +1,8 @@
 package de.dfki.lt.hfc.aggregates;
 
 import de.dfki.lt.hfc.*;
+import de.dfki.lt.hfc.io.QueryParseException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +12,6 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;

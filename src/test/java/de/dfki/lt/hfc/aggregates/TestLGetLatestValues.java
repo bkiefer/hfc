@@ -9,9 +9,9 @@ import org.junit.Test;
 import de.dfki.lt.hfc.BindingTable;
 import de.dfki.lt.hfc.Hfc;
 import de.dfki.lt.hfc.Query;
-import de.dfki.lt.hfc.QueryParseException;
 import de.dfki.lt.hfc.TestHfc;
 import de.dfki.lt.hfc.TestingUtils;
+import de.dfki.lt.hfc.io.QueryParseException;
 
 /**
  * this aggregational operator LGetLatestValues only works for the time-stamped

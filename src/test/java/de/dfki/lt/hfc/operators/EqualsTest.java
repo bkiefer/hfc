@@ -11,10 +11,10 @@ import org.junit.Test;
 
 import de.dfki.lt.hfc.BindingTable;
 import de.dfki.lt.hfc.Query;
-import de.dfki.lt.hfc.QueryParseException;
 import de.dfki.lt.hfc.TestConfig;
 import de.dfki.lt.hfc.TestHfc;
 import de.dfki.lt.hfc.WrongFormatException;
+import de.dfki.lt.hfc.io.QueryParseException;
 
 public class EqualsTest {
   static TestHfc hfc;

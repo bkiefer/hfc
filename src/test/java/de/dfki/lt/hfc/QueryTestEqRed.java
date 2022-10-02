@@ -13,6 +13,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dfki.lt.hfc.io.QueryParseException;
+
 /**
  * @author Christian Willms - Date: 14.09.17 10:25.
  * @version 14.09.17
@@ -30,6 +32,7 @@ public class QueryTestEqRed {
   TestConfig config = TestConfig.getDefaultEqRedConfig();
   config.addNamespace("pal", "http://www.dfki.de/lt/onto/pal.owl#");
   config.addNamespace("dom", "http://www.dfki.de/lt/onto/dom.owl#");
+  config.put("shortIsDefault", true);
   fc = new TestHfc(config);
   fc.uploadTuples(getResource("test.child.labvalues.nt"));
  }

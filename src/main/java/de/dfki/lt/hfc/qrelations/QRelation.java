@@ -1,7 +1,7 @@
 package de.dfki.lt.hfc.qrelations;
 
-import de.dfki.lt.hfc.QueryParseException;
 import de.dfki.lt.hfc.indices.Index;
+import de.dfki.lt.hfc.io.QueryParseException;
 import de.dfki.lt.hfc.types.XsdAnySimpleType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

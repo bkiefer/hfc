@@ -1,6 +1,8 @@
 package de.dfki.lt.hfc.operators;
 
 import de.dfki.lt.hfc.*;
+import de.dfki.lt.hfc.io.QueryParseException;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;

@@ -11,9 +11,9 @@ import java.util.StringTokenizer;
 
 import org.slf4j.LoggerFactory;
 
-import de.dfki.lt.hfc.QueryParseException;
 import de.dfki.lt.hfc.TupleStore;
 import de.dfki.lt.hfc.WrongFormatException;
+import de.dfki.lt.hfc.io.QueryParseException;
 import de.dfki.lt.hfc.types.XsdAnySimpleType;
 
 /**

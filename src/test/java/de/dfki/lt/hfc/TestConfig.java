@@ -61,9 +61,10 @@ public class TestConfig extends Config {
     return c;
   }
 
+  @SuppressWarnings("unchecked")
   public void addNamespace(String shortNs, String longNs) {
-    HashMap<String, String> shortToLong = (HashMap<String, String>) configs
-        .get(NAMESPACES);
+    HashMap<String, String> shortToLong =
+        (HashMap<String, String>) configs.get(NAMESPACES);
     shortToLong.put(shortNs, longNs);
   }
 

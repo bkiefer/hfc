@@ -7,6 +7,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.dfki.lt.hfc.*;
+import de.dfki.lt.hfc.io.QueryParseException;
 
 public class TestRemoveSupers {
   static Hfc fc;

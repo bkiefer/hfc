@@ -1,7 +1,7 @@
 package de.dfki.lt.hfc.aggregates;
 
 import de.dfki.lt.hfc.*;
-
+import de.dfki.lt.hfc.io.QueryParseException;
 import de.dfki.lt.hfc.types.XsdLong;
 import org.junit.*;
 

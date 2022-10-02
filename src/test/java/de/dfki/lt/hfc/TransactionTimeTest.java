@@ -4,6 +4,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.dfki.lt.hfc.io.QueryParseException;
+
 import static org.junit.Assert.assertEquals;
 
 /**

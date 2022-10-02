@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.dfki.lt.hfc.indices.IndexingException;
+import de.dfki.lt.hfc.io.QueryParseException;
 
 public class Hfc {
 

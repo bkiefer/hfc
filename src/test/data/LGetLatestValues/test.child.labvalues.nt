@@ -1,4 +1,5 @@
 <pal:lisa> <rdf:type> <dom:Child> "5544"^^<xsd:long> .
+<pal:lisa> <dom:hasName> "Lisa"^^<xsd:string> "5544"^^<xsd:long> .
 <pal:lisa> <dom:hasLabValue> <pal:labval22> "5544"^^<xsd:long> .
 <pal:labval22> <dom:height> "133"^^<xsd:cm> "5544"^^<xsd:long> .
 <pal:labval22> <dom:weight> "28.2"^^<xsd:kg> "5544"^^<xsd:long> .

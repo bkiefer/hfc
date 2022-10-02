@@ -6,7 +6,6 @@
 package de.dfki.lt.hfc;
 
 import static de.dfki.lt.hfc.TestingUtils.*;
-import org.junit.Assert;
 import static org.junit.Assert.*;
 import org.junit.Test;
 

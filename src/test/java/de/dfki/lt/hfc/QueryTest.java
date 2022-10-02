@@ -8,10 +8,15 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.io.StringReader;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import de.dfki.lt.hfc.io.QueryParseException;
+import de.dfki.lt.hfc.io.QueryParser;
+import de.dfki.lt.hfc.types.XsdString;
 
 /**
  * @author Christian Willms - Date: 14.09.17 10:25.
@@ -254,8 +259,20 @@ public class QueryTest {
   assertFalse(Query.isPredicate("<gkfjg>"));
   //is an XSD atom
   assertFalse(Query.isPredicate("\"hello"));
-  //is a varibale
+  //is a variable
   assertFalse(Query.isPredicate("?dgjdfgj"));
+ }
+
+ @Test
+ public void testPlainString() throws IOException, QueryParseException {
+   String query ="select ?uri where ?uri <pal:hasName> \"DFKI\"^^<xsd:string> ?_ ";
+   QueryParser parser = new QueryParser(new StringReader(query));
+   parser.parse();
+   assertEquals(new XsdString("DFKI").toString(), parser.whereClauses.get(0).get(2));
+   query ="select ?uri where ?uri <pal:hasName> \"DFKI\" ?_ ";
+   parser = new QueryParser(new StringReader(query));
+   parser.parse();
+   assertEquals(new XsdString("DFKI").toString(), parser.whereClauses.get(0).get(2));
  }
 
 }

@@ -2,7 +2,6 @@ package de.dfki.lt.hfc.masstests;
 
 import de.dfki.lt.hfc.Config;
 import de.dfki.lt.hfc.Hfc;
-import de.dfki.lt.hfc.Hfc;
 import de.dfki.lt.hfc.WrongFormatException;
 import static org.junit.Assert.*;
 

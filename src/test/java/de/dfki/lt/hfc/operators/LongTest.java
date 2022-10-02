@@ -11,7 +11,6 @@ import org.junit.Test;
 
 import de.dfki.lt.hfc.FunctionalOperator;
 import de.dfki.lt.hfc.TupleStore;
-import de.dfki.lt.hfc.TupleStore;
 import de.dfki.lt.hfc.WrongFormatException;
 import de.dfki.lt.hfc.types.XsdLong;
 

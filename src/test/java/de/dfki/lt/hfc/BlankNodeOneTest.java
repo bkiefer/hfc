@@ -4,6 +4,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.dfki.lt.hfc.io.QueryParseException;
+
 import static de.dfki.lt.hfc.TestingUtils.*;
 
 public class BlankNodeOneTest {

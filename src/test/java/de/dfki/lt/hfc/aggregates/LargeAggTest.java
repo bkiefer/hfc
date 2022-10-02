@@ -1,6 +1,8 @@
 package de.dfki.lt.hfc.aggregates;
 
 import de.dfki.lt.hfc.*;
+import de.dfki.lt.hfc.io.QueryParseException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

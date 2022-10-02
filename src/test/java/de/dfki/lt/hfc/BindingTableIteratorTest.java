@@ -16,6 +16,7 @@ import de.dfki.lt.hfc.TestingUtils.NextAsHfcCall;
 import de.dfki.lt.hfc.TestingUtils.NextAsIntCall;
 import de.dfki.lt.hfc.TestingUtils.NextAsObjectCall;
 import de.dfki.lt.hfc.TestingUtils.NextAsStringCall;
+import de.dfki.lt.hfc.io.QueryParseException;
 import de.dfki.lt.hfc.types.AnyType;
 import de.dfki.lt.hfc.types.XsdString;
 
