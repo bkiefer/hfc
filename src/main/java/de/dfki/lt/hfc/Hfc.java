@@ -273,6 +273,14 @@ public class Hfc {
   public Config getConfig(){
     return config;
   }
+  
+  /** Currently, it's up to the calling library how to persist new tuples, or
+   *  properly remove them, if this allowed.
+   * @return A writer to the file where all new tuples are persisted.
+   */
+  public Writer getPersistencyWriter() {
+    return persistencyWriter;
+  }
 
   public HfcStatus status() {
     return new HfcStatus();

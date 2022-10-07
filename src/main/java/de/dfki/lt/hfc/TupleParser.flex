@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import de.dfki.lt.hfc.types.XsdString;
-import de.dfki.lt.hfc.types.Uri;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,8 +31,7 @@ import java.util.regex.Pattern;
 %{
   private TupleStore ts;
   private StringBuffer string = new StringBuffer();
-  private List<List<String>> tuples = new ArrayList();
-  private List<String> t = new ArrayList();
+  private List<String> t = new ArrayList<>();
   private String match = "";
   private static final Logger logger = LoggerFactory.getLogger(TupleParser.class);
   private String front;
@@ -87,7 +85,7 @@ import java.util.regex.Pattern;
         // already contained
       }
       ts.addTuple(t, yyline);
-      t = new ArrayList();
+      t = new ArrayList<>();
     }
   }
 

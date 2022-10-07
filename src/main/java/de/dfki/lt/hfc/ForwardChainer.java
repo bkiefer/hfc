@@ -704,8 +704,8 @@ public final class ForwardChainer {
           ++noOfNewTuples;
         }
       }
-      logger.debug("{}/{} ({} msec)", noOfNewTuples, _tupleStore.allTuples.size(),
-          (System.currentTimeMillis() - time));
+      logger.debug("gen {}: {}/{} ({} msec)", currentIteration, noOfNewTuples,
+          _tupleStore.allTuples.size(), (System.currentTimeMillis() - time));
       time = System.currentTimeMillis();
       // perhaps trigger a GC after each iteration step
       if (garbageCollection)
@@ -714,16 +714,14 @@ public final class ForwardChainer {
     // increment the generation  counter for deltion again for further upload
     ++_tupleStore.generation;
     // some statistics
-    logger.debug("number of all tuples: {}", _tupleStore.allTuples.size());
-    logger.debug("{} tuples generated",
-        (_tupleStore.allTuples.size() - noOfAllTuples));
-    logger.debug("closure computation took {} msec",
-        (System.currentTimeMillis() - fullTime));
+    logger.debug("all/generated tuples: {}/{} ({} msec)", _tupleStore.allTuples.size(),
+        _tupleStore.allTuples.size() - noOfAllTuples, 
+        System.currentTimeMillis() - fullTime);
     // possibly cleanup
     if (equivalenceClassReduction && cleanUpRepository) {
       logger.debug("cleaning up repository ... ");
       _tupleStore.cleanUpTupleStore();
-      logger.debug("done! number of all tuples: {}", _tupleStore.allTuples.size());
+      logger.debug("all tuples after cleanup: {}", _tupleStore.allTuples.size());
     }
     logger.debug("Generation Counter: {}", generationCounter);
     // and finally the `answer'

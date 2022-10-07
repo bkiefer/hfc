@@ -23,6 +23,16 @@ import org.yaml.snakeyaml.Yaml;
 
 import de.dfki.lt.hfc.types.XsdLong;
 
+/** TODO: THIS CLASS NEEDS FOUR THINGS:
+ *  a) an "online" documentation about the possible fields and defaults
+ *     OR a possibility to generate an empty config with all fields
+ *  b) a thorough check if somebody tries to use a wrong/misspelled field
+ *  c) a possibility for adding fields maintaining a) and b)
+ *  d) a possibility to override defaults for a library/framework using this
+ *     core library/core default settings 
+ * @author kiefer
+ *
+ */
 public class Config {
 
   public static final String EXITONERROR = "exitOnError";
@@ -146,7 +156,7 @@ public class Config {
     for (String tuplefile : getTupleFiles()) {
       // TODO: if and what timestamp we add must be based on the config,
       // either on maxArgs, or on a separate config field. Currently, we
-      // need a separate field because many tests rely on initialisation
+      // use a separate field because many tests rely on initialisation
       // without additional fields, even if maxArgs > 3
       tupleStore.readTuples(readerFromName(tuplefile), null, getTimestampsToAdd(startLoad));
     }
