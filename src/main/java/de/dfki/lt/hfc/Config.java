@@ -29,7 +29,7 @@ import de.dfki.lt.hfc.types.XsdLong;
  *  b) a thorough check if somebody tries to use a wrong/misspelled field
  *  c) a possibility for adding fields maintaining a) and b)
  *  d) a possibility to override defaults for a library/framework using this
- *     core library/core default settings 
+ *     core library/core default settings
  * @author kiefer
  *
  */
@@ -106,7 +106,7 @@ public class Config {
     return getInstance(in, null);
   }
 
-  private File resolvePath(String name) {
+  public File resolvePath(String name) {
     File f = new File(name);
     if (! f.isAbsolute() && configDir != null) {
       f = new File(configDir, name);

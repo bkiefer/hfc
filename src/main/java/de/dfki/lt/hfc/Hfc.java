@@ -174,6 +174,29 @@ public class Hfc {
     _tupleStore.readTuples(config.readerFromFilename(filename), null);
   }
 
+  /**
+   * read in tuples stored in a file with name filename;
+   * tuples that are goind to be read in are extended by at most one front element front
+   * and potentially many back elements back;
+   * use null as a value for front to indicate that there is no front element, and an
+   * empty String array that there are no back elements
+   *
+   * @param filename
+   * @param front
+   * @param backs
+   * @throws FileNotFoundException
+   * @throws IOException
+   * @throws WrongFormatException
+   */
+  public void uploadTuples(Config config, String filename, String front, String... backs)
+          throws FileNotFoundException, IOException, WrongFormatException {
+    _tupleStore.readTuples(config.readerFromFilename(filename), front, backs);
+  }
+
+  public void uploadTuples(Config config, String filename) throws IOException, WrongFormatException {
+    _tupleStore.readTuples(config.readerFromFilename(filename), null);
+  }
+
   public BindingTable executeQuery(String query) throws QueryParseException {
     Query q = new Query(_tupleStore);
     // do we want to generate a new Query object for each call of query() (is not needed)?
@@ -273,7 +296,7 @@ public class Hfc {
   public Config getConfig(){
     return config;
   }
-  
+
   /** Currently, it's up to the calling library how to persist new tuples, or
    *  properly remove them, if this allowed.
    * @return A writer to the file where all new tuples are persisted.
