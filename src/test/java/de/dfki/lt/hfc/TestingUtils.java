@@ -18,7 +18,7 @@ import de.dfki.lt.hfc.types.AnyType;
 
 public class TestingUtils {
   private static final File testResourceDir = new File("src/test/data/");
-  private static final File tmpDir = new File("/tmp");
+  private static final File tmpDir = new File(System.getProperty("java.io.tmpdir"));
 
   public static String getTestResource(String subdir, String name) {
     return new File(new File(testResourceDir, subdir), name).getPath();
