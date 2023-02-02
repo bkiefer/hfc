@@ -19,7 +19,7 @@ public class PrintSizeTest {
   static Hfc hfc;
   private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
   private PrintStream safeOut;
-  
+
   @Before
   public void setUpStreams() {
     safeOut = System.out;
@@ -51,7 +51,7 @@ public class PrintSizeTest {
   public void test() throws QueryParseException, WrongFormatException, IOException  {
     // create TupleStore
     TupleStore store = getOperatorTestStore();
-    
+
     // create FunctionalOperator
     RelationalOperator rop =
         (RelationalOperator)store.checkAndRegisterOperator("de.dfki.lt.hfc.operators.PrintSize");
@@ -85,7 +85,7 @@ public class PrintSizeTest {
     checkResult(hfc, bt, expected, bt.getVars());
     // could be problematic if the SystemOutput will change in future versions
     // of hfc
-    assertEquals("19 \n", temp.substring(temp.length() -4));
+    assertEquals("19", temp.strip());
   }
 }
 
