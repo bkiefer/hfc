@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class MaterializedTriplesToQuintuples {
+public class MaterializedTriplesToQuintuplesTest {
 
 	private static final int MAX_INT = 1000;
 

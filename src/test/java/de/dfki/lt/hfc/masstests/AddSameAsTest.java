@@ -15,7 +15,7 @@ import java.io.*;
  * NOTE: in order to perform the measurements properly, it is important to set the
  *       right flag in class TupleStore, viz., equivalenceClassReduction
  */
-public class AddSameAs {
+public class AddSameAsTest {
 
   public static Hfc getFwChainer(boolean eqRed)
       throws FileNotFoundException, WrongFormatException, IOException {
