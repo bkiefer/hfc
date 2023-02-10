@@ -117,6 +117,23 @@ public class Rdf {
     return _fields.get(predicate);
   }
 
+  /** This is a generic access if we don't know if the predicate is functional
+   *  or not of if it even exists
+   * @param predicate
+   * @return a Set<Object> for relational predicates, an Object for functional
+   *         predicates, or null, if either the predicate or the value do not
+   *         exist
+   */
+  public Object getObject(String predicate) {
+    if (! has(predicate)) {
+      return null;
+    }
+    if (_clazz.isFunctionalProperty(predicate)) {
+      return getSingleValue(predicate);
+    }
+    Set<Object> result = getValue(predicate);
+    return result.isEmpty() ? null : result;
+  }
 
   /** Set the value under predicate to the given URI (as string) */
   public void setUri(String predicate, String uri)  {

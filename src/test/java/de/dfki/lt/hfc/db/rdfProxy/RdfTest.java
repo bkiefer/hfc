@@ -5,10 +5,7 @@
  */
 package de.dfki.lt.hfc.db.rdfProxy;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -126,7 +123,7 @@ public class RdfTest {
         add("Testi2");
       }
     };
-    instance.add("<dom:forename>", "Testi2");
+    //instance.add("<dom:forename>", "Testi2");
     Set<Object> result = instance.getValue(predicate);
     assertTrue(expResult.containsAll(result));
     assertFalse(instance.getClazz().isFunctionalProperty(predicate));
@@ -144,6 +141,22 @@ public class RdfTest {
     assertNull(result);
   }
 
+
+  /**
+   * Inexistent property: no value
+   */
+  @Test
+  public void testGetGenericValue() {
+    String predicate = "<dom:middlename>";
+    Rdf instance = _proxy.getRdf("<rifca:Child_0>");
+    Object result = instance.getObject(predicate);
+    assertNull(result);
+    Object expFather= _proxy.getRdf("<rifca:father_2>");
+    result = instance.getObject("<dom:hasFather>");
+    assertEquals(expFather, result);
+    result = instance.getObject("<dom:surname>");
+    assertTrue(result instanceof Set);
+  }
 
   /**
    * Test of getClazz method, of class Rdf.

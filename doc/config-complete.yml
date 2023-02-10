@@ -1,0 +1,36 @@
+verbose: true
+characterEncoding: UTF-8
+noOfCores: 4
+noOfTuples: 500000
+noOfAtoms: 100000
+eqReduction: false
+garbageCollection: false
+cleanUpRepository: true
+
+shortIsDefault: true
+namespaces:
+  xsd:  http://www.w3.org/2001/XMLSchema#
+  rdf:  http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  rdfs:  http://www.w3.org/2000/01/rdf-schema#
+  owl:  http://www.w3.org/2002/07/owl#
+  test: http://www.dfki.de/lt/onto/test.owl#
+  hfc: http://www.dfki.de/lt/hfc.owl#
+
+tupleFiles:
+
+minArgs: 3
+maxArgs: 5
+subjectPosition: 0
+predicatePosition: 1
+objectPosition: 2
+rdfCheck: true
+exitOnError: true
+# This file will persist all additions made to the database after
+# initialisation, i.e., using API functions
+# persistenceFile: <filename>
+# will add a fourth field to every tuple read in during initialisation with
+# value zero
+# addTimestamps: [0]
+ruleFiles:
+
+iterations: 2147483647
