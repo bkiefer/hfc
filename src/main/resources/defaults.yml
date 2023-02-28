@@ -15,6 +15,7 @@ namespaces:
   owl:  http://www.w3.org/2002/07/owl#
   test: http://www.dfki.de/lt/onto/test.owl#
   hfc: http://www.dfki.de/lt/hfc.owl#
+  def: http://www.dfki.de/lt/default.owl#
 
 tupleFiles:
 
