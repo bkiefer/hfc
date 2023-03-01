@@ -14,6 +14,10 @@ public class Table {
     rows = r;
   }
 
+  public void setRows(List<List<String>> r) {
+    rows = r;
+  }
+  
   public List<List<String>> getRows() {
     return rows;
   }

@@ -5,7 +5,14 @@
  */
 package de.dfki.lt.hfc.db.rdfProxy;
 
-import java.util.*;
+import static de.dfki.lt.hfc.NamespaceManager.getNamespace;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +20,6 @@ import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
 
 import de.dfki.lt.hfc.WrongFormatException;
-import de.dfki.lt.hfc.db.HfcDbHandler;
 import de.dfki.lt.hfc.db.QueryException;
 import de.dfki.lt.hfc.db.QueryResult;
 import de.dfki.lt.hfc.db.StreamingClient;
@@ -74,6 +80,9 @@ public class RdfProxy implements StreamingClient {
     _cachedClasses = new TIntObjectHashMap<>();
     _cachedObjects = new HashMap<>();
     _cachedLists = new HashMap<>();
+    // register as streaming client
+    _lastUpdate = System.currentTimeMillis();
+    client.registerStreamingClient(this);
   }
 
 
@@ -92,12 +101,14 @@ public class RdfProxy implements StreamingClient {
   // StreamingClient methods
   // ######################################################################
 
+  /*
   @Override
-  public void init(HfcDbHandler handler) {
+  public void init(DbClient handler) {
     // either do nothing here, or move the initialization part of the
     // constructor to this point.
     _lastUpdate = System.currentTimeMillis();
   }
+  */
 
   @Override
   public void compute(Set<String> affectedUsers) {
@@ -113,21 +124,7 @@ public class RdfProxy implements StreamingClient {
     _lastUpdate = System.currentTimeMillis();
   }
 
-  public void registerStreamingClient(StreamingClient sc) {
-    _client.registerStreamingClient(sc);
-  }
-
-
   // ######################################################################
-
-  // TODO: this should be a static method in Namespace
-  private String getNamespace(String uri) {
-    int i = uri.lastIndexOf('#');
-    if (i < 0) {
-      i = uri.lastIndexOf(':');
-    }
-    return uri.substring(0, i+1);
-  }
 
   /** Return the class hierarchy of the ontology */
   public RdfHierarchy getHierarchy() { return _hierarchy; }

@@ -7,14 +7,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.IdentityHashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -45,89 +40,12 @@ public class HfcDbHandler implements DbClient {
 
   private Map<String, String> _currentTokens;
 
-  /** The number of milliseconds before a new change notification is issued.
-   *  All changes that occur after a notification during this interval will
-   *  be registered and result in a new notification after the interval is
-   *  exceeded.
-   */
-  public static long NOTIFICATION_INTERVAL = 400;
-
-  private final Timer _notificationTimer;
-
-  private long _lastNotification = -1;
-
-  private int _notificationScheduled = 0;
-
   /** To allow for dependent functionality to be informed about changes in the
    *  database
    */
-  protected IdentityHashMap<StreamingClient, StreamingThread> _streamingThreads;
-
-  /** If the system supports multiple users, filtering according to the users
-   *  that are affected by a change leads to significant performance improvements
-   */
-  private final Set<String> _affectedUsers;
+  protected StreamingClients _streamingClients;
 
   private UserCache _userCache;
-
-  public UserCache getCache() {
-    return _userCache;
-  }
-
-  private static class StreamingThread extends Thread {
-    private boolean _isRunning = true;
-    private final HashSet<String> _copy = new HashSet<>();
-    private Semaphore _runnable = new Semaphore(0);
-    private StreamingClient _client;
-    private Set<String> _affectedUsers = new HashSet<>();
-
-    public StreamingThread(StreamingClient cl) {
-      _client = cl;
-    }
-
-    public void startComputation(Set<String> affectedUsers) {
-      synchronized(_affectedUsers) {
-        this._affectedUsers.addAll(affectedUsers);
-      }
-      if (_runnable.availablePermits() == 0 && _copy.isEmpty())
-        _runnable.release();
-    }
-
-    public void terminate() {
-      _isRunning = false;
-      _runnable.release();
-    }
-
-    private void copyUsers() {
-      _copy.clear();
-      synchronized(_affectedUsers) {
-        _copy.addAll(_affectedUsers);
-        _affectedUsers.clear();
-      }
-    }
-
-    @Override
-    public void run() {
-      while (_isRunning) {
-        try {
-          _runnable.acquire();
-          if (_isRunning) {
-            copyUsers();
-            while (!_copy.isEmpty()) {
-              _client.compute(_copy);
-              copyUsers();
-            }
-          }
-        }
-        catch (InterruptedException ex) {
-          _isRunning = false;
-        }
-      }
-    }
-
-    @Override
-    public String toString() { return _client.toString(); }
-  }
 
   /** The methods in this class should be thread safe, except maybe for the
    *  initialization
@@ -137,11 +55,9 @@ public class HfcDbHandler implements DbClient {
   public HfcDbHandler(String configPath) {
     _rwLock = new ReentrantReadWriteLock();
     persistencyWriter = null;
-    _streamingThreads = new IdentityHashMap<>();
+    _streamingClients = new StreamingClients();
     _currentTokens = new HashMap<>();
-    _notificationTimer = new Timer(true);
     _userCache = new UserCache(this);
-    _affectedUsers = new HashSet<>();
     try {
       _hfc = new Hfc(configPath);
       persistencyWriter = _hfc.getPersistencyWriter();
@@ -151,17 +67,26 @@ public class HfcDbHandler implements DbClient {
     }
   }
 
+  public StreamingClients getStreamingClients() {
+    return _streamingClients;
+  }
+
+  public UserCache getCache() {
+    return _userCache;
+  }
+
+  @Override
+  public void registerStreamingClient(StreamingClient s) {
+    _streamingClients.registerStreamingClient(s);
+  }
+
   public synchronized void shutdown(){
-    for (StreamingClient c : _streamingThreads.keySet()) {
-      unregisterStreamingClient(c);
-    }
+    _streamingClients.shutdown();
     _hfc.shutdown();
   }
 
   public synchronized void shutdownNoExit(){
-    for (StreamingClient c : _streamingThreads.keySet()) {
-      unregisterStreamingClient(c);
-    }
+    _streamingClients.shutdown();
     _hfc.shutdownNoExit();
   }
 
@@ -246,91 +171,6 @@ public class HfcDbHandler implements DbClient {
   }
 
   // **********************************************************************
-  // Streaming Clients
-  // **********************************************************************
-
-  public void registerStreamingClient(StreamingClient client) {
-    // TODO watch out for this cast! A cleaner solution is required.
-    client.init(this);
-    StreamingThread t = new StreamingThread(client);
-    synchronized(_streamingThreads) {
-      _streamingThreads.put(client, t);
-    }
-    t.start();
-  }
-
-
-  public void unregisterStreamingClient(StreamingClient client) {
-    synchronized(_streamingThreads) {
-      StreamingThread t =_streamingThreads.get(client);
-      t.terminate();
-      _streamingThreads.put(client, null);
-    }
-  }
-
-
-  /** Run the streaming clients, really. */
-  private void notifyClients() {
-    logger.info("dbChange[{} {}]", _notificationScheduled, _affectedUsers);
-    Set<String> users = new HashSet<>();
-    synchronized(_affectedUsers) {
-      users.addAll(_affectedUsers);
-      _affectedUsers.clear();
-    }
-
-    _notificationScheduled = 0;
-    // retrieve all tuples changed after _lastNotification, run the
-    // "which user affected" method and pass the result to the startComputation
-    // calls
-
-    _lastNotification = System.currentTimeMillis();
-    synchronized(_streamingThreads) {
-      Iterator<Map.Entry<StreamingClient, StreamingThread>> it =
-          _streamingThreads.entrySet().iterator();
-      while(it.hasNext()) {
-        StreamingThread t = it.next().getValue();
-        if (t != null) {
-          t.startComputation(users);
-        } else {
-          it.remove();
-        }
-      }
-    }
-  }
-
-
-  /** Run the streaming clients, making sure they are only called if the
-   *  last change occured at least NOTIFICATION_INTERVAL msecs before.
-   *  Otherwise, start a timer that ends NOTIFICATION_INTERVAL msecs after the
-   *  last change.
-   */
-  private void startStreamingClients(Set<String> affectedUsers) {
-    if (affectedUsers.isEmpty()) return;
-    synchronized(_affectedUsers) {
-      _affectedUsers.addAll(affectedUsers);
-    }
-    long now = System.currentTimeMillis();
-    // is a notification timer running?
-    if (_notificationScheduled == 0) {
-      // is this change within the silencing interval?
-      long delta = now - _lastNotification;
-      if (delta < NOTIFICATION_INTERVAL) {
-        // yes: start a new notification timer
-        _notificationScheduled = 1;
-        _notificationTimer.schedule(new TimerTask() {
-          @Override
-          public void run() { notifyClients(); }
-        }, NOTIFICATION_INTERVAL - delta);
-      } else {
-        notifyClients();
-      }
-    } else {
-      ++_notificationScheduled;
-    }
-  }
-
-
-  // **********************************************************************
   // Internal PAL DB functionality
   // **********************************************************************
 
@@ -351,6 +191,7 @@ public class HfcDbHandler implements DbClient {
    * @return the number of tuples added to the database
    * @throws TupleException   in case there are illegal tuples in the set
    */
+  @Override
   public int insert(final Table table, final long timeStamp) {
     final int[] result = { 0 };
     try {
@@ -378,7 +219,15 @@ public class HfcDbHandler implements DbClient {
         }});
       if (! res)
         result[0] = -1;
-      if (result[0] > 0) startStreamingClients(_userCache.getAffectedUsers(table, timeStamp));
+      if (result[0] > 0) {
+        /* Run the streaming clients, making sure they are only called if the
+         * last change occured at least NOTIFICATION_INTERVAL msecs before.
+         * Otherwise, start a timer that ends NOTIFICATION_INTERVAL msecs after the
+         * last change.
+         */
+        _streamingClients.startStreamingClients(
+            _userCache.getAffectedUsers(table, timeStamp));
+      }
     }
     catch (WrongFormatException ex) {
       logger.error("WrongFormatException: {}", ex.getMessage());
@@ -403,6 +252,7 @@ public class HfcDbHandler implements DbClient {
    * @return the number of tuples added to the database
    * @throws TupleException   in case there are illegal tuples in the set
    */
+  @Override
   public int insertPlain(Table t) {
     return insert(t, -2);
   }
@@ -417,6 +267,7 @@ public class HfcDbHandler implements DbClient {
    * @return the number of tuples added to the database
    * @throws TupleException    in case there are illegal tuples in the set
    */
+  @Override
   public int insert(Table t) {
     return insert(t, System.currentTimeMillis());
   }
@@ -741,7 +592,7 @@ public class HfcDbHandler implements DbClient {
     int nameidx = type.indexOf('#');
     if (nameidx < 0)
       nameidx = type.indexOf(':');
-    String newUri = '<' + namespace + ':'
+    String newUri = '<' + namespace //+ ':' // could also be a long namespace!
         + type.substring(nameidx + 1, type.length() - 1)
         + Integer.toHexString((int) System.currentTimeMillis())
         + '_';
@@ -782,7 +633,7 @@ public class HfcDbHandler implements DbClient {
     return vals.isEmpty() ? VALUE_INVALID : vals.iterator().next();
   }
 
-  protected boolean isOfType(String uri, String classUri) {
+  public boolean isOfType(String uri, String classUri) {
     if (uri == null) return false;
     try {
       return getMultiValue(uri, "<rdf:type>").contains(classUri);
@@ -792,7 +643,7 @@ public class HfcDbHandler implements DbClient {
     return false;
   }
 
-  protected String getProfessionalFromToken(String authToken) {
+  public String getProfessionalFromToken(String authToken) {
     String uri = getUriFromToken(authToken);
     if (isOfType(uri, "<dom:Professional>")) return uri;
     return null;
@@ -802,23 +653,23 @@ public class HfcDbHandler implements DbClient {
   // Security Token methods
   // ######################################################################
 
-  protected void registerToken(String authToken, String uri) {
+  public void registerToken(String authToken, String uri) {
     logger.info("Register token for {}", uri);
     _currentTokens.put(authToken, uri);
     this._userCache.initUser(uri);
   }
 
-  protected void unregisterToken(String authToken) {
+  public void unregisterToken(String authToken) {
     logger.info("Unregister token for {}", getUriFromToken(authToken));
     _currentTokens.remove(authToken);
   }
 
-  protected boolean tokenMatchesUri(String authToken, String uri) {
+  public boolean tokenMatchesUri(String authToken, String uri) {
     String u = getUriFromToken(authToken);
     return u != null && u.equals(uri);
   }
 
-  protected String getUriFromToken(String token) {
+  public String getUriFromToken(String token) {
     return _currentTokens.get(token);
   }
 

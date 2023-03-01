@@ -9,8 +9,11 @@ import de.dfki.lt.hfc.db.TupleException;
 
 public interface DbClient {
 
-  /** Register a streaming client */
-  public void registerStreamingClient(StreamingClient sc);
+  /** Register an observer whose compute function will be called if something
+   * changed in the database
+   * @param c the StreamingClient to notify
+   */
+  public void registerStreamingClient(StreamingClient c);
 
   /** Return a new instance uri of class clazzUri in namespace
    *
@@ -63,6 +66,9 @@ public interface DbClient {
 
   /** Insert a set of tuples and add the current time stamp (not provided) */
   public int insert(Table createTable);
+
+  /** Insert a set of tuples and add the given time stamp to every tuple */
+  public int insert(Table createTable, long timestamp);
 
   /** Insert a set of tuples as is, no adding of time stamp */
   public int insertPlain(Table createTable);

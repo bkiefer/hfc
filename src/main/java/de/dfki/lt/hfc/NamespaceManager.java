@@ -1,14 +1,15 @@
 package de.dfki.lt.hfc;
 
-import de.dfki.lt.hfc.types.AnyType;
-import de.dfki.lt.hfc.types.Uri;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.StringTokenizer;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import de.dfki.lt.hfc.types.AnyType;
+import de.dfki.lt.hfc.types.Uri;
 
 /**
  * NamespaceManager implements a bidirectional mapping between strings, given by
@@ -67,6 +68,12 @@ public final class NamespaceManager {
 
     private boolean isShort;
 
+    Namespace(String shortNamespace, String longNamespace, boolean isShort) {
+      this.SHORT_NAMESPACE = shortNamespace;
+      this.LONG_NAMESPACE = longNamespace;
+      setIsShort(isShort);
+    }
+
     @Override
     public boolean equals(Object o) {
       if (this == o)
@@ -82,12 +89,6 @@ public final class NamespaceManager {
     @Override
     public int hashCode() {
       return Objects.hash(getShort(), getLong(), isShort);
-    }
-
-    Namespace(String shortNamespace, String longNamespace, boolean isShort) {
-      this.SHORT_NAMESPACE = shortNamespace;
-      this.LONG_NAMESPACE = longNamespace;
-      setIsShort(isShort);
     }
 
     /**
@@ -173,6 +174,16 @@ public final class NamespaceManager {
   public HashMap<String, Namespace> longToNs = new HashMap<String, Namespace>();
   private boolean shortIsDefault = true;
   private HashSet<Namespace> allNamespaces = new HashSet<>();
+
+
+  /** return the namespace part of the string representation of the URI */
+  public static String getNamespace(String uri) {
+    int i = uri.lastIndexOf('#');
+    if (i < 0) {
+      i = uri.lastIndexOf(':');
+    }
+    return uri.substring(0, i+1);
+  }
 
   NamespaceManager() {
     //if(instance != null)
