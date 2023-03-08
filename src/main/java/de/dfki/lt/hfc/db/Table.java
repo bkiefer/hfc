@@ -31,7 +31,7 @@ public class Table {
     rows.add(newRow);
   }
 
-  /** TODO: CANDIDATE FOR A CONVENIENCE LIBRARY FUNCTION */
+  /** Extract column number col into a plain list */
   public List<String> projectColumn(int col) {
     List<String> result = new ArrayList<String>();
     for (List<String> row : getRows()) {
