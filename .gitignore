@@ -2,6 +2,7 @@
 .classpath
 .project
 .settings
+.projectile
 bin
 **/.DS_Store
 hfc.xcodeproj
