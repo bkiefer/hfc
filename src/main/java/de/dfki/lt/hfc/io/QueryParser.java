@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.5.1.  */
+/* A Bison parser, made by GNU Bison 3.8.2.  */
 
 /* Skeleton implementation for Bison LALR(1) parsers in Java
 
-   Copyright (C) 2007-2015, 2018-2020 Free Software Foundation, Inc.
+   Copyright (C) 2007-2015, 2018-2021 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+   along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
 
 /* As a special exception, you may create a larger work that contains
    part or all of the Bison parser skeleton and distribute that work
@@ -30,10 +30,16 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
+/* DO NOT RELY ON FEATURES THAT ARE NOT DOCUMENTED in the manual,
+   especially those whose name start with YY_ or yy_.  They are
+   private implementation details that can be changed or removed.  */
+
 package de.dfki.lt.hfc.io;
 
 
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
 /* "%code imports" blocks.  */
 /* "QueryParser.y":3  */
 
@@ -54,7 +60,7 @@ import de.dfki.lt.hfc.RuleStore;
 
 @SuppressWarnings({"unchecked", "unused"})
 
-/* "QueryParser.java":58  */
+/* "QueryParser.java":64  */
 
 /**
  * A Bison parser, automatically generated from <tt>QueryParser.y</tt>.
@@ -63,11 +69,12 @@ import de.dfki.lt.hfc.RuleStore;
  */
 public class QueryParser
 {
-    /** Version number for the Bison executable that generated this parser.  */
-  public static final String bisonVersion = "3.5.1";
+  /** Version number for the Bison executable that generated this parser.  */
+  public static final String bisonVersion = "3.8.2";
 
   /** Name of the skeleton that generated this parser.  */
   public static final String bisonSkeleton = "lalr1.java";
+
 
 
   /**
@@ -95,7 +102,7 @@ public class QueryParser
    * Locations represent a part of the input through the beginning
    * and ending positions.
    */
-  public class Location {
+  public static class Location {
     /**
      * The first, inclusive, position in the range.
      */
@@ -130,87 +137,249 @@ public class QueryParser
      * <code>Position</code> should override the <code>equals</code>
      * method.
      */
-    public String toString () {
+    public String toString() {
       if (begin.equals (end))
-        return begin.toString ();
+        return begin.toString();
       else
-        return begin.toString () + "-" + end.toString ();
+        return begin.toString() + "-" + end.toString();
     }
   }
 
-
-
-
-  private Location yylloc (YYStack rhs, int n)
+  private Location yylloc(YYStack rhs, int n)
   {
     if (0 < n)
-      return new Location (rhs.locationAt (n-1).begin, rhs.locationAt (0).end);
+      return new Location(rhs.locationAt(n-1).begin, rhs.locationAt(0).end);
     else
-      return new Location (rhs.locationAt (0).end);
+      return new Location(rhs.locationAt(0).end);
   }
+
+  public enum SymbolKind
+  {
+    S_YYEOF(0),                    /* "end of file"  */
+    S_YYerror(1),                  /* error  */
+    S_YYUNDEF(2),                  /* "invalid token"  */
+    S_ASK(3),                      /* ASK  */
+    S_SELECT(4),                   /* SELECT  */
+    S_SELECTALL(5),                /* SELECTALL  */
+    S_DISTINCT(6),                 /* DISTINCT  */
+    S_WHERE(7),                    /* WHERE  */
+    S_FILTER(8),                   /* FILTER  */
+    S_AGGREGATE(9),                /* AGGREGATE  */
+    S_INTERVALSTART(10),           /* INTERVALSTART  */
+    S_INTERVALEND(11),             /* INTERVALEND  */
+    S_NOTEQ(12),                   /* NOTEQ  */
+    S_EQ(13),                      /* EQ  */
+    S_URI(14),                     /* URI  */
+    S_BLANK(15),                   /* BLANK  */
+    S_VAR(16),                     /* VAR  */
+    S_ATOM(17),                    /* ATOM  */
+    S_ID(18),                      /* ID  */
+    S_ALLENRELATION(19),           /* ALLENRELATION  */
+    S_20_(20),                     /* '*'  */
+    S_21_(21),                     /* '&'  */
+    S_22_(22),                     /* ','  */
+    S_23_(23),                     /* '!'  */
+    S_24_(24),                     /* '='  */
+    S_YYACCEPT(25),                /* $accept  */
+    S_query(26),                   /* query  */
+    S_select(27),                  /* select  */
+    S_exttuple(28),                /* exttuple  */
+    S_svars(29),                   /* svars  */
+    S_vars(30),                    /* vars  */
+    S_tuples(31),                  /* tuples  */
+    S_tuple(32),                   /* tuple  */
+    S_literal(33),                 /* literal  */
+    S_interval(34),                /* interval  */
+    S_gtuples(35),                 /* gtuples  */
+    S_filter(36),                  /* filter  */
+    S_constraints(37),             /* constraints  */
+    S_constraint(38),              /* constraint  */
+    S_aggregate(39),               /* aggregate  */
+    S_funcalls(40);                /* funcalls  */
+
+
+    private final int yycode_;
+
+    SymbolKind (int n) {
+      this.yycode_ = n;
+    }
+
+    private static final SymbolKind[] values_ = {
+      SymbolKind.S_YYEOF,
+      SymbolKind.S_YYerror,
+      SymbolKind.S_YYUNDEF,
+      SymbolKind.S_ASK,
+      SymbolKind.S_SELECT,
+      SymbolKind.S_SELECTALL,
+      SymbolKind.S_DISTINCT,
+      SymbolKind.S_WHERE,
+      SymbolKind.S_FILTER,
+      SymbolKind.S_AGGREGATE,
+      SymbolKind.S_INTERVALSTART,
+      SymbolKind.S_INTERVALEND,
+      SymbolKind.S_NOTEQ,
+      SymbolKind.S_EQ,
+      SymbolKind.S_URI,
+      SymbolKind.S_BLANK,
+      SymbolKind.S_VAR,
+      SymbolKind.S_ATOM,
+      SymbolKind.S_ID,
+      SymbolKind.S_ALLENRELATION,
+      SymbolKind.S_20_,
+      SymbolKind.S_21_,
+      SymbolKind.S_22_,
+      SymbolKind.S_23_,
+      SymbolKind.S_24_,
+      SymbolKind.S_YYACCEPT,
+      SymbolKind.S_query,
+      SymbolKind.S_select,
+      SymbolKind.S_exttuple,
+      SymbolKind.S_svars,
+      SymbolKind.S_vars,
+      SymbolKind.S_tuples,
+      SymbolKind.S_tuple,
+      SymbolKind.S_literal,
+      SymbolKind.S_interval,
+      SymbolKind.S_gtuples,
+      SymbolKind.S_filter,
+      SymbolKind.S_constraints,
+      SymbolKind.S_constraint,
+      SymbolKind.S_aggregate,
+      SymbolKind.S_funcalls
+    };
+
+    static final SymbolKind get(int code) {
+      return values_[code];
+    }
+
+    public final int getCode() {
+      return this.yycode_;
+    }
+
+    /* Return YYSTR after stripping away unnecessary quotes and
+       backslashes, so that it's suitable for yyerror.  The heuristic is
+       that double-quoting is unnecessary unless the string contains an
+       apostrophe, a comma, or backslash (other than backslash-backslash).
+       YYSTR is taken from yytname.  */
+    private static String yytnamerr_(String yystr)
+    {
+      if (yystr.charAt (0) == '"')
+        {
+          StringBuffer yyr = new StringBuffer();
+          strip_quotes: for (int i = 1; i < yystr.length(); i++)
+            switch (yystr.charAt(i))
+              {
+              case '\'':
+              case ',':
+                break strip_quotes;
+
+              case '\\':
+                if (yystr.charAt(++i) != '\\')
+                  break strip_quotes;
+                /* Fall through.  */
+              default:
+                yyr.append(yystr.charAt(i));
+                break;
+
+              case '"':
+                return yyr.toString();
+              }
+        }
+      return yystr;
+    }
+
+    /* YYTNAME[SYMBOL-NUM] -- String name of the symbol SYMBOL-NUM.
+       First, the terminals, then, starting at \a YYNTOKENS_, nonterminals.  */
+    private static final String[] yytname_ = yytname_init();
+  private static final String[] yytname_init()
+  {
+    return new String[]
+    {
+  "\"end of file\"", "error", "\"invalid token\"", "ASK", "SELECT",
+  "SELECTALL", "DISTINCT", "WHERE", "FILTER", "AGGREGATE", "INTERVALSTART",
+  "INTERVALEND", "NOTEQ", "EQ", "URI", "BLANK", "VAR", "ATOM", "ID",
+  "ALLENRELATION", "'*'", "'&'", "','", "'!'", "'='", "$accept", "query",
+  "select", "exttuple", "svars", "vars", "tuples", "tuple", "literal",
+  "interval", "gtuples", "filter", "constraints", "constraint",
+  "aggregate", "funcalls", null
+    };
+  }
+
+    /* The user-facing name of this symbol.  */
+    public final String getName() {
+      return yytnamerr_(yytname_[yycode_]);
+    }
+
+  };
+
 
   /**
    * Communication interface between the scanner and the Bison-generated
    * parser <tt>QueryParser</tt>.
    */
   public interface Lexer {
-    /** Token returned by the scanner to signal the end of its input.  */
-    public static final int EOF = 0;
-
-/* Tokens.  */
-    /** Token number,to be returned by the scanner.  */
+    /* Token kinds.  */
+    /** Token "end of file", to be returned by the scanner.  */
+    static final int YYEOF = 0;
+    /** Token error, to be returned by the scanner.  */
+    static final int YYerror = 256;
+    /** Token "invalid token", to be returned by the scanner.  */
+    static final int YYUNDEF = 257;
+    /** Token ASK, to be returned by the scanner.  */
     static final int ASK = 258;
-    /** Token number,to be returned by the scanner.  */
+    /** Token SELECT, to be returned by the scanner.  */
     static final int SELECT = 259;
-    /** Token number,to be returned by the scanner.  */
+    /** Token SELECTALL, to be returned by the scanner.  */
     static final int SELECTALL = 260;
-    /** Token number,to be returned by the scanner.  */
+    /** Token DISTINCT, to be returned by the scanner.  */
     static final int DISTINCT = 261;
-    /** Token number,to be returned by the scanner.  */
+    /** Token WHERE, to be returned by the scanner.  */
     static final int WHERE = 262;
-    /** Token number,to be returned by the scanner.  */
+    /** Token FILTER, to be returned by the scanner.  */
     static final int FILTER = 263;
-    /** Token number,to be returned by the scanner.  */
+    /** Token AGGREGATE, to be returned by the scanner.  */
     static final int AGGREGATE = 264;
-    /** Token number,to be returned by the scanner.  */
+    /** Token INTERVALSTART, to be returned by the scanner.  */
     static final int INTERVALSTART = 265;
-    /** Token number,to be returned by the scanner.  */
+    /** Token INTERVALEND, to be returned by the scanner.  */
     static final int INTERVALEND = 266;
-    /** Token number,to be returned by the scanner.  */
+    /** Token NOTEQ, to be returned by the scanner.  */
     static final int NOTEQ = 267;
-    /** Token number,to be returned by the scanner.  */
+    /** Token EQ, to be returned by the scanner.  */
     static final int EQ = 268;
-    /** Token number,to be returned by the scanner.  */
+    /** Token URI, to be returned by the scanner.  */
     static final int URI = 269;
-    /** Token number,to be returned by the scanner.  */
+    /** Token BLANK, to be returned by the scanner.  */
     static final int BLANK = 270;
-    /** Token number,to be returned by the scanner.  */
+    /** Token VAR, to be returned by the scanner.  */
     static final int VAR = 271;
-    /** Token number,to be returned by the scanner.  */
+    /** Token ATOM, to be returned by the scanner.  */
     static final int ATOM = 272;
-    /** Token number,to be returned by the scanner.  */
+    /** Token ID, to be returned by the scanner.  */
     static final int ID = 273;
-    /** Token number,to be returned by the scanner.  */
+    /** Token ALLENRELATION, to be returned by the scanner.  */
     static final int ALLENRELATION = 274;
 
+    /** Deprecated, use YYEOF instead.  */
+    public static final int EOF = YYEOF;
 
     /**
      * Method to retrieve the beginning position of the last scanned token.
      * @return the position at which the last scanned token starts.
      */
-    Position getStartPos ();
+    Position getStartPos();
 
     /**
      * Method to retrieve the ending position of the last scanned token.
      * @return the first position beyond the last scanned token.
      */
-    Position getEndPos ();
+    Position getEndPos();
 
     /**
      * Method to retrieve the semantic value of the last scanned token.
      * @return the semantic value of the last scanned token.
      */
-    Object getLVal ();
+    Object getLVal();
 
     /**
      * Entry point for the scanner.  Returns the token identifier corresponding
@@ -218,25 +387,27 @@ public class QueryParser
      * and beginning/ending positions of the token.
      * @return the token identifier corresponding to the next token.
      */
-    int yylex () throws java.io.IOException, QueryParseException;
+    int yylex() throws java.io.IOException, QueryParseException;
 
     /**
-     * Entry point for error reporting.  Emits an error
-     * referring to the given location in a user-defined way.
+     * Emit an error referring to the given locationin a user-defined way.
      *
      * @param loc The location of the element to which the
-     *                error message is related
+     *                error message is related.
      * @param msg The string for the error message.
      */
-     void yyerror (Location loc, String msg);
+     void yyerror(Location loc, String msg);
+
+
   }
 
-/**
+
+  /**
    * The object doing lexical analysis for us.
    */
   private Lexer yylexer;
 
-  
+
 
 
 
@@ -244,23 +415,29 @@ public class QueryParser
    * Instantiates the Bison-generated parser.
    * @param yylexer The scanner that will supply tokens to the parser.
    */
-  public QueryParser (Lexer yylexer) 
+  public QueryParser(Lexer yylexer)
   {
-    
+
     this.yylexer = yylexer;
-    
+
   }
 
 
+
+  private int yynerrs = 0;
+
+  /**
+   * The number of syntax errors so far.
+   */
+  public final int getNumberOfErrors() { return yynerrs; }
 
   /**
    * Print an error message via the lexer.
    * Use a <code>null</code> location.
    * @param msg The error message.
    */
-  public final void yyerror (String msg)
-  {
-    yylexer.yyerror ((Location)null, msg);
+  public final void yyerror(String msg) {
+      yylexer.yyerror((Location)null, msg);
   }
 
   /**
@@ -268,9 +445,8 @@ public class QueryParser
    * @param loc The location associated with the message.
    * @param msg The error message.
    */
-  public final void yyerror (Location loc, String msg)
-  {
-    yylexer.yyerror (loc, msg);
+  public final void yyerror(Location loc, String msg) {
+      yylexer.yyerror(loc, msg);
   }
 
   /**
@@ -278,9 +454,8 @@ public class QueryParser
    * @param pos The position associated with the message.
    * @param msg The error message.
    */
-  public final void yyerror (Position pos, String msg)
-  {
-    yylexer.yyerror (new Location (pos), msg);
+  public final void yyerror(Position pos, String msg) {
+      yylexer.yyerror(new Location (pos), msg);
   }
 
 
@@ -292,65 +467,63 @@ public class QueryParser
     public int size = 16;
     public int height = -1;
 
-    public final void push (int state, Object value                            , Location loc) {
+    public final void push(int state, Object value, Location loc) {
       height++;
-      if (size == height)
-        {
-          int[] newStateStack = new int[size * 2];
-          System.arraycopy (stateStack, 0, newStateStack, 0, height);
-          stateStack = newStateStack;
-          
-          Location[] newLocStack = new Location[size * 2];
-          System.arraycopy (locStack, 0, newLocStack, 0, height);
-          locStack = newLocStack;
+      if (size == height) {
+        int[] newStateStack = new int[size * 2];
+        System.arraycopy(stateStack, 0, newStateStack, 0, height);
+        stateStack = newStateStack;
+        Location[] newLocStack = new Location[size * 2];
+        System.arraycopy(locStack, 0, newLocStack, 0, height);
+        locStack = newLocStack;
 
-          Object[] newValueStack = new Object[size * 2];
-          System.arraycopy (valueStack, 0, newValueStack, 0, height);
-          valueStack = newValueStack;
+        Object[] newValueStack = new Object[size * 2];
+        System.arraycopy(valueStack, 0, newValueStack, 0, height);
+        valueStack = newValueStack;
 
-          size *= 2;
-        }
+        size *= 2;
+      }
 
       stateStack[height] = state;
       locStack[height] = loc;
       valueStack[height] = value;
     }
 
-    public final void pop () {
-      pop (1);
+    public final void pop() {
+      pop(1);
     }
 
-    public final void pop (int num) {
+    public final void pop(int num) {
       // Avoid memory leaks... garbage collection is a white lie!
       if (0 < num) {
-        java.util.Arrays.fill (valueStack, height - num + 1, height + 1, null);
-        java.util.Arrays.fill (locStack, height - num + 1, height + 1, null);
+        java.util.Arrays.fill(valueStack, height - num + 1, height + 1, null);
+        java.util.Arrays.fill(locStack, height - num + 1, height + 1, null);
       }
       height -= num;
     }
 
-    public final int stateAt (int i) {
+    public final int stateAt(int i) {
       return stateStack[height - i];
     }
 
-    public final Location locationAt (int i) {
+
+    public final Location locationAt(int i) {
       return locStack[height - i];
     }
 
-    public final Object valueAt (int i) {
+    public final Object valueAt(int i) {
       return valueStack[height - i];
     }
 
     // Print the state stack on the debug stream.
-    public void print (java.io.PrintStream out) {
+    public void print(java.io.PrintStream out) {
       out.print ("Stack now");
 
-      for (int i = 0; i <= height; i++)
-        {
-          out.print (' ');
-          out.print (stateStack[i]);
-        }
-      out.println ();
+      for (int i = 0; i <= height; i++) {
+        out.print(' ');
+        out.print(stateStack[i]);
+      }
+      out.println();
     }
   }
 
@@ -403,16 +576,15 @@ public class QueryParser
    * @param yystate   the current state
    * @param yysym     the nonterminal to push on the stack
    */
-  private int yyLRGotoState (int yystate, int yysym)
-  {
-    int yyr = yypgoto_[yysym - yyntokens_] + yystate;
-    if (0 <= yyr && yyr <= yylast_ && yycheck_[yyr] == yystate)
+  private int yyLRGotoState(int yystate, int yysym) {
+    int yyr = yypgoto_[yysym - YYNTOKENS_] + yystate;
+    if (0 <= yyr && yyr <= YYLAST_ && yycheck_[yyr] == yystate)
       return yytable_[yyr];
     else
-      return yydefgoto_[yysym - yyntokens_];
+      return yydefgoto_[yysym - YYNTOKENS_];
   }
 
-  private int yyaction (int yyn, YYStack yystack, int yylen) 
+  private int yyaction(int yyn, YYStack yystack, int yylen)
   {
     /* If YYLEN is nonzero, implement the default value of the action:
        '$$ = $1'.  Otherwise, use the top of the stack.
@@ -420,12 +592,12 @@ public class QueryParser
        Otherwise, the following line sets YYVAL to garbage.
        This behavior is undocumented and Bison
        users should not rely upon it.  */
-    Object yyval = (0 < yylen) ? yystack.valueAt (yylen - 1) : yystack.valueAt (0);
-    Location yyloc = yylloc (yystack, yylen);
+    Object yyval = (0 < yylen) ? yystack.valueAt(yylen - 1) : yystack.valueAt(0);
+    Location yyloc = yylloc(yystack, yylen);
 
     switch (yyn)
       {
-          case 2:
+          case 2: /* query: select WHERE exttuple tuples filter aggregate  */
   if (yyn == 2)
     /* "QueryParser.y":153  */
                                                               {
@@ -435,53 +607,53 @@ public class QueryParser
                   whereClauses = ((LinkedList<List<String>>)(yystack.valueAt (2)));
                 };
   break;
-    
 
-  case 3:
+
+  case 3: /* query: ASK gtuples  */
   if (yyn == 3)
     /* "QueryParser.y":159  */
                            {
                   // TODO
                 };
   break;
-    
 
-  case 5:
+
+  case 5: /* select: SELECT DISTINCT svars  */
   if (yyn == 5)
     /* "QueryParser.y":165  */
                                       { distinct = true; };
   break;
-    
 
-  case 6:
+
+  case 6: /* select: SELECTALL svars  */
   if (yyn == 6)
     /* "QueryParser.y":166  */
                                 { expandProxy = true; };
   break;
-    
 
-  case 7:
+
+  case 7: /* select: SELECTALL DISTINCT svars  */
   if (yyn == 7)
     /* "QueryParser.y":167  */
                                          { distinct = expandProxy = true;};
   break;
-    
 
-  case 8:
+
+  case 8: /* exttuple: tuple  */
   if (yyn == 8)
     /* "QueryParser.y":170  */
                       { yyval = ((LinkedList<String>)(yystack.valueAt (0))); };
   break;
-    
 
-  case 9:
+
+  case 9: /* exttuple: interval tuple  */
   if (yyn == 9)
     /* "QueryParser.y":171  */
                                { ((List<String>)(yystack.valueAt (1))).addAll(((LinkedList<String>)(yystack.valueAt (0)))); yyval = ((List<String>)(yystack.valueAt (1))); };
   break;
-    
 
-  case 10:
+
+  case 10: /* exttuple: tuple ALLENRELATION tuple  */
   if (yyn == 10)
     /* "QueryParser.y":172  */
                                           {
@@ -490,9 +662,9 @@ public class QueryParser
                   yyval = ((LinkedList<String>)(yystack.valueAt (2)));
                 };
   break;
-    
 
-  case 11:
+
+  case 11: /* exttuple: interval tuple ALLENRELATION tuple  */
   if (yyn == 11)
     /* "QueryParser.y":177  */
                                                    {
@@ -502,9 +674,9 @@ public class QueryParser
                   yyval = ((List<String>)(yystack.valueAt (3)));
                 };
   break;
-    
 
-  case 12:
+
+  case 12: /* svars: '*'  */
   if (yyn == 12)
     /* "QueryParser.y":185  */
                     {
@@ -514,51 +686,51 @@ public class QueryParser
                   yyval = arr;
                 };
   break;
-    
 
-  case 13:
+
+  case 13: /* svars: vars  */
   if (yyn == 13)
     /* "QueryParser.y":191  */
                      { projectedVars.addAll(((LinkedList<String>)(yystack.valueAt (0)))); yyval = ((LinkedList<String>)(yystack.valueAt (0))); };
   break;
-    
 
-  case 14:
+
+  case 14: /* vars: vars VAR  */
   if (yyn == 14)
     /* "QueryParser.y":194  */
                          { ((LinkedList<String>)(yystack.valueAt (1))).add((( String )(yystack.valueAt (0)))); yyval = ((LinkedList<String>)(yystack.valueAt (1))); };
   break;
-    
 
-  case 15:
+
+  case 15: /* vars: %empty  */
   if (yyn == 15)
     /* "QueryParser.y":195  */
                        { yyval = new LinkedList<>(); };
   break;
-    
 
-  case 16:
+
+  case 16: /* tuples: '&' tuple tuples  */
   if (yyn == 16)
     /* "QueryParser.y":199  */
                                  { ((LinkedList<List<String>>)(yystack.valueAt (0))).addFirst(((LinkedList<String>)(yystack.valueAt (1)))); yyval = ((LinkedList<List<String>>)(yystack.valueAt (0))); };
   break;
-    
 
-  case 17:
+
+  case 17: /* tuples: %empty  */
   if (yyn == 17)
     /* "QueryParser.y":200  */
                        { yyval = new LinkedList<>(); };
   break;
-    
 
-  case 18:
+
+  case 18: /* tuple: literal tuple  */
   if (yyn == 18)
     /* "QueryParser.y":203  */
                               { ((LinkedList<String>)(yystack.valueAt (0))).addFirst(((String)(yystack.valueAt (1)))); yyval = ((LinkedList<String>)(yystack.valueAt (0))); };
   break;
-    
 
-  case 19:
+
+  case 19: /* tuple: literal  */
   if (yyn == 19)
     /* "QueryParser.y":204  */
                         {
@@ -567,37 +739,37 @@ public class QueryParser
                   yyval = arr;
                 };
   break;
-    
 
-  case 20:
+
+  case 20: /* literal: URI  */
   if (yyn == 20)
     /* "QueryParser.y":211  */
                     { yyval = (( String )(yystack.valueAt (0))); };
   break;
-    
 
-  case 21:
+
+  case 21: /* literal: VAR  */
   if (yyn == 21)
     /* "QueryParser.y":212  */
                     { yyval = (( String )(yystack.valueAt (0))); };
   break;
-    
 
-  case 22:
+
+  case 22: /* literal: BLANK  */
   if (yyn == 22)
     /* "QueryParser.y":213  */
                       { yyval = (( String )(yystack.valueAt (0))); };
   break;
-    
 
-  case 23:
+
+  case 23: /* literal: ATOM  */
   if (yyn == 23)
     /* "QueryParser.y":214  */
                      { yyval = (( String )(yystack.valueAt (0))); };
   break;
-    
 
-  case 24:
+
+  case 24: /* interval: INTERVALSTART ATOM ATOM INTERVALEND  */
   if (yyn == 24)
     /* "QueryParser.y":217  */
                                                     {
@@ -607,9 +779,9 @@ public class QueryParser
                   yyval = res;
                 };
   break;
-    
 
-  case 25:
+
+  case 25: /* interval: INTERVALSTART ATOM ',' ATOM INTERVALEND  */
   if (yyn == 25)
     /* "QueryParser.y":223  */
                                                         {
@@ -619,51 +791,51 @@ public class QueryParser
                   yyval = res;
                 };
   break;
-    
 
-  case 26:
+
+  case 26: /* gtuples: URI gtuples  */
   if (yyn == 26)
     /* "QueryParser.y":231  */
                             { ((LinkedList<String>)(yystack.valueAt (0))).addFirst((( String )(yystack.valueAt (1)))); yyval = ((LinkedList<String>)(yystack.valueAt (0))); };
   break;
-    
 
-  case 27:
+
+  case 27: /* gtuples: ATOM gtuples  */
   if (yyn == 27)
     /* "QueryParser.y":232  */
                              { ((LinkedList<String>)(yystack.valueAt (0))).addFirst((( String )(yystack.valueAt (1)))); yyval = ((LinkedList<String>)(yystack.valueAt (0))); };
   break;
-    
 
-  case 28:
+
+  case 28: /* gtuples: %empty  */
   if (yyn == 28)
     /* "QueryParser.y":233  */
                        { yyval = new LinkedList<>(); };
   break;
-    
 
-  case 29:
+
+  case 29: /* filter: FILTER constraints  */
   if (yyn == 29)
     /* "QueryParser.y":236  */
                                    { filterClauses = ((List<List<String>>)(yystack.valueAt (0))); };
   break;
-    
 
-  case 30:
+
+  case 30: /* filter: %empty  */
   if (yyn == 30)
     /* "QueryParser.y":237  */
                        { filterClauses = new ArrayList<List<String>>();; };
   break;
-    
 
-  case 31:
+
+  case 31: /* constraints: constraints '&' constraint  */
   if (yyn == 31)
     /* "QueryParser.y":240  */
                                            { ((List<List<String>>)(yystack.valueAt (2))).add(((List<String>)(yystack.valueAt (0)))); yyval = ((List<List<String>>)(yystack.valueAt (2))); };
   break;
-    
 
-  case 32:
+
+  case 32: /* constraints: constraint  */
   if (yyn == 32)
     /* "QueryParser.y":241  */
                            {
@@ -672,9 +844,9 @@ public class QueryParser
                   yyval = arr;
                 };
   break;
-    
 
-  case 33:
+
+  case 33: /* constraint: VAR NOTEQ literal  */
   if (yyn == 33)
     /* "QueryParser.y":248  */
                                   {
@@ -688,9 +860,9 @@ public class QueryParser
                   yyval = c;
                 };
   break;
-    
 
-  case 34:
+
+  case 34: /* constraint: VAR EQ literal  */
   if (yyn == 34)
     /* "QueryParser.y":258  */
                                {
@@ -703,9 +875,9 @@ public class QueryParser
                   yyval = c;
                 };
   break;
-    
 
-  case 35:
+
+  case 35: /* constraint: ID tuple  */
   if (yyn == 35)
     /* "QueryParser.y":267  */
                          {
@@ -714,9 +886,9 @@ public class QueryParser
                   yyval = ((LinkedList<String>)(yystack.valueAt (0)));
                 };
   break;
-    
 
-  case 36:
+
+  case 36: /* constraint: '!' ID tuple  */
   if (yyn == 36)
     /* "QueryParser.y":272  */
                              {
@@ -725,9 +897,9 @@ public class QueryParser
                   yyval = ((LinkedList<String>)(yystack.valueAt (0)));
                 };
   break;
-    
 
-  case 37:
+
+  case 37: /* constraint: VAR ID tuple  */
   if (yyn == 37)
     /* "QueryParser.y":277  */
                              {
@@ -738,9 +910,9 @@ public class QueryParser
                   yyval = ((LinkedList<String>)(yystack.valueAt (0)));
                 };
   break;
-    
 
-  case 38:
+
+  case 38: /* constraint: '!' VAR ID tuple  */
   if (yyn == 38)
     /* "QueryParser.y":284  */
                                  {
@@ -750,23 +922,23 @@ public class QueryParser
                   yyval = ((LinkedList<String>)(yystack.valueAt (0)));
                 };
   break;
-    
 
-  case 39:
+
+  case 39: /* aggregate: AGGREGATE funcalls  */
   if (yyn == 39)
     /* "QueryParser.y":292  */
                                    { aggregateClauses = ((LinkedList<List<String>>)(yystack.valueAt (0))); };
   break;
-    
 
-  case 40:
+
+  case 40: /* aggregate: %empty  */
   if (yyn == 40)
     /* "QueryParser.y":293  */
                        { aggregateClauses = Collections.emptyList(); };
   break;
-    
 
-  case 41:
+
+  case 41: /* funcalls: vars '=' ID tuple '&' funcalls  */
   if (yyn == 41)
     /* "QueryParser.y":296  */
                                                {
@@ -781,9 +953,9 @@ public class QueryParser
                   yyval = ((LinkedList<List<String>>)(yystack.valueAt (0)));
                 };
   break;
-    
 
-  case 42:
+
+  case 42: /* funcalls: vars '=' ID tuple  */
   if (yyn == 42)
     /* "QueryParser.y":307  */
                                   {
@@ -799,57 +971,20 @@ public class QueryParser
                   yyval = res;
                 };
   break;
-    
 
 
-/* "QueryParser.java":806  */
+
+/* "QueryParser.java":978  */
 
         default: break;
       }
 
-    yystack.pop (yylen);
+    yystack.pop(yylen);
     yylen = 0;
-
     /* Shift the result of the reduction.  */
-    int yystate = yyLRGotoState (yystack.stateAt (0), yyr1_[yyn]);
-    yystack.push (yystate, yyval, yyloc);
+    int yystate = yyLRGotoState(yystack.stateAt(0), yyr1_[yyn]);
+    yystack.push(yystate, yyval, yyloc);
     return YYNEWSTATE;
-  }
-
-
-  /* Return YYSTR after stripping away unnecessary quotes and
-     backslashes, so that it's suitable for yyerror.  The heuristic is
-     that double-quoting is unnecessary unless the string contains an
-     apostrophe, a comma, or backslash (other than backslash-backslash).
-     YYSTR is taken from yytname.  */
-  private final String yytnamerr_ (String yystr)
-  {
-    if (yystr.charAt (0) == '"')
-      {
-        StringBuffer yyr = new StringBuffer ();
-        strip_quotes: for (int i = 1; i < yystr.length (); i++)
-          switch (yystr.charAt (i))
-            {
-            case '\'':
-            case ',':
-              break strip_quotes;
-
-            case '\\':
-              if (yystr.charAt(++i) != '\\')
-                break strip_quotes;
-              /* Fall through.  */
-            default:
-              yyr.append (yystr.charAt (i));
-              break;
-
-            case '"':
-              return yyr.toString ();
-            }
-      }
-    else if (yystr.equals ("$end"))
-      return "end of input";
-
-    return yystr;
   }
 
 
@@ -862,16 +997,17 @@ public class QueryParser
    * @return <tt>true</tt> if the parsing succeeds.  Note that this does not
    *          imply that there were no syntax errors.
    */
-  public boolean parse () throws java.io.IOException, QueryParseException
+  public boolean parse() throws java.io.IOException, QueryParseException
 
   {
     /* @$.  */
     Location yyloc;
 
 
-    /* Lookahead and lookahead in internal form.  */
-    int yychar = yyempty_;
-    int yytoken = 0;
+    /* Lookahead token kind.  */
+    int yychar = YYEMPTY_;
+    /* Lookahead symbol kind.  */
+    SymbolKind yytoken = null;
 
     /* State.  */
     int yyn = 0;
@@ -880,8 +1016,7 @@ public class QueryParser
     YYStack yystack = new YYStack ();
     int label = YYNEWSTATE;
 
-    /* Error handling.  */
-    int yynerrs_ = 0;
+
     /* The location where the error started.  */
     Location yyerrloc = null;
 
@@ -891,10 +1026,13 @@ public class QueryParser
     /* Semantic value of the lookahead.  */
     Object yylval = null;
 
+
+
     yyerrstatus_ = 0;
+    yynerrs = 0;
 
     /* Initialize the stack.  */
-    yystack.push (yystate, yylval , yylloc);
+    yystack.push (yystate, yylval, yylloc);
 
 
 
@@ -906,7 +1044,7 @@ public class QueryParser
       case YYNEWSTATE:
 
         /* Accept?  */
-        if (yystate == yyfinal_)
+        if (yystate == YYFINAL_)
           return true;
 
         /* Take a decision.  First try without lookahead.  */
@@ -918,51 +1056,65 @@ public class QueryParser
           }
 
         /* Read a lookahead token.  */
-        if (yychar == yyempty_)
+        if (yychar == YYEMPTY_)
           {
 
             yychar = yylexer.yylex ();
-            yylval = yylexer.getLVal ();
-            yylloc = new Location (yylexer.getStartPos (),
-                            yylexer.getEndPos ());
+            yylval = yylexer.getLVal();
+            yylloc = new Location(yylexer.getStartPos(),
+                                          yylexer.getEndPos());
 
           }
 
         /* Convert token to internal form.  */
         yytoken = yytranslate_ (yychar);
 
-        /* If the proper action on seeing token YYTOKEN is to reduce or to
-           detect an error, take that action.  */
-        yyn += yytoken;
-        if (yyn < 0 || yylast_ < yyn || yycheck_[yyn] != yytoken)
-          label = YYDEFAULT;
-
-        /* <= 0 means reduce or error.  */
-        else if ((yyn = yytable_[yyn]) <= 0)
+        if (yytoken == SymbolKind.S_YYerror)
           {
-            if (yyTableValueIsError (yyn))
-              label = YYERRLAB;
-            else
-              {
-                yyn = -yyn;
-                label = YYREDUCE;
-              }
+            // The scanner already issued an error message, process directly
+            // to error recovery.  But do not keep the error token as
+            // lookahead, it is too special and may lead us to an endless
+            // loop in error recovery. */
+            yychar = Lexer.YYUNDEF;
+            yytoken = SymbolKind.S_YYUNDEF;
+            yyerrloc = yylloc;
+            label = YYERRLAB1;
           }
-
         else
           {
-            /* Shift the lookahead token.  */
-            /* Discard the token being shifted.  */
-            yychar = yyempty_;
+            /* If the proper action on seeing token YYTOKEN is to reduce or to
+               detect an error, take that action.  */
+            yyn += yytoken.getCode();
+            if (yyn < 0 || YYLAST_ < yyn || yycheck_[yyn] != yytoken.getCode()) {
+              label = YYDEFAULT;
+            }
 
-            /* Count tokens shifted since error; after three, turn off error
-               status.  */
-            if (yyerrstatus_ > 0)
-              --yyerrstatus_;
+            /* <= 0 means reduce or error.  */
+            else if ((yyn = yytable_[yyn]) <= 0)
+              {
+                if (yyTableValueIsError(yyn)) {
+                  label = YYERRLAB;
+                } else {
+                  yyn = -yyn;
+                  label = YYREDUCE;
+                }
+              }
 
-            yystate = yyn;
-            yystack.push (yystate, yylval, yylloc);
-            label = YYNEWSTATE;
+            else
+              {
+                /* Shift the lookahead token.  */
+                /* Discard the token being shifted.  */
+                yychar = YYEMPTY_;
+
+                /* Count tokens shifted since error; after three, turn off error
+                   status.  */
+                if (yyerrstatus_ > 0)
+                  --yyerrstatus_;
+
+                yystate = yyn;
+                yystack.push(yystate, yylval, yylloc);
+                label = YYNEWSTATE;
+              }
           }
         break;
 
@@ -982,8 +1134,8 @@ public class QueryParser
       `-----------------------------*/
       case YYREDUCE:
         yylen = yyr2_[yyn];
-        label = yyaction (yyn, yystack, yylen);
-        yystate = yystack.stateAt (0);
+        label = yyaction(yyn, yystack, yylen);
+        yystate = yystack.stateAt(0);
         break;
 
       /*------------------------------------.
@@ -993,10 +1145,10 @@ public class QueryParser
         /* If not already recovering from an error, report this error.  */
         if (yyerrstatus_ == 0)
           {
-            ++yynerrs_;
-            if (yychar == yyempty_)
-              yytoken = yyempty_;
-            yyerror (yylloc, yysyntax_error (yystate, yytoken));
+            ++yynerrs;
+            if (yychar == YYEMPTY_)
+              yytoken = null;
+            yyreportSyntaxError(new Context(this, yystack, yytoken, yylloc));
           }
 
         yyerrloc = yylloc;
@@ -1005,14 +1157,14 @@ public class QueryParser
             /* If just tried and failed to reuse lookahead token after an
                error, discard it.  */
 
-            if (yychar <= Lexer.EOF)
+            if (yychar <= Lexer.YYEOF)
               {
                 /* Return failure if at end of input.  */
-                if (yychar == Lexer.EOF)
+                if (yychar == Lexer.YYEOF)
                   return false;
               }
             else
-              yychar = yyempty_;
+              yychar = YYEMPTY_;
           }
 
         /* Else will try to reuse lookahead token after shifting the error
@@ -1029,7 +1181,7 @@ public class QueryParser
            this YYERROR.  */
         yystack.pop (yylen);
         yylen = 0;
-        yystate = yystack.stateAt (0);
+        yystate = yystack.stateAt(0);
         label = YYERRLAB1;
         break;
 
@@ -1039,13 +1191,15 @@ public class QueryParser
       case YYERRLAB1:
         yyerrstatus_ = 3;       /* Each real token shifted decrements this.  */
 
+        // Pop stack until we find a state that shifts the error token.
         for (;;)
           {
             yyn = yypact_[yystate];
             if (!yyPactValueIsDefault (yyn))
               {
-                yyn += yy_error_token_;
-                if (0 <= yyn && yyn <= yylast_ && yycheck_[yyn] == yy_error_token_)
+                yyn += SymbolKind.S_YYerror.getCode();
+                if (0 <= yyn && yyn <= YYLAST_
+                    && yycheck_[yyn] == SymbolKind.S_YYerror.getCode())
                   {
                     yyn = yytable_[yyn];
                     if (0 < yyn)
@@ -1058,14 +1212,15 @@ public class QueryParser
             if (yystack.height == 0)
               return false;
 
+
             yyerrloc = yystack.locationAt (0);
             yystack.pop ();
-            yystate = yystack.stateAt (0);
+            yystate = yystack.stateAt(0);
           }
 
         if (label == YYABORT)
-            /* Leave the switch.  */
-            break;
+          /* Leave the switch.  */
+          break;
 
 
         /* Muck with the stack to setup for yylloc.  */
@@ -1094,85 +1249,159 @@ public class QueryParser
 
 
 
-  // Generate an error message.
-  private String yysyntax_error (int yystate, int tok)
-  {
-    if (yyErrorVerbose)
-      {
-        /* There are many possibilities here to consider:
-           - If this state is a consistent state with a default action,
-             then the only way this function was invoked is if the
-             default action is an error action.  In that case, don't
-             check for expected tokens because there are none.
-           - The only way there can be no lookahead present (in tok) is
-             if this state is a consistent state with a default action.
-             Thus, detecting the absence of a lookahead is sufficient to
-             determine that there is no unexpected or expected token to
-             report.  In that case, just report a simple "syntax error".
-           - Don't assume there isn't a lookahead just because this
-             state is a consistent state with a default action.  There
-             might have been a previous inconsistent state, consistent
-             state with a non-default action, or user semantic action
-             that manipulated yychar.  (However, yychar is currently out
-             of scope during semantic actions.)
-           - Of course, the expected token list depends on states to
-             have correct lookahead information, and it depends on the
-             parser not to perform extra reductions after fetching a
-             lookahead from the scanner and before detecting a syntax
-             error.  Thus, state merging (from LALR or IELR) and default
-             reductions corrupt the expected token list.  However, the
-             list is correct for canonical LR with one exception: it
-             will still contain any token that will not be accepted due
-             to an error action in a later state.
-        */
-        if (tok != yyempty_)
-          {
-            /* FIXME: This method of building the message is not compatible
-               with internationalization.  */
-            StringBuffer res =
-              new StringBuffer ("syntax error, unexpected ");
-            res.append (yytnamerr_ (yytname_[tok]));
-            int yyn = yypact_[yystate];
-            if (!yyPactValueIsDefault (yyn))
-              {
-                /* Start YYX at -YYN if negative to avoid negative
-                   indexes in YYCHECK.  In other words, skip the first
-                   -YYN actions for this state because they are default
-                   actions.  */
-                int yyxbegin = yyn < 0 ? -yyn : 0;
-                /* Stay within bounds of both yycheck and yytname.  */
-                int yychecklim = yylast_ - yyn + 1;
-                int yyxend = yychecklim < yyntokens_ ? yychecklim : yyntokens_;
-                int count = 0;
-                for (int x = yyxbegin; x < yyxend; ++x)
-                  if (yycheck_[x + yyn] == x && x != yy_error_token_
-                      && !yyTableValueIsError (yytable_[x + yyn]))
-                    ++count;
-                if (count < 5)
-                  {
-                    count = 0;
-                    for (int x = yyxbegin; x < yyxend; ++x)
-                      if (yycheck_[x + yyn] == x && x != yy_error_token_
-                          && !yyTableValueIsError (yytable_[x + yyn]))
-                        {
-                          res.append (count++ == 0 ? ", expecting " : " or ");
-                          res.append (yytnamerr_ (yytname_[x]));
-                        }
-                  }
-              }
-            return res.toString ();
-          }
-      }
+  /**
+   * Information needed to get the list of expected tokens and to forge
+   * a syntax error diagnostic.
+   */
+  public static final class Context {
+    Context(QueryParser parser, YYStack stack, SymbolKind token, Location loc) {
+      yyparser = parser;
+      yystack = stack;
+      yytoken = token;
+      yylocation = loc;
+    }
 
-    return "syntax error";
+    private QueryParser yyparser;
+    private YYStack yystack;
+
+
+    /**
+     * The symbol kind of the lookahead token.
+     */
+    public final SymbolKind getToken() {
+      return yytoken;
+    }
+
+    private SymbolKind yytoken;
+
+    /**
+     * The location of the lookahead.
+     */
+    public final Location getLocation() {
+      return yylocation;
+    }
+
+    private Location yylocation;
+    static final int NTOKENS = QueryParser.YYNTOKENS_;
+
+    /**
+     * Put in YYARG at most YYARGN of the expected tokens given the
+     * current YYCTX, and return the number of tokens stored in YYARG.  If
+     * YYARG is null, return the number of expected tokens (guaranteed to
+     * be less than YYNTOKENS).
+     */
+    int getExpectedTokens(SymbolKind yyarg[], int yyargn) {
+      return getExpectedTokens (yyarg, 0, yyargn);
+    }
+
+    int getExpectedTokens(SymbolKind yyarg[], int yyoffset, int yyargn) {
+      int yycount = yyoffset;
+      int yyn = yypact_[this.yystack.stateAt(0)];
+      if (!yyPactValueIsDefault(yyn))
+        {
+          /* Start YYX at -YYN if negative to avoid negative
+             indexes in YYCHECK.  In other words, skip the first
+             -YYN actions for this state because they are default
+             actions.  */
+          int yyxbegin = yyn < 0 ? -yyn : 0;
+          /* Stay within bounds of both yycheck and yytname.  */
+          int yychecklim = YYLAST_ - yyn + 1;
+          int yyxend = yychecklim < NTOKENS ? yychecklim : NTOKENS;
+          for (int yyx = yyxbegin; yyx < yyxend; ++yyx)
+            if (yycheck_[yyx + yyn] == yyx && yyx != SymbolKind.S_YYerror.getCode()
+                && !yyTableValueIsError(yytable_[yyx + yyn]))
+              {
+                if (yyarg == null)
+                  yycount += 1;
+                else if (yycount == yyargn)
+                  return 0; // FIXME: this is incorrect.
+                else
+                  yyarg[yycount++] = SymbolKind.get(yyx);
+              }
+        }
+      if (yyarg != null && yycount == yyoffset && yyoffset < yyargn)
+        yyarg[yycount] = null;
+      return yycount - yyoffset;
+    }
+  }
+
+
+
+
+  private int yysyntaxErrorArguments(Context yyctx, SymbolKind[] yyarg, int yyargn) {
+    /* There are many possibilities here to consider:
+       - If this state is a consistent state with a default action,
+         then the only way this function was invoked is if the
+         default action is an error action.  In that case, don't
+         check for expected tokens because there are none.
+       - The only way there can be no lookahead present (in tok) is
+         if this state is a consistent state with a default action.
+         Thus, detecting the absence of a lookahead is sufficient to
+         determine that there is no unexpected or expected token to
+         report.  In that case, just report a simple "syntax error".
+       - Don't assume there isn't a lookahead just because this
+         state is a consistent state with a default action.  There
+         might have been a previous inconsistent state, consistent
+         state with a non-default action, or user semantic action
+         that manipulated yychar.  (However, yychar is currently out
+         of scope during semantic actions.)
+       - Of course, the expected token list depends on states to
+         have correct lookahead information, and it depends on the
+         parser not to perform extra reductions after fetching a
+         lookahead from the scanner and before detecting a syntax
+         error.  Thus, state merging (from LALR or IELR) and default
+         reductions corrupt the expected token list.  However, the
+         list is correct for canonical LR with one exception: it
+         will still contain any token that will not be accepted due
+         to an error action in a later state.
+    */
+    int yycount = 0;
+    if (yyctx.getToken() != null)
+      {
+        if (yyarg != null)
+          yyarg[yycount] = yyctx.getToken();
+        yycount += 1;
+        yycount += yyctx.getExpectedTokens(yyarg, 1, yyargn);
+      }
+    return yycount;
+  }
+
+
+  /**
+   * Build and emit a "syntax error" message in a user-defined way.
+   *
+   * @param ctx  The context of the error.
+   */
+  private void yyreportSyntaxError(Context yyctx) {
+      if (yyErrorVerbose) {
+          final int argmax = 5;
+          SymbolKind[] yyarg = new SymbolKind[argmax];
+          int yycount = yysyntaxErrorArguments(yyctx, yyarg, argmax);
+          String[] yystr = new String[yycount];
+          for (int yyi = 0; yyi < yycount; ++yyi) {
+              yystr[yyi] = yyarg[yyi].getName();
+          }
+          String yyformat;
+          switch (yycount) {
+              default:
+              case 0: yyformat = "syntax error"; break;
+              case 1: yyformat = "syntax error, unexpected {0}"; break;
+              case 2: yyformat = "syntax error, unexpected {0}, expecting {1}"; break;
+              case 3: yyformat = "syntax error, unexpected {0}, expecting {1} or {2}"; break;
+              case 4: yyformat = "syntax error, unexpected {0}, expecting {1} or {2} or {3}"; break;
+              case 5: yyformat = "syntax error, unexpected {0}, expecting {1} or {2} or {3} or {4}"; break;
+          }
+          yyerror(yyctx.yylocation, new MessageFormat(yyformat).format(yystr));
+      } else {
+          yyerror(yyctx.yylocation, "syntax error");
+      }
   }
 
   /**
    * Whether the given <code>yypact_</code> value indicates a defaulted state.
    * @param yyvalue   the value to check
    */
-  private static boolean yyPactValueIsDefault (int yyvalue)
-  {
+  private static boolean yyPactValueIsDefault(int yyvalue) {
     return yyvalue == yypact_ninf_;
   }
 
@@ -1181,17 +1410,16 @@ public class QueryParser
    * value indicates a syntax error.
    * @param yyvalue the value to check
    */
-  private static boolean yyTableValueIsError (int yyvalue)
-  {
+  private static boolean yyTableValueIsError(int yyvalue) {
     return yyvalue == yytable_ninf_;
   }
 
   private static final byte yypact_ninf_ = -51;
   private static final byte yytable_ninf_ = -1;
 
-  /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
+/* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-  private static final byte yypact_[] = yypact_init();
+  private static final byte[] yypact_ = yypact_init();
   private static final byte[] yypact_init()
   {
     return new byte[]
@@ -1210,7 +1438,7 @@ public class QueryParser
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
    Performed when YYTABLE does not specify something else to do.  Zero
    means the default is an error.  */
-  private static final byte yydefact_[] = yydefact_init();
+  private static final byte[] yydefact_ = yydefact_init();
   private static final byte[] yydefact_init()
   {
     return new byte[]
@@ -1227,7 +1455,7 @@ public class QueryParser
   }
 
 /* YYPGOTO[NTERM-NUM].  */
-  private static final byte yypgoto_[] = yypgoto_init();
+  private static final byte[] yypgoto_ = yypgoto_init();
   private static final byte[] yypgoto_init()
   {
     return new byte[]
@@ -1238,12 +1466,12 @@ public class QueryParser
   }
 
 /* YYDEFGOTO[NTERM-NUM].  */
-  private static final byte yydefgoto_[] = yydefgoto_init();
+  private static final byte[] yydefgoto_ = yydefgoto_init();
   private static final byte[] yydefgoto_init()
   {
     return new byte[]
     {
-      -1,     4,     5,    27,    11,    12,    33,    28,    29,    30,
+       0,     4,     5,    27,    11,    12,    33,    28,    29,    30,
        8,    41,    50,    51,    53,    64
     };
   }
@@ -1251,7 +1479,7 @@ public class QueryParser
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
    positive, shift that token.  If negative, reduce the rule whose
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
-  private static final byte yytable_[] = yytable_init();
+  private static final byte[] yytable_ = yytable_init();
   private static final byte[] yytable_init()
   {
     return new byte[]
@@ -1266,7 +1494,7 @@ public class QueryParser
     };
   }
 
-private static final byte yycheck_[] = yycheck_init();
+private static final byte[] yycheck_ = yycheck_init();
   private static final byte[] yycheck_init()
   {
     return new byte[]
@@ -1281,9 +1509,9 @@ private static final byte yycheck_[] = yycheck_init();
     };
   }
 
-/* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
-   symbol of state STATE-NUM.  */
-  private static final byte yystos_[] = yystos_init();
+/* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
+   state STATE-NUM.  */
+  private static final byte[] yystos_ = yystos_init();
   private static final byte[] yystos_init()
   {
     return new byte[]
@@ -1299,8 +1527,8 @@ private static final byte yycheck_[] = yycheck_init();
     };
   }
 
-/* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
-  private static final byte yyr1_[] = yyr1_init();
+/* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
+  private static final byte[] yyr1_ = yyr1_init();
   private static final byte[] yyr1_init()
   {
     return new byte[]
@@ -1313,8 +1541,8 @@ private static final byte yycheck_[] = yycheck_init();
     };
   }
 
-/* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
-  private static final byte yyr2_[] = yyr2_init();
+/* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
+  private static final byte[] yyr2_ = yyr2_init();
   private static final byte[] yyr2_init()
   {
     return new byte[]
@@ -1328,39 +1556,22 @@ private static final byte yycheck_[] = yycheck_init();
   }
 
 
-  /* YYTNAME[SYMBOL-NUM] -- String name of the symbol SYMBOL-NUM.
-     First, the terminals, then, starting at \a yyntokens_, nonterminals.  */
-  private static final String yytname_[] = yytname_init();
-  private static final String[] yytname_init()
-  {
-    return new String[]
-    {
-  "$end", "error", "$undefined", "ASK", "SELECT", "SELECTALL", "DISTINCT",
-  "WHERE", "FILTER", "AGGREGATE", "INTERVALSTART", "INTERVALEND", "NOTEQ",
-  "EQ", "URI", "BLANK", "VAR", "ATOM", "ID", "ALLENRELATION", "'*'", "'&'",
-  "','", "'!'", "'='", "$accept", "query", "select", "exttuple", "svars",
-  "vars", "tuples", "tuple", "literal", "interval", "gtuples", "filter",
-  "constraints", "constraint", "aggregate", "funcalls", null
-    };
-  }
-
 
 
   /* YYTRANSLATE_(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
      as returned by yylex, with out-of-bounds checking.  */
-  private static final byte yytranslate_ (int t)
+  private static final SymbolKind yytranslate_(int t)
   {
-    int user_token_number_max_ = 274;
-    byte undef_token_ = 2;
-
+    // Last valid token kind.
+    int code_max = 274;
     if (t <= 0)
-      return Lexer.EOF;
-    else if (t <= user_token_number_max_)
-      return yytranslate_table_[t];
+      return SymbolKind.S_YYEOF;
+    else if (t <= code_max)
+      return SymbolKind.get(yytranslate_table_[t]);
     else
-      return undef_token_;
+      return SymbolKind.S_YYUNDEF;
   }
-  private static final byte yytranslate_table_[] = yytranslate_table_init();
+  private static final byte[] yytranslate_table_ = yytranslate_table_init();
   private static final byte[] yytranslate_table_init()
   {
     return new byte[]
@@ -1397,15 +1608,11 @@ private static final byte yycheck_[] = yycheck_init();
   }
 
 
-  private static final byte yy_error_token_ = 1;
+  private static final int YYLAST_ = 68;
+  private static final int YYEMPTY_ = -2;
+  private static final int YYFINAL_ = 15;
+  private static final int YYNTOKENS_ = 25;
 
-  private static final int yylast_ = 68;
-  private static final int yynnts_ = 16;
-  private static final int yyempty_ = -2;
-  private static final int yyfinal_ = 15;
-  private static final int yyntokens_ = 25;
-
-/* User implementation code.  */
 /* Unqualified %code blocks.  */
 /* "QueryParser.y":45  */
 
@@ -1490,9 +1697,8 @@ private static final byte yycheck_[] = yycheck_init();
     }
   }
 
-/* "QueryParser.java":1494  */
+/* "QueryParser.java":1701  */
 
 }
-
 /* "QueryParser.y":383  */
 

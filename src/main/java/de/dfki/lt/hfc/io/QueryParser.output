@@ -19,10 +19,10 @@ Grammar
    12      | vars
 
    13 vars: vars VAR
-   14     | %empty
+   14     | ε
 
    15 tuples: '&' tuple tuples
-   16       | %empty
+   16       | ε
 
    17 tuple: literal tuple
    18      | literal
@@ -37,10 +37,10 @@ Grammar
 
    25 gtuples: URI gtuples
    26        | ATOM gtuples
-   27        | %empty
+   27        | ε
 
    28 filter: FILTER constraints
-   29       | %empty
+   29       | ε
 
    30 constraints: constraints '&' constraint
    31            | constraint
@@ -53,7 +53,7 @@ Grammar
    37           | '!' VAR ID tuple
 
    38 aggregate: AGGREGATE funcalls
-   39          | %empty
+   39          | ε
 
    40 funcalls: vars '=' ID tuple '&' funcalls
    41         | vars '=' ID tuple
@@ -140,13 +140,13 @@ Nonterminals, with rules where they appear
 
 State 0
 
-    0 $accept: . query $end
-    1 query: . select WHERE exttuple tuples filter aggregate
-    2      | . ASK gtuples
-    3 select: . SELECT svars
-    4       | . SELECT DISTINCT svars
-    5       | . SELECTALL svars
-    6       | . SELECTALL DISTINCT svars
+    0 $accept: • query $end
+    1 query: • select WHERE exttuple tuples filter aggregate
+    2      | • ASK gtuples
+    3 select: • SELECT svars
+    4       | • SELECT DISTINCT svars
+    5       | • SELECTALL svars
+    6       | • SELECTALL DISTINCT svars
 
     ASK        shift, and go to state 1
     SELECT     shift, and go to state 2
@@ -158,10 +158,10 @@ State 0
 
 State 1
 
-    2 query: ASK . gtuples
-   25 gtuples: . URI gtuples
-   26        | . ATOM gtuples
-   27        | . %empty  [$end]
+    2 query: ASK • gtuples
+   25 gtuples: • URI gtuples
+   26        | • ATOM gtuples
+   27        | ε •  [$end]
 
     URI   shift, and go to state 6
     ATOM  shift, and go to state 7
@@ -173,12 +173,12 @@ State 1
 
 State 2
 
-    3 select: SELECT . svars
-    4       | SELECT . DISTINCT svars
-   11 svars: . '*'
-   12      | . vars
-   13 vars: . vars VAR
-   14     | . %empty  [WHERE, VAR]
+    3 select: SELECT • svars
+    4       | SELECT • DISTINCT svars
+   11 svars: • '*'
+   12      | • vars
+   13 vars: • vars VAR
+   14     | ε •  [WHERE, VAR]
 
     DISTINCT  shift, and go to state 9
     '*'       shift, and go to state 10
@@ -191,12 +191,12 @@ State 2
 
 State 3
 
-    5 select: SELECTALL . svars
-    6       | SELECTALL . DISTINCT svars
-   11 svars: . '*'
-   12      | . vars
-   13 vars: . vars VAR
-   14     | . %empty  [WHERE, VAR]
+    5 select: SELECTALL • svars
+    6       | SELECTALL • DISTINCT svars
+   11 svars: • '*'
+   12      | • vars
+   13 vars: • vars VAR
+   14     | ε •  [WHERE, VAR]
 
     DISTINCT  shift, and go to state 13
     '*'       shift, and go to state 10
@@ -209,24 +209,24 @@ State 3
 
 State 4
 
-    0 $accept: query . $end
+    0 $accept: query • $end
 
     $end  shift, and go to state 15
 
 
 State 5
 
-    1 query: select . WHERE exttuple tuples filter aggregate
+    1 query: select • WHERE exttuple tuples filter aggregate
 
     WHERE  shift, and go to state 16
 
 
 State 6
 
-   25 gtuples: . URI gtuples
-   25        | URI . gtuples
-   26        | . ATOM gtuples
-   27        | . %empty  [$end]
+   25 gtuples: • URI gtuples
+   25        | URI • gtuples
+   26        | • ATOM gtuples
+   27        | ε •  [$end]
 
     URI   shift, and go to state 6
     ATOM  shift, and go to state 7
@@ -238,10 +238,10 @@ State 6
 
 State 7
 
-   25 gtuples: . URI gtuples
-   26        | . ATOM gtuples
-   26        | ATOM . gtuples
-   27        | . %empty  [$end]
+   25 gtuples: • URI gtuples
+   26        | • ATOM gtuples
+   26        | ATOM • gtuples
+   27        | ε •  [$end]
 
     URI   shift, and go to state 6
     ATOM  shift, and go to state 7
@@ -253,18 +253,18 @@ State 7
 
 State 8
 
-    2 query: ASK gtuples .
+    2 query: ASK gtuples •
 
     $default  reduce using rule 2 (query)
 
 
 State 9
 
-    4 select: SELECT DISTINCT . svars
-   11 svars: . '*'
-   12      | . vars
-   13 vars: . vars VAR
-   14     | . %empty  [WHERE, VAR]
+    4 select: SELECT DISTINCT • svars
+   11 svars: • '*'
+   12      | • vars
+   13 vars: • vars VAR
+   14     | ε •  [WHERE, VAR]
 
     '*'  shift, and go to state 10
 
@@ -276,22 +276,22 @@ State 9
 
 State 10
 
-   11 svars: '*' .
+   11 svars: '*' •
 
     $default  reduce using rule 11 (svars)
 
 
 State 11
 
-    3 select: SELECT svars .
+    3 select: SELECT svars •
 
     $default  reduce using rule 3 (select)
 
 
 State 12
 
-   12 svars: vars .  [WHERE]
-   13 vars: vars . VAR
+   12 svars: vars •  [WHERE]
+   13 vars: vars • VAR
 
     VAR  shift, and go to state 20
 
@@ -300,11 +300,11 @@ State 12
 
 State 13
 
-    6 select: SELECTALL DISTINCT . svars
-   11 svars: . '*'
-   12      | . vars
-   13 vars: . vars VAR
-   14     | . %empty  [WHERE, VAR]
+    6 select: SELECTALL DISTINCT • svars
+   11 svars: • '*'
+   12      | • vars
+   13 vars: • vars VAR
+   14     | ε •  [WHERE, VAR]
 
     '*'  shift, and go to state 10
 
@@ -316,33 +316,33 @@ State 13
 
 State 14
 
-    5 select: SELECTALL svars .
+    5 select: SELECTALL svars •
 
     $default  reduce using rule 5 (select)
 
 
 State 15
 
-    0 $accept: query $end .
+    0 $accept: query $end •
 
     $default  accept
 
 
 State 16
 
-    1 query: select WHERE . exttuple tuples filter aggregate
-    7 exttuple: . tuple
-    8         | . interval tuple
-    9         | . tuple ALLENRELATION tuple
-   10         | . interval tuple ALLENRELATION tuple
-   17 tuple: . literal tuple
-   18      | . literal
-   19 literal: . URI
-   20        | . VAR
-   21        | . BLANK
-   22        | . ATOM
-   23 interval: . INTERVALSTART ATOM ATOM INTERVALEND
-   24         | . INTERVALSTART ATOM ',' ATOM INTERVALEND
+    1 query: select WHERE • exttuple tuples filter aggregate
+    7 exttuple: • tuple
+    8         | • interval tuple
+    9         | • tuple ALLENRELATION tuple
+   10         | • interval tuple ALLENRELATION tuple
+   17 tuple: • literal tuple
+   18      | • literal
+   19 literal: • URI
+   20        | • VAR
+   21        | • BLANK
+   22        | • ATOM
+   23 interval: • INTERVALSTART ATOM ATOM INTERVALEND
+   24         | • INTERVALSTART ATOM ',' ATOM INTERVALEND
 
     INTERVALSTART  shift, and go to state 22
     URI            shift, and go to state 23
@@ -358,80 +358,80 @@ State 16
 
 State 17
 
-   25 gtuples: URI gtuples .
+   25 gtuples: URI gtuples •
 
     $default  reduce using rule 25 (gtuples)
 
 
 State 18
 
-   26 gtuples: ATOM gtuples .
+   26 gtuples: ATOM gtuples •
 
     $default  reduce using rule 26 (gtuples)
 
 
 State 19
 
-    4 select: SELECT DISTINCT svars .
+    4 select: SELECT DISTINCT svars •
 
     $default  reduce using rule 4 (select)
 
 
 State 20
 
-   13 vars: vars VAR .
+   13 vars: vars VAR •
 
     $default  reduce using rule 13 (vars)
 
 
 State 21
 
-    6 select: SELECTALL DISTINCT svars .
+    6 select: SELECTALL DISTINCT svars •
 
     $default  reduce using rule 6 (select)
 
 
 State 22
 
-   23 interval: INTERVALSTART . ATOM ATOM INTERVALEND
-   24         | INTERVALSTART . ATOM ',' ATOM INTERVALEND
+   23 interval: INTERVALSTART • ATOM ATOM INTERVALEND
+   24         | INTERVALSTART • ATOM ',' ATOM INTERVALEND
 
     ATOM  shift, and go to state 31
 
 
 State 23
 
-   19 literal: URI .
+   19 literal: URI •
 
     $default  reduce using rule 19 (literal)
 
 
 State 24
 
-   21 literal: BLANK .
+   21 literal: BLANK •
 
     $default  reduce using rule 21 (literal)
 
 
 State 25
 
-   20 literal: VAR .
+   20 literal: VAR •
 
     $default  reduce using rule 20 (literal)
 
 
 State 26
 
-   22 literal: ATOM .
+   22 literal: ATOM •
 
     $default  reduce using rule 22 (literal)
 
 
 State 27
 
-    1 query: select WHERE exttuple . tuples filter aggregate
-   15 tuples: . '&' tuple tuples
-   16       | . %empty  [$end, FILTER, AGGREGATE]
+    1 query: select WHERE exttuple • tuples filter aggregate
+   15 tuples: • '&' tuple tuples
+   16       | ε •  [$end, FILTER, AGGREGATE]
 
     '&'  shift, and go to state 32
 
@@ -442,8 +442,8 @@ State 27
 
 State 28
 
-    7 exttuple: tuple .  [$end, FILTER, AGGREGATE, '&']
-    9         | tuple . ALLENRELATION tuple
+    7 exttuple: tuple •  [$end, FILTER, AGGREGATE, '&']
+    9         | tuple • ALLENRELATION tuple
 
     ALLENRELATION  shift, and go to state 34
 
@@ -452,14 +452,14 @@ State 28
 
 State 29
 
-   17 tuple: . literal tuple
-   17      | literal . tuple
-   18      | . literal
-   18      | literal .  [$end, FILTER, AGGREGATE, ALLENRELATION, '&']
-   19 literal: . URI
-   20        | . VAR
-   21        | . BLANK
-   22        | . ATOM
+   17 tuple: • literal tuple
+   17      | literal • tuple
+   18      | • literal
+   18      | literal •  [$end, FILTER, AGGREGATE, ALLENRELATION, '&']
+   19 literal: • URI
+   20        | • VAR
+   21        | • BLANK
+   22        | • ATOM
 
     URI    shift, and go to state 23
     BLANK  shift, and go to state 24
@@ -474,14 +474,14 @@ State 29
 
 State 30
 
-    8 exttuple: interval . tuple
-   10         | interval . tuple ALLENRELATION tuple
-   17 tuple: . literal tuple
-   18      | . literal
-   19 literal: . URI
-   20        | . VAR
-   21        | . BLANK
-   22        | . ATOM
+    8 exttuple: interval • tuple
+   10         | interval • tuple ALLENRELATION tuple
+   17 tuple: • literal tuple
+   18      | • literal
+   19 literal: • URI
+   20        | • VAR
+   21        | • BLANK
+   22        | • ATOM
 
     URI    shift, and go to state 23
     BLANK  shift, and go to state 24
@@ -494,8 +494,8 @@ State 30
 
 State 31
 
-   23 interval: INTERVALSTART ATOM . ATOM INTERVALEND
-   24         | INTERVALSTART ATOM . ',' ATOM INTERVALEND
+   23 interval: INTERVALSTART ATOM • ATOM INTERVALEND
+   24         | INTERVALSTART ATOM • ',' ATOM INTERVALEND
 
     ATOM  shift, and go to state 37
     ','   shift, and go to state 38
@@ -503,13 +503,13 @@ State 31
 
 State 32
 
-   15 tuples: '&' . tuple tuples
-   17 tuple: . literal tuple
-   18      | . literal
-   19 literal: . URI
-   20        | . VAR
-   21        | . BLANK
-   22        | . ATOM
+   15 tuples: '&' • tuple tuples
+   17 tuple: • literal tuple
+   18      | • literal
+   19 literal: • URI
+   20        | • VAR
+   21        | • BLANK
+   22        | • ATOM
 
     URI    shift, and go to state 23
     BLANK  shift, and go to state 24
@@ -522,9 +522,9 @@ State 32
 
 State 33
 
-    1 query: select WHERE exttuple tuples . filter aggregate
-   28 filter: . FILTER constraints
-   29       | . %empty  [$end, AGGREGATE]
+    1 query: select WHERE exttuple tuples • filter aggregate
+   28 filter: • FILTER constraints
+   29       | ε •  [$end, AGGREGATE]
 
     FILTER  shift, and go to state 40
 
@@ -535,13 +535,13 @@ State 33
 
 State 34
 
-    9 exttuple: tuple ALLENRELATION . tuple
-   17 tuple: . literal tuple
-   18      | . literal
-   19 literal: . URI
-   20        | . VAR
-   21        | . BLANK
-   22        | . ATOM
+    9 exttuple: tuple ALLENRELATION • tuple
+   17 tuple: • literal tuple
+   18      | • literal
+   19 literal: • URI
+   20        | • VAR
+   21        | • BLANK
+   22        | • ATOM
 
     URI    shift, and go to state 23
     BLANK  shift, and go to state 24
@@ -554,15 +554,15 @@ State 34
 
 State 35
 
-   17 tuple: literal tuple .
+   17 tuple: literal tuple •
 
     $default  reduce using rule 17 (tuple)
 
 
 State 36
 
-    8 exttuple: interval tuple .  [$end, FILTER, AGGREGATE, '&']
-   10         | interval tuple . ALLENRELATION tuple
+    8 exttuple: interval tuple •  [$end, FILTER, AGGREGATE, '&']
+   10         | interval tuple • ALLENRELATION tuple
 
     ALLENRELATION  shift, and go to state 43
 
@@ -571,23 +571,23 @@ State 36
 
 State 37
 
-   23 interval: INTERVALSTART ATOM ATOM . INTERVALEND
+   23 interval: INTERVALSTART ATOM ATOM • INTERVALEND
 
     INTERVALEND  shift, and go to state 44
 
 
 State 38
 
-   24 interval: INTERVALSTART ATOM ',' . ATOM INTERVALEND
+   24 interval: INTERVALSTART ATOM ',' • ATOM INTERVALEND
 
     ATOM  shift, and go to state 45
 
 
 State 39
 
-   15 tuples: . '&' tuple tuples
-   15       | '&' tuple . tuples
-   16       | . %empty  [$end, FILTER, AGGREGATE]
+   15 tuples: • '&' tuple tuples
+   15       | '&' tuple • tuples
+   16       | ε •  [$end, FILTER, AGGREGATE]
 
     '&'  shift, and go to state 32
 
@@ -598,15 +598,15 @@ State 39
 
 State 40
 
-   28 filter: FILTER . constraints
-   30 constraints: . constraints '&' constraint
-   31            | . constraint
-   32 constraint: . VAR NOTEQ literal
-   33           | . VAR EQ literal
-   34           | . ID tuple
-   35           | . '!' ID tuple
-   36           | . VAR ID tuple
-   37           | . '!' VAR ID tuple
+   28 filter: FILTER • constraints
+   30 constraints: • constraints '&' constraint
+   31            | • constraint
+   32 constraint: • VAR NOTEQ literal
+   33           | • VAR EQ literal
+   34           | • ID tuple
+   35           | • '!' ID tuple
+   36           | • VAR ID tuple
+   37           | • '!' VAR ID tuple
 
     VAR  shift, and go to state 47
     ID   shift, and go to state 48
@@ -618,9 +618,9 @@ State 40
 
 State 41
 
-    1 query: select WHERE exttuple tuples filter . aggregate
-   38 aggregate: . AGGREGATE funcalls
-   39          | . %empty  [$end]
+    1 query: select WHERE exttuple tuples filter • aggregate
+   38 aggregate: • AGGREGATE funcalls
+   39          | ε •  [$end]
 
     AGGREGATE  shift, and go to state 52
 
@@ -631,20 +631,20 @@ State 41
 
 State 42
 
-    9 exttuple: tuple ALLENRELATION tuple .
+    9 exttuple: tuple ALLENRELATION tuple •
 
     $default  reduce using rule 9 (exttuple)
 
 
 State 43
 
-   10 exttuple: interval tuple ALLENRELATION . tuple
-   17 tuple: . literal tuple
-   18      | . literal
-   19 literal: . URI
-   20        | . VAR
-   21        | . BLANK
-   22        | . ATOM
+   10 exttuple: interval tuple ALLENRELATION • tuple
+   17 tuple: • literal tuple
+   18      | • literal
+   19 literal: • URI
+   20        | • VAR
+   21        | • BLANK
+   22        | • ATOM
 
     URI    shift, and go to state 23
     BLANK  shift, and go to state 24
@@ -657,30 +657,30 @@ State 43
 
 State 44
 
-   23 interval: INTERVALSTART ATOM ATOM INTERVALEND .
+   23 interval: INTERVALSTART ATOM ATOM INTERVALEND •
 
     $default  reduce using rule 23 (interval)
 
 
 State 45
 
-   24 interval: INTERVALSTART ATOM ',' ATOM . INTERVALEND
+   24 interval: INTERVALSTART ATOM ',' ATOM • INTERVALEND
 
     INTERVALEND  shift, and go to state 55
 
 
 State 46
 
-   15 tuples: '&' tuple tuples .
+   15 tuples: '&' tuple tuples •
 
     $default  reduce using rule 15 (tuples)
 
 
 State 47
 
-   32 constraint: VAR . NOTEQ literal
-   33           | VAR . EQ literal
-   36           | VAR . ID tuple
+   32 constraint: VAR • NOTEQ literal
+   33           | VAR • EQ literal
+   36           | VAR • ID tuple
 
     NOTEQ  shift, and go to state 56
     EQ     shift, and go to state 57
@@ -689,13 +689,13 @@ State 47
 
 State 48
 
-   17 tuple: . literal tuple
-   18      | . literal
-   19 literal: . URI
-   20        | . VAR
-   21        | . BLANK
-   22        | . ATOM
-   34 constraint: ID . tuple
+   17 tuple: • literal tuple
+   18      | • literal
+   19 literal: • URI
+   20        | • VAR
+   21        | • BLANK
+   22        | • ATOM
+   34 constraint: ID • tuple
 
     URI    shift, and go to state 23
     BLANK  shift, and go to state 24
@@ -708,8 +708,8 @@ State 48
 
 State 49
 
-   35 constraint: '!' . ID tuple
-   37           | '!' . VAR ID tuple
+   35 constraint: '!' • ID tuple
+   37           | '!' • VAR ID tuple
 
     VAR  shift, and go to state 60
     ID   shift, and go to state 61
@@ -717,8 +717,8 @@ State 49
 
 State 50
 
-   28 filter: FILTER constraints .  [$end, AGGREGATE]
-   30 constraints: constraints . '&' constraint
+   28 filter: FILTER constraints •  [$end, AGGREGATE]
+   30 constraints: constraints • '&' constraint
 
     '&'  shift, and go to state 62
 
@@ -727,18 +727,18 @@ State 50
 
 State 51
 
-   31 constraints: constraint .
+   31 constraints: constraint •
 
     $default  reduce using rule 31 (constraints)
 
 
 State 52
 
-   13 vars: . vars VAR
-   14     | . %empty
-   38 aggregate: AGGREGATE . funcalls
-   40 funcalls: . vars '=' ID tuple '&' funcalls
-   41         | . vars '=' ID tuple
+   13 vars: • vars VAR
+   14     | ε •
+   38 aggregate: AGGREGATE • funcalls
+   40 funcalls: • vars '=' ID tuple '&' funcalls
+   41         | • vars '=' ID tuple
 
     $default  reduce using rule 14 (vars)
 
@@ -748,32 +748,32 @@ State 52
 
 State 53
 
-    1 query: select WHERE exttuple tuples filter aggregate .
+    1 query: select WHERE exttuple tuples filter aggregate •
 
     $default  reduce using rule 1 (query)
 
 
 State 54
 
-   10 exttuple: interval tuple ALLENRELATION tuple .
+   10 exttuple: interval tuple ALLENRELATION tuple •
 
     $default  reduce using rule 10 (exttuple)
 
 
 State 55
 
-   24 interval: INTERVALSTART ATOM ',' ATOM INTERVALEND .
+   24 interval: INTERVALSTART ATOM ',' ATOM INTERVALEND •
 
     $default  reduce using rule 24 (interval)
 
 
 State 56
 
-   19 literal: . URI
-   20        | . VAR
-   21        | . BLANK
-   22        | . ATOM
-   32 constraint: VAR NOTEQ . literal
+   19 literal: • URI
+   20        | • VAR
+   21        | • BLANK
+   22        | • ATOM
+   32 constraint: VAR NOTEQ • literal
 
     URI    shift, and go to state 23
     BLANK  shift, and go to state 24
@@ -785,11 +785,11 @@ State 56
 
 State 57
 
-   19 literal: . URI
-   20        | . VAR
-   21        | . BLANK
-   22        | . ATOM
-   33 constraint: VAR EQ . literal
+   19 literal: • URI
+   20        | • VAR
+   21        | • BLANK
+   22        | • ATOM
+   33 constraint: VAR EQ • literal
 
     URI    shift, and go to state 23
     BLANK  shift, and go to state 24
@@ -801,13 +801,13 @@ State 57
 
 State 58
 
-   17 tuple: . literal tuple
-   18      | . literal
-   19 literal: . URI
-   20        | . VAR
-   21        | . BLANK
-   22        | . ATOM
-   36 constraint: VAR ID . tuple
+   17 tuple: • literal tuple
+   18      | • literal
+   19 literal: • URI
+   20        | • VAR
+   21        | • BLANK
+   22        | • ATOM
+   36 constraint: VAR ID • tuple
 
     URI    shift, and go to state 23
     BLANK  shift, and go to state 24
@@ -820,27 +820,27 @@ State 58
 
 State 59
 
-   34 constraint: ID tuple .
+   34 constraint: ID tuple •
 
     $default  reduce using rule 34 (constraint)
 
 
 State 60
 
-   37 constraint: '!' VAR . ID tuple
+   37 constraint: '!' VAR • ID tuple
 
     ID  shift, and go to state 68
 
 
 State 61
 
-   17 tuple: . literal tuple
-   18      | . literal
-   19 literal: . URI
-   20        | . VAR
-   21        | . BLANK
-   22        | . ATOM
-   35 constraint: '!' ID . tuple
+   17 tuple: • literal tuple
+   18      | • literal
+   19 literal: • URI
+   20        | • VAR
+   21        | • BLANK
+   22        | • ATOM
+   35 constraint: '!' ID • tuple
 
     URI    shift, and go to state 23
     BLANK  shift, and go to state 24
@@ -853,13 +853,13 @@ State 61
 
 State 62
 
-   30 constraints: constraints '&' . constraint
-   32 constraint: . VAR NOTEQ literal
-   33           | . VAR EQ literal
-   34           | . ID tuple
-   35           | . '!' ID tuple
-   36           | . VAR ID tuple
-   37           | . '!' VAR ID tuple
+   30 constraints: constraints '&' • constraint
+   32 constraint: • VAR NOTEQ literal
+   33           | • VAR EQ literal
+   34           | • ID tuple
+   35           | • '!' ID tuple
+   36           | • VAR ID tuple
+   37           | • '!' VAR ID tuple
 
     VAR  shift, and go to state 47
     ID   shift, and go to state 48
@@ -870,9 +870,9 @@ State 62
 
 State 63
 
-   13 vars: vars . VAR
-   40 funcalls: vars . '=' ID tuple '&' funcalls
-   41         | vars . '=' ID tuple
+   13 vars: vars • VAR
+   40 funcalls: vars • '=' ID tuple '&' funcalls
+   41         | vars • '=' ID tuple
 
     VAR  shift, and go to state 20
     '='  shift, and go to state 71
@@ -880,41 +880,41 @@ State 63
 
 State 64
 
-   38 aggregate: AGGREGATE funcalls .
+   38 aggregate: AGGREGATE funcalls •
 
     $default  reduce using rule 38 (aggregate)
 
 
 State 65
 
-   32 constraint: VAR NOTEQ literal .
+   32 constraint: VAR NOTEQ literal •
 
     $default  reduce using rule 32 (constraint)
 
 
 State 66
 
-   33 constraint: VAR EQ literal .
+   33 constraint: VAR EQ literal •
 
     $default  reduce using rule 33 (constraint)
 
 
 State 67
 
-   36 constraint: VAR ID tuple .
+   36 constraint: VAR ID tuple •
 
     $default  reduce using rule 36 (constraint)
 
 
 State 68
 
-   17 tuple: . literal tuple
-   18      | . literal
-   19 literal: . URI
-   20        | . VAR
-   21        | . BLANK
-   22        | . ATOM
-   37 constraint: '!' VAR ID . tuple
+   17 tuple: • literal tuple
+   18      | • literal
+   19 literal: • URI
+   20        | • VAR
+   21        | • BLANK
+   22        | • ATOM
+   37 constraint: '!' VAR ID • tuple
 
     URI    shift, and go to state 23
     BLANK  shift, and go to state 24
@@ -927,43 +927,43 @@ State 68
 
 State 69
 
-   35 constraint: '!' ID tuple .
+   35 constraint: '!' ID tuple •
 
     $default  reduce using rule 35 (constraint)
 
 
 State 70
 
-   30 constraints: constraints '&' constraint .
+   30 constraints: constraints '&' constraint •
 
     $default  reduce using rule 30 (constraints)
 
 
 State 71
 
-   40 funcalls: vars '=' . ID tuple '&' funcalls
-   41         | vars '=' . ID tuple
+   40 funcalls: vars '=' • ID tuple '&' funcalls
+   41         | vars '=' • ID tuple
 
     ID  shift, and go to state 73
 
 
 State 72
 
-   37 constraint: '!' VAR ID tuple .
+   37 constraint: '!' VAR ID tuple •
 
     $default  reduce using rule 37 (constraint)
 
 
 State 73
 
-   17 tuple: . literal tuple
-   18      | . literal
-   19 literal: . URI
-   20        | . VAR
-   21        | . BLANK
-   22        | . ATOM
-   40 funcalls: vars '=' ID . tuple '&' funcalls
-   41         | vars '=' ID . tuple
+   17 tuple: • literal tuple
+   18      | • literal
+   19 literal: • URI
+   20        | • VAR
+   21        | • BLANK
+   22        | • ATOM
+   40 funcalls: vars '=' ID • tuple '&' funcalls
+   41         | vars '=' ID • tuple
 
     URI    shift, and go to state 23
     BLANK  shift, and go to state 24
@@ -976,8 +976,8 @@ State 73
 
 State 74
 
-   40 funcalls: vars '=' ID tuple . '&' funcalls
-   41         | vars '=' ID tuple .  [$end]
+   40 funcalls: vars '=' ID tuple • '&' funcalls
+   41         | vars '=' ID tuple •  [$end]
 
     '&'  shift, and go to state 75
 
@@ -986,11 +986,11 @@ State 74
 
 State 75
 
-   13 vars: . vars VAR
-   14     | . %empty
-   40 funcalls: . vars '=' ID tuple '&' funcalls
-   40         | vars '=' ID tuple '&' . funcalls
-   41         | . vars '=' ID tuple
+   13 vars: • vars VAR
+   14     | ε •
+   40 funcalls: • vars '=' ID tuple '&' funcalls
+   40         | vars '=' ID tuple '&' • funcalls
+   41         | • vars '=' ID tuple
 
     $default  reduce using rule 14 (vars)
 
@@ -1000,6 +1000,6 @@ State 75
 
 State 76
 
-   40 funcalls: vars '=' ID tuple '&' funcalls .
+   40 funcalls: vars '=' ID tuple '&' funcalls •
 
     $default  reduce using rule 40 (funcalls)
