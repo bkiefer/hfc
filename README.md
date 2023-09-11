@@ -1,5 +1,7 @@
 # HFC: HUK's Forward Chainer
 
+[![mvn build](https://github.com/bkiefer/hfc/actions/workflows/maven.yml/badge.svg)](https://github.com/bkiefer/hfc/actions/workflows/maven.yml)
+
 ## Introduction
 
 HFC is a bottom-up forward chainer and semantic repository implemented
