@@ -26,7 +26,7 @@
     <dependency>
       <groupId>de.dfki.mlt</groupId>
       <artifactId>graff</artifactId>
-      <version>0.7.3</version>
+      <version>[0.7.3,)</version>
     </dependency>
 
     <dependency>
