@@ -212,6 +212,14 @@ public class XsdSimpleTypesTest {
     xi = new XsdInt(2);
     assertEquals(2, xi.value);
     assertEquals("\"2\"^^<xsd:int>", xi.toString());
+    
+    XsdInt xn = (XsdInt)XsdAnySimpleType.getXsdObject(
+        "\"42\"^^<xsd:nonNegativeInteger>");
+    assertEquals(42, xn.value);
+    
+    xn = (XsdInt)XsdAnySimpleType.getXsdObject(
+        "\"42\"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger>");
+    assertEquals(42, xn.value);    
   }
 
   @Test

@@ -117,7 +117,29 @@ public abstract class XsdAnySimpleType extends AnyType {
     }
   }
 
-
+  /**
+   * Register the Java class for a simple xsd type here, so that it can be used
+   * by the factory method getXsdObject
+   *
+   * @param clazz The class object of some XsdAnySimpleType type
+   * @param forms The short and long form of the type tag
+   */
+  @SuppressWarnings({"unchecked"})
+  protected static void registerXsdClass(Class clazz, String... names) {
+    try {
+      Constructor<XsdAnySimpleType> constructor =
+              clazz.getConstructor(String.class);
+      for (String name : names) {
+        String shortname = '<' + NS.getShort() + ":" + name + '>';
+        String longname = '<' + NS.getLong() + name + '>';
+        typeToConstructor.put(shortname, constructor);
+        typeToConstructor.put(longname, constructor);
+      }
+    } catch (Exception e) {  // should never happen
+      throw new RuntimeException(e);
+    }
+  }
+  
   /**
    * Register a constructor for a simple xsd type here, so that it can be used
    * by the factory method getXsdObject
@@ -137,6 +159,10 @@ public abstract class XsdAnySimpleType extends AnyType {
     }
   }
 
+  public static boolean isSimpleXsdType(String clazz) {
+    return typeToConstructor.containsKey(clazz);
+  }
+  
 
   /**
    * A factory method to generate the correct AnyType subclass from the string

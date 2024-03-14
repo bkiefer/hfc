@@ -7,14 +7,19 @@ import java.util.Objects;
  * @version Fri Jan 29 19:30:23 CET 2016
  * @since JDK 1.5
  */
-public final class XsdInt extends XsdNumber {
+public class XsdInt extends XsdNumber {
   public final static String NAME = "int";
+  
+  public final static String[] name_aliases = 
+    { NAME,
+      "nonNegativeInteger", "positiveInteger",
+      "nonPositiveInteger", "negativeInteger" };
 
   public final static String SHORT_NAME = '<' + NS.getShort() + ":" + NAME + '>';
   public final static String LONG_NAME = '<' + NS.getLong() + NAME + '>';
 
   static {
-    registerConstructor(XsdInt.class, SHORT_NAME, LONG_NAME);
+    registerXsdClass(XsdInt.class, name_aliases);
     registerConverter(int.class, XsdInt.class);
     registerConverter(Integer.class, XsdInt.class);
   }
