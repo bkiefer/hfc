@@ -26,6 +26,7 @@ predicatePosition: 1
 objectPosition: 2
 rdfCheck: true
 exitOnError: true
+computeClosure: true
 
 ruleFiles:
 

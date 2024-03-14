@@ -92,7 +92,7 @@ public class QRelationFactory {
       try {
         @SuppressWarnings("rawtypes")
         Class c = Class.forName(RELATION_PATH + relation);
-        logger.info("Class for name {}: {}", relation, c);
+        logger.debug("Class for name {}: {}", relation, c);
       } catch (ClassNotFoundException e) {
         // Should never happen
         throw new RuntimeException(e);

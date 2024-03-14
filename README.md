@@ -18,7 +18,7 @@ forward chainers and tableaux-based reasoners.
 
 The following installation instructions are tested on Ubuntu 22.04
 
-Prerequisites for installing VOnDA are:
+Prerequisites for installing HFC are:
 - OpenJDK 11, maven build tool, and git
   ```
   sudo apt install openjdk-11-jdk maven git

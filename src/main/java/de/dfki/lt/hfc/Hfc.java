@@ -206,9 +206,9 @@ public class Hfc {
   }
 
   public boolean computeClosure() {
-    logger.info("Compute closure starting with {} tuples",
-        _tupleStore.allTuples.size());
-    if (null != _forwardChainer) {
+    if (null != _forwardChainer && config.isComputingClosure()) {
+      logger.info("Compute closure starting with {} tuples",
+          _tupleStore.allTuples.size());
       long startClosure = System.currentTimeMillis();
       boolean result =  _forwardChainer.computeClosure(
           config.getIterations(), config.isCleanupRepository());
@@ -217,13 +217,17 @@ public class Hfc {
           endClosure - startClosure, _tupleStore.allTuples.size());
       return result;
     } else {
+      logger.info("No closure, only cleanup with {} tuples",
+          _tupleStore.allTuples.size());
       _tupleStore.cleanUpTupleStore();
+      logger.info("cleanup finished with {} tuples",
+          _tupleStore.allTuples.size());
       return false;
     }
   }
 
   public boolean computeClosure(int iterations, boolean cleanupRepository) {
-    if (null != _forwardChainer){
+    if (null != _forwardChainer && config.isComputingClosure()){
       return _forwardChainer.computeClosure(iterations, cleanupRepository);
     } else {
       _tupleStore.cleanUpTupleStore();
@@ -233,18 +237,13 @@ public class Hfc {
 
 
   public boolean computeClosure(Set<int[]> newTuples){
-    if (null != _forwardChainer) {
-      return _forwardChainer.computeClosure(newTuples, config.getIterations(), true);
-    } else {
-      _tupleStore.cleanUpTupleStore();
-      return false;
-    }
+    return computeClosure(newTuples, config.getIterations(), true);
   }
 
 
   public boolean computeClosure(Set<int[]> newTuples, int iterations, boolean cleanupRepository){
-    if (null != _forwardChainer) {
-      return _forwardChainer.computeClosure(newTuples,iterations, cleanupRepository);
+    if (null != _forwardChainer && config.isComputingClosure()) {
+      return _forwardChainer.computeClosure(newTuples, iterations, cleanupRepository);
     } else {
       _tupleStore.cleanUpTupleStore();
       return false;

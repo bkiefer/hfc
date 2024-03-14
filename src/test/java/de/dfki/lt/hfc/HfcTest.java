@@ -132,6 +132,7 @@ public class HfcTest {
   boolean cleanUpRepository = true;
   TestConfig c = TestConfig.getDefaultConfig();
   c.put(Config.CLEANUP, true);
+  c.setComputeClosure(true);
   Hfc fc = new Hfc(c);
   //no tuples were generated, so returns false
   assertEquals(fc.computeClosure(newTuples, noOfIterations, cleanUpRepository), false);

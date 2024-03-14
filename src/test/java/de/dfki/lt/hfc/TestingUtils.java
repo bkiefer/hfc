@@ -291,6 +291,7 @@ public class TestingUtils {
         + "noOfAtoms: 100000\n"
         + "eqReduction: false\n"
         + "garbageCollection: false\n"
+        + "computeClosure: true\n"
         + "cleanUpRepository: true\n"
         + "shortIsDefault: true\n"
         + "namespaces:\n"

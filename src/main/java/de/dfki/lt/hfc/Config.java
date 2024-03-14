@@ -47,6 +47,7 @@ public class Config {
   public static final String ITERATIONS = "iterations";
   public static final String SHORTISDEFAULT = "shortIsDefault";
   public static final String CLEANUP = "cleanUpRepository";
+  public static final String COMPUTECLOSURE = "computeClosure";
   public static final String MINARGS = "minArgs";
   public static final String MAXARGS = "maxArgs";
   public static final String SUBJECTPOS = "subjectPosition";
@@ -375,6 +376,14 @@ public class Config {
     return (Boolean) configs.get(CLEANUP);
   }
 
+  public boolean isComputingClosure() {
+    return (Boolean) configs.get(COMPUTECLOSURE);
+  }
+  
+  public void setComputeClosure(boolean val) {
+    configs.put(COMPUTECLOSURE, val);
+  }
+  
   public boolean isGarbageCollection() {
     return (Boolean) configs.get(GARBAGECOLLECTION);
   }
