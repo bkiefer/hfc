@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import de.dfki.lt.hfc.db.QueryResult;
 import de.dfki.lt.hfc.db.TupleException;
 
 
@@ -57,7 +58,37 @@ public class RdfClass {
       "select distinct ?clzz where {} <rdfs:range> ?clzz";
   private static final String GET_PROPERTY_TYPE =
       "select distinct ?type where {} <rdf:type> ?type";
-  */
+      */
+
+  // TODO not sure if we get all class restrictions right, not sure about the
+  // onClass for example
+
+  private static final String[] restrictionProps =
+    { "<owl:someValuesFrom>","<owl:allValuesFrom>", "<owl:onClass>" };
+  
+  // first argument is domain class, second is restriction property
+  private static final String GET_DEFINED_PROPERTIES_RESTRICTION =
+      "select distinct ?pred ?range where ?restriction <owl:onProperty> ?pred ?_ "
+          + "& {} <rdfs:subClassOf> ?restriction ?_ "
+          + "& ?restriction <rdf:type> <owl:Restriction> ?_ "
+          + "& ?restriction {} ?range ?_";
+ 
+  private static final String GET_DEFINED_PROPERTIES_RESTRICTION_SINGLE_VALUE =
+      "select distinct ?pred ?range where ?restriction <owl:onProperty> ?pred ?_ "
+          + "& {} <rdfs:subClassOf> ?restriction ?_ "
+          + "& ?restriction <rdf:type> <owl:Restriction> ?_ " 
+          + "& ?restriction <owl:hasValue> ?val & ?val <rdf:type> ?range ?_";
+  
+
+  private static final String[] restrictionFunctional =
+    { "<owl:qualifiedCardinality>", "<owl:maxQualifiedCardinality>" };
+  
+  private static final String GET_PROPERTY_FUNCTIONAL_RESTRICTION =
+      "select distinct ?restriction where {} <rdfs:subClassOf> ?restriction ?_ "
+          + "& ?restriction <owl:onProperty> {} ?_ "
+          + "& ?restriction {} \"1\"^^<xsd:int> ?_";
+  
+  /**/
 
   // Version for quadruples
   private static final String GET_DEFINED_PROPERTIES =
@@ -140,6 +171,27 @@ public class RdfClass {
     return null;
   }
 
+  
+  private void checkPropertyType(String property) {
+    Set<String> predType =
+        new HashSet<>(getValues(_proxy.selectQuery(GET_PROPERTY_TYPE, property)));
+    int type = 0;
+    if (predType.contains("<owl:DatatypeProperty>")) {
+      type += DATATYPE_PROPERTY;
+    }
+    if (predType.contains("<owl:ObjectProperty>")) {
+      type += OBJECT_PROPERTY;
+    }
+    if (predType.contains("<owl:FunctionalProperty>")) {
+      type += FUNCTIONAL_PROPERTY;
+    }
+    if ((type & (DATATYPE_PROPERTY | OBJECT_PROPERTY)) ==
+        (DATATYPE_PROPERTY | OBJECT_PROPERTY)) {
+      logger.warn("property {} is both object and datatype property", property);
+    }
+    _propertyType.put(property, type);
+  }
+  
   /** Determine all the properties defined on this class. We use our own
    *  type hierarchy structure to determine this because constructs such as
    *  owl:unionOf forbid the direct use of a subClassOf query.
@@ -165,24 +217,23 @@ public class RdfClass {
     for (String property : properties) {
       _propertyRange.put(property,
           new HashSet<>(getValues(_proxy.selectQuery(GET_PROPERTY_RANGE, property))));
-      Set<String> predType =
-          new HashSet<>(getValues(_proxy.selectQuery(GET_PROPERTY_TYPE, property)));
-      int type = 0;
-      if (predType.contains("<owl:DatatypeProperty>")) {
-        type += DATATYPE_PROPERTY;
-      }
-      if (predType.contains("<owl:ObjectProperty>")) {
-        type += OBJECT_PROPERTY;
-      }
-      if (predType.contains("<owl:FunctionalProperty>")) {
-        type += FUNCTIONAL_PROPERTY;
-      }
-      if ((type & (DATATYPE_PROPERTY | OBJECT_PROPERTY)) ==
-          (DATATYPE_PROPERTY | OBJECT_PROPERTY)) {
-        logger.warn("property {} is both object and datatype property", property);
-      }
-      _propertyType.put(property, type);
+      checkPropertyType(property);
     }
+    
+    // Now add all locally defined OWL property restrictions
+    for (String restProp: restrictionProps) {
+      QueryResult propRange = _proxy.selectQuery(GET_DEFINED_PROPERTIES_RESTRICTION, _uri, restProp);
+      
+      for (List<String> row : propRange.getTable().getRows()) {
+        String property = row.get(0);
+        String range = row.get(1);
+        HashSet<String> ranges = new HashSet<>();
+        ranges.add(range);
+        _propertyRange.put(property, ranges);
+        checkPropertyType(property);
+      }
+    }
+    
   }
 
   /** Compute the full property URI from a base name (without namespace) */
