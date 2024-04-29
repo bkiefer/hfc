@@ -315,7 +315,7 @@ public class RdfProxy implements StreamingClient {
     return newRdf;
   }
 
-  private RdfClass getMostSpecificClass(String uri)
+  public RdfClass getMostSpecificClass(String uri)
       throws TupleException, QueryException {
     Set<String> clazzUris = _client.getMultiValue(uri, "<rdf:type>");
     if (clazzUris == null || clazzUris.isEmpty()) return null;
