@@ -6,30 +6,18 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.dfki.lt.hfc.db.HfcDbHandler;
 
 public class RdfClassRestriction {
   private static final String RESOURCE_DIR = "src/test/data/";
-  private static HfcDbHandler handler;
-  RdfProxy _proxy;
-  
-  @BeforeClass
-  public static void init() {
-    handler = new HfcDbHandler(RESOURCE_DIR + "restrictions.yml");
-  }
-  
-  @Before
-  public void before() {
-    _proxy = new RdfProxy(handler);
-  }
-  
+
   @Test
   public void test() {
-    RdfClass test = _proxy.getRdfClass("<restr:Test>");
+    HfcDbHandler handler = new HfcDbHandler(RESOURCE_DIR + "restrictions.yml");
+    RdfProxy proxy = new RdfProxy(handler);
+    RdfClass test = proxy.getRdfClass("<restr:Test>");
     assertEquals(3, test.getProperties().size());
     for (String prop : test.getProperties()) {
       if (prop.contains("Object")) {
@@ -41,8 +29,27 @@ public class RdfClassRestriction {
     Set<String> propRange = test.getPropertyRange("<restr:someObjectProperty>");
     assertEquals(1, propRange.size());
     String pr = propRange.iterator().next();
-    RdfClass range = _proxy.getRdfClass(pr);
-    assertEquals(range, _proxy.getRdfClass("<restr:TestRange>"));
+    RdfClass range = proxy.getRdfClass(pr);
+    assertEquals(range, proxy.getRdfClass("<restr:TestRange>"));
+    Rdf testInstance = test.getNewInstance("dom:");
+    RdfClass clazz = proxy.getMostSpecificClass(testInstance.getURI());
+    assertEquals(test, clazz);
   }
 
+
+  /**
+   * Test that get works with restrictions, which are not owl:Class
+   * @throws TException
+   *
+   * @throws java.lang.Exception
+   */
+  @Test
+  public void testGetClassOfUnion() {
+    HfcDbHandler handler = new HfcDbHandler(RESOURCE_DIR + "unionfuck.yml");
+    RdfProxy proxy = new RdfProxy(handler);
+    RdfClass test = proxy.getRdfClass("<soho:Tool>");
+    Rdf testInstance = test.getNewInstance("cim:");
+    RdfClass clazz =  proxy.getMostSpecificClass(testInstance.getURI());
+    assertEquals(test, clazz);
+  }
 }

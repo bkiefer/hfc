@@ -1,0 +1,948 @@
+_:genid10 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:genid10 <http://www.w3.org/2002/07/owl#allValuesFrom> <http://pst.istc.cnr.it/ontologies/2019/01/soho#ProductionObject> .
+_:genid10 <http://www.w3.org/2002/07/owl#onProperty> <http://www.loa-cnr.it/ontologies/DUL.owl#isRoleOf> .
+_:genid11 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:genid11 <http://www.w3.org/2002/07/owl#allValuesFrom> <http://pst.istc.cnr.it/ontologies/2019/01/soho#RobotInterface> .
+_:genid11 <http://www.w3.org/2002/07/owl#onProperty> <http://www.loa-cnr.it/ontologies/DUL.owl#isRoleOf> .
+_:genid12 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:genid12 <http://www.w3.org/2002/07/owl#allValuesFrom> <http://pst.istc.cnr.it/ontologies/2019/01/soho#RobotInterface> .
+_:genid12 <http://www.w3.org/2002/07/owl#onProperty> <http://www.loa-cnr.it/ontologies/DUL.owl#isRoleOf> .
+_:genid13 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:genid13 <http://www.w3.org/2002/07/owl#allValuesFrom> <http://www.loa-cnr.it/ontologies/DUL.owl#Concept> .
+_:genid13 <http://www.w3.org/2002/07/owl#onProperty> <http://www.loa-cnr.it/ontologies/DUL.owl#hasPart> .
+_:genid14 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:genid14 <http://www.w3.org/2002/07/owl#onProperty> <http://www.loa-cnr.it/ontologies/DUL.owl#hasParticipant> .
+_:genid14 <http://www.w3.org/2002/07/owl#someValuesFrom> <http://www.loa-cnr.it/ontologies/DUL.owl#Object> .
+_:genid15 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:genid15 <http://www.w3.org/2002/07/owl#allValuesFrom> <http://www.loa-cnr.it/ontologies/DUL.owl#Event> .
+_:genid15 <http://www.w3.org/2002/07/owl#onProperty> <http://www.loa-cnr.it/ontologies/DUL.owl#hasConstituent> .
+_:genid16 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:genid16 <http://www.w3.org/2002/07/owl#allValuesFrom> <http://www.loa-cnr.it/ontologies/DUL.owl#Event> .
+_:genid16 <http://www.w3.org/2002/07/owl#onProperty> <http://www.loa-cnr.it/ontologies/DUL.owl#hasPart> .
+_:genid17 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:genid17 <http://www.w3.org/2002/07/owl#onProperty> <http://www.loa-cnr.it/ontologies/DUL.owl#hasLocation> .
+_:genid17 <http://www.w3.org/2002/07/owl#someValuesFrom> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+_:genid18 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:genid18 <http://www.w3.org/2002/07/owl#onProperty> <http://www.loa-cnr.it/ontologies/DUL.owl#isParticipantIn> .
+_:genid18 <http://www.w3.org/2002/07/owl#someValuesFrom> <http://www.loa-cnr.it/ontologies/DUL.owl#Event> .
+_:genid19 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:genid19 <http://www.w3.org/2002/07/owl#allValuesFrom> <http://www.loa-cnr.it/ontologies/DUL.owl#Object> .
+_:genid19 <http://www.w3.org/2002/07/owl#onProperty> <http://www.loa-cnr.it/ontologies/DUL.owl#hasConstituent> .
+_:genid1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:genid1 <http://www.w3.org/2002/07/owl#unionOf> _:genid2 .
+_:genid20 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:genid20 <http://www.w3.org/2002/07/owl#allValuesFrom> <http://www.loa-cnr.it/ontologies/DUL.owl#Object> .
+_:genid20 <http://www.w3.org/2002/07/owl#onProperty> <http://www.loa-cnr.it/ontologies/DUL.owl#hasPart> .
+_:genid21 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:genid21 <http://www.w3.org/2002/07/owl#allValuesFrom> <http://www.loa-cnr.it/ontologies/DUL.owl#Role> .
+_:genid21 <http://www.w3.org/2002/07/owl#onProperty> <http://www.loa-cnr.it/ontologies/DUL.owl#isClassifiedBy> .
+_:genid22 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:genid22 <http://www.w3.org/2002/07/owl#allValuesFrom> <http://www.loa-cnr.it/ontologies/DUL.owl#PhysicalObject> .
+_:genid22 <http://www.w3.org/2002/07/owl#onProperty> <http://www.loa-cnr.it/ontologies/DUL.owl#hasPart> .
+_:genid23 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:genid23 <http://www.w3.org/2002/07/owl#allValuesFrom> <http://www.loa-cnr.it/ontologies/DUL.owl#Object> .
+_:genid23 <http://www.w3.org/2002/07/owl#onProperty> <http://www.loa-cnr.it/ontologies/DUL.owl#classifies> .
+_:genid24 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:genid24 <http://www.w3.org/2002/07/owl#allValuesFrom> <http://www.loa-cnr.it/ontologies/DUL.owl#Role> .
+_:genid24 <http://www.w3.org/2002/07/owl#onProperty> <http://www.loa-cnr.it/ontologies/DUL.owl#hasPart> .
+_:genid25 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:genid25 <http://www.w3.org/2002/07/owl#allValuesFrom> <http://www.loa-cnr.it/ontologies/DUL.owl#SocialObject> .
+_:genid25 <http://www.w3.org/2002/07/owl#onProperty> <http://www.loa-cnr.it/ontologies/DUL.owl#hasPart> .
+_:genid2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://purl.oclc.org/NET/ssnx/ssn#SensingDevice> .
+_:genid2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:genid3 .
+_:genid3 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://purl.oclc.org/NET/ssnx/ssn#Sensor> .
+_:genid3 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+_:genid4 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:genid4 <http://www.w3.org/2002/07/owl#unionOf> _:genid5 .
+_:genid5 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://purl.oclc.org/NET/ssnx/ssn#SensingDevice> .
+_:genid5 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:genid7 .
+_:genid6 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:genid6 <http://www.w3.org/2002/07/owl#onProperty> <http://pst.istc.cnr.it/ontologies/2019/01/soho#isObservableThrough> .
+_:genid6 <http://www.w3.org/2002/07/owl#someValuesFrom> <http://purl.oclc.org/NET/ssnx/ssn#Sensor> .
+_:genid7 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> _:genid6 .
+_:genid7 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+_:genid8 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:genid8 <http://www.w3.org/2002/07/owl#onProperty> <http://www.loa-cnr.it/ontologies/DUL.owl#isRoleOf> .
+_:genid8 <http://www.w3.org/2002/07/owl#someValuesFrom> <http://www.loa-cnr.it/ontologies/DUL.owl#Object> .
+_:genid9 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:genid9 <http://www.w3.org/2002/07/owl#onProperty> <http://pst.istc.cnr.it/ontologies/2019/01/soho#hasLabel> .
+_:genid9 <http://www.w3.org/2002/07/owl#someValuesFrom> <http://www.w3.org/2001/XMLSchema#string> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#canBeAssignedTo> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#canBePerformedBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#canBePerformedBy> <http://www.w3.org/2002/07/owl#inverseOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#canPerform> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#canPerform> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#InverseFunctionalProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#canPerform> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#constrains> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#constrains> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#constrains> <http://www.w3.org/2002/07/owl#inverseOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#isConstrrainedTask> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasActuatingPart> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasActuatingPart> <http://www.w3.org/2000/01/rdf-schema#domain> <http://pst.istc.cnr.it/ontologies/2019/01/soho#RobotInterface> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasActuatingPart> <http://www.w3.org/2000/01/rdf-schema#range> <http://pst.istc.cnr.it/ontologies/2019/01/soho#RobotInterface> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasActuatingPart> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#hasRobotPart> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasCapability> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasCapability> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#hasQuality> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasCoordinate> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasCoordinate> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasCoordinate> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#hasProductionSpaceRegionValue> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasDuration> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasDuration> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#float> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasDuration> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#hasProcedureParameter> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasDurationUncertainty> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasDurationUncertainty> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#FunctionalProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasDurationUncertainty> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#float> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasDurationUncertainty> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#hasUncertainty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasEffectOn> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasEmbodiment> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasEmbodiment> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#PhysicalObject> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasFunctionParameter> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasGoal> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasGoal> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasGoal> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#hasProcedureParameter> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasId> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasId> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#FunctionalProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasId> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#long> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasInitialSetting> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasInitialSetting> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#hasProductionSetting> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasLabel> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasLabel> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#FunctionalProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasLabel> <http://www.w3.org/2000/01/rdf-schema#domain> <http://pst.istc.cnr.it/ontologies/2019/01/soho#ProductionObject> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasLabel> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasMaxSpaceCapacity> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasMaxSpaceCapacity> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#float> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasMinSpaceCapacity> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasMinSpaceCapacity> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#float> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasName> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasName> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasObservableProperty> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasObservableProperty> <http://www.w3.org/2000/01/rdf-schema#domain> <http://pst.istc.cnr.it/ontologies/2019/01/soho#ObservableFeature> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasProcedureDescription> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasProcedureDescription> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasProcedureDescription> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#hasFunctionParameter> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasProcedureId> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasProcedureId> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#FunctionalProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasProcedureId> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#long> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasProcedureId> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#hasFunctionParameter> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasProcedureName> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasProcedureName> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#FunctionalProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasProcedureName> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasProcedureName> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#hasFunctionParameter> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasProcedureParameter> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasProcedureParameter> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#hasFunctionParameter> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasProductionSetting> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasProductionSetting> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#hasSetting> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasProductionSpaceRegionValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasProductionSpaceRegionValue> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#hasRegionDataValue> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasResultingSetting> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasResultingSetting> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#hasProductionSetting> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasRobotPart> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasRobotPart> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#TransitiveProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasRobotPart> <http://www.w3.org/2000/01/rdf-schema#domain> <http://pst.istc.cnr.it/ontologies/2019/01/soho#RobotInterface> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasRobotPart> <http://www.w3.org/2000/01/rdf-schema#range> <http://pst.istc.cnr.it/ontologies/2019/01/soho#RobotInterface> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasRobotPart> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#hasPart> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasSensingPart> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasSensingPart> <http://www.w3.org/2000/01/rdf-schema#domain> <http://pst.istc.cnr.it/ontologies/2019/01/soho#RobotInterface> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasSensingPart> <http://www.w3.org/2000/01/rdf-schema#range> <http://pst.istc.cnr.it/ontologies/2019/01/soho#RobotInterface> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasSensingPart> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#hasRobotPart> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasSpaceAvailabilityLevel> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasSpaceAvailabilityLevel> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#FunctionalProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasSpaceAvailabilityLevel> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#float> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasSpaceAvailabilityLevel> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#hasProductionSpaceRegionValue> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasSurname> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasSurname> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasTarget> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasTarget> <http://www.w3.org/2000/01/rdf-schema#range> <http://pst.istc.cnr.it/ontologies/2019/01/soho#ProductionObject> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasUncertainty> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasUncertainty> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#FunctionalProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#hasUncertainty> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#hasProcedureParameter> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#isAlternativeOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#isAlternativeOf> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#associatedWith> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#isConstrainedGoal> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#isConstrrainedTask> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#isFirstGoal> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#isFirstGoal> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#isConstrainedGoal> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#isFirstTask> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#isFirstTask> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#isConstrrainedTask> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#isFunctionOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#isObservableThrough> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#isObservableThrough> <http://www.w3.org/2000/01/rdf-schema#domain> <http://pst.istc.cnr.it/ontologies/2019/01/soho#ObservableFeature> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#isObservableThrough> <http://www.w3.org/2000/01/rdf-schema#range> _:genid1 .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#isSecondGoal> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#isSecondGoal> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#isConstrainedGoal> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#isSecondTask> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#isSecondTask> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#isConstrrainedTask> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#ObservableFeature> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#ObservableFeature> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:genid4 .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#ObservableFeature> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:genid8 .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#ObservableFeature> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.loa-cnr.it/ontologies/DUL.owl#Role> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#ObservableProductionFeature> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#ProductionObject> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#ProductionObject> <http://www.w3.org/2000/01/rdf-schema#comment> "physical places and production location can be restructered to make simplifier[md]" .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#ProductionObject> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:genid9 .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#ProductionObject> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.loa-cnr.it/ontologies/DUL.owl#PhysicalObject> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#ProductionResource> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#ProductionResource> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:genid10 .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#ProductionResource> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.loa-cnr.it/ontologies/DUL.owl#Role> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#requiresCapability> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#requiresCapability> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#requires> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#requiresEndLocation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#FunctionalProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#requiresEndLocation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#requiresEndLocation> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#requiresLocation> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#requires> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#requiresLocation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#requiresLocation> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#requires> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#requiresResource> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#requiresResource> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#requires> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#requiresStartLocation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#FunctionalProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#requiresStartLocation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#requiresStartLocation> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#requiresLocation> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#RobotActingPart> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#RobotActingPart> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:genid11 .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#RobotActingPart> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.loa-cnr.it/ontologies/DUL.owl#Role> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#RobotInterface> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#RobotInterface> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#ProductionObject> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#RobotInterface> <http://www.w3.org/2002/07/owl#equivalentClass> <http://purl.oclc.org/NET/ssnx/ssn#SensingDevice> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#RobotSensingPart> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#RobotSensingPart> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:genid12 .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#RobotSensingPart> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.loa-cnr.it/ontologies/DUL.owl#Role> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#Tool> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#Tool> <http://www.w3.org/2000/01/rdf-schema#comment> "we can include different types of sensor, can be link to information entitiy or safety attributes[md]" .
+<http://pst.istc.cnr.it/ontologies/2019/01/soho#Tool> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#ProductionObject> .
+<http://purl.oclc.org/NET/ssnx/ssn#hasInput> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://purl.oclc.org/NET/ssnx/ssn#hasOutput> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://purl.oclc.org/NET/ssnx/ssn#hasProperty> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://purl.oclc.org/NET/ssnx/ssn#implements> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://purl.oclc.org/NET/ssnx/ssn#isProducedBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://purl.oclc.org/NET/ssnx/ssn#SensingDevice> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://purl.oclc.org/NET/ssnx/ssn#SensingDevice> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#ProductionObject> .
+<http://purl.oclc.org/NET/ssnx/ssn#SensingDevice> <http://www.w3.org/2002/07/owl#equivalentClass> <http://purl.oclc.org/NET/ssnx/ssn#Sensor> .
+<http://purl.oclc.org/NET/ssnx/ssn#Sensor> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://purl.oclc.org/NET/ssnx/ssn#Sensor> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://pst.istc.cnr.it/ontologies/2019/01/soho#ProductionObject> .
+<http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AnnotationProperty> .
+<http://www.ease-crc.org/ont/SOMA-OBJ.owl#hasForceValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://www.ease-crc.org/ont/SOMA-OBJ.owl#hasShapeScale> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://www.ease-crc.org/ont/SOMA.owl#array_double> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Datatype> .
+<http://www.ease-crc.org/ont/SOMA.owl#givesMeaningTo> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.ease-crc.org/ont/SOMA.owl#hasFilePath> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://www.ease-crc.org/ont/SOMA.owl#hasFrictionValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://www.ease-crc.org/ont/SOMA.owl#hasHeight> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://www.ease-crc.org/ont/SOMA.owl#hasLength> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://www.ease-crc.org/ont/SOMA.owl#hasMassValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://www.ease-crc.org/ont/SOMA.owl#hasNameString> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://www.ease-crc.org/ont/SOMA.owl#hasPositionData> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://www.ease-crc.org/ont/SOMA.owl#hasRadius> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://www.ease-crc.org/ont/SOMA.owl#hasSpaceRegion> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.ease-crc.org/ont/SOMA.owl#hasWidth> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://www.ease-crc.org/ont/SOMA.owl#isGivenMeaningBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#actsFor> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#actsFor> <http://www.w3.org/2000/01/rdf-schema#comment> "The relation holding between any Agent, and a SocialAgent. In principle, a SocialAgent requires at least one PhysicalAgent in order to act, but this dependency can be 'delegated'; e.g. a university can be acted for by a department, which on its turm is acted for by physical agents." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#actsFor> <http://www.w3.org/2000/01/rdf-schema#label> "acts for"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#actsFor> <http://www.w3.org/2000/01/rdf-schema#label> "agisce per"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#actsFor> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#actsThrough> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#actsThrough> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#actsThrough> <http://www.w3.org/2000/01/rdf-schema#comment> "The relation holding between a PhysicalAgent and a SocialAgent. In principle, a SocialAgent requires at least one PhysicalAgent in order to act, but this dependency can be 'delegated', e.g. a university can be acted for by a department, which is acted for by physical agents. AKA isActedBy" .
+<http://www.loa-cnr.it/ontologies/DUL.owl#actsThrough> <http://www.w3.org/2000/01/rdf-schema#label> "acts through"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#actsThrough> <http://www.w3.org/2000/01/rdf-schema#label> "agisce mediante"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#associatedWith> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#characterizes> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#characterizes> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between concepts and collections, where a Concept is said to characterize a Collection; it corresponds to a link between the (reified) intensional and extensional interpretations of a _proper subset of_ a (reified) class. This is different from covers, because it refers to an interpretation the entire reified class.\nE.g. the collection of vintage saxophones is characterized by the Concept 'manufactured by hand', while it gets covered by the Concept 'Saxophone' with the Parameter 'Vintage'." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#characterizes> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Concept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#characterizes> <http://www.w3.org/2000/01/rdf-schema#label> "caratterizza"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#characterizes> <http://www.w3.org/2000/01/rdf-schema#label> "characterizes"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#characterizes> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isCharacterizedBy> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#classifies> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#classifies> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between a Concept and an Entity, e.g. the Role 'student' classifies a Person 'John'."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#classifies> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Concept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#classifies> <http://www.w3.org/2000/01/rdf-schema#label> "classifica"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#classifies> <http://www.w3.org/2000/01/rdf-schema#label> "classifies"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#classifies> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#classifies> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isClassifiedBy> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Concept> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Concept> <http://www.w3.org/2000/01/rdf-schema#comment> "A Concept is a SocialObject, and isDefinedIn some Description; once defined, a Concept can be used in other Description(s). If a Concept isDefinedIn exactly one Description, see the LocalConcept class.\nThe classifies relation relates Concept(s) to Entity(s) at some TimeInterval"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Concept> <http://www.w3.org/2000/01/rdf-schema#label> "Concept"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Concept> <http://www.w3.org/2000/01/rdf-schema#label> "Concetto"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Concept> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:genid13 .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Concept> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.loa-cnr.it/ontologies/DUL.owl#SocialObject> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#conceptualizes> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#conceptualizes> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation stating that an Agent is internally representing a SocialObject: situations, descriptions, concepts, etc. E.g., 'John believes in the conspiracy theory'; 'Niels Bohr created the solar-system metaphor for the atomic theory'; 'Jacques assumes all swans are white'; 'the task force members share the attack plan'.\nConceptualizations can be distinguished into different forms, primarily based on the type of SocialObject that is conceptualized. Descriptions and concepts can be 'assumed', situations can be 'believed' or 'known', plans can be 'adopted', etc. (see ontology: http://www.loa-cnr.it/ontologies/Conceptualization.owl." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#conceptualizes> <http://www.w3.org/2000/01/rdf-schema#label> "conceptualizes"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#conceptualizes> <http://www.w3.org/2000/01/rdf-schema#label> "concettualizza"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#conceptualizes> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#SocialObject> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#conceptualizes> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isConceptualizedBy> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#concretelyExpresses> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#concretelyExpresses> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between an InformationRealization and a Description, e.g. 'the printout of the Italian Constitution concretelyExpresses the Italian Constitution'. It should be supplied also with a rule stating that the InformationRealization realizes an InformationObject that expresses the Description"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#concretelyExpresses> <http://www.w3.org/2000/01/rdf-schema#label> "concretely expresses"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#concretelyExpresses> <http://www.w3.org/2000/01/rdf-schema#label> "esprime concretamente"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#concretelyExpresses> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#SocialObject> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#concretelyExpresses> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isConcretelyExpressedBy> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#coparticipatesWith> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#coparticipatesWith> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#SymmetricProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#coparticipatesWith> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between two objects participating in a same Event; e.g., 'Vitas and Jimmy are playing tennis'." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#coparticipatesWith> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Object> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#coparticipatesWith> <http://www.w3.org/2000/01/rdf-schema#label> "copartecipa con"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#coparticipatesWith> <http://www.w3.org/2000/01/rdf-schema#label> "co-participates with"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#coparticipatesWith> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Object> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#coparticipatesWith> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#coparticipatesWith> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#covers> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#covers> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between concepts and collections, where a Concept is said to cover a Collection; it corresponds to a link between the (reified) intensional and extensional interpretations of a (reified) class.\nE.g. the collection of vintage saxophones is covered by the Concept 'Saxophone' with the Parameter 'Vintage'." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#covers> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Concept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#covers> <http://www.w3.org/2000/01/rdf-schema#label> "covers"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#covers> <http://www.w3.org/2000/01/rdf-schema#label> "ricopre"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#covers> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isCoveredBy> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#defines> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#defines> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between a Description and a Concept, e.g. a Workflow for a governmental Organization defines the Role 'officer', or 'the Italian Traffic Law defines the role Vehicle'."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#defines> <http://www.w3.org/2000/01/rdf-schema#label> "defines"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#defines> <http://www.w3.org/2000/01/rdf-schema#label> "definisce"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#defines> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Concept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#defines> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#usesConcept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#defines> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isDefinedIn> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#definesRole> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#definesRole> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between a description and a role, e.g. the recipe for a cake defines the role 'ingredient'."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#definesRole> <http://www.w3.org/2000/01/rdf-schema#label> "defines role"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#definesRole> <http://www.w3.org/2000/01/rdf-schema#label> "definisce il ruolo"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#definesRole> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Role> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#definesRole> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#defines> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#definesRole> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isRoleDefinedIn> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#definesTask> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#definesTask> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between a description and a task, e.g. the recipe for a cake defines the task 'boil'."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#definesTask> <http://www.w3.org/2000/01/rdf-schema#label> "defines task"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#definesTask> <http://www.w3.org/2000/01/rdf-schema#label> "definisce il task"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#definesTask> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#defines> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#definesTask> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isTaskDefinedIn> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#describes> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#describes> <http://www.w3.org/2000/01/rdf-schema#comment> "The relation between a Description and an Entity : a Description gives a unity to a Collection of parts (the components), or constituents, by assigning a Role to each of them in the context of a whole Object (the system).\nA same Entity can be given different descriptions, for example, an old cradle can be given a unifying Description based on the original aesthetic design, the functionality it was built for, or a new aesthetic functionality in which it can be used as a flower pot." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#describes> <http://www.w3.org/2000/01/rdf-schema#label> "describes"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#describes> <http://www.w3.org/2000/01/rdf-schema#label> "descrive"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#describes> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#describes> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isDescribedBy> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#directlyFollows> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#directlyFollows> <http://www.w3.org/2000/01/rdf-schema#comment> "The intransitive follows relation. For example, Wednesday directly precedes Thursday. Directness of precedence depends on the designer conceptualization." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#directlyFollows> <http://www.w3.org/2000/01/rdf-schema#label> "directly follows"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#directlyFollows> <http://www.w3.org/2000/01/rdf-schema#label> "segue direttamente"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#directlyFollows> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#follows> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#directlyFollows> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#directlyPrecedes> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#directlyPrecedes> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#directlyPrecedes> <http://www.w3.org/2000/01/rdf-schema#comment> "The intransitive precedes relation. For example, Monday directly precedes Tuesday. Directness of precedence depends on the designer conceptualization." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#directlyPrecedes> <http://www.w3.org/2000/01/rdf-schema#label> "directly precedes"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#directlyPrecedes> <http://www.w3.org/2000/01/rdf-schema#label> "precede direttamente"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#directlyPrecedes> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#precedes> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Entity> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Entity> <http://www.w3.org/2000/01/rdf-schema#comment> "Anything: real, possible, or imaginary, which some modeller wants to talk about for some purpose."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Entity> <http://www.w3.org/2000/01/rdf-schema#label> "Entit\u00E0"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Entity> <http://www.w3.org/2000/01/rdf-schema#label> "Entity"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Event> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Event> <http://www.w3.org/2000/01/rdf-schema#comment> "Any physical, social, or mental process, event, or state.\n\nMore theoretically, events can be classified in different ways, possibly based on 'aspect' (e.g. stative, continuous, accomplishement, achievement, etc.), on 'agentivity' (e.g. intentional, natural, etc.), or on 'typical participants' (e.g. human, physical, abstract, food, etc.).\nHere no special direction is taken, and the following explains why: events are related to observable situations, and they can have different views at a same time.\nIf a position has to be suggested here anyway, the participant-based classification of events seems the most stable and appropriate for many modelling problems.\n\n(1) Alternative aspectual views\n\nConsider a same event 'rock erosion in the Sinni valley': it can be conceptualized as an accomplishment (what has brought a certain state to occur), as an achievement (the state resulting from a previous accomplishment), as a punctual event (if we collapse the time interval of the erosion into a time point), or as a transition (something that has changed a state to a different one).\nIn the erosion case, we could therefore have good motivations to shift from one aspect to another: a) causation focus, b) effectual focus, c) historical condensation d) transition (causality).\n\nThe different views refer to the same event, but are still different: how to live with this seeming paradox?\nA typical solution e.g. in linguistics (cf. Levin's aspectual classes) and in DOLCE Full (cf. WonderWeb D18 axiomatization) is to classify events based on aspectual differences. But this solution would create different identities for a same event, where the difference is only based on the modeller's attitude.\nAn alternative solution is applied here, and exploits the notion of (observable) Situation; a Situation is a view, consistent with a Description, which can be observed of a set of entities. It can also be seen as a 'relational context' created by an observer on the basis of a 'frame'. Therefore, a Situation allows to create a context where each particular view can have a proper identity, while the Event preserves its own identity.\nFor example, ErosionAsAccomplishment is a Situation where rock erosion is observed as a process leading to a certain achievement: the conditions (roles, parameters) that suggest such view are stated in a Description, which acts as a 'theory of accomplishments'. Similarly, ErosionAsTransition is a Situation where rock erosion is observed as an event that has changed a state to another: the conditions for such interpretation are stated in a different Description, which acts as a 'theory of state transitions'.\nConsider that in no case the Event is changed or enriched in parts by the aspectual view.\n\n(2) Alternative intentionality views\n\nSimilarly to aspectual views, several intentionality views can be provided for a same Event. For example, one can investigate if an avalanche has been caused by immediate natural forces, or if there is any hint of an intentional effort to activate those natural forces.\nAlso in this case, the Event as such has not different identities, while the causal analysis generates situations with different identities, according to what Description is taken for interpreting the Event.\nOn the other hand, if the possible actions of an Agent causing the starting of an avalanche are taken as parts of the Event, then this makes its identity change, because we are adding a part to it.\nTherefore, if intentionality is a criterion to classify events or not depends on if an ontology designer wants to consider causality as a relevant dimension for events' identity.\n\n(3) Alternative participant views\n\nA slightly different case is when we consider the basic participants to an Event. In this case, the identity of the Event is affected by the participating objects, because it depends on them.\nFor example, if snow, mountain slopes, wind, waves, etc. are considered as an avalanche basic participants, or if we also want to add water, human agents, etc., makes the identity of an avalanche change.\nAnyway, this approach to event classification is based on the designer's choices, and more accurately mirrors lexical or commonsense classifications (see. e.g. WordNet 'supersenses' for verb synsets).\n\nUltimately, this discussion has no end, because realists will keep defending the idea that events in reality are not changed by the way we describe them, while constructivists will keep defending the idea that, whatever 'true reality' is about, it can't be modelled without the theoretical burden of how we observe and describe it.\nBoth positions are in principle valid, but, if taken too radically, they focus on issues that are only partly relevant to the aim of computational ontologies, which only attempt to assist domain experts in representing what they want to conceptualize about a certain portion of reality according to their own ideas.\nFor this reason, in this ontology both events and situations are allowed, together with descriptions, in order to encode the modelling needs independently from the position (if any) chosen by the designer."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Event> <http://www.w3.org/2000/01/rdf-schema#label> "Event"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Event> <http://www.w3.org/2000/01/rdf-schema#label> "Evento"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Event> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:genid14 .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Event> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:genid15 .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Event> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:genid16 .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Event> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Event> <http://www.w3.org/2002/07/owl#disjointWith> <http://www.loa-cnr.it/ontologies/DUL.owl#Object> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#executesTask> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#executesTask> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between an action and a task, e.g. 'putting some water in a pot and putting the pot on a fire until the water starts bubbling' executes the task 'boiling'."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#executesTask> <http://www.w3.org/2000/01/rdf-schema#label> "esegue il task"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#executesTask> <http://www.w3.org/2000/01/rdf-schema#label> "executes task"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#executesTask> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isClassifiedBy> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#executesTask> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isExecutedIn> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#expands> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#expands> <http://www.w3.org/2000/01/rdf-schema#comment> "A partial order relation that holds between descriptions. It represents the proper part relation between a description and another description featuring the same properties as the former, with at least one additional one.\nDescriptions can be expanded either by adding other descriptions as parts, or by refining concepts that are used by them.\nAn 'intention' to expand must be present (unless purely formal theories are considered, but even in this case a criterion of relevance is usually active)." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#expands> <http://www.w3.org/2000/01/rdf-schema#label> "espande"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#expands> <http://www.w3.org/2000/01/rdf-schema#label> "expands"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#expands> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isRelatedToDescription> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#expands> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isExpandedIn> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#expressesConcept> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#expressesConcept> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between an InformationObject and a Concept , e.g. the term \"dog\" expresses the Concept \"dog\". For expressing a relational meaning, see the more general object property: expresses" .
+<http://www.loa-cnr.it/ontologies/DUL.owl#expressesConcept> <http://www.w3.org/2000/01/rdf-schema#label> "esprime il concetto"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#expressesConcept> <http://www.w3.org/2000/01/rdf-schema#label> "expresses concept"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#expressesConcept> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Concept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#expressesConcept> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#expresses> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#expressesConcept> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isConceptExpressedBy> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#expresses> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#expresses> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between an InformationObject and a 'meaning', generalized here as a 'SocialObject'. For example: 'A Beehive is a structure in which bees are kept, typically in the form of a dome or box.' (Oxford dictionary)'; 'the term Beehive expresses the concept Beehive in my apiculture ontology'.\nThe intuition for 'meaning' is intended to be very broad. A separate, large comment is included for those who want to investigate more on what kind of meaning can be represented in what form."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#expresses> <http://www.w3.org/2000/01/rdf-schema#comment> "This is a large comment field for those who want to investigate the different uses of the 'expresses' relation for modeling different approaches to meaning characterization and modeling.\nFor example, in all these cases, some aspect of meaning is involved:\n\n- Beehive means \"a structure in which bees are kept, typically in the form of a dome or box.\" (Oxford dictionary)\n- 'Beehive' is a synonym in noun synset 09218159 \"beehive|hive\" (WordNet)\n- 'the term Beehive can be interpreted as the fact of 'being a beehive', i.e. a relation that holds for concepts such as Bee, Honey, Hosting, etc.'\n- 'the text of Italian apiculture regulation expresses a rule by which beehives should be kept at least one kilometer away from inhabited areas'\n- 'the term Beehive expresses the concept Beehive'\n- ''Beehive' for apiculturists does not express the same meaning as for, say, fishermen'\n- 'Your meaning of 'Beautiful' does not seem to fit mine'\n- ''Beehive' is formally interpreted as the set of all beehives'\n- 'from the term 'Beehive', we can build a vector space of statistically significant cooccurring terms in the documents that contain it'\n- the lexeme 'Belly' expresses the role 'Body_Part' in the frame 'ObservableBodyParts' (FrameNet)\n\nAs the examples suggest, the 'meaning of meaning' is dependent on the background approach/theory that one assumes. One can hardly make a summary of the too many approaches and theories of meaning, therefore this relation is maybe the most controversial and difficult to explain; normally, in such cases it would be better to give up formalizing.\nHowever, the usefulness of having a 'semantic abstraction' in modeling information objects is so high (e.g. for the semantic web, interoperability, reengineering, etc.), that we accept this challenging task, although without taking any particular position in the debate.\nWe provide here some examples, which we want to generalize upon when using the 'expresses' relation to model semantic aspects of social reality.\n\nIn the most common approach, lexicographers that write dictionaries, glossaries, etc. assume that the meaning of a term is a paraphrase (or 'gloss', or 'definition').\nAnother approach is provided by concept schemes like thesauri and lexicons, which assume that the meaning of a term is a 'concept', encoded as a 'lemma', 'synset', or 'descriptor'.\nStill another approach is that of psychologists and cognitive scientists, which often assume that the meaning of an information object is a concept encoded in the mind or cognitive system of an agent.\nA radically different approach is taken by social scientists and semioticians, who usually assume that meanings of an information object are spread across the communication practices in which members of a community use that object.\nAnother approach that tackles the distributed nature of meaning is assumed by geometrical models of semantics, which assume that the meaning of an InformationObject (e.g. a word) results from the set of informational contexts (e.g. within texts) in which that object is used similarly.\nThe logical approach to meaning is still different, since it assumes that the meaning of e.g. a term is equivalent to the set of individuals that the term can be applied to; for example, the meaning of 'Ali' is e.g. an individual person called Ali, the meaning of 'Airplane' is e.g. the set of airplanes, etc.\nFinally, an approach taken by structuralist linguistics and frame semantics is that a meaning is the relational context in which an information object can be applied; for example, a meaning of 'Airplane' is situated e.g. in the context ('frame') of passenger airline flights.\n\nThese different approaches are not necessarily conflicting, and they mostly talk about different aspects of so-called 'semantics'. They can be summarized and modelled within DOLCE-Ultralite as follows (notice that such list is far from exhaustive):\n\n(1) Informal meaning (as for linguistic or commonsense semantics: a distinction is assumed between (informal) meaning and reference; see isAbout for an alternative pattern on reference)\n\t- Paraphrase meaning (as for lexicographic semantics). Here it is modelled as the expresses relation between instances of InformationObject and different instances of InformationObject that act as 'paraphrases'\n\t- Conceptual meaning (as for 'concept scheme' semantics). Here it is modelled as the expresses relation between instances of InformationObject and instances of Concept\n\t- Relational meaning (as for frame semantics). Here it is modelled as the expresses relation between instances of InformationObject and instances of Description\n\t- Cognitive meaning (as for 'psychological' semantics). Here it is modelled as the expresses relation between any instance of InformationObject and any different instance of InformationObject that isRealizedBy a mental, cognitive or neural state (depending on which theory of mind is assumed). Such states can be considered here as instances of Process (occurring in the mind, cognitive system, or neural system of an agent)\n\t- Cultural meaning (as for 'social science' semantics). Here it is modelled as the expresses relation between instances of InformationObject and instances of SocialObject (institutions, cultural paradigms, norms, social practices, etc.)\n\t- Distributional meaning (as for geometrical models of meaning). Here it is modelled as the expresses relation between any instance of InformationObject and any different instance of InformationObject that isFormallyRepresentedIn some (geometrical) Region (e.g. a vector space)\n\n(2) Formal meaning (as for logic and formal semantics: no distinction is assumed between informal meaning and reference, therefore between 'expresses' and 'isAbout', which can be used interchangeably)\n\t- Object-level formal meaning (as in the traditional first-order logic semantics). Here it is modelled as the expresses relation between an instance of InformationObject and an instance of Collection that isGroundingFor (in most cases) a Set; isGroundingFor is defined in the ontology: http://www.loa-cnr.it/ontologies/IOLite.owl\n\t- Modal formal meaning (as in possible-world semantics). Here it is modelled as the expresses relation between an instance of InformationObject and an instance of Collection that isGroundingFor a Set, and which isPartOf some different instance of Collection that isGroundingFor a PossibleWorld\n\nThis is only a first step to provide a framework, in which one can model different aspects of meaning. A more developed ontology should approach the problem of integrating the different uses of 'expresses', so that different theories, resources, methods can interoperate." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#expresses> <http://www.w3.org/2000/01/rdf-schema#label> "esprime"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#expresses> <http://www.w3.org/2000/01/rdf-schema#label> "expresses"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#expresses> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#SocialObject> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#expresses> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isExpressedBy> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#farFrom> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#farFrom> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#SymmetricProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#farFrom> <http://www.w3.org/2000/01/rdf-schema#comment> "Generic distance relation between any Entity(s). E.g. Rome is far from Beijing, astronomy is far from necromancy." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#farFrom> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#farFrom> <http://www.w3.org/2000/01/rdf-schema#label> "far from"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#farFrom> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#farFrom> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#farFrom> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#follows> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#follows> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#TransitiveProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#follows> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between entities, expressing a 'sequence' schema.\nE.g. 'year 2000 follows 1999', 'preparing coffee' follows 'deciding what coffee to use', 'II World War follows I World War', etc.\nIt can be used between tasks, processes or time intervals, and subproperties would fit best in order to distinguish the different uses."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#follows> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#follows> <http://www.w3.org/2000/01/rdf-schema#label> "follows"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#follows> <http://www.w3.org/2000/01/rdf-schema#label> "segue"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#follows> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#follows> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#precedes> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasCommonBoundary> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasCommonBoundary> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#SymmetricProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasCommonBoundary> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation to encode either formal or informal characterizations of 'boundaries' common to two different entities: an Event that ends when another begins, two abstract regions that have a common topological boundary, two objects that are said to be 'in contact' from a commonsense perspective, etc." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasCommonBoundary> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasCommonBoundary> <http://www.w3.org/2000/01/rdf-schema#label> "has common boundary"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasCommonBoundary> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasCommonBoundary> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#hasCommonBoundary> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasComponent> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasComponent> <http://www.w3.org/2000/01/rdf-schema#comment> "The hasPart relation without transitivity, holding between an Object (the system) and another (the component), and assuming a Design that structures the Object." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasComponent> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Object> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasComponent> <http://www.w3.org/2000/01/rdf-schema#label> "ha componente"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasComponent> <http://www.w3.org/2000/01/rdf-schema#label> "has component"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasComponent> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Object> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasComponent> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#hasPart> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasComponent> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isComponentOf> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasConstituent> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasConstituent> <http://www.w3.org/2000/01/rdf-schema#comment> "'Constituency' depends on some layering of  the world described by the ontology. For example, scientific granularities (e.g. body-organ-tissue-cell) or ontological 'strata' (e.g. social-mental-biological-physical) are  typical layerings.\nIntuitively, a constituent is a part belonging to a lower layer. Since layering is actually a partition of the world described by the ontology, constituents are not properly classified as parts, although this kinship can be intuitive for common sense.\nA desirable advantage of this distinction is that we are able to talk e.g. of physical constituents of non-physical objects (e.g. systems), while this is not possible in terms of parts.\nExample of are the persons constituting a social system, the molecules constituting a person, the atoms constituting a river, etc.\nIn all these examples, we notice a typical discontinuity between the constituted and the constituent object: e.g. a social system is conceptualized at a different layer from the persons that constitute it, a person is conceptualized at a different layer from the molecules that constitute them, and a river is conceptualized at a different layer from the atoms that constitute it." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasConstituent> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasConstituent> <http://www.w3.org/2000/01/rdf-schema#label> "ha costituente"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasConstituent> <http://www.w3.org/2000/01/rdf-schema#label> "has constituent"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasConstituent> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasConstituent> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isConstituentOf> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasConstraint> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasConstraint> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between parameters and entities. It allows to assert generic constraints (encoded as parameters), e.g. MinimumAgeForDriving isConstraintFor John (where John is a legal subject under the TrafficLaw).\nThe intended semantics (not expressible in OWL) is that a Parameter isParameterFor a Concept that classifies an Entity; moreover, it entails that a Parameter parametrizes a Region that isRegionFor that Entity." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasConstraint> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasConstraint> <http://www.w3.org/2000/01/rdf-schema#label> "has constraint"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasConstraint> <http://www.w3.org/2000/01/rdf-schema#label> "ha vincolo"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasConstraint> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isClassifiedBy> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasConstraint> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isConstraintFor> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasDataValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasDataValue> <http://www.w3.org/2000/01/rdf-schema#comment> "A datatype property that encodes values from a datatype for an Entity.\nThere are several ways to encode values in DOLCE (Ultralite):\n\n1) Directly assert an xsd:_ value to an Entity by using hasDataValue\n2) Assert a Region for an Entity by using hasRegion, and then assert an xsd:_ value to that Region, by using hasRegionDataValue\n3) Assert a Quality for an Entity by using hasQuality, then assert a Region for that Quality, and assert an xsd:_ value to that Region, by using hasRegionDataValue\n4) When the value is required, but not directly observed, assert a Parameter for an xsd:_ value by using hasParameterDataValue, and then associate the Parameter to an Entity by using isConstraintFor\n5) When the value is required, but not directly observed, you can also assert a Parameter for a Region by using parametrizes, and then assert an xsd:_ value to that Region, by using hasRegionDataValue\n\nThe five approaches obey different requirements.\nFor example, a simple value can be easily asserted by using pattern (1), but if one needs to assert an interval between two values, a Region should be introduced to materialize that interval, as pattern (2) suggests.\nFurthermore, if one needs to distinguish the individual Quality of a value, e.g. the particular nature of the density of a substance, pattern (3) can be used.\nPatterns (4) and (5) should be used instead when a constraint or a selection is modeled, independently from the actual observation of values in the real world." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasDataValue> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasDataValue> <http://www.w3.org/2000/01/rdf-schema#label> "has data value"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasDataValue> <http://www.w3.org/2000/01/rdf-schema#label> "ha valore"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasEventDate> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasEventDate> <http://www.w3.org/2000/01/rdf-schema#comment> "A datatype property that encodes values from xsd:date for an Event; a same Event can have more than one xsd:date value: begin date, end date, date at which the interval holds, as well as dates expressed in different formats: xsd:gYear, xsd:dateTime, etc." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasEventDate> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Event> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasEventDate> <http://www.w3.org/2000/01/rdf-schema#label> "evento ha data"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasEventDate> <http://www.w3.org/2000/01/rdf-schema#label> "has event date"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasEventDate> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#date> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasEventDate> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#hasDataValue> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasIntervalDate> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasIntervalDate> <http://www.w3.org/2000/01/rdf-schema#comment> "A datatype property that encodes values from xsd:date for a TimeInterval; a same TimeInterval can have more than one xsd:date value: begin date, end date, date at which the interval holds, as well as dates expressed in different formats: xsd:gYear, xsd:dateTime, etc." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasIntervalDate> <http://www.w3.org/2000/01/rdf-schema#label> "has interval date"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasIntervalDate> <http://www.w3.org/2000/01/rdf-schema#label> "intervallo ha data"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasIntervalDate> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#date> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasIntervalDate> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#hasRegionDataValue> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasLocation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasLocation> <http://www.w3.org/2000/01/rdf-schema#comment> "A generic, relative localization, holding between any entities. E.g. 'the cat is on the mat', 'Omar is in Samarcanda', 'the wound is close to the femural artery'.\nFor 'absolute' locations, see SpaceRegion" .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasLocation> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasLocation> <http://www.w3.org/2000/01/rdf-schema#label> "ha localizzazione"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasLocation> <http://www.w3.org/2000/01/rdf-schema#label> "has location"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasLocation> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasLocation> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isLocationOf> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasMember> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasMember> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between collections and entities, e.g. 'my collection of saxophones includes an old Adolphe Sax original alto' (i.e. my collection has member an Adolphe Sax alto)."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasMember> <http://www.w3.org/2000/01/rdf-schema#label> "ha membro"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasMember> <http://www.w3.org/2000/01/rdf-schema#label> "has member"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasMember> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasMember> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isMemberOf> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasParameterDataValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasParameterDataValue> <http://www.w3.org/2000/01/rdf-schema#comment> "Parametrizes values from a datatype. For example, a Parameter MinimumAgeForDriving hasParameterDataValue 18 on datatype xsd:int, in the Italian traffic code. In this example, MinimumAgeForDriving isDefinedIn the Norm ItalianTrafficCodeAgeDriving.\nMore complex parametrization requires workarounds. E.g. AgeRangeForDrugUsage could parametrize data value: 14 to 50 on the datatype: xsd:int. Since complex datatypes are not allowed in OWL1.0, a solution to this can only work by creating two 'sub-parameters': MinimumAgeForDrugUsage (that hasParameterDataValue 14) and MaximumAgeForDrugUsage (that hasParameterDataValue 50), which are components of (cf. hasComponent) the main Parameter AgeRangeForDrugUsage.\nOrdering on subparameters can be created by using or specializing the object property 'precedes'." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasParameterDataValue> <http://www.w3.org/2000/01/rdf-schema#label> "has parameter data value"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasParameterDataValue> <http://www.w3.org/2000/01/rdf-schema#label> "ha valore"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasParameterDataValue> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#hasDataValue> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasParameter> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasParameter> <http://www.w3.org/2000/01/rdf-schema#comment> "A Concept can have a Parameter that constrains the attributes that a classified Entity can have in a certain Situation, e.g. a 4WheelDriver Role definedIn the ItalianTrafficLaw has a MinimumAge parameter on the Amount 16." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasParameter> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Concept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasParameter> <http://www.w3.org/2000/01/rdf-schema#label> "ha parametro"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasParameter> <http://www.w3.org/2000/01/rdf-schema#label> "has parameter"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasParameter> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isRelatedToConcept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasParameter> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isParameterFor> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasPart> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasPart> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#TransitiveProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasPart> <http://www.w3.org/2000/01/rdf-schema#comment> "A schematic relation between any entities, e.g. 'the human body has a brain as part', '20th century contains year 1923', 'World War II includes the Pearl Harbour event'.\nSubproperties and restrictions can be used to specialize hasPart for objects, events, etc."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasPart> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasPart> <http://www.w3.org/2000/01/rdf-schema#label> "ha parte"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasPart> <http://www.w3.org/2000/01/rdf-schema#label> "has part"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasPart> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasPart> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isPartOf> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasParticipant> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasParticipant> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between an object and a process, e.g. 'John took part in the discussion', 'a large mass of snow fell during the avalanche', or 'a cook, some sugar, flour, etc. are all present in the cooking of a cake'."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasParticipant> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Event> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasParticipant> <http://www.w3.org/2000/01/rdf-schema#label> "ha come partecipante"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasParticipant> <http://www.w3.org/2000/01/rdf-schema#label> "has participant"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasParticipant> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Object> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasParticipant> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isParticipantIn> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasPostcondition> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasPostcondition> <http://www.w3.org/2000/01/rdf-schema#comment> "Direct succession applied to situations.\nE.g., 'A postcondition of our Plan is to have things settled'." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasPostcondition> <http://www.w3.org/2000/01/rdf-schema#label> "ha postcondizione"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasPostcondition> <http://www.w3.org/2000/01/rdf-schema#label> "has postcondition"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasPostcondition> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#directlyPrecedes> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasPostcondition> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isPostconditionOf> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasPrecondition> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasPrecondition> <http://www.w3.org/2000/01/rdf-schema#comment> "Direct precedence applied to situations.\nE.g., 'A precondition to declare war against a foreign country is claiming to find nuclear weapons in it'." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasPrecondition> <http://www.w3.org/2000/01/rdf-schema#label> "ha precondizione"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasPrecondition> <http://www.w3.org/2000/01/rdf-schema#label> "has precondition"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasPrecondition> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#directlyFollows> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasPrecondition> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isPreconditionOf> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasProxy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasProxy> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasProxy> <http://www.w3.org/2000/01/rdf-schema#label> "ha proxy"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasProxy> <http://www.w3.org/2000/01/rdf-schema#label> "has proxy"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasProxy> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#anyURI> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasQuality> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasQuality> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between entities and qualities, e.g. 'Dmitri's skin is yellowish'." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasQuality> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasQuality> <http://www.w3.org/2000/01/rdf-schema#label> "ha qualit\u00E0"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasQuality> <http://www.w3.org/2000/01/rdf-schema#label> "has quality"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasQuality> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isQualityOf> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasRegionDataValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasRegionDataValue> <http://www.w3.org/2000/01/rdf-schema#comment> "A datatype property that encodes values for a Region, e.g. a float for the Region Height." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasRegionDataValue> <http://www.w3.org/2000/01/rdf-schema#label> "has region data value"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasRegionDataValue> <http://www.w3.org/2000/01/rdf-schema#label> "regione ha valore"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasRegionDataValue> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#hasDataValue> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasRegion> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasRegion> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between entities and regions, e.g. 'the number of wheels of that truck is 12', 'the time of the experiment is August 9th, 2004', 'the whale has been localized at 34 degrees E, 20 degrees S'." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasRegion> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasRegion> <http://www.w3.org/2000/01/rdf-schema#label> "ha attributo"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasRegion> <http://www.w3.org/2000/01/rdf-schema#label> "has region"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasRegion> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isRegionFor> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasRole> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasRole> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between an object and a role, e.g. the person 'John' has role 'student'."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasRole> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Object> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasRole> <http://www.w3.org/2000/01/rdf-schema#label> "ha ruolo"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasRole> <http://www.w3.org/2000/01/rdf-schema#label> "has role"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasRole> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Role> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasRole> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isClassifiedBy> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasRole> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isRoleOf> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasSetting> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasSetting> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between entities and situations, e.g. 'this morning I've prepared my coffee with a new fantastic Arabica', i.e.: (an amount of) a new fantastic Arabica hasSetting the preparation of my coffee this morning."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasSetting> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasSetting> <http://www.w3.org/2000/01/rdf-schema#label> "has setting"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasSetting> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 nel contesto di"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasSetting> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isSettingFor> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasTask> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasTask> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between roles and tasks, e.g. 'students have the duty of giving exams' (i.e. the Role 'student' hasTask the Task 'giving exams')."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasTask> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Role> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasTask> <http://www.w3.org/2000/01/rdf-schema#label> "ha come obiettivo"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasTask> <http://www.w3.org/2000/01/rdf-schema#label> "has task"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasTask> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isRelatedToConcept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#hasTask> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isTaskOf> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesAction> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesAction> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between situations and actions, e.g. 'this morning I've prepared my coffee and had my fingers burnt' (i.e.: the preparation of my coffee this morning included a burning of my fingers)."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesAction> <http://www.w3.org/2000/01/rdf-schema#label> "include azione"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesAction> <http://www.w3.org/2000/01/rdf-schema#label> "includes action"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesAction> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#includesEvent> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesAction> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isActionIncludedIn> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesAgent> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesAgent> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between situations and persons, e.g. 'this morning I've prepared my coffee and had my fingers burnt' (i.e.: the preparation of my coffee this morning included me)."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesAgent> <http://www.w3.org/2000/01/rdf-schema#label> "include l'agente"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesAgent> <http://www.w3.org/2000/01/rdf-schema#label> "includes agent"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesAgent> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#includesObject> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesAgent> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isAgentIncludedIn> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesEvent> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesEvent> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between situations and events, e.g. 'this morning I've prepared my coffee and had my fingers burnt' (i.e.: the preparation of my coffee this morning included a burning of my fingers)."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesEvent> <http://www.w3.org/2000/01/rdf-schema#label> "include l'evento"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesEvent> <http://www.w3.org/2000/01/rdf-schema#label> "includes event"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesEvent> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Event> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesEvent> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isSettingFor> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesEvent> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isEventIncludedIn> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesObject> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesObject> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between situations and objects, e.g. 'this morning I've prepared my coffee and had my fingers burnt' (i.e.: the preparation of my coffee this morning included me)."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesObject> <http://www.w3.org/2000/01/rdf-schema#label> "include l'oggetto"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesObject> <http://www.w3.org/2000/01/rdf-schema#label> "includes object"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesObject> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Object> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesObject> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isSettingFor> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesObject> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isObjectIncludedIn> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesTime> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesTime> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between situations and time intervals, e.g. 'this morning I've prepared my coffee and had my fingers burnt' (i.e.: preparing my coffee was held this morning). A data value attached to the time interval typically complements this modelling pattern."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesTime> <http://www.w3.org/2000/01/rdf-schema#label> "includes time"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesTime> <http://www.w3.org/2000/01/rdf-schema#label> "include tempo"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesTime> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isSettingFor> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#includesTime> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isTimeIncludedIn> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#introduces> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#introduces> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between a Description and a SocialAgent, e.g. a Constitutional Charter introduces the SocialAgent 'PresidentOfRepublic'." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#introduces> <http://www.w3.org/2000/01/rdf-schema#label> "introduce"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#introduces> <http://www.w3.org/2000/01/rdf-schema#label> "introduces"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#introduces> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isIntroducedBy> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#involvesAgent> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#involvesAgent> <http://www.w3.org/2000/01/rdf-schema#comment> "Agent participation." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#involvesAgent> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Event> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#involvesAgent> <http://www.w3.org/2000/01/rdf-schema#label> "coinvolge agente"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#involvesAgent> <http://www.w3.org/2000/01/rdf-schema#label> "involves agent"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#involvesAgent> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#hasParticipant> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#involvesAgent> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isAgentInvolvedIn> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isAbout> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isAbout> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between information objects and any Entity (including information objects). It can be used to talk about e.g. entities are references of proper nouns: the proper noun 'Leonardo da Vinci' isAbout the Person Leonardo da Vinci; as well as to talk about sets of entities that can be described by a common noun: the common noun 'person' isAbout the set of all persons in a domain of discourse, which can be represented in DOLCE-Ultralite as an individual of the class: Collection .\nThe isAbout relation is reflexive (not expressible in OWL1.0), because information objects are also about themselves." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isAbout> <http://www.w3.org/2000/01/rdf-schema#label> "is about"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isAbout> <http://www.w3.org/2000/01/rdf-schema#label> "si riferisce a"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isAbout> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isAbout> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isReferenceOf> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isActionIncludedIn> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isActionIncludedIn> <http://www.w3.org/2000/01/rdf-schema#label> "is action included in"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isActionIncludedIn> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 un'azione nel contesto di"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isActionIncludedIn> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isEventIncludedIn> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isAgentIncludedIn> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isAgentIncludedIn> <http://www.w3.org/2000/01/rdf-schema#label> "is agent included in"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isAgentIncludedIn> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 un agente nel contesto di"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isAgentIncludedIn> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isObjectIncludedIn> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isAgentInvolvedIn> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isAgentInvolvedIn> <http://www.w3.org/2000/01/rdf-schema#comment> "Agent participation." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isAgentInvolvedIn> <http://www.w3.org/2000/01/rdf-schema#label> "is agent involved in"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isAgentInvolvedIn> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 un agente coinvolto in"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isAgentInvolvedIn> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Event> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isAgentInvolvedIn> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isParticipantIn> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isCharacterizedBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isCharacterizedBy> <http://www.w3.org/2000/01/rdf-schema#label> "is characterized by"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isCharacterizedBy> <http://www.w3.org/2000/01/rdf-schema#label> "is characterized by {"@en-us} .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isCharacterizedBy> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 caratterizzato da"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isCharacterizedBy> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Concept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isClassifiedBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isClassifiedBy> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between a Concept and an Entity, e.g. 'John is considered a typical rude man'; your last concert constitutes the achievement of a lifetime; '20-year-old means she's mature enough'." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isClassifiedBy> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isClassifiedBy> <http://www.w3.org/2000/01/rdf-schema#label> "is classified by"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isClassifiedBy> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 classificato da"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isClassifiedBy> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Concept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isComponentOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isComponentOf> <http://www.w3.org/2000/01/rdf-schema#comment> "The hasPart relation without transitivity, holding between an Object (the system) and another (the component), and assuming a Design that structures the Object." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isComponentOf> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Object> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isComponentOf> <http://www.w3.org/2000/01/rdf-schema#label> "is component of"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isComponentOf> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 componente di"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isComponentOf> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Object> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isComponentOf> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isPartOf> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConceptExpressedBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConceptExpressedBy> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between an InformationObject and a Concept , e.g. the term \"dog\" expresses the Concept \"dog\". For expressing a relational meaning, see the more general object property: expresses" .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConceptExpressedBy> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Concept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConceptExpressedBy> <http://www.w3.org/2000/01/rdf-schema#label> "is concept expressed by"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConceptExpressedBy> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 un concetto espresso da"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConceptExpressedBy> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isExpressedBy> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConceptualizedBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConceptualizedBy> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation stating that an Agent is internally representing a Description . E.g., 'John believes in the conspiracy theory'; 'Niels Bohr created a solar-system metaphor for his atomic theory'; 'Jacques assumes all swans are white'; 'the task force shares the attack plan'." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConceptualizedBy> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#SocialObject> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConceptualizedBy> <http://www.w3.org/2000/01/rdf-schema#label> "is conceptualized by"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConceptualizedBy> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 concettualizzato da"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConceptUsedIn> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConceptUsedIn> <http://www.w3.org/2000/01/rdf-schema#comment> "A more generic relation holding between a Description and a Concept. In order to be used, a Concept must be previously definedIn another Description" .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConceptUsedIn> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Concept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConceptUsedIn> <http://www.w3.org/2000/01/rdf-schema#label> "is concept used in"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConceptUsedIn> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 un concetto usato in"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConceptUsedIn> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#usesConcept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConcretelyExpressedBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConcretelyExpressedBy> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between an InformationRealization and a Description, e.g. 'the printout of the Italian Constitution concretelyExpresses the Italian Constitution'. It should be supplied also with a rule stating that the InformationRealization realizes an InformationObject that expresses the Description" .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConcretelyExpressedBy> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#SocialObject> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConcretelyExpressedBy> <http://www.w3.org/2000/01/rdf-schema#label> "is concretely expressed by"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConcretelyExpressedBy> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 espresso concretamente da"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConstituentOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConstituentOf> <http://www.w3.org/2000/01/rdf-schema#comment> "'Constituency' depends on some layering of  the world described by the ontology. For example, scientific granularities (e.g. body-organ-tissue-cell) or ontological 'strata' (e.g. social-mental-biological-physical) are  typical layerings.\nIntuitively, a constituent is a part belonging to a lower layer. Since layering is actually a partition of the world described by the ontology, constituents are not properly classified as parts, although this kinship can be intuitive for common sense.\nA desirable advantage of this distinction is that we are able to talk e.g. of physical constituents of non-physical objects (e.g. systems), while this is not possible in terms of parts.\nExample of are the persons constituting a social system, the molecules constituting a person, the atoms constituting a river, etc.\nIn all these examples, we notice a typical discontinuity between the constituted and the constituent object: e.g. a social system is conceptualized at a different layer from the persons that constitute it, a person is conceptualized at a different layer from the molecules that constitute them, and a river is conceptualized at a different layer from the atoms that constitute it." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConstituentOf> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConstituentOf> <http://www.w3.org/2000/01/rdf-schema#label> "is constituent of"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConstituentOf> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 costituente di"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConstituentOf> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConstraintFor> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConstraintFor> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between parameters and entities. It allows to assert generic constraints (encoded as parameters), e.g. MinimumAgeForDriving isConstraintFor John (where John is a legal subject under the TrafficLaw).\nThe intended semantics (not expressible in OWL) is that a Parameter isConstraintFor and Entity if the Parameter isParameterFor a Concept that classifies that Entity; moreover, it entails that a Parameter parametrizes a Region that isRegionFor that Entity. The use in OWL is therefore a shortcut to annotate what Parameter constrains what Entity" .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConstraintFor> <http://www.w3.org/2000/01/rdf-schema#label> "is constraint for"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConstraintFor> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 un vincolo per"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConstraintFor> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isConstraintFor> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#classifies> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isCoveredBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isCoveredBy> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between concepts and collections, where a Concept is said to cover a Collection; it corresponds to a link between the (reified) intensional and extensional interpretations of a (reified) class.\nE.g. the collection of vintage saxophones is covered by the Concept 'Saxophone' with the Parameter 'Vintage'." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isCoveredBy> <http://www.w3.org/2000/01/rdf-schema#label> "is covered by"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isCoveredBy> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 ricoperto da"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isCoveredBy> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Concept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isDefinedIn> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isDefinedIn> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between a Description and a Concept, e.g. a Workflow for a governmental Organization defines the Role 'officer', or 'the Italian Traffic Law defines the role Vehicle'." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isDefinedIn> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Concept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isDefinedIn> <http://www.w3.org/2000/01/rdf-schema#label> "is defined in"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isDefinedIn> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 definito in"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isDefinedIn> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isConceptUsedIn> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isDescribedBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isDescribedBy> <http://www.w3.org/2000/01/rdf-schema#comment> "The relation between an Entity and a Description: a Description gives a unity to a Collection of parts (the components), or constituents, by assigning a Role to each of them in the context of a whole Object (the system).\nA same Entity can be given different descriptions, for example, an old cradle can be given a unifying Description based on the original aesthetic design, the functionality it was built for, or a new aesthetic functionality in which it can be used as a flower pot." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isDescribedBy> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isDescribedBy> <http://www.w3.org/2000/01/rdf-schema#label> "is described by"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isDescribedBy> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 descritto da"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isEventIncludedIn> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isEventIncludedIn> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Event> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isEventIncludedIn> <http://www.w3.org/2000/01/rdf-schema#label> "is event included in"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isEventIncludedIn> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 un evento nel contesto di"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isEventIncludedIn> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#hasSetting> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isExecutedIn> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isExecutedIn> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between an action and a task, e.g. 'putting some water in a pot and putting the pot on a fire until the water starts bubbling' executes the task 'boiling'." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isExecutedIn> <http://www.w3.org/2000/01/rdf-schema#label> "is executed in"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isExecutedIn> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 eseguito mediante"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isExecutedIn> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#classifies> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isExpandedIn> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isExpandedIn> <http://www.w3.org/2000/01/rdf-schema#comment> "A partial order relation that holds between descriptions. It represents the proper part relation between a description and another description featuring the same properties as the former, with at least one additional one.\nDescriptions can be expanded either by adding other descriptions as parts, or by refining concepts that are used by them.\nAn 'intention' to expand must be present (unless purely formal theories are considered, but even in this case a criterion of relevance is usually active)." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isExpandedIn> <http://www.w3.org/2000/01/rdf-schema#label> "is expanded in"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isExpandedIn> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 espansa in"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isExpandedIn> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isRelatedToDescription> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isExpressedBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isExpressedBy> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between a dul:SocialObject (the 'meaning') and a dul:InformationObject (the 'expression').\nFor example: 'A Beehive is a structure in which bees are kept, typically in the form of a dome or box.' (Oxford dictionary)'; 'the term Beehive expresses the concept Beehive in my apiculture ontology'.\nThe intuition for 'meaning' is intended to be very broad. A separate, large comment is included in the encoding of 'expresses', for those who want to investigate more on what kind of meaning can be represented in what form." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isExpressedBy> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#SocialObject> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isExpressedBy> <http://www.w3.org/2000/01/rdf-schema#label> "is expressed by"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isExpressedBy> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 espresso da"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isIntroducedBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isIntroducedBy> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between a Description and a SocialAgent, e.g. a Constitutional Charter introduces the SocialAgent 'PresidentOfRepublic'." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isIntroducedBy> <http://www.w3.org/2000/01/rdf-schema#label> "is introduced by"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isIntroducedBy> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 introdotto da"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isLocationOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isLocationOf> <http://www.w3.org/2000/01/rdf-schema#comment> "A generic, relative localization, holding between any entities. E.g. 'Rome is the seat of the Pope', 'the liver is the location of the tumor'.\nFor 'absolute' locations, see SpaceRegion" .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isLocationOf> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isLocationOf> <http://www.w3.org/2000/01/rdf-schema#label> "is location of"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isLocationOf> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 una localizzazione di"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isLocationOf> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isMemberOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isMemberOf> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between collections and entities, e.g. 'the Night Watch by Rembrandt is in the Rijksmuseum collection'; 'Davide is member of the Pen Club', 'Igor is one the subjects chosen for the experiment'." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isMemberOf> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isMemberOf> <http://www.w3.org/2000/01/rdf-schema#label> "is member of"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isMemberOf> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 membro di"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isObjectIncludedIn> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isObjectIncludedIn> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Object> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isObjectIncludedIn> <http://www.w3.org/2000/01/rdf-schema#label> "is object included in"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isObjectIncludedIn> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 un oggetto nel contesto di"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isObjectIncludedIn> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#hasSetting> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isObservableAt> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isObservableAt> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation to represent a (past, present or future) TimeInterval at which an Entity is observable.\nIn order to encode a specific time, a data value should be related to the TimeInterval.\nAn alternative way of representing time is the datatype property: hasIntervalDate" .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isObservableAt> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isObservableAt> <http://www.w3.org/2000/01/rdf-schema#label> "is observable at"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isObservableAt> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 osservabile a"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isObservableAt> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#hasRegion> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isObservableAt> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isTimeOfObservationOf> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isParameterFor> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isParameterFor> <http://www.w3.org/2000/01/rdf-schema#comment> "A Concept can have a Parameter that constrains the attributes that a classified Entity can have in a certain Situation, e.g. a 4WheelDriver Role definedIn the ItalianTrafficLaw has a MinimumAge parameter on the Amount 16." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isParameterFor> <http://www.w3.org/2000/01/rdf-schema#label> "is parameter for"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isParameterFor> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 un parametro per"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isParameterFor> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Concept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isParameterFor> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isRelatedToConcept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isParametrizedBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isParametrizedBy> <http://www.w3.org/2000/01/rdf-schema#comment> "The relation between a Parameter, e.g. 'MajorAge', and a Region, e.g. '>17 year'." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isParametrizedBy> <http://www.w3.org/2000/01/rdf-schema#label> "is parametrized by"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isParametrizedBy> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 parametrizzato da"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isParametrizedBy> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isClassifiedBy> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isParametrizedBy> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#parametrizes> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isParticipantIn> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isParticipantIn> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between an object and a process, e.g. 'John took part in the discussion', 'a large mass of snow fell during the avalanche', or 'a cook, some sugar, flour, etc. are all present in the cooking of a cake'."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isParticipantIn> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Object> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isParticipantIn> <http://www.w3.org/2000/01/rdf-schema#label> "is participant in"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isParticipantIn> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 un partecipante a"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isParticipantIn> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Event> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isPartOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isPartOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#TransitiveProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isPartOf> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between any entities, e.g.'brain is a part of the human body'."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isPartOf> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isPartOf> <http://www.w3.org/2000/01/rdf-schema#label> "is part of"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isPartOf> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 parte di"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isPartOf> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isPostconditionOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isPostconditionOf> <http://www.w3.org/2000/01/rdf-schema#comment> "Direct succession applied to situations.\nE.g., 'Taking some rest is a postcondition of my search for a hotel'." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isPostconditionOf> <http://www.w3.org/2000/01/rdf-schema#label> "is postcondition of"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isPostconditionOf> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 postcondizione di"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isPostconditionOf> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#directlyFollows> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isPreconditionOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isPreconditionOf> <http://www.w3.org/2000/01/rdf-schema#comment> "Direct precedence applied to situations.\nE.g., 'claiming to find nuclear weapons in a foreign country is a precondition to declare war against it'." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isPreconditionOf> <http://www.w3.org/2000/01/rdf-schema#label> "is precondition of"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isPreconditionOf> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 precondizione di"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isPreconditionOf> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#directlyPrecedes> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isQualityOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isQualityOf> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between entities and qualities, e.g. 'Dmitri's skin is yellowish'." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isQualityOf> <http://www.w3.org/2000/01/rdf-schema#label> "is quality of"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isQualityOf> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 una qualit\u00E0 di"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isQualityOf> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRealizedBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRealizedBy> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between an information realization and an information object, e.g. the paper copy of the Italian Constitution realizes the text of the Constitution." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRealizedBy> <http://www.w3.org/2000/01/rdf-schema#label> "is realized by"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRealizedBy> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 realizzato da"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRealizedBy> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#realizes> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isReferenceOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isReferenceOf> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between information objects and any Entity (including information objects). It can be used to talk about e.g. entities are references of proper nouns: the proper noun 'Leonardo da Vinci' isAbout the Person Leonardo da Vinci; as well as to talk about sets of entities that can be described by a common noun: the common noun 'person' isAbout the set of all persons in a domain of discourse, which can be represented in DOLCE-Ultralite as an individual of the class: Collection .\nThe isReferenceOf relation is irreflexive, differently from its inverse isAbout." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isReferenceOf> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isReferenceOf> <http://www.w3.org/2000/01/rdf-schema#label> "is reference of"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isReferenceOf> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 il riferimento di"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isReferenceOfInformationRealizedBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isReferenceOfInformationRealizedBy> <http://www.w3.org/2000/01/rdf-schema#comment> "The relation between entities and information realizations, e.g. between Italy and a paper copy of the text of the Italian Constitution." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isReferenceOfInformationRealizedBy> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isReferenceOfInformationRealizedBy> <http://www.w3.org/2000/01/rdf-schema#label> "is reference of information realized by"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isReferenceOfInformationRealizedBy> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 riferimento dell'informazione realizzata da"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isReferenceOfInformationRealizedBy> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#realizesInformationAbout> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRegionFor> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRegionFor> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between entities and regions, e.g. 'the color of my car is red'." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRegionFor> <http://www.w3.org/2000/01/rdf-schema#label> "is region for"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRegionFor> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 una regione di"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRegionFor> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRelatedToConcept> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRelatedToConcept> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#SymmetricProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRelatedToConcept> <http://www.w3.org/2000/01/rdf-schema#comment> "Any relation between concepts, e.g. superordinated, conceptual parthood, having a parameter, having a task, superordination, etc." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRelatedToConcept> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Concept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRelatedToConcept> <http://www.w3.org/2000/01/rdf-schema#label> "is related to concept"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRelatedToConcept> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 associato al concetto"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRelatedToConcept> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Concept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRelatedToConcept> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isRelatedToConcept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRelatedToDescription> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRelatedToDescription> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#SymmetricProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRelatedToDescription> <http://www.w3.org/2000/01/rdf-schema#comment> "Any relation between descriptions." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRelatedToDescription> <http://www.w3.org/2000/01/rdf-schema#label> "is related to description"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRelatedToDescription> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 associata alla descrizione"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRelatedToDescription> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isRelatedToDescription> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRoleDefinedIn> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRoleDefinedIn> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between a description and a role, e.g. the role 'Ingredient' is defined in the recipe for a cake." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRoleDefinedIn> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Role> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRoleDefinedIn> <http://www.w3.org/2000/01/rdf-schema#label> "is role defined in"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRoleDefinedIn> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 un ruolo definito in"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRoleDefinedIn> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isDefinedIn> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRoleOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRoleOf> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between an object and a role, e.g. 'student' is the role of 'John'." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRoleOf> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Role> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRoleOf> <http://www.w3.org/2000/01/rdf-schema#label> "is role of"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRoleOf> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 un ruolo di"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRoleOf> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Object> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isRoleOf> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#classifies> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSatisfiedBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSatisfiedBy> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between a Situation and a Description, e.g. the execution of a Plan satisfies that plan." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSatisfiedBy> <http://www.w3.org/2000/01/rdf-schema#label> "is satisfied by"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSatisfiedBy> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 soddisfatta da"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSatisfiedBy> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#satisfies> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSettingFor> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSettingFor> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between situations and entities, e.g. 'this morning I've prepared my coffee with a new fantastic Arabica', i.e.: the preparation of my coffee this morning is the setting for (an amount of) a new fantastic Arabica."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSettingFor> <http://www.w3.org/2000/01/rdf-schema#label> "include"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSettingFor> <http://www.w3.org/2000/01/rdf-schema#label> "is setting for"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSettingFor> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSpecializedBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSpecializedBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#TransitiveProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSpecializedBy> <http://www.w3.org/2000/01/rdf-schema#comment> "A partial order relation that holds between social objects. It represents the subsumption relation between e.g. a Concept and another Concept that is broader in extensional interpretation, but narrowe in intensional interpretation.\nE.g. PhDStudent Role specializes Student Role" .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSpecializedBy> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#SocialObject> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSpecializedBy> <http://www.w3.org/2000/01/rdf-schema#label> "is specialized by"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSpecializedBy> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 specializzato da"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSpecializedBy> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#SocialObject> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSpecializedBy> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#specializes> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSubordinatedTo> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSubordinatedTo> <http://www.w3.org/2000/01/rdf-schema#comment> "Direct succession applied to concepts. E.g. the role 'Officer' is subordinated to 'Director'." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSubordinatedTo> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Concept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSubordinatedTo> <http://www.w3.org/2000/01/rdf-schema#label> "is subordinated to"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSubordinatedTo> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 subordinato a"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSubordinatedTo> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Concept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSubordinatedTo> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#directlyFollows> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSubordinatedTo> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isRelatedToConcept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSubordinatedTo> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isSuperordinatedTo> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSuperordinatedTo> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSuperordinatedTo> <http://www.w3.org/2000/01/rdf-schema#comment> "Direct precedence applied to concepts. E.g. the role 'Executive' is superordinated to 'DepartmentManager'." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSuperordinatedTo> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Concept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSuperordinatedTo> <http://www.w3.org/2000/01/rdf-schema#label> "is superordinated to"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSuperordinatedTo> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 superordinato a"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSuperordinatedTo> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Concept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSuperordinatedTo> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#directlyPrecedes> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isSuperordinatedTo> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isRelatedToConcept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isTaskDefinedIn> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isTaskDefinedIn> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between a description and a task, e.g. the task 'boil' is defined in a recipe for a cake." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isTaskDefinedIn> <http://www.w3.org/2000/01/rdf-schema#label> "is task defined in"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isTaskDefinedIn> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 un task definito in"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isTaskDefinedIn> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isDefinedIn> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isTaskOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isTaskOf> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between roles and tasks, e.g. 'students have the duty of giving exams' (i.e. the Role 'student' hasTask the Task 'giving exams')." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isTaskOf> <http://www.w3.org/2000/01/rdf-schema#label> "is task of"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isTaskOf> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 un obiettivo per"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isTaskOf> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Role> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isTaskOf> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isRelatedToConcept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isTimeIncludedIn> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isTimeIncludedIn> <http://www.w3.org/2000/01/rdf-schema#label> "is time included in"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isTimeIncludedIn> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 un tempo nel contesto di"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isTimeIncludedIn> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#hasSetting> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isTimeOfObservationOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isTimeOfObservationOf> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation to represent a (past, present or future) TimeInterval at which an Entity is observable.\nIn order to encode a specific time, a data value should be related to the TimeInterval.\nAn alternative way of representing time is the datatype property: hasIntervalDate" .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isTimeOfObservationOf> <http://www.w3.org/2000/01/rdf-schema#label> "is time of observation of"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isTimeOfObservationOf> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 il tempo di osservazione di"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isTimeOfObservationOf> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isTimeOfObservationOf> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#isRegionFor> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isUnifiedBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isUnifiedBy> <http://www.w3.org/2000/01/rdf-schema#comment> "A Collection has a unification criterion, provided by a Description; for example, a community of practice can be unified by a shared theory or interest, e.g. the community that makes research on mirror neurons shares some core knowledge about mirror neurons, which can be represented as a Description MirrorNeuronTheory that unifies the community. There can be several unifying descriptions." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isUnifiedBy> <http://www.w3.org/2000/01/rdf-schema#label> "is unified by"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isUnifiedBy> <http://www.w3.org/2000/01/rdf-schema#label> "\u00E8 unificato da"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#isUnifiedBy> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#unifies> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#mappableTo> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AnnotationProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#mappableTo> <http://www.w3.org/2000/01/rdf-schema#label> "mappable to"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#nearTo> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#nearTo> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#SymmetricProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#nearTo> <http://www.w3.org/2000/01/rdf-schema#comment> "Generic distance relation between any Entity(s). E.g. Rome is near to Florence, astronomy is near to physics." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#nearTo> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#nearTo> <http://www.w3.org/2000/01/rdf-schema#label> "near to"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#nearTo> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#nearTo> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#nearTo> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Object> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Object> <http://www.w3.org/2000/01/rdf-schema#comment> "Any physical, social, or mental object, or a substance"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Object> <http://www.w3.org/2000/01/rdf-schema#label> "Object"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Object> <http://www.w3.org/2000/01/rdf-schema#label> "Oggetto"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Object> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:genid17 .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Object> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:genid18 .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Object> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:genid19 .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Object> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:genid20 .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Object> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:genid21 .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Object> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#overlaps> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#overlaps> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#SymmetricProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#overlaps> <http://www.w3.org/2000/01/rdf-schema#comment> "A schematic relation between any entities, e.g. 'the chest region overlaps with the abdomen region', 'my spoken words overlap with hers', 'the time of my leave overlaps with the time of your arrival', 'fibromyalgia overlaps with other conditions'.\nSubproperties and restrictions can be used to specialize overlaps for objects, events, time intervals, etc." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#overlaps> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#overlaps> <http://www.w3.org/2000/01/rdf-schema#label> "overlaps"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#overlaps> <http://www.w3.org/2000/01/rdf-schema#label> "sovrapposto a"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#overlaps> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#overlaps> <http://www.w3.org/2002/07/owl#inverseOf> <http://www.loa-cnr.it/ontologies/DUL.owl#overlaps> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#parametrizes> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#parametrizes> <http://www.w3.org/2000/01/rdf-schema#comment> "The relation between a Parameter, e.g. 'MajorAgeLimit', and a Region, e.g. '18_year'.\nFor a more data-oriented relation, see hasDataValue" .
+<http://www.loa-cnr.it/ontologies/DUL.owl#parametrizes> <http://www.w3.org/2000/01/rdf-schema#label> "parametrizes"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#parametrizes> <http://www.w3.org/2000/01/rdf-schema#label> "parametrizza"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#parametrizes> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.loa-cnr.it/ontologies/DUL.owl#classifies> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#PhysicalObject> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#PhysicalObject> <http://www.w3.org/2000/01/rdf-schema#comment> "Any Object that has a proper space region. The prototypical physical object has also an associated mass, but the nature of its mass can greatly vary based on the epistemological status of the object (scientifically measured, subjectively possible, imaginary)."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#PhysicalObject> <http://www.w3.org/2000/01/rdf-schema#label> "Oggetto fisico"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#PhysicalObject> <http://www.w3.org/2000/01/rdf-schema#label> "Physical object"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#PhysicalObject> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:genid22 .
+<http://www.loa-cnr.it/ontologies/DUL.owl#PhysicalObject> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.loa-cnr.it/ontologies/DUL.owl#Object> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#PhysicalObject> <http://www.w3.org/2002/07/owl#disjointWith> <http://www.loa-cnr.it/ontologies/DUL.owl#SocialObject> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#precedes> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#precedes> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#TransitiveProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#precedes> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between entities, expressing a 'sequence' schema.\nE.g. 'year 1999 precedes 2000', 'deciding what coffee to use' precedes 'preparing coffee', 'World War II follows World War I', 'in the Milan to Rome autoroute, Bologna precedes Florence', etc.\nIt can then be used between tasks, processes, time intervals, spatially locate objects, situations, etc.\nSubproperties can be defined in order to distinguish the different uses."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#precedes> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#precedes> <http://www.w3.org/2000/01/rdf-schema#label> "precede"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#precedes> <http://www.w3.org/2000/01/rdf-schema#label> "precedes"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#precedes> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#realizes> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#realizes> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between an information realization and an information object, e.g. the paper copy of the Italian Constitution realizes the text of the Constitution."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#realizes> <http://www.w3.org/2000/01/rdf-schema#label> "realizes"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#realizes> <http://www.w3.org/2000/01/rdf-schema#label> "realizza"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#realizesInformationAbout> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#realizesInformationAbout> <http://www.w3.org/2000/01/rdf-schema#comment> "The relation between entities and information realizations, e.g. between Italy and a paper copy of the text of the Italian Constitution." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#realizesInformationAbout> <http://www.w3.org/2000/01/rdf-schema#label> "realizes information about"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#realizesInformationAbout> <http://www.w3.org/2000/01/rdf-schema#label> "realizza informazione che si riferisce a a"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#realizesInformationAbout> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Entity> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Role> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Role> <http://www.w3.org/2000/01/rdf-schema#comment> "A Concept that classifies an Object"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Role> <http://www.w3.org/2000/01/rdf-schema#label> "Role"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Role> <http://www.w3.org/2000/01/rdf-schema#label> "Ruolo"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Role> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:genid23 .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Role> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:genid24 .
+<http://www.loa-cnr.it/ontologies/DUL.owl#Role> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.loa-cnr.it/ontologies/DUL.owl#Concept> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#satisfies> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#satisfies> <http://www.w3.org/2000/01/rdf-schema#comment> "A relation between a Situation and a Description, e.g. the execution of a Plan satisfies that plan."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#satisfies> <http://www.w3.org/2000/01/rdf-schema#label> "satisfies"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#satisfies> <http://www.w3.org/2000/01/rdf-schema#label> "soddisfa"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#SocialObject> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#SocialObject> <http://www.w3.org/2000/01/rdf-schema#comment> "Any Object that exists only within some communication Event, in which at least one PhysicalObject participates in.\nIn other words, all objects that have been or are created in the process of social communication: for the sake of communication (InformationObject), for incorporating new individuals (SocialAgent, Place), for contextualizing existing entities (Situation), for collecting existing entities (Collection), or for describing existing entities (Description, Concept).\nBeing dependent on communication, all social objects need to be expressed by some information object (information object are self-expressing)."^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#SocialObject> <http://www.w3.org/2000/01/rdf-schema#comment> "we need to keet it but want to get rid/restructed  off some of subclasses like language,aparameter,information object[md]" .
+<http://www.loa-cnr.it/ontologies/DUL.owl#SocialObject> <http://www.w3.org/2000/01/rdf-schema#label> "Oggetto sociale"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#SocialObject> <http://www.w3.org/2000/01/rdf-schema#label> "Social object"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#SocialObject> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:genid25 .
+<http://www.loa-cnr.it/ontologies/DUL.owl#SocialObject> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.loa-cnr.it/ontologies/DUL.owl#Object> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#specializes> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#specializes> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#TransitiveProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#specializes> <http://www.w3.org/2000/01/rdf-schema#comment> "A partial order relation that holds between social objects.\nIt mainly represents the subsumption relation between e.g. a Concept or Description and another Concept (resp. Description) that is broader in extensional interpretation, but narrower in intensional interpretation. For example, the role PhDStudent specializes the role Student.\nAnother possible use is between a Collection that isCoveredBy a Concept A, and another Collection that isCoveredBy a Concept B that on its turm specializes A. For example, the 70,000 series Selmer Mark VI saxophone Collection specializes the Selmer Mark VI saxophone Collection." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#specializes> <http://www.w3.org/2000/01/rdf-schema#domain> <http://www.loa-cnr.it/ontologies/DUL.owl#SocialObject> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#specializes> <http://www.w3.org/2000/01/rdf-schema#label> "specializes"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#specializes> <http://www.w3.org/2000/01/rdf-schema#label> "specializza"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#specializes> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#SocialObject> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#unifies> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#unifies> <http://www.w3.org/2000/01/rdf-schema#comment> "A Collection has a unification criterion, provided by a Description; for example, a community of practice can be unified by a shared theory or interest, e.g. the community that makes research on mirror neurons shares some core knowledge about mirror neurons, which can be represented as a Description MirrorNeuronTheory that unifies the community. There can be several unifying descriptions." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#unifies> <http://www.w3.org/2000/01/rdf-schema#label> "unifica"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#unifies> <http://www.w3.org/2000/01/rdf-schema#label> "unifies"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#usesConcept> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.loa-cnr.it/ontologies/DUL.owl#usesConcept> <http://www.w3.org/2000/01/rdf-schema#comment> "A generic relation holding between a Description and a Concept. In order to be used, a Concept must be previously definedIn another Description. This last condition cannot be encoded for object properties in OWL." .
+<http://www.loa-cnr.it/ontologies/DUL.owl#usesConcept> <http://www.w3.org/2000/01/rdf-schema#label> "usa il concetto"@it .
+<http://www.loa-cnr.it/ontologies/DUL.owl#usesConcept> <http://www.w3.org/2000/01/rdf-schema#label> "uses concept"@en .
+<http://www.loa-cnr.it/ontologies/DUL.owl#usesConcept> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.loa-cnr.it/ontologies/DUL.owl#Concept> .
+<http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#expresses> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#realizes> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.semanticweb.org/sjh224/ontologies/2023/1/Draft_Fluently#hasRotation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://www.semanticweb.org/sjh224/ontologies/2023/1/Draft_Fluently> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Ontology> .
+<http://www.w3.org/2001/XMLSchema#date> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Datatype> .
+<http://www.w3.org/2002/07/owl#maxQualifiedCardinality> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AnnotationProperty> .
+<http://www.w3.org/2002/07/owl#minQualifiedCardinality> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AnnotationProperty> .
+<http://www.w3.org/2002/07/owl#qualifiedCardinality> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AnnotationProperty> .

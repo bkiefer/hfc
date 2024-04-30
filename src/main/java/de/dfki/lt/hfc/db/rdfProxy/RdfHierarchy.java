@@ -191,9 +191,15 @@ public class RdfHierarchy {
       String union = unionAndList.get(0);
       int supVertex = _name2Vertex.getVertex(union);
       for (String sub : fetchUnionElements(unionAndList.get(1))) {
-        int clazzVertex= _name2Vertex.getVertex(sub);
-        if (!_classGraph.hasEdge(clazzVertex, supVertex)) {
-          newSuperEdge(clazzVertex, supVertex);
+        int clazzVertex = _name2Vertex.getVertex(sub);
+        // clazzVertex may not be known because sub is an owl:Restriction
+        // TODO ARE RESTRICTIONS CLASSES OR NOT?
+        if (clazzVertex >= 0) {
+          if (!_classGraph.hasEdge(clazzVertex, supVertex)) {
+            newSuperEdge(clazzVertex, supVertex);
+          }
+        } else {
+          logger.info("{} is no class", sub);
         }
       }
     }
@@ -225,7 +231,9 @@ public class RdfHierarchy {
     for(List<String> row : t.rows) {
       int a = _name2Vertex.getVertex(row.get(0));
       int b = _name2Vertex.getVertex(row.get(1));
-      _equivalentClasses.union(a, b);
+      // TODO: ARE RESTRICTIONS CLASSES OR NOT?
+      if (a >= 0 && b >=0)
+        _equivalentClasses.union(a, b);
     }
 
     createGraph(classes);
