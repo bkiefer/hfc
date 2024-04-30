@@ -18,6 +18,8 @@ import java.util.Set;
 
 import de.dfki.lt.hfc.db.QueryResult;
 import de.dfki.lt.hfc.db.TupleException;
+import de.dfki.lt.hfc.types.XsdAnySimpleType;
+import de.dfki.lt.hfc.types.XsdNumber;
 
 
 /** A proxy for a class in RDF, with functions to determine the
@@ -65,29 +67,35 @@ public class RdfClass {
 
   private static final String[] restrictionProps =
     { "<owl:someValuesFrom>","<owl:allValuesFrom>", "<owl:onClass>" };
-  
+
   // first argument is domain class, second is restriction property
   private static final String GET_DEFINED_PROPERTIES_RESTRICTION =
       "select distinct ?pred ?range where ?restriction <owl:onProperty> ?pred ?_ "
           + "& {} <rdfs:subClassOf> ?restriction ?_ "
           + "& ?restriction <rdf:type> <owl:Restriction> ?_ "
           + "& ?restriction {} ?range ?_";
- 
+
   private static final String GET_DEFINED_PROPERTIES_RESTRICTION_SINGLE_VALUE =
       "select distinct ?pred ?range where ?restriction <owl:onProperty> ?pred ?_ "
           + "& {} <rdfs:subClassOf> ?restriction ?_ "
-          + "& ?restriction <rdf:type> <owl:Restriction> ?_ " 
+          + "& ?restriction <rdf:type> <owl:Restriction> ?_ "
           + "& ?restriction <owl:hasValue> ?val & ?val <rdf:type> ?range ?_";
-  
 
-  private static final String[] restrictionFunctional =
+
+  private static final String[] restrictionCardinality =
     { "<owl:qualifiedCardinality>", "<owl:maxQualifiedCardinality>" };
-  
-  private static final String GET_PROPERTY_FUNCTIONAL_RESTRICTION =
-      "select distinct ?restriction where {} <rdfs:subClassOf> ?restriction ?_ "
-          + "& ?restriction <owl:onProperty> {} ?_ "
-          + "& ?restriction {} \"1\"^^<xsd:int> ?_";
-  
+
+  private static final String ON_DATARANGE = "<owl:onDataRange>";
+
+  private static final String[] restrictionOnWhat =
+    { "<owl:onClass>", ON_DATARANGE };
+
+  private static final String GET_PROPERTY_CARDINALITY_RESTRICTION =
+      "select distinct ?pred ?range ?card where {} <rdfs:subClassOf> ?restriction ?_ "
+          + "& ?restriction <owl:onProperty> ?pred ?_ "
+          + "& ?restriction {} ?range ?_ "
+          + "& ?restriction {} ?card ?_";
+
   /**/
 
   // Version for quadruples
@@ -171,7 +179,7 @@ public class RdfClass {
     return null;
   }
 
-  
+
   private void checkPropertyType(String property) {
     Set<String> predType =
         new HashSet<>(getValues(_proxy.selectQuery(GET_PROPERTY_TYPE, property)));
@@ -191,7 +199,7 @@ public class RdfClass {
     }
     _propertyType.put(property, type);
   }
-  
+
   /** Determine all the properties defined on this class. We use our own
    *  type hierarchy structure to determine this because constructs such as
    *  owl:unionOf forbid the direct use of a subClassOf query.
@@ -219,11 +227,11 @@ public class RdfClass {
           new HashSet<>(getValues(_proxy.selectQuery(GET_PROPERTY_RANGE, property))));
       checkPropertyType(property);
     }
-    
+
     // Now add all locally defined OWL property restrictions
     for (String restProp: restrictionProps) {
       QueryResult propRange = _proxy.selectQuery(GET_DEFINED_PROPERTIES_RESTRICTION, _uri, restProp);
-      
+
       for (List<String> row : propRange.getTable().getRows()) {
         String property = row.get(0);
         String range = row.get(1);
@@ -233,9 +241,36 @@ public class RdfClass {
         checkPropertyType(property);
       }
     }
-    
-  }
 
+
+    // Now add all locally defined OWL property cardinality restrictions
+    for (String restProp: restrictionCardinality) {
+      for (String onWhat: restrictionOnWhat) {
+        QueryResult propRange = _proxy.selectQuery(
+            GET_PROPERTY_CARDINALITY_RESTRICTION, _uri, onWhat, restProp);
+
+        for (List<String> row : propRange.getTable().getRows()) {
+          String property = row.get(0);
+          String range = row.get(1);
+          String card = row.get(2);
+          HashSet<String> ranges = new HashSet<>();
+          ranges.add(range);
+          _propertyRange.put(property, ranges);
+          //checkPropertyType(property);
+          int type = 0;
+          if (onWhat.equals(ON_DATARANGE)) {
+            type += DATATYPE_PROPERTY;
+          } else {
+            type += OBJECT_PROPERTY;
+          }
+          if (((Integer)XsdNumber.getXsdObject(card).toJava()) == 1) {
+            type += FUNCTIONAL_PROPERTY;
+          }
+          _propertyType.put(property, type);
+        }
+      }
+    }
+  }
   /** Compute the full property URI from a base name (without namespace) */
   public String fetchProperty(String baseName) {
     if (_propertyBaseToFull == null) {
