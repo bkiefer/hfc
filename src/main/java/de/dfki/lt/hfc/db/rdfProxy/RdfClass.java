@@ -83,7 +83,9 @@ public class RdfClass {
 
 
   private static final String[] restrictionCardinality =
-    { "<owl:qualifiedCardinality>", "<owl:maxQualifiedCardinality>" };
+    { "<owl:qualifiedCardinality>", "<owl:maxQualifiedCardinality>"
+        //  "<owl:minQualifiedCardinality>" // we do not check this
+        };
 
   private static final String ON_DATARANGE = "<owl:onDataRange>";
 
@@ -270,6 +272,11 @@ public class RdfClass {
         }
       }
     }
+
+    // TODO: HANDLE THE hasValue RESTRICTIONS: at least one value which is
+    // pre-specified
+    //
+
   }
   /** Compute the full property URI from a base name (without namespace) */
   public String fetchProperty(String baseName) {
