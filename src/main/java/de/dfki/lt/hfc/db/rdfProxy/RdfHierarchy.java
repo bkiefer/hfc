@@ -216,7 +216,7 @@ public class RdfHierarchy {
     // fetch all class objects of the ontology
     List<String> classes = getValues(_proxy.selectQuery(ALL_CLASSES_QUERY));
     // Reserve the zero node for the "top" type
-    classes.add(0, "top");
+    classes.add(0, "<rdf:top>");
 
     // create a union-find datastructure to capture equivalentClass relations
     for (String clazz : classes) {
