@@ -5,9 +5,13 @@
  */
 package de.dfki.lt.hfc.db.rdfProxy;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -303,4 +307,66 @@ public class RdfTest {
      assertNull(o);
    }
 
+
+
+  @Test
+  public void testRdfBaseTypeFns() {
+    Rdf bt = _proxy.getClass("<rifca:BaseTypes>").getNewInstance("test:");
+    bt.setValue("<rifca:boolean>", true);
+    bt.setValue("<rifca:byte>", (byte)17);
+    bt.setValue("<rifca:short>", (short)23);
+    bt.setValue("<rifca:int>", 27);
+    bt.setValue("<rifca:long>", Long.MAX_VALUE - 1);
+    bt.setValue("<rifca:float>", 0.7f);
+    bt.setValue("<rifca:double>", 0.7);
+    //bt.setValue("<rifca:char>", 'c');
+    bt.setValue("<rifca:string>", "test");
+
+    assertTrue(bt.getBoolean("<rifca:boolean>"));
+
+    assertEquals(17, (byte)bt.pincrByte("<rifca:byte>"));
+    assertEquals(18, (byte)bt.pdecrByte("<rifca:byte>"));
+    assertEquals(18, (byte)bt.incrByte("<rifca:byte>"));
+    assertEquals(17, (byte)bt.decrByte("<rifca:byte>"));
+    assertEquals(17, (byte)bt.getByte("<rifca:byte>"));
+
+    assertEquals(23, (short)bt.pincrShort("<rifca:short>"));
+    assertEquals(24, (short)bt.pdecrShort("<rifca:short>"));
+    assertEquals(24, (short)bt.incrShort("<rifca:short>"));
+    assertEquals(23, (short)bt.decrShort("<rifca:short>"));
+    assertEquals(23, (short)bt.getShort("<rifca:short>"));
+
+    assertEquals(27, (int)bt.pincrInteger("<rifca:int>"));
+    assertEquals(28, (int)bt.pdecrInteger("<rifca:int>"));
+    assertEquals(28, (int)bt.incrInteger("<rifca:int>"));
+    assertEquals(27, (int)bt.decrInteger("<rifca:int>"));
+    assertEquals(27, (int)bt.getInteger("<rifca:int>"));
+
+    assertEquals(Long.MAX_VALUE - 1, (long)bt.pincrLong("<rifca:long>"));
+    assertEquals(Long.MAX_VALUE, (long)bt.pdecrLong("<rifca:long>"));
+    assertEquals(Long.MAX_VALUE, (long)bt.incrLong("<rifca:long>"));
+    assertEquals(Long.MAX_VALUE - 1, (long)bt.decrLong("<rifca:long>"));
+    assertEquals(Long.MAX_VALUE - 1, (long)bt.getLong("<rifca:long>"));
+
+    assertEquals(0.7f, bt.pincrFloat("<rifca:float>"), 0.001);
+    assertEquals(1.7f, bt.pdecrFloat("<rifca:float>"), 0.001);
+    assertEquals(1.7f, bt.incrFloat("<rifca:float>"), 0.001);
+    assertEquals(0.7f, bt.decrFloat("<rifca:float>"), 0.001);
+    assertEquals(0.7f, bt.getFloat("<rifca:float>"), 0.001);
+
+    assertEquals(0.7, bt.pincrDouble("<rifca:double>"), 0.001);
+    assertEquals(1.7, bt.pdecrDouble("<rifca:double>"), 0.001);
+    assertEquals(1.7, bt.incrDouble("<rifca:double>"), 0.001);
+    assertEquals(0.7, bt.decrDouble("<rifca:double>"), 0.001);
+    assertEquals(0.7, bt.getDouble("<rifca:double>"), 0.001);
+
+    assertTrue(bt.isEqual("<rifca:string>", "test"));
+
+    Date date = new Date();
+    bt.setValue("<rifca:date>", date);
+    assertEquals(date, bt.getDate("<rifca:date>"));
+
+    Rdf father = bt.getProxy().getRdf("<rifca:Child_0>").getRdf("<dom:hasFather>");
+    assertEquals("<rifca:father_2>", father.toString());
+  }
 }

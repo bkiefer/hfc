@@ -23,4 +23,5 @@ tupleFiles:
   # the axiomatic triples for OWL-Horst w/ EQ reduction
   #- default.eqred.nt
   # the PAL sub-ontologies
+  - basetypes.nt
   - rifca.nt

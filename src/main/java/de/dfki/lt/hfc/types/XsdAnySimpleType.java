@@ -85,6 +85,8 @@ public abstract class XsdAnySimpleType extends AnyType {
             "XsdGMonth",
             "XsdGYear",
             "XsdGYearMonth",
+            "XsdByte",
+            "XsdShort",
             "XsdInt",
             "XsdLong",
             "XsdString",
@@ -139,7 +141,7 @@ public abstract class XsdAnySimpleType extends AnyType {
       throw new RuntimeException(e);
     }
   }
-  
+
   /**
    * Register a constructor for a simple xsd type here, so that it can be used
    * by the factory method getXsdObject
@@ -162,7 +164,7 @@ public abstract class XsdAnySimpleType extends AnyType {
   public static boolean isSimpleXsdType(String clazz) {
     return typeToConstructor.containsKey(clazz);
   }
-  
+
 
   /**
    * A factory method to generate the correct AnyType subclass from the string

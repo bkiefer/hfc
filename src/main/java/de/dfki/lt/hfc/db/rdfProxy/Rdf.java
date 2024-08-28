@@ -173,7 +173,7 @@ public class Rdf {
   public Float getFloat(String p) { return (Float)getSingleValue(p); }
   public Double getDouble(String p) { return (Double)getSingleValue(p); }
   public Boolean getBoolean(String p) { return (Boolean)getSingleValue(p); }
-  public Character getCharacter(String p) { return (Character)getSingleValue(p); }
+  //public Character getCharacter(String p) { return (Character)getSingleValue(p); }
 
   // preincrement, e.g., ++a
   public Byte incrByte(String p) {
@@ -197,10 +197,10 @@ public class Rdf {
 
   // postincrement, e.g., a++
   public Byte pincrByte(String p) {
-    Byte b = getByte(p); setValue(p, b+1); return b;
+    Byte b = getByte(p); setValue(p, (byte)(b+1)); return b;
   }
   public Short pincrShort(String p) {
-    Short b = getShort(p); setValue(p, b+1); return b;
+    Short b = getShort(p); setValue(p, (short)(b+1)); return b;
   }
   public Integer pincrInteger(String p) {
     Integer b = getInteger(p); setValue(p, b+1); return b;
@@ -238,10 +238,10 @@ public class Rdf {
 
   // postdecrement, e.g., a--
   public Byte pdecrByte(String p) {
-    Byte b = getByte(p); setValue(p, b-1); return b;
+    Byte b = getByte(p); setValue(p, (byte)(b-1)); return b;
   }
   public Short pdecrShort(String p) {
-    Short b = getShort(p); setValue(p, b-1); return b;
+    Short b = getShort(p); setValue(p, (short)(b-1)); return b;
   }
   public Integer pdecrInteger(String p) {
     Integer b = getInteger(p); setValue(p, b-1); return b;
