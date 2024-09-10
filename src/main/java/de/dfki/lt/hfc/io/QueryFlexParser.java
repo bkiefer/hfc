@@ -75,12 +75,11 @@ public class QueryFlexParser {
     "\1\5\1\16\1\26\1\27\16\0\3\14\1\30\1\14"+
     "\1\16\17\0\5\14\1\16\7\0\1\31\1\14\6\0"+
     "\1\30\4\14\1\30\2\0\3\32\4\0\1\33\2\0"+
-    "\4\14\10\0\1\34\1\0\2\14\1\34\1\14\1\35"+
-    "\3\0\1\36\3\0\3\14\1\0\1\37\1\40\1\41"+
-    "\1\42\1\41\1\43";
+    "\4\14\10\0\1\34\2\14\1\34\1\35\3\0\1\36"+
+    "\2\0\2\14\1\0\1\37\1\40\1\41\1\42";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[197];
+    int [] result = new int[191];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -127,12 +126,11 @@ public class QueryFlexParser {
     "\0\u1b2a\0\u1b63\0\u1b9c\0\u1bd5\0\u1c0e\0\u1c47\0\u0273\0\u1c80"+
     "\0\u1cb9\0\u1cf2\0\u1d2b\0\u1d64\0\u1d9d\0\u1dd6\0\u1e0f\0\u1e48"+
     "\0\u1e81\0\u1eba\0\u1ef3\0\u1f2c\0\u1f65\0\u1c80\0\u1f9e\0\u1fd7"+
-    "\0\u2010\0\u1d64\0\u2049\0\u1dd6\0\u2082\0\u20bb\0\u20f4\0\u0273"+
-    "\0\u212d\0\u2166\0\u219f\0\u21d8\0\u2211\0\u224a\0\u2283\0\u0273"+
-    "\0\u0273\0\u219f\0\u0675\0\u224a\0\u2283";
+    "\0\u1d64\0\u1dd6\0\u2010\0\u2049\0\u2082\0\u0273\0\u20bb\0\u20f4"+
+    "\0\u212d\0\u2166\0\u219f\0\u0273\0\u0273\0\u0675\0\u219f";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[197];
+    int [] result = new int[191];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -232,26 +230,23 @@ public class QueryFlexParser {
     "\71\0\1\250\70\0\1\251\60\0\1\252\75\0\1\253"+
     "\72\0\1\254\71\0\1\255\37\0\1\240\2\0\1\240"+
     "\2\0\2\240\1\256\60\240\1\171\2\0\1\171\2\0"+
-    "\1\171\1\257\1\171\1\216\57\171\1\46\2\0\1\46"+
-    "\2\0\22\46\1\260\41\46\2\0\1\46\2\0\23\46"+
-    "\1\261\37\46\1\244\2\0\1\244\2\0\2\244\1\262"+
-    "\60\244\1\176\2\0\1\176\2\0\1\176\1\263\1\176"+
-    "\1\223\57\176\1\246\2\0\1\246\2\0\2\246\1\264"+
-    "\60\246\1\201\2\0\1\201\2\0\1\201\1\265\1\201"+
-    "\1\226\57\201\20\0\1\266\75\0\1\267\65\0\1\270"+
-    "\75\0\1\270\63\0\1\271\75\0\1\272\41\0\1\273"+
-    "\2\0\1\273\2\0\63\273\1\46\2\0\1\46\2\0"+
-    "\14\46\1\274\47\46\2\0\1\46\2\0\21\46\1\275"+
-    "\41\46\1\276\2\0\1\276\2\0\63\276\1\277\2\0"+
-    "\1\277\2\0\63\277\20\0\1\300\75\0\1\300\62\0"+
-    "\1\301\75\0\1\301\44\0\1\273\2\0\1\273\2\0"+
-    "\2\273\1\302\60\273\1\46\2\0\1\46\2\0\11\46"+
-    "\1\303\52\46\2\0\1\46\2\0\16\46\1\303\44\46"+
-    "\1\276\2\0\1\276\2\0\2\276\1\304\60\276\1\277"+
-    "\2\0\1\277\2\0\2\277\1\305\60\277";
+    "\1\171\1\216\1\171\1\216\57\171\1\46\2\0\1\46"+
+    "\2\0\22\46\1\257\41\46\2\0\1\46\2\0\23\46"+
+    "\1\260\37\46\1\244\2\0\1\244\2\0\2\244\1\261"+
+    "\60\244\1\176\2\0\1\176\2\0\1\176\1\223\1\176"+
+    "\1\223\57\176\1\246\2\0\1\246\2\0\2\246\1\262"+
+    "\60\246\1\201\2\0\1\201\2\0\1\201\1\263\1\201"+
+    "\1\226\57\201\20\0\1\264\75\0\1\265\65\0\1\266"+
+    "\75\0\1\266\63\0\1\267\75\0\1\270\41\0\1\46"+
+    "\2\0\1\46\2\0\14\46\1\271\47\46\2\0\1\46"+
+    "\2\0\21\46\1\272\41\46\1\273\2\0\1\273\2\0"+
+    "\63\273\20\0\1\274\75\0\1\274\62\0\1\275\75\0"+
+    "\1\275\44\0\1\46\2\0\1\46\2\0\11\46\1\276"+
+    "\52\46\2\0\1\46\2\0\16\46\1\276\44\46\1\273"+
+    "\2\0\1\273\2\0\2\273\1\277\60\273";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[8892];
+    int [] result = new int[8664];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -294,11 +289,11 @@ public class QueryFlexParser {
     "\2\11\1\1\3\0\2\11\3\1\6\0\1\1\1\11"+
     "\3\0\1\1\2\0\11\1\16\0\6\1\17\0\6\1"+
     "\7\0\1\11\1\1\6\0\6\1\2\0\3\1\4\0"+
-    "\1\11\2\0\4\1\10\0\1\1\1\0\5\1\3\0"+
-    "\1\11\3\0\3\1\1\0\2\11\4\1";
+    "\1\11\2\0\4\1\10\0\5\1\3\0\1\11\2\0"+
+    "\2\1\1\0\2\11\2\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[197];
+    int [] result = new int[191];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -395,95 +390,95 @@ public class QueryFlexParser {
    private boolean isRelation = false;
 
    public boolean isDistinct(){
-       return this.distinct;
+     return this.distinct;
    }
 
    public boolean isExpandProxy(){
-       return this.expandProxy;
+     return this.expandProxy;
    }
 
    private void handleVar(String var) throws QueryParseException {
-       if(this.state == FILTER){
-           logger.info(" foundVars " + foundVars);
-               logger.info(" Var " + var);
-               if(!this.foundVars.contains(var))
-                   throw new QueryParseException("unknown variable " + var + " used in FILTER");
-       }
-        //add to clause
-        this.clause.add(var);
-        //add to foundVars
-        this.foundVars.add(var);
+     if(this.state == FILTER){
+       logger.debug(" foundVars: {}  Var: {} ", foundVars, var);
+       if(!this.foundVars.contains(var))
+         throw new QueryParseException("unknown variable " + var + " used in FILTER");
+     }
+     //add to clause
+     this.clause.add(var);
+     //add to foundVars
+     this.foundVars.add(var);
    }
 
    private void closeWhereClauses() throws QueryParseException {
-       this.whereClauses.add(clause);
-       if (whereClauses.isEmpty()) throw new QueryParseException("Missing where clauses");
+     this.whereClauses.add(clause);
+     if (whereClauses.isEmpty())
+       throw new QueryParseException("Missing where clauses");
        if (projectedVars.contains("*")) {
-           // a "*" should not come up with further vars
-           if (projectedVars.size() > 1)
-               throw new QueryParseException("\"*\" and further variables can not be mixed");
-           }
+         // a "*" should not come up with further vars
+         if (projectedVars.size() > 1)
+           throw new QueryParseException("\"*\" and further variables can not be mixed");
+       }
        else {
-            // projected vars should only consist of found vars
-            HashSet<String> pv = new HashSet<String>(projectedVars);
-            pv.removeAll(foundVars);
-            if (! pv.isEmpty())
-                throw new QueryParseException("SELECT contains variables not found in WHERE: " + pv);
-            }
+         // projected vars should only consist of found vars
+         HashSet<String> pv = new HashSet<String>(projectedVars);
+         pv.removeAll(foundVars);
+         if (! pv.isEmpty())
+           throw new QueryParseException("SELECT contains variables not found in WHERE: " + pv);
+       }
        clause = new ArrayList<>();
    }
 
-   private void closeFilterClauses(){ this.filterClauses.add(clause);
-   clause = new ArrayList<>();}
+   private void closeFilterClauses(){
+     this.filterClauses.add(clause);
+     clause = new ArrayList<>();
+   }
 
-   private void closeAggregateClauses(){this.aggregateClauses.add(clause); clause = new ArrayList<>();}
+   private void closeAggregateClauses(){
+     this.aggregateClauses.add(clause);
+     clause = new ArrayList<>();
+   }
 
    private void handleEOF() throws QueryParseException {
-        switch (state){
-            case(WHERE):{
-                closeWhereClauses();
-                break;
-            }
-            case (FILTER):{
-                closeFilterClauses();
-                break;
-            }
-            case (AGGREGATE): {
-                closeAggregateClauses();
-                break;
-            }
-            default:{
-                throw new QueryParseException("Invalid query");
-            }
-        }
+     switch (state){
+     case(WHERE):
+       closeWhereClauses();
+       break;
+     case (FILTER):
+       closeFilterClauses();
+       break;
+     case (AGGREGATE):
+       closeAggregateClauses();
+       break;
+     default:
+       throw new QueryParseException("Invalid query");
      }
+   }
 
-     public void parse() throws IOException, QueryParseException{
-       while ( !zzAtEOF ){
-               yylex();
-             }
+   public void parse() throws IOException, QueryParseException{
+     while ( !zzAtEOF ){
+       yylex();
      }
+   }
 
-     private String handleUnicode(String match){
-              Pattern p = Pattern.compile("\\\\u(\\p{XDigit}{4})");
-              Matcher m = p.matcher(match);
-              StringBuffer buf = new StringBuffer(match.length());
-              while (m.find()) {
-              String ch = String.valueOf((char) Integer.parseInt(m.group(1), 16));
-                 m.appendReplacement(buf, Matcher.quoteReplacement(ch));
-              }
-              m.appendTail(buf);
-              return buf.toString();
+   private String handleUnicode(String match){
+     Pattern p = Pattern.compile("\\\\u(\\p{XDigit}{4})");
+     Matcher m = p.matcher(match);
+     StringBuffer buf = new StringBuffer(match.length());
+     while (m.find()) {
+       String ch = String.valueOf((char) Integer.parseInt(m.group(1), 16));
+       m.appendReplacement(buf, Matcher.quoteReplacement(ch));
+     }
+     m.appendTail(buf);
+     return buf.toString();
+   }
 
-       }
-
-       private void closeRelation(String end){
-        c = 0;
-        interval = false;
-        isRelation = false;
-        this.clause.add(start + end);
-        yybegin(state);
-       }
+   private void closeRelation(String end){
+     c = 0;
+     interval = false;
+     isRelation = false;
+     this.clause.add(start + end);
+     yybegin(state);
+   }
 
 
 
@@ -877,111 +872,114 @@ public class QueryFlexParser {
             { string.append( yytext() );
             } 
             // fall through
-          case 36: break;
+          case 35: break;
           case 2: 
             { throw new RuntimeException("Unterminated string at end of line");
             } 
             // fall through
-          case 37: break;
+          case 36: break;
           case 3: 
             { if (interval == true)yybegin(INTERVAL); else yybegin(state);
             } 
             // fall through
-          case 38: break;
+          case 37: break;
           case 4: 
             { throw new QueryParseException("Invalid select statement " + yytext());
             } 
             // fall through
-          case 39: break;
+          case 38: break;
           case 5: 
             { 
             } 
             // fall through
-          case 40: break;
+          case 39: break;
           case 6: 
             { projectedVars.add("*");
             } 
             // fall through
-          case 41: break;
+          case 40: break;
           case 7: 
             { throw new QueryParseException("Invalid WHERE statement " + yytext());
             } 
             // fall through
-          case 42: break;
+          case 41: break;
           case 8: 
-            { isRelation = true; start = yytext(); state = WHERE; yybegin(INTERVAL);
+            { isRelation = true;
+  start = yytext();
+  state = WHERE;
+  yybegin(INTERVAL);
             } 
             // fall through
-          case 43: break;
+          case 42: break;
           case 9: 
             { start = yytext(); state = WHERE; yybegin(INTERVAL);
             } 
             // fall through
-          case 44: break;
+          case 43: break;
           case 10: 
             { yybegin(STRING);
             } 
             // fall through
-          case 45: break;
+          case 44: break;
           case 11: 
             { this.whereClauses.add(clause);
-clause = new ArrayList<>();
+  clause = new ArrayList<>();
             } 
             // fall through
-          case 46: break;
+          case 45: break;
           case 12: 
             { this.clause.add(yytext());
             } 
             // fall through
-          case 47: break;
+          case 46: break;
           case 13: 
             { this.filterClauses.add(clause);
    clause = new ArrayList<>();
             } 
             // fall through
-          case 48: break;
+          case 47: break;
           case 14: 
             { this.clause.add(yytext()); rhs= true;
             } 
             // fall through
-          case 49: break;
+          case 48: break;
           case 15: 
             { this.aggregateClauses.add(clause);
-      clause = new ArrayList<>();
-      rhs = false;
+  clause = new ArrayList<>();
+  rhs = false;
             } 
             // fall through
-          case 50: break;
+          case 49: break;
           case 16: 
             { throw new QueryParseException();
             } 
             // fall through
-          case 51: break;
+          case 50: break;
           case 17: 
             { closeRelation( yytext());
             } 
             // fall through
-          case 52: break;
+          case 51: break;
           case 18: 
             { interval = true; yybegin(STRING);
             } 
             // fall through
-          case 53: break;
+          case 52: break;
           case 19: 
             { throw new RuntimeException("Illegal escape sequence \""+yytext()+"\"");
             } 
             // fall through
-          case 54: break;
+          case 53: break;
           case 20: 
             { this.projectedVars.add(yytext());
             } 
             // fall through
-          case 55: break;
+          case 54: break;
           case 21: 
             { handleVar(yytext());
             } 
             // fall through
-          case 56: break;
+          case 55: break;
           case 22: 
             { if(rhs)
         handleVar(yytext());
@@ -991,84 +989,78 @@ clause = new ArrayList<>();
     }
             } 
             // fall through
-          case 57: break;
+          case 56: break;
           case 23: 
             { c++; handleVar(yytext());
-if(c==2)closeRelation("");
+  if (c==2) closeRelation("");
             } 
             // fall through
-          case 58: break;
+          case 57: break;
           case 24: 
             { clause.add(yytext());
             } 
             // fall through
-          case 59: break;
+          case 58: break;
           case 25: 
             { state = WHERE;  yybegin(WHERE);
             } 
             // fall through
-          case 60: break;
+          case 59: break;
           case 26: 
             { yybegin(SELECT);
             } 
             // fall through
-          case 61: break;
+          case 60: break;
           case 27: 
             { hasFilter = true; state = FILTER; closeWhereClauses();
         yybegin(FILTER);
             } 
             // fall through
-          case 62: break;
+          case 61: break;
           case 28: 
             { clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
-
-                            string.setLength(0);
+  string.setLength(0);
+            } 
+            // fall through
+          case 62: break;
+          case 29: 
+            { c++;
+  clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
+  string.setLength(0);
+  if(c==2)if(isRelation)closeRelation("");
             } 
             // fall through
           case 63: break;
-          case 29: 
-            { c++;
-                            clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
-                            string.setLength(0);if(c==2)if(isRelation)closeRelation("");
-            } 
-            // fall through
-          case 64: break;
           case 30: 
             { distinct = true;
             } 
             // fall through
-          case 65: break;
+          case 64: break;
           case 31: 
             { this.expandProxy = true;
             yybegin(SELECT);
             } 
             // fall through
-          case 66: break;
+          case 65: break;
           case 32: 
             { hasAggregate = true; state = AGGREGATE; closeWhereClauses();
-        yybegin(AGGREGATE);
+  yybegin(AGGREGATE);
             } 
             // fall through
-          case 67: break;
+          case 66: break;
           case 33: 
-            { clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
-                           string.setLength(0);
-            } 
-            // fall through
-          case 68: break;
-          case 34: 
             { hasAggregate = true;  state = AGGREGATE; closeFilterClauses();
                      yybegin(AGGREGATE);
             } 
             // fall through
-          case 69: break;
-          case 35: 
+          case 67: break;
+          case 34: 
             { c++;
-                           clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
-                           string.setLength(0);if(c==2)if(isRelation)closeRelation("");
+  clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
+  string.setLength(0);if(c==2)if(isRelation)closeRelation("");
             } 
             // fall through
-          case 70: break;
+          case 68: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }

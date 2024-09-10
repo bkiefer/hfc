@@ -109,7 +109,7 @@ public final class AggregateRegistry {
       if (AggregateRegistry.EXIT_WHEN_REGISTRATION_FAILS)
         throw new RuntimeException("FATAL ERROR");
       else
-        logger.info("  registering aggregate " + className + " fails");
+        logger.error("  registering aggregate " + className + " fails");
       return null;
     }
   }

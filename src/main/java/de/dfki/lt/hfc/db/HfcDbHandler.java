@@ -600,7 +600,7 @@ public class HfcDbHandler implements DbClient {
       newUri = newUri + (++_r) + '>';
     }
     setValue(newUri, "<rdf:type>", type);
-    logger.info("new URI: {}", newUri);
+    logger.debug("new URI: {}", newUri);
     return newUri;
   }
 

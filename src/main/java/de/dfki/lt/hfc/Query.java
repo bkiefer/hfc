@@ -62,12 +62,6 @@ public class Query {
   protected TupleStore tupleStore;
 
   /**
-   * a constant that controls whether a warning is printed in case "unexpected" things
-   * happen; similar variables exists in class TupleStore, RuleStore, and ForwardChainer
-   */
-  private boolean verbose = false;
-
-  /**
    * simple flag indicating whether an indexstore is used.
    */
   private boolean activeIndex;
@@ -386,8 +380,7 @@ public class Query {
             } else {
               // constant _not_ known to tuple store: we no longer will throw an exception:
               //throw new QueryParseException("  unknown constant in predicate: " + next);
-              if (verbose)
-                logger.info("  unknown constant in FILTER predicate: " + next + "\n");
+              logger.warn("  unknown constant in FILTER predicate: " + next + "\n");
               this.tupleStore.putObject(next);
               id = this.tupleStore.putObject(next);
               args.add(id);
@@ -416,8 +409,7 @@ public class Query {
           } else {
             // constant _not_ known to tuple store: we no longer will throw an exception:
             //throw new QueryParseException("  unknown constant in in-eq constraint: " + next);
-            if (verbose)
-              logger.info("  unknown constant in FILTER in-eq constraint: " + next + "\n");
+            logger.warn("  unknown constant in FILTER in-eq constraint: " + next + "\n");
 //            this.tupleStore.putObject(next);
             id = this.tupleStore.putObject(next);
             varconstIneqs.add(id);
@@ -498,8 +490,7 @@ public class Query {
           } else {
             // constant _not_ known to tuple store: we no longer will throw an exception:
             //throw new QueryParseException("  unknown constant in aggregate: " + elem);
-            if (verbose)
-              logger.info("  unknown constant in AGGREGATE function: " + elem + "\n");
+            logger.warn("  unknown constant in AGGREGATE function: " + elem + "\n");
             //this.tupleStore.putObject(elem);
             id = this.tupleStore.putObject(elem);
             args[i - eqpos - 2] = id;

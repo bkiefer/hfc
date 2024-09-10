@@ -199,7 +199,7 @@ public class RdfHierarchy {
             newSuperEdge(clazzVertex, supVertex);
           }
         } else {
-          logger.info("{} is no class", sub);
+          logger.warn("{} is no class", sub);
         }
       }
     }

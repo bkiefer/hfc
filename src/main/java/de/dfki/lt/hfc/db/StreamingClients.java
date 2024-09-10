@@ -130,7 +130,7 @@ public class StreamingClients {
 
   /** Run the streaming clients, really. */
   private void notifyClients() {
-    logger.info("dbChange[{} {}]", _notificationScheduled, _affectedUsers);
+    logger.debug("dbChange[{} {}]", _notificationScheduled, _affectedUsers);
     Set<String> users = new HashSet<>();
     synchronized(_affectedUsers) {
       users.addAll(_affectedUsers);

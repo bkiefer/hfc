@@ -23,9 +23,14 @@ public final class PrintTrue extends FunctionalOperator {
    * @return FunctionalOperator.TRUE
    */
   public int apply(int[] args) {
-    for (int i = 0; i < args.length; i++)
-      logger.info(getExternalRepresentation(args[i]) + " ");
-    logger.info("\n");
+    if (logger.isDebugEnabled()) {
+      StringBuilder sb = new StringBuilder();
+      for (int i = 0; i < args.length; i++) {
+        sb.append(getExternalRepresentation(args[i])).append(' ');
+      }
+      sb.append('\n');
+      logger.debug(sb.toString());
+    }
     return FunctionalOperator.TRUE;
   }
 

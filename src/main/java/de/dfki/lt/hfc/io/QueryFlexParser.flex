@@ -45,95 +45,95 @@ import java.util.regex.Pattern;
    private boolean isRelation = false;
 
    public boolean isDistinct(){
-       return this.distinct;
+     return this.distinct;
    }
 
    public boolean isExpandProxy(){
-       return this.expandProxy;
+     return this.expandProxy;
    }
 
    private void handleVar(String var) throws QueryParseException {
-       if(this.state == FILTER){
-           logger.info(" foundVars " + foundVars);
-               logger.info(" Var " + var);
-               if(!this.foundVars.contains(var))
-                   throw new QueryParseException("unknown variable " + var + " used in FILTER");
-       }
-        //add to clause
-        this.clause.add(var);
-        //add to foundVars
-        this.foundVars.add(var);
+     if(this.state == FILTER){
+       logger.debug(" foundVars: {}  Var: {} ", foundVars, var);
+       if(!this.foundVars.contains(var))
+         throw new QueryParseException("unknown variable " + var + " used in FILTER");
+     }
+     //add to clause
+     this.clause.add(var);
+     //add to foundVars
+     this.foundVars.add(var);
    }
 
    private void closeWhereClauses() throws QueryParseException {
-       this.whereClauses.add(clause);
-       if (whereClauses.isEmpty()) throw new QueryParseException("Missing where clauses");
+     this.whereClauses.add(clause);
+     if (whereClauses.isEmpty())
+       throw new QueryParseException("Missing where clauses");
        if (projectedVars.contains("*")) {
-           // a "*" should not come up with further vars
-           if (projectedVars.size() > 1)
-               throw new QueryParseException("\"*\" and further variables can not be mixed");
-           }
+         // a "*" should not come up with further vars
+         if (projectedVars.size() > 1)
+           throw new QueryParseException("\"*\" and further variables can not be mixed");
+       }
        else {
-            // projected vars should only consist of found vars
-            HashSet<String> pv = new HashSet<String>(projectedVars);
-            pv.removeAll(foundVars);
-            if (! pv.isEmpty())
-                throw new QueryParseException("SELECT contains variables not found in WHERE: " + pv);
-            }
+         // projected vars should only consist of found vars
+         HashSet<String> pv = new HashSet<String>(projectedVars);
+         pv.removeAll(foundVars);
+         if (! pv.isEmpty())
+           throw new QueryParseException("SELECT contains variables not found in WHERE: " + pv);
+       }
        clause = new ArrayList<>();
    }
 
-   private void closeFilterClauses(){ this.filterClauses.add(clause);
-   clause = new ArrayList<>();}
+   private void closeFilterClauses(){
+     this.filterClauses.add(clause);
+     clause = new ArrayList<>();
+   }
 
-   private void closeAggregateClauses(){this.aggregateClauses.add(clause); clause = new ArrayList<>();}
+   private void closeAggregateClauses(){
+     this.aggregateClauses.add(clause);
+     clause = new ArrayList<>();
+   }
 
    private void handleEOF() throws QueryParseException {
-        switch (state){
-            case(WHERE):{
-                closeWhereClauses();
-                break;
-            }
-            case (FILTER):{
-                closeFilterClauses();
-                break;
-            }
-            case (AGGREGATE): {
-                closeAggregateClauses();
-                break;
-            }
-            default:{
-                throw new QueryParseException("Invalid query");
-            }
-        }
+     switch (state){
+     case(WHERE):
+       closeWhereClauses();
+       break;
+     case (FILTER):
+       closeFilterClauses();
+       break;
+     case (AGGREGATE):
+       closeAggregateClauses();
+       break;
+     default:
+       throw new QueryParseException("Invalid query");
      }
+   }
 
-     public void parse() throws IOException, QueryParseException{
-       while ( !zzAtEOF ){
-               yylex();
-             }
+   public void parse() throws IOException, QueryParseException{
+     while ( !zzAtEOF ){
+       yylex();
      }
+   }
 
-     private String handleUnicode(String match){
-              Pattern p = Pattern.compile("\\\\u(\\p{XDigit}{4})");
-              Matcher m = p.matcher(match);
-              StringBuffer buf = new StringBuffer(match.length());
-              while (m.find()) {
-              String ch = String.valueOf((char) Integer.parseInt(m.group(1), 16));
-                 m.appendReplacement(buf, Matcher.quoteReplacement(ch));
-              }
-              m.appendTail(buf);
-              return buf.toString();
+   private String handleUnicode(String match){
+     Pattern p = Pattern.compile("\\\\u(\\p{XDigit}{4})");
+     Matcher m = p.matcher(match);
+     StringBuffer buf = new StringBuffer(match.length());
+     while (m.find()) {
+       String ch = String.valueOf((char) Integer.parseInt(m.group(1), 16));
+       m.appendReplacement(buf, Matcher.quoteReplacement(ch));
+     }
+     m.appendTail(buf);
+     return buf.toString();
+   }
 
-       }
-
-       private void closeRelation(String end){
-        c = 0;
-        interval = false;
-        isRelation = false;
-        this.clause.add(start + end);
-        yybegin(state);
-       }
+   private void closeRelation(String end){
+     c = 0;
+     interval = false;
+     isRelation = false;
+     this.clause.add(start + end);
+     yybegin(state);
+   }
 
 %}
 
@@ -204,36 +204,42 @@ ALLENRELATION = "S"| "Si"| "F"| "Fi"| "D"| "Di"| "Bf"| "Af"| "M"| "Mi"| "EA"| "O
 
 <INTERVAL> {
 
-{VAR} {c++; handleVar(yytext());
-if(c==2)closeRelation("");}
+{VAR} {
+  c++; handleVar(yytext());
+  if (c==2) closeRelation("");
+}
 
 \^\^<xsd:{NONWHITESPACE}+> {
-                            c++;
-                           clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
-                           string.setLength(0);if(c==2)if(isRelation)closeRelation("");}
+  c++;
+  clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
+  string.setLength(0);if(c==2)if(isRelation)closeRelation("");
+}
 
 \^\^<{NONWHITESPACE}+#{NONWHITESPACE}+> {
-                            c++;
-                            clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
-                            string.setLength(0);if(c==2)if(isRelation)closeRelation("");}
+  c++;
+  clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
+  string.setLength(0);
+  if(c==2)if(isRelation)closeRelation("");
+}
 
-\" {  interval = true; yybegin(STRING);}
+\" {
+  interval = true; yybegin(STRING);
+}
 
-{WhiteSpace} |
-"," {}
+{WhiteSpace} | "," {}
 
-{INTERVALEND} {closeRelation( yytext()); }
+{INTERVALEND} { closeRelation( yytext()); }
 
 . {throw new QueryParseException();}
 
 }
 <SELECT> {
 
-{DISTINCT} {distinct = true;}
+{DISTINCT} { distinct = true; }
 
-{VAR} {this.projectedVars.add(yytext());}
+{VAR} { this.projectedVars.add(yytext()); }
 
-"*" {projectedVars.add("*");}
+"*" { projectedVars.add("*"); }
 
 {WhiteSpace} {}
 
@@ -244,36 +250,46 @@ if(c==2)closeRelation("");}
 }
 
 <WHERE> {
-"&" {this.whereClauses.add(clause);
-clause = new ArrayList<>();}
-
-{VAR} {
-   handleVar(yytext());
+"&" {
+  this.whereClauses.add(clause);
+  clause = new ArrayList<>();
 }
 
-{INTERVALSTART} {start = yytext(); state = WHERE; yybegin(INTERVAL);}
-{ALLENRELATION} {isRelation = true; start = yytext(); state = WHERE; yybegin(INTERVAL);}
+{VAR} {
+  handleVar(yytext());
+}
 
-{URI}            {this.clause.add(yytext());}
+{INTERVALSTART} { start = yytext(); state = WHERE; yybegin(INTERVAL); }
+{ALLENRELATION} {
+  isRelation = true;
+  start = yytext();
+  state = WHERE;
+  yybegin(INTERVAL);
+}
 
-{BLANK}            {this.clause.add(yytext());}
+{URI}           { this.clause.add(yytext()); }
+
+{BLANK}         { this.clause.add(yytext()); }
 
 \^\^<xsd:{NONWHITESPACE}+> {
+  clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
+  string.setLength(0);
+}
 
-                           clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
-                           string.setLength(0);}
-
-\^\^<{NONWHITESPACE}+#{NONWHITESPACE}+> {clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
-
-                            string.setLength(0);}
+\^\^<{NONWHITESPACE}+#{NONWHITESPACE}+> {
+  clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
+  string.setLength(0);
+}
 
 
 {WhiteSpace} {}
 
-\" {  yybegin(STRING);}
+\" {  yybegin(STRING); }
 
-{AGGREGATE} {hasAggregate = true; state = AGGREGATE; closeWhereClauses();
-        yybegin(AGGREGATE);}
+{AGGREGATE} {
+  hasAggregate = true; state = AGGREGATE; closeWhereClauses();
+  yybegin(AGGREGATE);
+}
 
 {FILTER} {hasFilter = true; state = FILTER; closeWhereClauses();
         yybegin(FILTER);}
@@ -302,22 +318,23 @@ clause = new ArrayList<>();}
     clause.add(yytext());
  }
 
- {WhiteSpace} {}
+{WhiteSpace} {}
 
 \" {yybegin(STRING); }
 
 \^\^<xsd:{NONWHITESPACE}+> {
+  clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
+  string.setLength(0);
+}
 
-                           clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
-                           string.setLength(0);}
-
-\^\^<{NONWHITESPACE}+#{NONWHITESPACE}+> {clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
-
-                            string.setLength(0);}
+\^\^<{NONWHITESPACE}+#{NONWHITESPACE}+> {
+  clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
+  string.setLength(0);
+}
 
 {PRED} { this.clause.add(yytext());}
 
-    . {throw new QueryParseException("Invalid FILTER statement " + yytext());}
+. {throw new QueryParseException("Invalid FILTER statement " + yytext());}
 }
 
 <AGGREGATE> {
@@ -331,29 +348,30 @@ clause = new ArrayList<>();}
     }
 }
 
-{URI} {clause.add(yytext());}
-"&" {this.aggregateClauses.add(clause);
-      clause = new ArrayList<>();
-      rhs = false;
-       }
+{URI} { clause.add(yytext()); }
+"&" {
+  this.aggregateClauses.add(clause);
+  clause = new ArrayList<>();
+  rhs = false;
+}
 
-{PRED} {this.clause.add(yytext()); rhs= true; }
+{PRED} { this.clause.add(yytext()); rhs= true; }
 
 \" { yybegin(STRING); }
 
 \^\^<xsd:{NONWHITESPACE}+> {
+  clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
+  string.setLength(0);
+}
 
-                           clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
-                           string.setLength(0);}
-
-\^\^<{NONWHITESPACE}+#{NONWHITESPACE}+> {clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
-
-                            string.setLength(0);}
+\^\^<{NONWHITESPACE}+#{NONWHITESPACE}+> {
+  clause.add("\""+handleUnicode(string.toString())+"\"" + yytext());
+  string.setLength(0);
+}
 
 {WhiteSpace} {}
 
 = {clause.add(yytext());}
-
 
 . {throw new QueryParseException("Invalid AGGREGATE statement " + yytext());}
 }

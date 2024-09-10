@@ -207,20 +207,20 @@ public class Hfc {
 
   public boolean computeClosure() {
     if (null != _forwardChainer && config.isComputingClosure()) {
-      logger.info("Compute closure starting with {} tuples",
+      logger.debug("Compute closure starting with {} tuples",
           _tupleStore.allTuples.size());
       long startClosure = System.currentTimeMillis();
       boolean result =  _forwardChainer.computeClosure(
           config.getIterations(), config.isCleanupRepository());
       long endClosure = System.currentTimeMillis();
-      logger.info("Finished closure in {} msec with {} tuples",
+      logger.debug("Finished closure in {} msec with {} tuples",
           endClosure - startClosure, _tupleStore.allTuples.size());
       return result;
     } else {
-      logger.info("No closure, only cleanup with {} tuples",
+      logger.debug("No closure, only cleanup with {} tuples",
           _tupleStore.allTuples.size());
       _tupleStore.cleanUpTupleStore();
-      logger.info("cleanup finished with {} tuples",
+      logger.debug("cleanup finished with {} tuples",
           _tupleStore.allTuples.size());
       return false;
     }

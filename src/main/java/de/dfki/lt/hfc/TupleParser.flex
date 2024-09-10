@@ -95,12 +95,12 @@ import java.util.regex.Pattern;
     ts.logStoreStatus();
     // finally cleanup
     if (ts.equivalenceClassReduction) {
-      logger.info("\n  applying equivalence class reduction ... ");
+      logger.debug("\n  applying equivalence class reduction ... ");
       final int all = ts.allTuples.size();
       final int no = ts.cleanUpTupleStore();
-      logger.info("  removing " + no + " equivalence relation instances");
-      logger.info("  removing " + (all - ts.allTuples.size()) + " resulting duplicates");
-      logger.info("  number of all tuples: " + ts.allTuples.size() + "\n");
+      logger.debug("  removing " + no + " equivalence relation instances");
+      logger.debug("  removing " + (all - ts.allTuples.size()) + " resulting duplicates");
+      logger.debug("  number of all tuples: " + ts.allTuples.size() + "\n");
     }
   }
 %}
