@@ -15,7 +15,6 @@ import java.util.TreeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.dfki.lt.hfc.io.QueryFlexParser;
 import de.dfki.lt.hfc.io.QueryParseException;
 import de.dfki.lt.hfc.io.QueryParser;
 import de.dfki.lt.hfc.qrelations.QRelation;
@@ -378,9 +377,7 @@ public class Query {
                 id = this.tupleStore.getProxy(id);
               args.add(id);
             } else {
-              // constant _not_ known to tuple store: we no longer will throw an exception:
-              //throw new QueryParseException("  unknown constant in predicate: " + next);
-              logger.warn("  unknown constant in FILTER predicate: " + next + "\n");
+              logger.debug("  unknown constant in FILTER predicate: " + next + "\n");
               this.tupleStore.putObject(next);
               id = this.tupleStore.putObject(next);
               args.add(id);
@@ -407,10 +404,7 @@ public class Query {
               id = this.tupleStore.getProxy(id);
             varconstIneqs.add(id);
           } else {
-            // constant _not_ known to tuple store: we no longer will throw an exception:
-            //throw new QueryParseException("  unknown constant in in-eq constraint: " + next);
-            logger.warn("  unknown constant in FILTER in-eq constraint: " + next + "\n");
-//            this.tupleStore.putObject(next);
+            logger.debug("  unknown constant in FILTER in-eq constraint: " + next + "\n");
             id = this.tupleStore.putObject(next);
             varconstIneqs.add(id);
           }
@@ -488,10 +482,7 @@ public class Query {
               id = this.tupleStore.getProxy(id);
             args[i - eqpos - 2] = id;
           } else {
-            // constant _not_ known to tuple store: we no longer will throw an exception:
-            //throw new QueryParseException("  unknown constant in aggregate: " + elem);
-            logger.warn("  unknown constant in AGGREGATE function: " + elem + "\n");
-            //this.tupleStore.putObject(elem);
+            logger.debug("  unknown constant in AGGREGATE function: " + elem + "\n");
             id = this.tupleStore.putObject(elem);
             args[i - eqpos - 2] = id;
           }
