@@ -235,13 +235,13 @@ public class TupleStore extends TupleIntStore {
    * @throws IOException
    * @throws WrongFormatException
    */
-  public void readTuples(BufferedReader br, String front, String... backs)
+  public void readTuples(TupleSource ts, String front, String... backs)
       throws IOException, WrongFormatException {
     try {
       // TODO: THIS IS NOT REALLY SAFE!!!!
       blankNodeSuffix = String.format("%0,3d", blankNodeSuffixNo);
       ++blankNodeSuffixNo;
-      TupleParser parser = new TupleParser(br, this);
+      TupleParser parser = new TupleParser(ts.getReader(), ts.getOrigin(), this);
       parser.parse(front, backs);
     } finally {
       blankNodeSuffix = null;
@@ -836,9 +836,9 @@ public class TupleStore extends TupleIntStore {
     if (logger.isInfoEnabled()) {
       int noOfURIs = 0, noOfBlanks = 0, noOfAtoms = 0;
       for (int i = 0; i < idToJavaObject.size(); i++) {
-        if (idToJavaObject.get(i) instanceof Uri) 
+        if (idToJavaObject.get(i) instanceof Uri)
           ++noOfURIs;
-        else if (idToJavaObject.get(i) instanceof Uri) 
+        else if (idToJavaObject.get(i) instanceof BlankNode)
           ++noOfBlanks;
         else
           ++noOfAtoms;

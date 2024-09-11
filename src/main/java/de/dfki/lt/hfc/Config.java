@@ -116,21 +116,18 @@ public class Config {
   }
 
   /** This returns a BufferedReader using the specified character encoding */
-  public BufferedReader readerFromFilename(String name) throws IOException {
-    return Files.newBufferedReader(new File(name).toPath(),
-        Charset.forName(getCharacterEncoding()));
+  public TupleSource readerFromFilename(String name) throws IOException {
+    return new TupleSource(new File(name), getCharacterEncoding());
   }
 
 
-  private BufferedReader readerFromName(String name) throws IOException {
+  private TupleSource readerFromName(String name) throws IOException {
     if (configDir == null) {
-      return new BufferedReader(
-          new InputStreamReader(Config.class.getResourceAsStream("/" + name),
-              Charset.forName(getCharacterEncoding())));
+      return new TupleSource("/" + name,
+          Config.class.getResourceAsStream("/" + name), getCharacterEncoding());
     }
     File resolved = resolvePath(name);
-    return Files.newBufferedReader(resolved.toPath(),
-        Charset.forName(getCharacterEncoding()));
+    return new TupleSource(resolved, getCharacterEncoding());
   }
 
   @SuppressWarnings("unchecked")
@@ -171,7 +168,7 @@ public class Config {
     RuleStore ruleStore = new RuleStore(ts);
     if (!getRuleFiles().isEmpty())
       for (String rulefile : getRuleFiles()) {
-        ruleStore.readRules(readerFromName(rulefile));
+        ruleStore.readRules(readerFromName(rulefile).getReader());
       }
     return ruleStore;
   }
@@ -215,8 +212,8 @@ public class Config {
       if (persistencyFile != null) {
         if (persistencyFile.exists() && persistencyFile.canRead()) {
           long startLoad = System.currentTimeMillis();
-          ts.readTuples(Files.newBufferedReader(persistencyFile.toPath(),
-              Charset.forName(getCharacterEncoding())), null);
+          ts.readTuples(new TupleSource(persistencyFile,
+              getCharacterEncoding()), null);
           long endLoad = System.currentTimeMillis();
           log.info("Loading persistency tuples took {} msecs, {} tuples.",
               endLoad - startLoad, ts.getAllTuples().size());
@@ -379,11 +376,11 @@ public class Config {
   public boolean isComputingClosure() {
     return (Boolean) configs.get(COMPUTECLOSURE);
   }
-  
+
   public void setComputeClosure(boolean val) {
     configs.put(COMPUTECLOSURE, val);
   }
-  
+
   public boolean isGarbageCollection() {
     return (Boolean) configs.get(GARBAGECOLLECTION);
   }

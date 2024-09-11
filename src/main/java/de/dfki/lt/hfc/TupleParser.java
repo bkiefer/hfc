@@ -263,6 +263,7 @@ class TupleParser {
 
   /* user code: */
   private TupleStore ts;
+  private String origin;
   private StringBuffer string = new StringBuffer();
   private List<String> t = new ArrayList<>();
   private String match = "";
@@ -343,8 +344,9 @@ class TupleParser {
    *
    * @param   in  the java.io.Reader to read input from.
    */
-  TupleParser(java.io.Reader in, TupleStore store) {
+  TupleParser(java.io.Reader in, String orig, TupleStore store) {
     ts = store;
+  origin = orig;
     this.zzReader = in;
   }
 
@@ -751,7 +753,8 @@ class TupleParser {
             // fall through
           case 18: break;
           case 6: 
-            { throw new RuntimeException("Unterminated string at end of line");
+            { throw new RuntimeException("Unterminated string at end of line " 
+      + yyline + " in " + origin);
             } 
             // fall through
           case 19: break;
@@ -769,7 +772,8 @@ class TupleParser {
             // fall through
           case 21: break;
           case 9: 
-            { throw new RuntimeException("Illegal escape sequence \""+yytext()+"\"");
+            { throw new RuntimeException("Illegal escape sequence '"
+      + yytext() + "' in line " + yyline + " of " + origin);
             } 
             // fall through
           case 22: break;

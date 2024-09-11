@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 %line
 %column
 %unicode
+%ctorarg String orig
 %ctorarg TupleStore store
 %int
 
@@ -26,10 +27,12 @@ import java.util.regex.Pattern;
 
 %init{
   ts = store;
+  origin = orig;
 %init}
 
 %{
   private TupleStore ts;
+  private String origin;
   private StringBuffer string = new StringBuffer();
   private List<String> t = new ArrayList<>();
   private String match = "";
@@ -180,6 +183,11 @@ OctDigit          = [0-7]
   \\[0-3]?{OctDigit}?{OctDigit}  { string.append( yytext() ); }
 
   /* error cases */
-  \\.                            { throw new RuntimeException("Illegal escape sequence \""+yytext()+"\""); }
-  {NEWLINE}               { throw new RuntimeException("Unterminated string at end of line"); }
+  \\. {
+    throw new RuntimeException("Illegal escape sequence '"
+      + yytext() + "' in line " + yyline + " of " + origin);
+  }
+  {NEWLINE} {
+    throw new RuntimeException("Unterminated string at end of line " 
+      + yyline + " in " + origin); }
 }
