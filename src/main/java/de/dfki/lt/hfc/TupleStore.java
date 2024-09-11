@@ -832,23 +832,20 @@ public class TupleStore extends TupleIntStore {
   }
 
   public void logStoreStatus() {
-    logger.info("\n  read " + noOfTuples + " proper tuples");
-    logger.info("  overall " + allTuples.size() + " unique tuples");
-    // some further statistics
-    int noOfURIs = 0, noOfBlanks = 0, noOfAtoms = 0;
+    // some statistics
     if (logger.isInfoEnabled()) {
+      int noOfURIs = 0, noOfBlanks = 0, noOfAtoms = 0;
       for (int i = 0; i < idToJavaObject.size(); i++) {
-      if (idToJavaObject.get(i) instanceof Uri) //.startsWith("<"))
-        ++noOfURIs;
-      else if (idToJavaObject.get(i) instanceof Uri) //.startsWith("_"))
-        ++noOfBlanks;
-      else
-        ++noOfAtoms;
+        if (idToJavaObject.get(i) instanceof Uri) 
+          ++noOfURIs;
+        else if (idToJavaObject.get(i) instanceof Uri) 
+          ++noOfBlanks;
+        else
+          ++noOfAtoms;
       }
+      logger.info("{} unique {} URIs {} blanks {} atoms",
+          allTuples.size(), noOfURIs, noOfBlanks, noOfAtoms);
     }
-    logger.info("  found " + noOfURIs + " URIs");
-    logger.info("  found " + noOfBlanks + " blank nodes");
-    logger.info("  found " + noOfAtoms + " XSD atoms");
   }
 
   ////////////////////////////////////////////////////////////////////////

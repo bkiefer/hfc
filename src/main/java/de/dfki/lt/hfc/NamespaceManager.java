@@ -362,7 +362,7 @@ public final class NamespaceManager {
         namespace = literal.substring(1, pos);
         if (namespace.equals("http")) {
           // get rid of <>
-          namespace = literal.substring(1, literal.length() -1 );
+          namespace = literal.substring(1, literal.length() -1 ) + "#";
           literal = ""; // name is empty
         } else {
           literal = literal.substring(pos + 1, literal.length() - 1);

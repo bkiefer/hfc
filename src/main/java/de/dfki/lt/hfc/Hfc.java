@@ -82,10 +82,8 @@ public class Hfc {
     _ruleStore = config.createRuleStore(_tupleStore);
     _forwardChainer = new ForwardChainer(_tupleStore, _ruleStore, config);
     persistencyWriter = config.treatPersistencyFile(_tupleStore);
-    logger.info("  Welcome to HFC, HUK's Forward Chainer");
-    logger.info("  " + Hfc.INFO);
-    logger.info("  # CPU cores: " + config.getNoOfCores());
-    logger.info("  " + this.toString());
+    logger.info(" Welcome to HFC, HUK's Forward Chainer");
+    logger.info(" {}  # cores: {}", Hfc.INFO, config.getNoOfCores());
   }
 
   public void shutdown() {
@@ -190,6 +188,7 @@ public class Hfc {
    */
   public void uploadTuples(Config config, String filename, String front, String... backs)
           throws FileNotFoundException, IOException, WrongFormatException {
+    logger.info("Reading {}", filename);
     _tupleStore.readTuples(config.readerFromFilename(filename), front, backs);
   }
 
