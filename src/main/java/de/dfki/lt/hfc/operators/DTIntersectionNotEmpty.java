@@ -1,6 +1,8 @@
 package de.dfki.lt.hfc.operators;
 
+import de.dfki.lt.hfc.BooleanOperator;
 import de.dfki.lt.hfc.FunctionalOperator;
+import de.dfki.lt.hfc.types.XsdDateTime;
 
 /**
  * checks whether the intersection of two temporal intervals whose
@@ -13,7 +15,7 @@ import de.dfki.lt.hfc.FunctionalOperator;
  * @see FunctionalOperator
  * @since JDK 1.5
  */
-public final class DTIntersectionNotEmpty extends FunctionalOperator {
+public final class DTIntersectionNotEmpty extends BooleanOperator {
 
   /**
    * apply() assumes that it is given exactly four arguments specifying
@@ -25,12 +27,23 @@ public final class DTIntersectionNotEmpty extends FunctionalOperator {
    * note that apply() does NOT check at the moment whether the int args
    * represent in fact XSD dateTime instants
    */
-  public int apply(int[] args) {
+  public boolean holds(int[] args) {
     // note: we call DTMax2 and DTMin2 which call DTLess through the use of
     //       callFuntionalOperator() in order to define DTIntersectionNotEmpty
-    final int start = callFunctionalOperator("DTMax2", new int[]{args[0], args[2]});
-    final int end = callFunctionalOperator("DTMin2", new int[]{args[1], args[3]});
-    return callFunctionalOperator("DTLessEqual", new int[]{start, end});
+
+    XsdDateTime datestart = ((XsdDateTime) getObject(args[0]));
+    XsdDateTime date2start = ((XsdDateTime) getObject(args[2]));
+    // get max of datestart
+    if (datestart.compareTo(date2start) < 0) {
+      datestart = date2start;
+    }
+    XsdDateTime dateend = ((XsdDateTime) getObject(args[1]));
+    XsdDateTime date2end = ((XsdDateTime) getObject(args[3]));
+    // get min of dateend
+    if (dateend.compareTo(date2end) > 0) {
+      dateend = date2end;
+    }
+    return datestart.compareTo(dateend) <= 0;
   }
 
 }
