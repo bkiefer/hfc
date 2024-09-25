@@ -318,7 +318,7 @@ class TupleParser {
         // external tuple representation might be misspelled or the tuple is
         // already contained
       }
-      ts.addTuple(t, yyline);
+      ts.addTuple(t, yyline + 1);
       t = new ArrayList<>();
     }
   }
@@ -754,7 +754,7 @@ class TupleParser {
           case 18: break;
           case 6: 
             { throw new RuntimeException("Unterminated string at end of line " 
-      + yyline + " in " + origin);
+      + (yyline + 1) + " in " + origin);
             } 
             // fall through
           case 19: break;
@@ -773,7 +773,7 @@ class TupleParser {
           case 21: break;
           case 9: 
             { throw new RuntimeException("Illegal escape sequence '"
-      + yytext() + "' in line " + yyline + " of " + origin);
+      + yytext() + "' in line " + (yyline + 1) + " of " + origin);
             } 
             // fall through
           case 22: break;

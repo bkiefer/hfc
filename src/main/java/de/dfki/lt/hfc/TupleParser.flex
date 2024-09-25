@@ -87,7 +87,7 @@ import java.util.regex.Pattern;
         // external tuple representation might be misspelled or the tuple is
         // already contained
       }
-      ts.addTuple(t, yyline);
+      ts.addTuple(t, yyline + 1);
       t = new ArrayList<>();
     }
   }
@@ -185,9 +185,9 @@ OctDigit          = [0-7]
   /* error cases */
   \\. {
     throw new RuntimeException("Illegal escape sequence '"
-      + yytext() + "' in line " + yyline + " of " + origin);
+      + yytext() + "' in line " + (yyline + 1) + " of " + origin);
   }
   {NEWLINE} {
     throw new RuntimeException("Unterminated string at end of line " 
-      + yyline + " in " + origin); }
+      + (yyline + 1) + " in " + origin); }
 }

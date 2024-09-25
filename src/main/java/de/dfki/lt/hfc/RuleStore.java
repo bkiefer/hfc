@@ -255,23 +255,28 @@ public final class RuleStore {
   }
   */
 
+  private boolean sayItLoud(String msg, String arg) {
+    return tupleStore.sayItLoud(this.lineNo, msg, arg);
+  }
+  
   /**
    * extends a rule object by its internal representation of the antecedent;
    * checks for various potential errors
    */
   private boolean makeAntecedent(ArrayList<int[]> ante, Rule rule) {
     if (rule == null)
-      return tupleStore.sayItLoud(this.lineNo, ": missing rule name");
+      return sayItLoud(": missing rule name", "");
     else if (rule.getAntecedent() != null)
-      return tupleStore.sayItLoud(this.lineNo, ": antecedent specified twice");
+      return sayItLoud(": antecedent specified twice", rule.toString());
     else if (ante.size() == 0)
-      return tupleStore.sayItLoud(this.lineNo, ": empty antecedent");
+      return sayItLoud(": empty antecedent", rule.toString());
     else {
       // further check whether ante elements at position i are equal null,
       // indicating that the i-th ante tuple is invalid
       for (int i = 0; i < ante.size(); i++) {
         if (ante.get(i) == null)
-          return tupleStore.sayItLoud(this.lineNo, ": antecedent contains invalid tuple(s)");
+          // rule.toString() would crash here
+          return sayItLoud(": antecedent contains invalid tuple(s)", "");
       }
       rule.setAntecedent(ante);
       return true;
@@ -288,12 +293,13 @@ public final class RuleStore {
    */
   private boolean makeConsequent(ArrayList<int[]> cons, Rule rule) {
     if (cons.size() == 0)
-      return tupleStore.sayItLoud(this.lineNo, ": empty consequent");
+      return sayItLoud(": empty consequent ", rule.toString());
     // further check whether cons elements at position i are equal null,
     // indicating that the i-th cons tuple is invalid
     for (int i = 0; i < cons.size(); i++)
       if (cons.get(i) == null)
-        return tupleStore.sayItLoud(this.lineNo, ": consequent contains invalid tuple(s)");
+        // rule.toString() would break here
+        return sayItLoud(": consequent contains invalid tuple(s)", "");
     rule.setConsequent(cons);
     // rule name, ante, and cons proper, so check for special LHS/RHS variables
     return handleSpecialVariables(rule);
@@ -1151,7 +1157,7 @@ public final class RuleStore {
           rule.priority = Integer.parseInt(st.nextToken());
           continue;
         } else {
-          tupleStore.sayItLoud(this.lineNo, ": incorrect priority description");
+          tupleStore.sayItLoud(this.lineNo, ": incorrect priority description", line);
           break;
         }
       }
@@ -1217,7 +1223,7 @@ public final class RuleStore {
           continue;
           // something has gone wrong during reading of ante/cons tuple
         else {
-          eol = tupleStore.sayItLoud(this.lineNo, ": tuple misspelled " + line);
+          eol = tupleStore.sayItLoud(this.lineNo, ": tuple misspelled ", line);
           break;
         }
       }

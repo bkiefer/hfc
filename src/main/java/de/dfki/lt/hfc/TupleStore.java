@@ -109,13 +109,12 @@ public class TupleStore extends TupleIntStore {
   *
   * @throws WrongFormatException
   */
-  boolean sayItLoud(int lineNo, String message)
+  boolean sayItLoud(int lineNo, String message, String args)
       throws WrongFormatException {
+    logger.error("{}: {} {}", lineNo, message, args);
     if (this.exitOnError) {
-      logger.error("{}: {}", lineNo, message);
-      throw new WrongFormatException("  " + lineNo + message);
+      throw new WrongFormatException("  " + lineNo + " " + message + " " + args);
     }
-    logger.debug("{}: {}", lineNo, message);
     return false;
   }
 
@@ -123,11 +122,10 @@ public class TupleStore extends TupleIntStore {
    * same method without the line numbering
    */
   boolean sayItLoud(String message) {
+    logger.error("{}", message);
     if (this.exitOnError) {
-      logger.error("{}", message);
       throw new RuntimeException("FATAL ERROR: " + message);
     }
-    logger.debug("{}", message);
     return false;
   }
 
@@ -433,20 +431,20 @@ public class TupleStore extends TupleIntStore {
       throws WrongFormatException {
     // check against min length
     if (stringTuple.size() < this.minNoOfArgs)
-      return sayItLoud(lineNo, ": tuple too short: " + stringTuple);
+      return sayItLoud(lineNo, ": tuple too short", stringTuple.toString());
     // check against max length
     if (stringTuple.size() > this.maxNoOfArgs)
-      return sayItLoud(lineNo, ": tuple too long");
+      return sayItLoud(lineNo, ": tuple too long", stringTuple.toString());
     // is tuple RDF compliant
     if (rdfCheck) {
       // check for valid first arg
       if ((stringTuple.size() > 0)
           && (isAtom(stringTuple.get(subjectPosition))))
-        return sayItLoud(lineNo, ": first arg is an atom");
+        return sayItLoud(lineNo, ": first arg is an atom: ", stringTuple.toString());
       // check for valid second arg
       if ((stringTuple.size() > 1)
           && (!isUri(stringTuple.get(predicatePosition))))
-        return sayItLoud(lineNo, ": second arg is not an URI");
+        return sayItLoud(lineNo, ": second arg is not an URI: ", stringTuple.toString());
     }
     return true;
   }
@@ -473,19 +471,19 @@ public class TupleStore extends TupleIntStore {
   public boolean isValidRuleTuple(ArrayList<String> stringTuple, int lineNo) {
     // check against min length
     if (stringTuple.size() < this.minNoOfArgs)
-      return sayItLoud(lineNo, ": tuple too short");
+      return sayItLoud(lineNo, ": tuple too short: ", stringTuple.toString());
     // check against max length
     if (stringTuple.size() > this.maxNoOfArgs)
-      return sayItLoud(lineNo, ": tuple too long");
+      return sayItLoud(lineNo, ": tuple too long", stringTuple.toString());
     // note: blank nodes (if any) will NOT show up here and are filtered out beforehand
     // is tuple RDF compliant
     if (rdfCheck) {
       // check for valid first arg: either URI or variable, but not an atom
       if ((stringTuple.size() > 0) && TupleStore.isAtom(stringTuple.get(0)))
-        return sayItLoud(lineNo, ": first arg must be an URI or variable");
+        return sayItLoud(lineNo, ": first arg must be an URI or variable", stringTuple.toString());
       // check for valid second arg: either URI or variable, but not an atom
       if ((stringTuple.size() > 1) && TupleStore.isAtom(stringTuple.get(0)))
-        return sayItLoud(lineNo, ": second arg must be an URI or variable");
+        return sayItLoud(lineNo, ": second arg must be an URI or variable", stringTuple.toString());
     }
     return true;
   }
