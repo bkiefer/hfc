@@ -33,6 +33,16 @@ public class CalcTest {
   e[1] = 2;
   set_one.add(e);
   assertFalse(Calc.union(set_one, set_two).isEmpty());
+  e = new int[2];
+  e[0] = 1;
+  e[1] = 2;
+  set_two.add(e);
+  assertEquals(1, Calc.union(set_one, set_two).size());
+  e = new int[2];
+  e[0] = 2;
+  e[1] = 2;
+  set_two.add(e);
+  assertEquals(2, Calc.union(set_one, set_two).size());
  }
 
  @Test
@@ -50,6 +60,16 @@ public class CalcTest {
   e[1] = 2;
   set_one.add(e);
   assertFalse(Calc.union(set_one, set_two, strategy).isEmpty());
+  e = new int[2];
+  e[0] = 1;
+  e[1] = 2;
+  set_two.add(e);
+  assertEquals(1, Calc.union(set_one, set_two).size());
+  e = new int[2];
+  e[0] = 2;
+  e[1] = 2;
+  set_two.add(e);
+  assertEquals(2, Calc.union(set_one, set_two).size()); 
  }
 
  @Test
