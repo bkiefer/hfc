@@ -648,25 +648,6 @@ public class TupleStore extends TupleIntStore {
     return token;
   }
 
-  /**
-   * generates an external string representation from the internal int[]
-   * representation of a tuple
-   */
-  @Override
-  public String toString(int[] tuple, boolean dot) {
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < tuple.length; i++)
-      sb.append(toUnicode(getObject(tuple[i]).toString()) + " ");
-    if (dot)
-      sb.append(".");
-    return sb.toString();
-  }
-
-  @Override
-  public String toString(int[] tuple) {
-    return toString(tuple, true);
-  }
-
   public static String toUnicode(String in) {
     StringBuilder out = new StringBuilder();
     for (int i = 0; i < in.length(); i++) {
@@ -679,22 +660,49 @@ public class TupleStore extends TupleIntStore {
     return out.toString();
   }
 
+  public String toString(int code) {
+    return toUnicode(getObject(code).toString());
+  }
+
+  /**
+   * generates an external string representation from the internal int[]
+   * representation of a tuple
+   */
+  @Override
+  public String toString(int[] tuple, boolean dot) {
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < tuple.length; i++)
+      sb.append(toString(tuple[i]) + " ");
+    if (dot)
+      sb.append(".");
+    return sb.toString();
+  }
+
+  @Override
+  public String toString(int[] tuple) {
+    return toString(tuple, true);
+  }
+
+  /**
+   * this method differs from toString() above in that is always tries
+   * to fully expand the namespace of an URI (if present)
+   */
+  public String toExpandedString(int code) {
+    // distinguish between URIs vs. XSD atoms or blank nodes
+    String literal = getObject(code).toString();
+    return (isAtom(literal) || isBlankNode(literal))
+        ? toUnicode(literal.replace("xsd:", this.namespace.getLongForm("xsd")))
+          : toUnicode(this.namespace.expandUri(literal));   // a URI
+  }
+
   /**
    * this method differs from toString() above in that is always tries
    * to fully expand the namespace of an URI (if present)
    */
   public String toExpandedString(int[] tuple) {
     StringBuilder sb = new StringBuilder();
-    String literal;
     for (int i = 0; i < tuple.length; i++) {
-      // distinguish between URIs vs. XSD atoms or blank nodes
-      literal = getObject(tuple[i]).toString();
-      if (isAtom(literal) || isBlankNode(literal))
-        sb.append(toUnicode(
-            literal.replace("xsd:", this.namespace.getLongForm("xsd")) + " "));
-      else
-        // a URI
-        sb.append(toUnicode(this.namespace.expandUri(literal) + " "));
+      sb.append(toExpandedString(tuple[i]) + " ");
     }
     sb.append(".");
     return sb.toString();
