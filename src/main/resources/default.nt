@@ -59,7 +59,12 @@
 <owl:Nothing> <rdf:type> <owl:Class> .
 <owl:Nothing> <rdfs:subClassOf> <owl:Thing> .
 <owl:Thing> <owl:disjointWith> <owl:Nothing> .
+<owl:NamedIndividual> <rdf:type> <owl:Class> .
 
+# (some of the) standard XSD datatypes
+# note: HFC has further custom XSD datatype of its own
+<xsd:anySimpleType> <rdf:type> <rdfs:Datatype> .
+<xsd:anyURI> <rdf:type> <rdfs:Datatype> .
 <xsd:int> <rdf:type> <rdfs:Datatype> .
 <xsd:long> <rdf:type> <rdfs:Datatype> .
 <xsd:float> <rdf:type> <rdfs:Datatype> .
@@ -74,7 +79,6 @@
 <xsd:gMonthDay> <rdf:type> <rdfs:Datatype> .
 <xsd:gDay> <rdf:type> <rdfs:Datatype> .
 <xsd:duration> <rdf:type> <rdfs:Datatype> .
-<xsd:anyURI> <rdf:type> <rdfs:Datatype> .
 
 #<rdfs:Datatype> <rdfs:subClassOf> <rdfs:Class> .
 #<owl:Class> <rdfs:subClassOf> <rdfs:Class> .
