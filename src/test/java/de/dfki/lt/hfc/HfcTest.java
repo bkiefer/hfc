@@ -306,7 +306,7 @@ public class HfcTest {
    Hfc hfc = new Hfc(Config.getDefaultConfig());
    hfc.uploadTuples(getTestResource("test.nt"));
    int tuples = hfc._tupleStore.allTuples.size();
-   assertEquals(47, tuples);
+   assertEquals(49, tuples);
  }
 
   @Test

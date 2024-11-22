@@ -65,7 +65,8 @@ public class BindingTableIteratorTest {
         { "<owl:sameAs>", "<rdf:type>", "<owl:TransitiveProperty>" },
         { "<rdfs:subPropertyOf>", "<rdf:type>", "<owl:TransitiveProperty>" },
         { "<owl:equivalentClass>", "<rdf:type>", "<owl:TransitiveProperty>" },
-    };
+        { "<owl:NamedIndividual>", "<rdf:type>", "<owl:Class>" },
+        };
     // returns triples even though we're asking for pairs (?s, ?o), but because
     // we're using Trove sets and strategy objects for table projection, the
     // underlying int arrays are still of length 3
@@ -96,6 +97,7 @@ public class BindingTableIteratorTest {
         { "<rdf:first>", "<rdf:type>", "<rdf:Property>" },
         { "<owl:equivalentProperty>", "<rdf:type>", "<owl:TransitiveProperty>" },
         { "<rdf:predicate>", "<rdf:type>", "<rdf:Property>" },
+        { "<owl:NamedIndividual>", "<rdf:type>", "<owl:Class>" },
     };
 
     // returns triples even though we're asking for pairs (?s, ?o), but because
@@ -117,6 +119,7 @@ public class BindingTableIteratorTest {
         { "<owl:equivalentProperty>", "<owl:SymmetricProperty>" },
         { "<owl:equivalentClass>", "<owl:SymmetricProperty>" },
         { "<owl:Nothing>", "<owl:Class>" },
+        { "<owl:NamedIndividual>", "<owl:Class>" },
         { "<rdf:type>", "<rdf:Property>" },
         { "<owl:disjointWith>", "<owl:SymmetricProperty>" },
         { "<rdf:object>", "<rdf:Property>" },
@@ -162,7 +165,8 @@ public class BindingTableIteratorTest {
         { "rdf:first", "rdf:Property" },
         { "owl:equivalentProperty", "owl:TransitiveProperty" },
         { "rdf:predicate", "rdf:Property" },
-    };
+        { "owl:NamedIndividual", "owl:Class" },
+   };
     // returns triples even though we're asking for pairs (?s, ?o), but because
     // we're using Trove sets and strategy objects for table projection, the
     // underlying int arrays are still of length 3
@@ -197,6 +201,7 @@ public class BindingTableIteratorTest {
         { "<rdf:Property>", "<rdf:first>" },
         { "<owl:TransitiveProperty>", "<owl:equivalentProperty>" },
         { "<rdf:Property>", "<rdf:predicate>" },
+        { "<owl:Class>", "<owl:NamedIndividual>" },
     };
     // returns triples even though we're asking for pairs (?s, ?o), but because
     // we're using Trove sets and strategy objects for table projection, the
@@ -231,6 +236,7 @@ public class BindingTableIteratorTest {
         { "<rdf:first>", "<rdf:Property>", "<rdf:first>", "<rdf:Property>" },
         { "<owl:equivalentProperty>", "<owl:TransitiveProperty>", "<owl:equivalentProperty>", "<owl:TransitiveProperty>" },
         { "<rdf:predicate>", "<rdf:Property>", "<rdf:predicate>", "<rdf:Property>" },
+        { "<owl:NamedIndividual>", "<owl:Class>", "<owl:NamedIndividual>", "<owl:Class>" },
     };
     // returns triples even though we're asking for pairs (?s, ?o), but because
     // we're using Trove sets and strategy objects for table projection, the
@@ -265,6 +271,7 @@ public class BindingTableIteratorTest {
         { "<rdf:Property>" },
         { "<owl:TransitiveProperty>" },
         { "<rdf:Property>" },
+        { "<owl:Class>" },
     };
     // returns triples even though we're asking for pairs (?s, ?o), but because
     // we're using Trove sets and strategy objects for table projection, the
@@ -325,6 +332,8 @@ public class BindingTableIteratorTest {
         { "\"4\"^^<xsd:int>", "<rdf:type>" },
         { "\"4\"^^<xsd:int>", "<rdf:type>" },
         { "\"4\"^^<xsd:int>", "<rdfs:subClassOf>" },
+        { "\"4\"^^<xsd:int>", "<rdf:type>" },
+        { "\"4\"^^<xsd:int>", "<rdf:type>" },
     };
     BindingTable bt = q.query("SELECT ?p WHERE ?s ?p ?o AGGREGATE ?number = CountDistinct ?p & ?subject = Identity ?p");
     BindingTableIterator it = bt.iterator("?number", "?subject");
@@ -381,6 +390,8 @@ public class BindingTableIteratorTest {
         { 4, "rdf:type" },
         { 4, "rdf:type" },
         { 4, "owl:disjointWith" },
+        { 4, "rdf:type" },
+        { 4, "rdf:type" },
     };
 
     BindingTable bt = q.query("SELECT ?p WHERE ?s ?p ?o AGGREGATE ?number = CountDistinct ?p & ?subject = Identity ?p");
@@ -438,6 +449,8 @@ public class BindingTableIteratorTest {
         { "4", "rdf:type" },
         { "4", "rdf:type" },
         { "4", "rdf:type" },
+        { "4", "rdf:type" },
+        { "4", "rdf:type" },
     };
 
     BindingTable bt = q.query("SELECT ?p WHERE ?s ?p ?o AGGREGATE ?number = CountDistinct ?p & ?subject = Identity ?p");
@@ -492,6 +505,8 @@ public class BindingTableIteratorTest {
         { "<rdfs:subPropertyOf>" },
         { "<rdf:type>" },
         { "<rdfs:subClassOf>" },
+        { "<rdf:type>" },
+        { "<rdf:type>" },
         { "<rdf:type>" },
         { "<rdf:type>" },
     };
