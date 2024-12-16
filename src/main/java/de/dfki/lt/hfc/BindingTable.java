@@ -211,9 +211,9 @@ public class BindingTable {
     // selectvars == null means there is an aggregate in the query
     if (null == selectVars || "*".equals(selectVars[0])) {
       selectVars = new String[nameToPos.size()];
-      int pos = 0;
+      int pos = nameToPos.size() - 1;
       for (Map.Entry<Integer, Integer> e : nameToPos.entrySet()) {
-        selectVars[pos++] = this.nameToExternalName.get(e.getKey());
+        selectVars[pos--] = this.nameToExternalName.get(e.getKey());
       }
     }
     return selectVars;
@@ -237,6 +237,7 @@ public class BindingTable {
    * table, nameToPos, nameToExternalName, and tupleStore;
    * note: the content of the table is NOT expanded when this method is called directly
    */
+  @Override
   public String toString() {
     int maxLength = -1;
     int size = this.nameToPos.keySet().size();
@@ -500,6 +501,7 @@ public class BindingTable {
     /**
      * return the size of the table object stored in BindingTable
      */
+    @Override
     public int hasSize() {
       return this.size;
     }
@@ -507,6 +509,7 @@ public class BindingTable {
     /**
      * returns true if we have not returned all elements from BindingTable.this.table
      */
+    @Override
     public boolean hasNext() {
       return this.it.hasNext();
     }
@@ -516,6 +519,7 @@ public class BindingTable {
      * listed in this.vars in that order, if specified;
      * this method is used by the below three nextXXX() methods;
      */
+    @Override
     public int[] next() {
       final int[] next = this.it.next();
       if (this.varPos == null)
@@ -531,6 +535,7 @@ public class BindingTable {
      * the int ids;
      * this is the cheapest of the 3 nextXXX() methods
      */
+    @Override
     public String[] nextAsString() {
       final int[] intNext = next();
       final String[] result = new String[intNext.length];
@@ -544,6 +549,7 @@ public class BindingTable {
      * for the int ids;
      * this is more expensive as potentially new HFC Java objects need to be build
      */
+    @Override
     public AnyType[] nextAsHfcType() {
       final int[] intNext = next();
       final AnyType[] result = new AnyType[intNext.length];
@@ -556,6 +562,7 @@ public class BindingTable {
      * @see de.dfki.lt.hfc.types.toJava()
      * nextAsJavaObjects is the most expensive method of the 3 nextXXX() methods
      */
+    @Override
     public Object[] nextAsJavaObject() {
       AnyType[] anyTypeNext = nextAsHfcType();
       Object[] result = new Object[anyTypeNext.length];

@@ -17,13 +17,12 @@ public class Table {
   public void setRows(List<List<String>> r) {
     rows = r;
   }
-  
+
   public List<List<String>> getRows() {
     return rows;
   }
 
   public int getRowsSize() {
-    // TODO Auto-generated method stub
     return rows.size();
   }
 
