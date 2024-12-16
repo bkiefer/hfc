@@ -62,9 +62,6 @@ public class TupleStore extends TupleIntStore {
    */
   public boolean exitOnError = false;
 
-  /** Add a time stamp by default */
-  private boolean addTS = false;
-
   /**
    * When reading multiple files, blank nodes in different files might have the
    * same name. To make it less likely there is a clash of blank node names, we
@@ -132,8 +129,7 @@ public class TupleStore extends TupleIntStore {
   public AnyType makeAnyType(String literal) {
     AnyType anyType;
     if (isUri(literal)) {
-      Pair<Namespace, String> ns_name = namespace.separateNSfromURI(literal);
-      anyType = new Uri(ns_name.second, ns_name.first);
+      anyType = namespace.getUri(literal);
     } else if (isBlankNode(literal)) {
       anyType = new BlankNode(literal);
     } else {
@@ -275,23 +271,6 @@ public class TupleStore extends TupleIntStore {
   private void readTuples(BufferedReader br)
       throws IOException, WrongFormatException {
     readTuples(br, null);
-  }
-
-  /**
-   * read in the tuple file as it is
-   *
-   * @param filename
-   * @throws FileNotFoundException
-   * @throws IOException
-   * @throws WrongFormatException
-   *
-  public void readTuples(BufferedReader br, boolean addTS)
-      throws FileNotFoundException, IOException, WrongFormatException {
-    //logger.info("\n  reading tuples from " + filename + " ...");
-    if (addTS)
-      readTuples(br, System.currentTimeMillis());
-    else
-      readTuples(br);
   }
 
   /**
@@ -504,8 +483,6 @@ public class TupleStore extends TupleIntStore {
     if (!isValidTuple(stringTuple, lineNo))
       return null;
     // internalize tuple
-    if (this.addTS)
-      stringTuple.add(currentTime());
     int[] intTuple = internalizeTuple(stringTuple);
     if (addTuple(intTuple))
       return intTuple;

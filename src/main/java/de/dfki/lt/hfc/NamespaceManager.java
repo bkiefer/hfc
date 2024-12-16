@@ -175,6 +175,65 @@ public final class NamespaceManager {
   private boolean shortIsDefault = true;
   private HashSet<Namespace> allNamespaces = new HashSet<>();
 
+  public static String getXSDNamespace(StringTokenizer st) {
+    StringBuilder stb = new StringBuilder();
+    String token;
+    while(st.hasMoreTokens()){
+      token = st.nextToken();
+      if (!token.equals(">")){
+        stb.append(token);
+      } else {
+        stb.append(token);
+        break;
+      }
+    }
+    String namespace = stb.toString();
+    if (namespace.endsWith(">")){
+      return namespace;
+    } else {
+      throw new IllegalArgumentException("Illegal or unknown namespace: " + namespace);
+    }
+  }
+
+
+  /** Split uri literal into namespace and name string */
+  public static String[] splitUriNsName(String literal) {
+    String namespace;
+    int pos = literal.lastIndexOf("#");
+    if (pos != -1) {
+      // uri must be in long form: get also rid of <>
+      namespace = literal.substring(1, pos + 1);
+      literal = literal.substring(pos + 1, literal.length() - 1);
+    } else {
+      // uri should be in short form or have no namespace at all.
+      pos = literal.indexOf(":"); // this may also match the "method" http:
+      // check for empty namespace
+      if (pos < 0) {
+        pos = 0;
+        namespace = "";
+        // get rid of <>
+        literal = literal.substring(1, literal.length() - 1);
+      } else {
+        namespace = literal.substring(1, pos);
+        if (namespace.equals("http")) {
+          // get rid of <>
+          namespace = literal.substring(1, literal.length() -1 ) + "#";
+          literal = ""; // name is empty
+        } else {
+          literal = literal.substring(pos + 1, literal.length() - 1);
+        }
+      }
+    }
+    String[] res = { namespace, literal };
+    return res;
+  }
+
+
+  public Uri getUri(String literal) {
+    String[] nsAndName = splitUriNsName(literal);
+    return new Uri(nsAndName[1], getNamespaceObject(nsAndName[0]));
+  }
+
 
   /** return the namespace part of the string representation of the URI */
   public static String getNamespace(String uri) {
@@ -227,16 +286,6 @@ public final class NamespaceManager {
       for (Namespace ns : shortToNs.values()) {
         ns.setIsShort(this.shortIsDefault);
       }
-  }
-
-  public static NamespaceManager getInstance(){
-    /*
-    if(instance == null) {
-      instance = new NamespaceManager();
-    }
-    return instance;
-    */
-    return new NamespaceManager();
   }
 
   /**
@@ -343,35 +392,6 @@ public final class NamespaceManager {
     return copy;
   }
 
-  /** TODO could that be done more nicely? */
-  public Pair<Namespace, String> separateNSfromURI(String literal) {
-    String namespace;
-    int pos = literal.lastIndexOf("#");
-    if (pos != -1) {
-      // uri must be in long form: get also rid of <>
-      namespace = literal.substring(1, pos + 1);
-      literal = literal.substring(pos + 1, literal.length() - 1);
-    } else {
-      //uri should be in short form or have no namespace at all.
-      pos = literal.indexOf(":"); // this may also match the "method" http:
-      // check for empty namespace
-      if (pos < 0) {
-        pos = 0;
-        namespace = "";
-      } else {
-        namespace = literal.substring(1, pos);
-        if (namespace.equals("http")) {
-          // get rid of <>
-          namespace = literal.substring(1, literal.length() -1 ) + "#";
-          literal = ""; // name is empty
-        } else {
-          literal = literal.substring(pos + 1, literal.length() - 1);
-        }
-      }
-    }
-    return new Pair<Namespace, String>(getNamespaceObject(namespace), literal);
-  }
-
   public Namespace getNamespaceObject(String namespaceString) {
     if (namespaceString == null || namespaceString.isEmpty()) {
       throw new WrongFormatException("Empty namespace");
@@ -397,23 +417,4 @@ public final class NamespaceManager {
     }
   }
 
-  public String getXSDNamespace(StringTokenizer st) {
-    StringBuilder stb = new StringBuilder();
-    String token;
-    while(st.hasMoreTokens()){
-      token = st.nextToken();
-      if (!token.equals(">")){
-        stb.append(token);
-      } else {
-        stb.append(token);
-        break;
-      }
-    }
-    String namespace = stb.toString();
-    if (namespace.endsWith(">")){
-      return namespace;
-    } else {
-      throw new IllegalArgumentException("Illegal or unknown namespace: " + namespace);
-    }
-  }
 }
