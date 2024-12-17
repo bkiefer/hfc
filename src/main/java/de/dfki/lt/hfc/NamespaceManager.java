@@ -174,76 +174,6 @@ public final class NamespaceManager {
   public HashMap<String, Namespace> longToNs = new HashMap<String, Namespace>();
   private boolean shortIsDefault = true;
   private HashSet<Namespace> allNamespaces = new HashSet<>();
-
-  public static String getXSDNamespace(StringTokenizer st) {
-    StringBuilder stb = new StringBuilder();
-    String token;
-    while(st.hasMoreTokens()){
-      token = st.nextToken();
-      if (!token.equals(">")){
-        stb.append(token);
-      } else {
-        stb.append(token);
-        break;
-      }
-    }
-    String namespace = stb.toString();
-    if (namespace.endsWith(">")){
-      return namespace;
-    } else {
-      throw new IllegalArgumentException("Illegal or unknown namespace: " + namespace);
-    }
-  }
-
-
-  /** Split uri literal into namespace and name string */
-  public static String[] splitUriNsName(String literal) {
-    String namespace;
-    int pos = literal.lastIndexOf("#");
-    if (pos != -1) {
-      // uri must be in long form: get also rid of <>
-      namespace = literal.substring(1, pos + 1);
-      literal = literal.substring(pos + 1, literal.length() - 1);
-    } else {
-      // uri should be in short form or have no namespace at all.
-      pos = literal.indexOf(":"); // this may also match the "method" http:
-      // check for empty namespace
-      if (pos < 0) {
-        pos = 0;
-        namespace = "";
-        // get rid of <>
-        literal = literal.substring(1, literal.length() - 1);
-      } else {
-        namespace = literal.substring(1, pos);
-        if (namespace.equals("http")) {
-          // get rid of <>
-          namespace = literal.substring(1, literal.length() -1 ) + "#";
-          literal = ""; // name is empty
-        } else {
-          literal = literal.substring(pos + 1, literal.length() - 1);
-        }
-      }
-    }
-    String[] res = { namespace, literal };
-    return res;
-  }
-
-
-  public Uri getUri(String literal) {
-    String[] nsAndName = splitUriNsName(literal);
-    return new Uri(nsAndName[1], getNamespaceObject(nsAndName[0]));
-  }
-
-
-  /** return the namespace part of the string representation of the URI */
-  public static String getNamespace(String uri) {
-    int i = uri.lastIndexOf('#');
-    if (i < 0) {
-      i = uri.lastIndexOf(':');
-    }
-    return uri.substring(0, i+1);
-  }
-
   NamespaceManager() {
     //if(instance != null)
     //  throw new IllegalStateException("Already instatiated");
@@ -358,31 +288,6 @@ public final class NamespaceManager {
    */
   public String getLongForm(String shortForm) {
     return this.shortToNs.get(shortForm).getLong();
-  }
-
-
-  /**
-   * this method borrows code from normalizeNamespace() above and always tries to fully
-   * expand the namespace prefix of an URI, even if shortIsDefault == true
-   */
-  public String expandUri(String uri) {
-    int pos = uri.indexOf("://");
-    if (pos != -1)
-      // a fully-expanded URI
-      return uri;
-    pos = uri.indexOf(":");
-    if (pos == -1)
-      // a URI with an _empty_ namespace
-      return uri;
-    // URI _not_ expanded, otherwise
-    String prefix = uri.substring(1, pos);  // skip '<'
-    String suffix = uri.substring(pos + 1);
-    String expansion = shortToNs.get(prefix).getLong();
-    // namespace maping specified?
-    if (expansion == null)
-      return uri;
-    else
-      return "<" + expansion + suffix;
   }
 
 

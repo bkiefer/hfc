@@ -1,5 +1,7 @@
 package de.dfki.lt.hfc;
 
+import static de.dfki.lt.hfc.LiteralManager.*;
+
 import de.dfki.lt.hfc.NamespaceManager.Namespace;
 import de.dfki.lt.hfc.types.Uri;
 import org.junit.Before;
@@ -11,7 +13,8 @@ public class NamespaceManagerTest {
 
   @Before
   /**
-   * Make sure that the namespaceManager is in its default state when loading the ontology
+   * Make sure that the namespaceManager is in its default state when loading
+   * the ontology
    */
   public void init(){
     NamespaceManager.clear();
@@ -26,7 +29,8 @@ public class NamespaceManagerTest {
     assertFalse(nsm.isShortIsDefault());
     assertFalse(nsm.shortToNs.get("test").isShort());
     Uri testObject = new Uri("testObject", NamespaceManager.TEST);
-    assertEquals("<http://www.dfki.de/lt/onto/test.owl#testObject>", testObject.toString());
+    assertEquals("<http://www.dfki.de/lt/onto/test.owl#testObject>",
+        testObject.toString());
     nsm.setShortIsDefault(true);
     assertTrue(nsm.shortToNs.get("test").isShort());
     assertEquals("<test:testObject>", testObject.toString());
@@ -53,8 +57,10 @@ public class NamespaceManagerTest {
   @Test
   public void expandUri() {
     NamespaceManager nsm = new NamespaceManager();
+    LiteralManager lsm = new LiteralManager(nsm);
     String uri = "<test:testObject>";
-    assertEquals("<http://www.dfki.de/lt/onto/test.owl#testObject>", nsm.expandUri(uri));
+    assertEquals("<http://www.dfki.de/lt/onto/test.owl#testObject>",
+        lsm.toExpandedString(uri));
   }
 
 
@@ -72,16 +78,16 @@ public class NamespaceManagerTest {
   public void separateNSfromURI() {
     String uri1 = "<test:testObject1>";
     String uri2 = "<http://www.dfki.de/lt/onto/test.owl#testObject2>";
-    assertEquals("test", NamespaceManager.splitUriNsName(uri1)[0]);
+    assertEquals("test", splitUriNsName(uri1)[0]);
     assertEquals("http://www.dfki.de/lt/onto/test.owl#",
-        NamespaceManager.splitUriNsName(uri2)[0]);
+        splitUriNsName(uri2)[0]);
   }
 
   @Test(expected = WrongFormatException.class)
   public void emptyNSIllegal() {
     String uri3 = "<testObject3>";
     assertEquals(null, new NamespaceManager().getNamespaceObject(
-        NamespaceManager.splitUriNsName(uri3)[0]));
+        splitUriNsName(uri3)[0]));
   }
 
   @Test
@@ -96,8 +102,9 @@ public class NamespaceManagerTest {
   @Test
   public void uriWithUnknownNStest() {
     NamespaceManager nsm = new NamespaceManager();
+    LiteralManager lsm = new LiteralManager(nsm);
     String uriString = "<http://what.de/a/silly/domain.owl#StupidObject>";
-    Uri uri = nsm.getUri(uriString);
+    Uri uri = (Uri)lsm.makeAnyType(uriString);
     // check that i can introduce a short form afterwards
     assertTrue(nsm.putForm("silly", "http://what.de/a/silly/domain.owl#", true));
     assertFalse(nsm.putForm("tooSilly", "http://what.de/a/silly/domain.owl#", true));
@@ -109,8 +116,9 @@ public class NamespaceManagerTest {
   @Test
   public void uriWithUnknownShortFormtest() {
     NamespaceManager nsm = new NamespaceManager();
+    LiteralManager lsm = new LiteralManager(nsm);
     String uriString = "<unknown:StupidObject>";
-    Uri uri = nsm.getUri(uriString);
+    Uri uri = (Uri)lsm.makeAnyType(uriString);
     // check that i can introduce a short form afterwards
     nsm.putForm("unknown", "http://what.de/an/unknown/domain.owl#", false);
     assertEquals("<http://what.de/an/unknown/domain.owl#StupidObject>", uri.toString());
@@ -122,7 +130,7 @@ public class NamespaceManagerTest {
     // Protege spits them out to specify the ontology itself, and i'm not sure
     // in which other places that might occur.
     String uriString = "<http://www.dfki.de/lt/onto/common/dialogue.owl>";
-    String[] sep = NamespaceManager.splitUriNsName(uriString);
+    String[] sep = splitUriNsName(uriString);
     assertEquals(uriString.length() - 1, sep[0].length());
     assertEquals("", sep[1]);
   }

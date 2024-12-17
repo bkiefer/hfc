@@ -1,5 +1,9 @@
 package de.dfki.lt.hfc;
 
+import static de.dfki.lt.hfc.LiteralManager.isAtom;
+import static de.dfki.lt.hfc.LiteralManager.isBlankNode;
+import static de.dfki.lt.hfc.LiteralManager.isUri;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -80,9 +84,9 @@ public class Query {
    */
   public static boolean isPredicate(String literal) {
     return !RuleStore.isVariable(literal) &&
-            !TupleStore.isAtom(literal) &&
-            !TupleStore.isUri(literal) &&
-            !TupleStore.isBlankNode(literal) &&
+            !isAtom(literal) &&
+            !isUri(literal) &&
+            !isBlankNode(literal) &&
             !QRelationFactory.isRelation(literal);
   }
 
@@ -304,7 +308,7 @@ public class Query {
             // not known: return null to indicate this special empty table;
             // other options: (i) throw a special exception  or (ii) an empty binding table
             // we _now_ opt for the empty binding table in method query()
-            if (TupleStore.isAtom(wc.get(i))) {
+            if (isAtom(wc.get(i))) {
               //tupleStore.putObject(elem);
               clause.add(this.tupleStore.putObject(elem));
             } else {

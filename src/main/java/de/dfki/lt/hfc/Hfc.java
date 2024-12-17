@@ -404,7 +404,7 @@ public class Hfc {
 
     private int rules = _ruleStore.allRules.size();
 
-    private int namespaces = _tupleStore.namespace.longToNs.size();
+    private int namespaces = _tupleStore.noOfNamespaces();
 
   }
 

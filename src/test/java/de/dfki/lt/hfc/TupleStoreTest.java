@@ -135,8 +135,8 @@ public class TupleStoreTest {
       //new TupleStore(false, false, true, 2, 5, 0, 1, 2, 4, 2, namespace, getTestResource("default.nt"));
       TestingUtils.getNoRdfCheckTestStore();
   assertTrue(objecToTestRdfFalse.isValidTuple(stringTuple, 3));
-  assertTrue(TupleStore.isAtom(stringTuple.get(0)));
-  assertTrue(TupleStore.isAtom(stringTuple.get(1)));
+  assertTrue(LiteralManager.isAtom(stringTuple.get(0)));
+  assertTrue(LiteralManager.isAtom(stringTuple.get(1)));
  }
 
  @Test
@@ -147,15 +147,15 @@ public class TupleStoreTest {
 
  @Test
  public void testisUri1() {
-  assertTrue(TupleStore.isUri("<http://www.w3.org/2002/07/owl#sameAs>"));
-  assertFalse(TupleStore.isUri("hgghdgh"));
+  assertTrue(LiteralManager.isUri("<http://www.w3.org/2002/07/owl#sameAs>"));
+  assertFalse(LiteralManager.isUri("hgghdgh"));
  }
 
 
  @Test
  public void testisBlankNode1() {
-  assertFalse(TupleStore.isBlankNode("hello"));
-  assertTrue(TupleStore.isBlankNode("_sjjg"));
+  assertFalse(LiteralManager.isBlankNode("hello"));
+  assertTrue(LiteralManager.isBlankNode("_sjjg"));
  }
 
  @Test
@@ -459,12 +459,13 @@ public class TupleStoreTest {
  public void parseAtom() throws IOException, WrongFormatException {
   String atom = "\"$rangeRestrictionViolated\"^^<xsd:string>";
   ArrayList<String> tuple = new ArrayList<String>();
-  TupleStore objectForTest = getDefaultStore();
+  NamespaceManager nsm = new NamespaceManager();
+  LiteralManager lsm = new LiteralManager(nsm);
   StringTokenizer tokenizer = new StringTokenizer(atom, " ?<>\"\\", true);
   while (tokenizer.hasMoreTokens()) {
    String token = tokenizer.nextToken();
    if (token.equals("\"")) {
-    objectForTest.parseAtom(tokenizer, tuple);
+    lsm.parseAtom(tokenizer, tuple);
    }
   }
   assertEquals(1, tuple.size());

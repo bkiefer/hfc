@@ -1,5 +1,7 @@
 package de.dfki.lt.hfc;
 
+import static de.dfki.lt.hfc.LiteralManager.*;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -807,18 +809,6 @@ public class TupleIntStore {
 
   public String toString(int[] tuple) {
     return toString(tuple, true);
-  }
-
-  public static String toUnicode(String in) {
-    StringBuilder out = new StringBuilder();
-    for (int i = 0; i < in.length(); i++) {
-      final char ch = in.charAt(i);
-      if (ch <= 127)
-        out.append(ch);
-      else
-        out.append("\\u").append(String.format("%04x", (int) ch));
-    }
-    return out.toString();
   }
 
   public boolean ask(int[] tuple) {

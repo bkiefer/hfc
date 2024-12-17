@@ -11,6 +11,7 @@ import java.util.StringTokenizer;
 
 import org.slf4j.LoggerFactory;
 
+import de.dfki.lt.hfc.LiteralManager;
 import de.dfki.lt.hfc.TupleStore;
 import de.dfki.lt.hfc.WrongFormatException;
 import de.dfki.lt.hfc.io.QueryParseException;
@@ -19,7 +20,7 @@ import de.dfki.lt.hfc.types.XsdAnySimpleType;
 /**
  * @author Christian Willms - Date: 08.09.17 16:40.
  * @version 08.09.17
- * 
+ *
  * TODO: THIS SHOULD NOT BE A SINGLETON, BUT A FACTORY INSTANCE INSIDE THE
  * HFC INSTANCE, WHICH BELONGS EXCLUSIVELY TO THAT INSTANCE.
  */
@@ -138,8 +139,9 @@ public class QRelationFactory {
     while (st.hasMoreTokens()) {
       token = st.nextToken();
       if (token.equals("\"")) {
+        tupleStore.getLiteralManager();
         //we need to add the trim to remove possible whitespaces at the end of the string.
-        String atom = tupleStore.parseAtom(st, tuple).trim();
+        String atom = LiteralManager.parseAtom(st, tuple).trim();
         if (atom.endsWith(",")) {
           if (!firstElement) throw new QueryParseException("An interval must consist of exactly two values! ");
           values[0] = atom.substring(0, atom.length() - 1);
@@ -191,7 +193,8 @@ public class QRelationFactory {
     while (st.hasMoreTokens() && elementCounter < 2) {
       token = st.nextToken();
       if (token.equals("\"")) {
-        tupleStore.putObject(tupleStore.parseAtom(st, tuple));
+        tupleStore.getLiteralManager();
+        tupleStore.putObject(LiteralManager.parseAtom(st, tuple));
         elementCounter++;
       } else if (token.equals(" "))  // keep on parsing ...
         continue;

@@ -5,7 +5,7 @@
  */
 package de.dfki.lt.hfc.db.rdfProxy;
 
-import static de.dfki.lt.hfc.NamespaceManager.getNamespace;
+import static de.dfki.lt.hfc.LiteralManager.getNamespace;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -464,7 +464,7 @@ public class RdfProxy implements StreamingClient {
     if (obj instanceof Rdf) {
       result = ((Rdf)obj).getURI();
     } else if (obj instanceof XsdAnySimpleType) {
-      result = ((XsdAnySimpleType)obj).toString();
+      result = obj.toString();
     } else {
       try {
         result = XsdAnySimpleType.javaToXsd(obj).toString();

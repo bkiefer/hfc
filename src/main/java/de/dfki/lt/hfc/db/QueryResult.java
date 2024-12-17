@@ -1,5 +1,8 @@
 package de.dfki.lt.hfc.db;
 
+import static de.dfki.lt.hfc.LiteralManager.isAtom;
+import static de.dfki.lt.hfc.LiteralManager.splitUriNsName;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -11,7 +14,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.dfki.lt.hfc.NamespaceManager;
 import de.dfki.lt.hfc.WrongFormatException;
 import de.dfki.lt.hfc.types.AnyType;
 import de.dfki.lt.hfc.types.XsdAnySimpleType;
@@ -70,7 +72,11 @@ public class QueryResult {
     AnyType o = null;
     switch (value.charAt(0)) {
       case '<': // URI
-        String[] nameNs = NamespaceManager.splitUriNsName(value);
+        String[] nameNs = splitUriNsName(value);
+        if (nameNs[0].charAt(nameNs[0].length() - 1) != '#') {
+          // short namespaces have no colon at the end
+          nameNs[0] += ':';
+        }
         return nameNs[0] + nameNs[1];
       case '_': // blank node
         return value;
@@ -111,7 +117,7 @@ public class QueryResult {
       }
       String targetname = getName(row.get(2));
       int target = -1;
-      if (uniqueAtoms && XsdAnySimpleType.isSimpleXsdType(targetname)) {
+      if (uniqueAtoms && isAtom(row.get(2))) {
         target = g.newVertex();
         nodeName.put(target, targetname);
       } else if (! node2vertex.containsKey(targetname)) {

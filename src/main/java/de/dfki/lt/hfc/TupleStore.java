@@ -1,7 +1,7 @@
 package de.dfki.lt.hfc;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
+import static de.dfki.lt.hfc.LiteralManager.toUnicode;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -11,19 +11,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.dfki.lt.hfc.NamespaceManager.Namespace;
 import de.dfki.lt.hfc.types.AnyType;
 import de.dfki.lt.hfc.types.BlankNode;
 import de.dfki.lt.hfc.types.Uri;
-import de.dfki.lt.hfc.types.XsdAnySimpleType;
-import de.dfki.lt.hfc.types.XsdString;
 
 public class TupleStore extends TupleIntStore {
   private static final Logger logger = LoggerFactory
@@ -80,16 +74,16 @@ public class TupleStore extends TupleIntStore {
   /**
    * a namespace object used to expand short form namespaces into full forms
    */
-  public NamespaceManager namespace;
+  public LiteralManager lsm;
 
   private Random r;
 
-  public TupleStore(NamespaceManager nsm, IndexStore is, Config conf) {
+  public TupleStore(LiteralManager l, IndexStore is, Config conf) {
     init(conf, is, new OperatorRegistry(this), new AggregateRegistry(this));
     if (this.indexStore != null) {
       indexStore.setTuplestore(this);
     }
-    namespace = nsm;
+    lsm = l;
     r = new Random(System.currentTimeMillis());
 
     inputCharacterEncoding = conf.getCharacterEncoding();
@@ -126,33 +120,9 @@ public class TupleStore extends TupleIntStore {
     return false;
   }
 
-  public AnyType makeAnyType(String literal) {
-    AnyType anyType;
-    if (isUri(literal)) {
-      anyType = namespace.getUri(literal);
-    } else if (isBlankNode(literal)) {
-      anyType = new BlankNode(literal);
-    } else {
-      int idx = literal.lastIndexOf('^');
-      if (idx == -1) {
-        // note: parseAtom() completes a bare string by adding "^^<xsd:string>",
-        // but if the string has a language tag, nothing is appended, thus
-        // '^' is missing (as is required by the specification)
-        anyType = new XsdString(literal);
-      }
-      // now do the `clever' dispatch through mapping the type names to Java
-      // class constructors: @see
-      // de.dfki.lt.hfc.NamespaceManager.readNamespaces()
-      else {
-        try {
-          anyType = XsdAnySimpleType.getXsdObject(literal);
-        } catch (WrongFormatException e) {
-          sayItLoud(e.getMessage());
-          return null;
-        }
-      }
-    }
-    return anyType;
+  /** TODO: maybe remove this */
+  public LiteralManager getLiteralManager() {
+    return lsm;
   }
 
   /**
@@ -167,7 +137,7 @@ public class TupleStore extends TupleIntStore {
     int[] intTuple = new int[stringTuple.size()];
     int i = 0;
     for (String s : stringTuple)
-      intTuple[i++] = putObject(makeAnyType(s));
+      intTuple[i++] = putObject(lsm.makeAnyType(s));
     return intTuple;
   }
 
@@ -181,7 +151,7 @@ public class TupleStore extends TupleIntStore {
   public int[] internalizeTuple(String... stringTuple) {
     int[] intTuple = new int[stringTuple.length];
     for (int i = 0; i < stringTuple.length; i++)
-      intTuple[i] = putObject(makeAnyType(stringTuple[i]));
+      intTuple[i] = putObject(lsm.makeAnyType(stringTuple[i]));
     return intTuple;
   }
 
@@ -346,7 +316,6 @@ public class TupleStore extends TupleIntStore {
    */
   public int addTuples(List<List<String>> rows, String front, String... backs) {
 
-    // normalize namespaces for front and backs
     int frontId = -1; // Java wants an initial value
     if (front != null)
       frontId = getSymbolId(front);
@@ -418,11 +387,11 @@ public class TupleStore extends TupleIntStore {
     if (rdfCheck) {
       // check for valid first arg
       if ((stringTuple.size() > 0)
-          && (isAtom(stringTuple.get(subjectPosition))))
+          && (LiteralManager.isAtom(stringTuple.get(subjectPosition))))
         return sayItLoud(lineNo, ": first arg is an atom: ", stringTuple.toString());
       // check for valid second arg
       if ((stringTuple.size() > 1)
-          && (!isUri(stringTuple.get(predicatePosition))))
+          && (!LiteralManager.isUri(stringTuple.get(predicatePosition))))
         return sayItLoud(lineNo, ": second arg is not an URI: ", stringTuple.toString());
     }
     return true;
@@ -458,10 +427,10 @@ public class TupleStore extends TupleIntStore {
     // is tuple RDF compliant
     if (rdfCheck) {
       // check for valid first arg: either URI or variable, but not an atom
-      if ((stringTuple.size() > 0) && TupleStore.isAtom(stringTuple.get(0)))
+      if ((stringTuple.size() > 0) && LiteralManager.isAtom(stringTuple.get(0)))
         return sayItLoud(lineNo, ": first arg must be an URI or variable", stringTuple.toString());
       // check for valid second arg: either URI or variable, but not an atom
-      if ((stringTuple.size() > 1) && TupleStore.isAtom(stringTuple.get(0)))
+      if ((stringTuple.size() > 1) && LiteralManager.isAtom(stringTuple.get(0)))
         return sayItLoud(lineNo, ": second arg must be an URI or variable", stringTuple.toString());
     }
     return true;
@@ -508,49 +477,6 @@ public class TupleStore extends TupleIntStore {
   }
 
   /**
-   * a URI starts with a '<' and ends with a '>';
-   */
-  public String parseURI(StringTokenizer st, ArrayList<String> tuple) {
-    // the leading '<' char has already been consumed, so consume tokens until
-    // we
-    // find the closing '>'
-    // note: no blanks are allowed inside a URI, but a URI might clearly contain
-    // '_' and '\' chars, so reading only the next two tokens would lead to
-    // wrong
-    // results in general
-    StringBuilder sb = new StringBuilder("<");
-    String token;
-    while (st.hasMoreTokens()) {
-      token = st.nextToken();
-      if (token.equals(">"))
-        break;
-      else
-        // normalize the namespace
-        sb.append(token);
-    }
-    token = sb.append(">").toString();
-    tuple.add(token);
-    return token;
-  }
-
-  /**
-   * a blank node starts with a "_:" and ends before the next whitespace character,
-   * i.e., no whitespaces are allowed inside the name of the blank node;
-   * since, blank nodes make no reference to a namespace, we make this a static method
-   */
-
-  protected void parseBlankNode(StringTokenizer st, ArrayList<String> tuple) {
-    // the leading '_' char has already been consumed, so consume tokens until
-    // we
-    // find the next whitespace char
-    StringBuilder sb = new StringBuilder("_");
-    sb.append(st.nextToken()); // the rest of the blank node
-    if (blankNodeSuffix != null)
-      sb.append('X').append(blankNodeSuffix);
-    tuple.add(sb.toString());
-  }
-
-  /**
    * generates a new unique blank node id (an int);
    * used during forward chaining when unbounded right-hand side variables are introduced;
    * it is important that the method is synchronized to exclusively lock the blank counter;
@@ -564,78 +490,6 @@ public class TupleStore extends TupleIntStore {
     return putObject(b);
   }
 
-  /**
-   * XSD atoms are strings optionally followed by either a type identifier (^^type)
-   * or a language tag (@lang);
-   * within the preceding string, further strings are allowed, surrounded by "\"",
-   * as well as spaces, "\\", etc.
-   */
-  public String parseAtom(StringTokenizer st, ArrayList<String> tuple) {
-    StringBuilder sb = new StringBuilder("\"");
-    boolean backquote = false;
-    String token;
-    while (st.hasMoreTokens()) {
-      token = st.nextToken();
-      if (!backquote && token.equals("\""))
-        // string fully parsed
-        break;
-      if (token.equals("\\"))
-        backquote = true;
-      else
-        backquote = false;
-      sb.append(token);
-    }
-    sb.append("\"");
-    // now gather potential additional information (XSD Type or language tag);
-    // the first whitespace char terminates XSD atom recognition
-    //
-    // type checking of XSD atoms should be implemented HERE -- use a second
-    // string buffer to separate the bare atom from its type
-    boolean bareAtom = true;
-    while (st.hasMoreTokens()) {
-      token = st.nextToken();
-      if (token.equals(" "))
-        break;
-      else {
-        bareAtom = false;
-        sb.append("^^").append(namespace.getXSDNamespace(st));
-        if (!(token.equals("^^") || token.equals("<") || token.equals(">")))
-          // normalize namespace
-          sb.append(token);
-      }
-    }
-    if (bareAtom) {
-      // complete type in order to recognize duplicates (perhaps output a
-      // message?)
-      if (this.namespace.isShortIsDefault())
-        sb.append("^^").append(XsdString.SHORT_NAME);
-      else
-        sb.append("^^").append(XsdString.LONG_NAME);
-    }
-    token = sb.toString();
-    Pattern p = Pattern.compile("\\\\u(\\p{XDigit}{4})");
-    Matcher m = p.matcher(token);
-    StringBuffer buf = new StringBuffer(token.length());
-    while (m.find()) {
-      String ch = String.valueOf((char) Integer.parseInt(m.group(1), 16));
-      m.appendReplacement(buf, Matcher.quoteReplacement(ch));
-    }
-    m.appendTail(buf);
-    tuple.add(buf.toString());
-    return token;
-  }
-
-  public static String toUnicode(String in) {
-    StringBuilder out = new StringBuilder();
-    for (int i = 0; i < in.length(); i++) {
-      final char ch = in.charAt(i);
-      if (ch <= 127)
-        out.append(ch);
-      else
-        out.append("\\u").append(String.format("%04x", (int) ch));
-    }
-    return out.toString();
-  }
 
   public String toString(int code) {
     return toUnicode(getObject(code).toString());
@@ -666,10 +520,7 @@ public class TupleStore extends TupleIntStore {
    */
   public String toExpandedString(int code) {
     // distinguish between URIs vs. XSD atoms or blank nodes
-    String literal = getObject(code).toString();
-    return (isAtom(literal) || isBlankNode(literal))
-        ? toUnicode(literal.replace("xsd:", this.namespace.getLongForm("xsd")))
-          : toUnicode(this.namespace.expandUri(literal));   // a URI
+    return lsm.toExpandedString(getObject(code).toString());
   }
 
   /**
@@ -777,31 +628,7 @@ public class TupleStore extends TupleIntStore {
   }
 
   public Integer putObject(String literal) {
-    return putObject(makeAnyType(literal));
-  }
-
-  /**
-  * given a string representation of a literal (an argument of a tuple),
-  * isUri() returns true iff literal is a URI; false, otherwise
-  */
-  public static boolean isUri(String literal) {
-    return literal.startsWith("<");
-  }
-
-  /**
-  * given a string representation of a literal (an argument of a tuple),
-  * isBlankNode() returns true iff literal is a blank node; false, otherwise
-  */
-  public static boolean isBlankNode(String literal) {
-    return literal.startsWith("_");
-  }
-
-  /**
-  * given a string representation of a literal (an argument of a tuple),
-  * isAtom() returns true iff literal is an XSD atom; false, otherwise
-  */
-  public static boolean isAtom(String literal) {
-    return literal.startsWith("\"");
+    return putObject(lsm.makeAnyType(literal));
   }
 
   /**
@@ -811,7 +638,7 @@ public class TupleStore extends TupleIntStore {
    * NOTE: false does NOT indicate that literal is a variable!
    */
   public boolean isConstant(String literal) {
-    return isInFactBase(makeAnyType(literal));
+    return isInFactBase(lsm.makeAnyType(literal));
   }
 
   public void logStoreStatus() {
@@ -836,7 +663,7 @@ public class TupleStore extends TupleIntStore {
   ////////////////////////////////////////////////////////////////////////
 
   private boolean isInFactBase(String literal) {
-    AnyType t = makeAnyType(literal);
+    AnyType t = lsm.makeAnyType(literal);
     return isInFactBase(t);
   }
 
@@ -868,6 +695,11 @@ public class TupleStore extends TupleIntStore {
   /** return the number of tuples contained this store */
   public int size() {
     return allTuples.size();
+  }
+
+  /** number of namespaces */
+  public int noOfNamespaces() {
+    return lsm.noOfNamespaces();
   }
 
   ////////////////////////////////////////////////////////////////////////

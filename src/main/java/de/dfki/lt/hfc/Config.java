@@ -148,7 +148,8 @@ public class Config {
 
   TupleStore createTupleStore(NamespaceManager nsm, IndexStore is)
       throws FileNotFoundException, IOException, WrongFormatException {
-    TupleStore tupleStore = new TupleStore(nsm, is, this);
+    LiteralManager lsm = new LiteralManager(nsm);
+    TupleStore tupleStore = new TupleStore(lsm, is, this);
     long startLoad = System.currentTimeMillis();
     // Read all files mentioned in the config
     for (String tuplefile : getTupleFiles()) {
