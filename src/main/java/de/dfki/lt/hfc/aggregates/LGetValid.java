@@ -52,10 +52,12 @@ public class LGetValid extends AggregationalOperator {
       for (int[] row : args.table) {
         String s = ts.toString(row[0]);
         String p = ts.toString(row[1]);
+        String toTime = row.length > 2
+            ? " filter LLess ?t " + ts.toString(row[2]) : "";
         try {
           Query q = new Query(ts);
           String query = "select distinct ?s ?p ?o ?t where ?s ?p ?o ?t"
-              + " & " + s + " " + p + " ?o ?t"
+              + " & " + s + " " + p + " ?o ?t" + toTime
               + " aggregate ?ss ?pp ?oo = LGetLatest2 ?s ?p ?o ?t \"1\"^^<xsd:int>";
           BindingTable sp = q.query(query);
           resultTable.addAll(sp.table);
