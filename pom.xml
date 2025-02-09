@@ -7,7 +7,7 @@
 
   <groupId>de.dfki.lt.hfc</groupId>
   <artifactId>hfc</artifactId>
-  <version>1.5.12</version>
+  <version>1.5.13</version>
   <packaging>jar</packaging>
 
   <inceptionYear>2015</inceptionYear>
@@ -18,7 +18,7 @@
     <encoding>UTF-8</encoding>
     <slf4j.version>2.0.9</slf4j.version>
     <logback.version>1.4.14</logback.version>
-    <commons-io.version>2.11.0</commons-io.version>
+    <commons-io.version>2.18.0</commons-io.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
