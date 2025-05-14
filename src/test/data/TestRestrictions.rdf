@@ -33,6 +33,18 @@
 
 
 
+    <!-- http://www.dfki.de/mlt/kiefer/test.owl#functionalObjectProperty -->
+
+    <owl:ObjectProperty rdf:about="http://www.dfki.de/mlt/kiefer/test.owl#functionalObjectProperty2"/>
+
+
+
+    <!-- http://www.dfki.de/mlt/kiefer/test.owl#someObjectProperty -->
+
+    <owl:ObjectProperty rdf:about="http://www.dfki.de/mlt/kiefer/test.owl#someObjectProperty2"/>
+
+
+
     <!--
     ///////////////////////////////////////////////////////////////////////////////////////
     //
@@ -53,6 +65,20 @@
     <!-- http://www.dfki.de/mlt/kiefer/test.owl#someDataProperty -->
 
     <owl:DatatypeProperty rdf:about="http://www.dfki.de/mlt/kiefer/test.owl#someDataProperty">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    </owl:DatatypeProperty>
+
+
+
+    <!-- http://www.dfki.de/mlt/kiefer/test.owl#functionalDataProperty -->
+
+    <owl:DatatypeProperty rdf:about="http://www.dfki.de/mlt/kiefer/test.owl#functionalDataProperty2"/>
+
+
+
+    <!-- http://www.dfki.de/mlt/kiefer/test.owl#someDataProperty -->
+
+    <owl:DatatypeProperty rdf:about="http://www.dfki.de/mlt/kiefer/test.owl#someDataProperty2">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
     </owl:DatatypeProperty>
 
@@ -98,8 +124,30 @@
                 <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:subClassOf>
-    </owl:Class>
 
+        <rdfs:subClassOf rdf:nodeID="genid099"/>
+        <rdfs:subClassOf rdf:nodeID="genid199"/>
+        <rdfs:subClassOf rdf:nodeID="genid299"/>
+        <rdfs:subClassOf rdf:nodeID="genid399"/>
+    </owl:Class>
+    <owl:Restriction rdf:nodeID="genid099">
+        <owl:onProperty rdf:resource="http://www.dfki.de/mlt/kiefer/test.owl#someObjectProperty2"/>
+        <owl:someValuesFrom rdf:resource="http://www.dfki.de/mlt/kiefer/test.owl#TestRange"/>
+    </owl:Restriction>
+    <owl:Restriction rdf:nodeID="genid199">
+        <owl:onProperty rdf:resource="http://www.dfki.de/mlt/kiefer/test.owl#someDataProperty2"/>
+        <owl:allValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+    </owl:Restriction>
+    <owl:Restriction rdf:nodeID="genid299">
+        <owl:onProperty rdf:resource="http://www.dfki.de/mlt/kiefer/test.owl#functionalObjectProperty2"/>
+        <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+        <owl:onClass rdf:resource="http://www.dfki.de/mlt/kiefer/test.owl#TestRange"/>
+    </owl:Restriction>
+    <owl:Restriction rdf:nodeID="genid399">
+        <owl:onProperty rdf:resource="http://www.dfki.de/mlt/kiefer/test.owl#functionalDataProperty2"/>
+        <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+        <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:Restriction>
 
 
     <!-- http://www.dfki.de/mlt/kiefer/test.owl#TestRange -->
