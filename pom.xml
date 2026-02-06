@@ -18,7 +18,7 @@
     <encoding>UTF-8</encoding>
     <slf4j.version>2.0.17</slf4j.version>
     <logback.version>1.5.26</logback.version>
-    <commons-io.version>2.18.0</commons-io.version>
+    <commons-io.version>2.21.0</commons-io.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
