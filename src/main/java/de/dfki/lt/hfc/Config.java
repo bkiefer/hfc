@@ -1,12 +1,10 @@
 package de.dfki.lt.hfc;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -35,6 +33,7 @@ import de.dfki.lt.hfc.types.XsdLong;
  */
 public class Config {
 
+  public static final String ROOT_DIRECTORY = "rootDirectory";
   public static final String EXITONERROR = "exitOnError";
   public static final String VERBOSE = "verbose";
   public static final String CHARACTERENCONDING = "characterEncoding";
@@ -76,12 +75,26 @@ public class Config {
   }
 
   @SuppressWarnings("unchecked")
-  public static Config getInstance(InputStream in, File confDir) {
+  public static Config getInstance(InputStream in, File confRootDir) {
+    Yaml yaml = new Yaml();
+    Map<String, Object> confs = (Map<String, Object>) yaml.load(in);
+    confs.put(ROOT_DIRECTORY, confRootDir);
+    return getInstance(confs);
+  }
+
+  @SuppressWarnings("unchecked")
+  public static Config getInstance(Map<String, Object> confs) {
+    Object confDir = confs.get("rootDirectory");
+    if (confDir != null
+        && !(confDir instanceof File || confDir instanceof String)) {
+      throw new IllegalArgumentException("Config does not specify rootDirectory");
+    }
+    if (confDir instanceof String) {
+      confDir = new File((String)confDir);
+    }
     Yaml yaml = new Yaml();
     InputStream def = Config.class.getResourceAsStream("/defaults.yml");
-    Config conf = new Config((Map<String, Object>) yaml.load(def), confDir);
-    yaml = new Yaml();
-    Map<String, Object> confs = (Map<String, Object>) yaml.load(in);
+    Config conf = new Config((Map<String, Object>) yaml.load(def), (File)confDir);
     conf.configs.putAll(confs);
     return conf;
   }
@@ -89,12 +102,12 @@ public class Config {
   /** This gets an instance from a config file on the file system ONLY */
   public static Config getInstance(String configFileName)
       throws FileNotFoundException {
-    File convFile = new File(configFileName);
-    File convDir = convFile.getParentFile();
-    if (convDir == null) {
-      convDir = new File(".");
+    File confFile = new File(configFileName);
+    File confDir = confFile.getParentFile();
+    if (confDir == null) {
+      confDir = new File(".");
     }
-    return getInstance(new FileInputStream(convFile), convDir);
+    return getInstance(new FileInputStream(confFile), confDir);
   }
 
   /**
@@ -123,6 +136,9 @@ public class Config {
 
   private TupleSource readerFromName(String name) throws IOException {
     if (configDir == null) {
+      // TODO: ALTHOUGH THIS READS THE CONFIG FROM RESOURCES, THE REST OF
+      // THE READING STILL HAPPENS ON THE FILE SYSTEM. THIS SHOULD BE FIXED
+      // TO A EITHER RESOURCE OR FILE SYSTEM MODE!!!
       return new TupleSource("/" + name,
           Config.class.getResourceAsStream("/" + name), getCharacterEncoding());
     }

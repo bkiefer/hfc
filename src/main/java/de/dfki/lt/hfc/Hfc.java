@@ -70,6 +70,10 @@ public class Hfc {
 
   private Writer persistencyWriter;
 
+  @Deprecated
+  /** The config should be created externally and passed to HFC.
+   *  To be removed in 1.6
+   */
   public Hfc(String configPath) throws IOException, WrongFormatException {
     this(Config.getInstance(configPath));
   }

@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import de.dfki.lt.hfc.BindingTable;
 import de.dfki.lt.hfc.BindingTableIteratorException;
+import de.dfki.lt.hfc.Config;
 import de.dfki.lt.hfc.Hfc;
 import de.dfki.lt.hfc.TupleIterator;
 import de.dfki.lt.hfc.WrongFormatException;
@@ -47,24 +48,42 @@ public class HfcDbHandler implements DbClient {
 
   private UserCache _userCache;
 
-  /** The methods in this class should be thread safe, except maybe for the
-   *  initialization
-   * @throws IOException
-   * @throws WrongFormatException
-   */
-  public HfcDbHandler(String configPath) {
+  private void init(Config config) {
     _rwLock = new ReentrantReadWriteLock();
     persistencyWriter = null;
     _streamingClients = new StreamingClients();
     _currentTokens = new HashMap<>();
     _userCache = new UserCache(this);
     try {
-      _hfc = new Hfc(configPath);
+      _hfc = new Hfc(config);
       persistencyWriter = _hfc.getPersistencyWriter();
       computeClosure();
     } catch (Exception ex) {
       throw new RuntimeException(ex);
     }
+  }
+
+  /** The methods in this class should be thread safe, except maybe for the
+   *  initialization. Exceptions are thrown in RuntimeException.
+   * @throws IOException
+   * @throws WrongFormatException
+   */
+  public HfcDbHandler(String configPath) {
+    try {
+      init(Config.getInstance(configPath));
+    } catch (Exception ex) {
+      throw new RuntimeException(ex);
+    }
+  }
+
+
+  /** The methods in this class should be thread safe, except maybe for the
+   *  initialization. Exceptions are thrown in RuntimeException.
+   * @throws IOException
+   * @throws WrongFormatException
+   */
+  public HfcDbHandler(Config config) {
+    init(config);
   }
 
   public StreamingClients getStreamingClients() {
